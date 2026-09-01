@@ -183,6 +183,13 @@ server-side parsing is later justified; and keep human confirmation, sense
 assignment, denominators, resource versions, and export provenance as this
 project's added measurement layer.
 
+The presentation also points to Tom Cobb's Lextutor Phrase Profiler. Its live
+version 1.2 page matches user text against selected phrase/collocation lists,
+while Lextutor's Multiwords page separately distinguishes list profiling from
+n-gram and MI-based phrase extraction. It is therefore a second list-profile
+comparator, especially for checking list-conditioned coverage and interface
+expectations, but not evidence of contextual VPC or sense identification.
+
 ## Existing-tool boundary
 
 MWE-related Web tools exist, but they solve different stages. In the tools
@@ -193,6 +200,7 @@ sense-coverage outputs.
 | Existing tool | What it already covers | Boundary for this project | Decision |
 |---|---|---|---|
 | Multi-Word Units Profiler 2.0.1 | User-text MWU highlighting and item tables from four research-based lists using n-gram and dependency candidates | List-driven pedagogical profiling, not confirmed VPC or contextual-sense coverage; hosted processing and third-party list rights remain separate | Primary Web-profile comparator and UI/pipeline prior art; do not copy code or lists, and do not send protected research text |
+| Lextutor Phrase Profiler 1.2 | User-text matching against selectable academic, idiomatic, and transition phrase/collocation lists | List lookup rather than contextual MWE confirmation or sense assignment; resource and hosted-service rights remain separate | Secondary list-profile comparator; reuse its workflow distinction, not its payloads |
 | PARSEME-configured FLAT | Web-based, multi-user MWE annotation with token/span structures, provenance, confidence, permissions, and versioned documents | Annotation/review platform, not an L2 lexical-coverage or fine-sense analysis; the public PARSEME instance requires an account | Treat as the closest external annotation workflow; preserve PARSEME-compatible occurrence interchange instead of forking or embedding FLAT |
 | INCEpTION | Actively maintained, open-source Web annotation, curation, configurable layers, and assisted recommendations | General-purpose rather than MWE-specific; discontinuous spans are represented through relations or links rather than native discontinuous spans | Optional external multi-annotator workflow if FLAT interchange is insufficient; no runtime dependency |
 | PARSEME KonText and STREUSLE ANNIS | Browser search over already annotated corpora, including MWE member identifiers and discontinuous examples | Corpus exploration, not annotation or analysis of a researcher's new text | Link as audit/teaching evidence; do not mistake corpus search for a detector |
@@ -291,10 +299,10 @@ detector, database, or new frequency table.
    word, form, annotation, and sense-assignment denominators remain separate.
 5. Only after the contract passes dependency-free checks, derive the minimum
    attributed OEWN form/sense subset needed by the fixtures. Evaluate the
-   Multi-Word Units Profiler's observable behavior, the STREUSLE recognizer,
-   and PyMUSAS against the project-authored cases or pinned STREUSLE data before
-   writing any new detector; separately prove a minimal PARSEME occurrence
-   round trip before promising FLAT interoperability.
+   Multi-Word Units Profiler and Phrase Profiler's observable behavior, the
+   STREUSLE recognizer, and PyMUSAS against the project-authored cases or pinned
+   STREUSLE data before writing any new detector; separately prove a minimal
+   PARSEME occurrence round trip before promising FLAT interoperability.
 
 ## What dimensions 3 and 4 must keep separate
 

@@ -17,14 +17,14 @@ The first automatic linguistic scope is English verb-particle constructions
 assignment are different operations. An unresolved or ambiguous sense must not
 silently fall back to the most frequent sense or to the form-level result.
 
-The closest existing user-text profiling application found in the current
-review is Masaki Eguchi's Multi-Word Units Profiler. It already uses n-gram and
-dependency candidates to highlight entries from several research-based MWU
-lists and returns item tables. FLAT/PARSEME is the closest collaborative MWE
-annotation workflow, while INCEpTION is a broader annotation alternative. This
-project will reuse those precedents instead of rebuilding them. Its distinct
-job is to attach reviewable VPC decisions to separate, auditable
-word/MWE-form/MWE-sense coverage channels for researchers' own texts.
+The closest existing user-text profiling applications found in the current
+review are Masaki Eguchi's Multi-Word Units Profiler and Lextutor Phrase
+Profiler. The former uses n-gram and dependency candidates to highlight entries
+from several research-based MWU lists; the latter matches text against selected
+phrase/collocation lists. FLAT/PARSEME is the closest collaborative MWE
+annotation workflow. This project will reuse those precedents instead of
+rebuilding them. Its distinct job is to attach reviewable VPC decisions to
+separate, auditable word/MWE-form/MWE-sense coverage channels.
 
 These fixed scenarios are the method-audit surface. The initial research
 workspace now analyzes one passage, a paired transformation, or two independent
