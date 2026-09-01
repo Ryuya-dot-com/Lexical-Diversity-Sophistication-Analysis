@@ -1,30 +1,45 @@
-# Open lexical-methods laboratory roadmap
+# Open MWE-aware lexical-coverage laboratory roadmap
 
-Status: scenario architecture and rights gate, reviewed 2026-09-01
+Status: MWE/VPC strategic reset and rights gate, reviewed 2026-09-01
 
 This repository is an independent, free, browser-based methods laboratory for
-L2 vocabulary researchers. Its job is not to produce one authoritative lexical
-score. Its job is to make controlled comparison scenarios, calculation rules,
-resource coverage, and invalid inferences inspectable and reproducible.
+L2 vocabulary researchers. Its primary job is to prevent multiword lexical
+units from disappearing into ordinary word-level coverage. It must report word,
+MWE-form, and MWE-sense channels separately, with visible denominators,
+unresolved states, resource coverage, and invalid inferences.
 
-The current matched pair is one scenario, not the product definition. The app
-may eventually cover lexical variety, length sensitivity, tokenization, and
-rights-cleared resource-dependent measures. It must remain useful without an
-account, payment, server, proprietary API, or access to the parent repository.
+The first automatic scope is English verb-particle constructions (VPCs). The
+current surface-count scenarios are useful browser and method-audit scaffolding,
+not the product definition. General lexical sophistication, all-type MWE,
+multilingual analysis, automated proficiency scoring, and TAALES replication
+are not initial goals.
+
+The ignored `ldfreq_webapp_master_roadmap_20260831.html` correctly preserved
+the original construct priorities but over-specified a three-service system
+before the minimal measurement contract existed. This roadmap restores its
+word/MWE/sense separation and human-review requirements without adopting that
+premature architecture.
 
 ## Product shape
 
-The product has two deliberately different surfaces:
+The product has three deliberately different surfaces:
 
-1. **Method audit:** fixed, project-authored scenarios expose what a metric
+1. **MWE/VPC review:** candidate occurrences expose member tokens, gap tokens,
+   canonical form, category, evidence, and status. A researcher can confirm,
+   reject, or leave an occurrence unresolved and can select, reject, or abstain
+   from inventory-specific sense candidates.
+2. **Coverage analysis:** ordinary word coverage, MWE occurrence/density,
+   form-level reference coverage, sense-level coverage, annotation coverage,
+   and sense-assignment coverage remain separate outputs. There is no default
+   combined score.
+3. **Method audit:** fixed, project-authored scenarios expose what a metric
    changes, ignores, and confounds. The current probe implements this surface.
-2. **Research workspace:** the initial browser-local workspace applies admitted
-   methods to synthetic or rights-cleared published text selected by the
-   researcher. The app writes no durable copy and provides explicit/best-effort
-   clearing, but cannot guarantee erasure from browser/device memory, history,
-   or backups. The JSON export deliberately omits the text, so the researcher
-   must preserve the exact source separately and verify it against the exported
-   hash.
+   Its browser-local workspace applies admitted methods to synthetic or
+   rights-cleared published text selected by the researcher. The app writes no
+   durable copy and provides explicit/best-effort clearing, but cannot guarantee
+   erasure from browser/device memory, history, or backups. The JSON export
+   deliberately omits the text, so the researcher must preserve the exact
+   source separately and verify it against the exported hash.
 
 The workspace must support research questions, not just input-box shapes:
 
@@ -80,26 +95,71 @@ missing-data policy, target population, estimand, and uncertainty method. Until
 then, multiple rows remain a descriptive collection whose dependence is
 unknown.
 
-The locally preserved and Git-ignored `ldfreq_webapp_master_roadmap_20260831.html`
-is a non-authoritative inventory for a different MWE/VPC direction. The parent
-repository is an evidence vault only. Nothing is copied from it without a
+The parent repository remains an evidence vault. Its algorithms, data, and
+derived artifacts are not runtime dependencies and are not copied without a
 file-level method, provenance, rights, and numerical review.
 
 ## Priority order
 
-1. **Research question before metric count.** A scenario must identify the
-   comparison relation and the decision it can support.
-2. **Identification before interpretation.** Length, segmentation, lexical
-   composition, preprocessing, and reference-resource changes must not be
-   silently conflated.
-3. **Rights before implementation.** A tool license, an algorithm description,
+1. **Restore the construct before adding metrics.** Ordinary word coverage,
+   MWE-form coverage, and MWE-sense coverage are different estimands.
+2. **Occurrence before sense.** VPC candidate generation, occurrence
+   confirmation, inventory lookup, and contextual sense assignment are separate
+   stages. `ambiguous`, `abstained`, `unassigned`, and `out_of_inventory` remain
+   observable states.
+3. **Reuse before invention.** PARSEME/STREUSLE supply annotation conventions
+   and validation data; Open English WordNet supplies an open sense inventory;
+   TAALES supplies unigram and contiguous n-gram comparators. A new detector or
+   sense inventory needs evidence that these cannot meet the admitted need.
+4. **Rights before implementation.** A tool license, an algorithm description,
    a corpus license, and permission to redistribute derived tables are four
    separate questions.
-4. **Auditability before convenience.** Raw values, formulas, parameters,
+5. **Auditability before convenience.** Raw values, formulas, parameters,
    coverage, versions, and exclusions remain visible and exportable.
-5. **Open access before feature breadth.** Static browser execution and
+6. **Open access before feature breadth.** Static browser execution and
    project-authored fixtures are the default. A server or restricted resource
    requires a demonstrated research need and a sustainable free-access plan.
+
+## What TAALES does and does not settle
+
+TAALES 2.2/2.8.1 has separate unigram and contiguous bigram/trigram indices.
+Thus contiguous `take in` can receive corpus frequency, range, proportion, or
+association values while `take` and `in` also receive word-level values.
+However, the n-gram path does not establish that the sequence is a VPC, does not
+recover `take it in`, and does not assign a contextual phrasal-verb sense. Its
+polysemy path averages word/POS inventory counts; it is not contextual WSD for
+`take in`. TAALES is therefore an important comparator, not the missing MWE
+measurement layer.
+
+The local evidence-vault copy confirms the distinction: its polysemy table has
+separate rows for `take` and `in`, while its n-gram tables contain `take in` as
+a corpus bigram. The parent OEWN 2025 derivative contains a separate `take in`
+verb entry with 17 listed senses, but the parent's ordinary raw-text profile
+does not detect that MWE entry. Rebuilding another unigram profile would repeat
+existing work without solving the stated construct problem.
+
+## Resource-delivery decision
+
+A database is not the first implementation step and is not a rights mechanism.
+The relevant boundary is whether an admitted resource stays server-side and
+what the public API reveals. A public lookup can still be enumerated, and no
+storage design creates permission for public SaaS processing or derived-output
+publication.
+
+- Open, redistributable resources should remain pinned, attributed,
+  downloadable, and usable without the hosted service. OEWN fits this route.
+- ShareAlike resources may be a separately licensed validation package rather
+  than silently entering the permissive core. STREUSLE fits this route.
+- A restricted resource may be read from an immutable server-side file/object
+  store only after its exact server-use and output rights are documented. A
+  database adds no protection over that boundary unless measured query or scale
+  requirements demand it.
+- PHaVE/COCA/TAALES-derived payloads do not become admissible merely because the
+  rows are hidden behind an API. Written permission or a user-supplied lawful
+  copy remains necessary where the public terms do not cover the delivery.
+- Sending research text to a server is a separate privacy decision. Until an
+  automatic VPC benchmark justifies it, the minimum path is browser-local text,
+  project-authored fixtures, open inventory data, and human confirmation.
 
 ## Multi-lens review
 
@@ -116,23 +176,47 @@ file-level method, provenance, rights, and numerical review.
 | Privacy | Must research text leave the device? | No. The initial workspace uses browser memory only, omits raw text from JSON, forbids network APIs in static checks, and restricts connections/forms with CSP. |
 | Equity | Does a “free” interface still depend on restricted corpora, modern hardware, or English-only norms? | Keep the core downloadable and resource-free; label language/variety scope and never make restricted add-ons the only serious workflow. |
 | Accessibility | Can researchers use and audit the app without a mouse or wide screen? | Native controls and semantic HTML now; real-browser and assistive-technology checks remain required. |
-| Sustainability | Can free access survive hosting or maintainer loss? | No database, account, analytics, runtime package, or paid API; downloadable static release is the target. |
+| Sustainability | Can free access survive hosting or maintainer loss? | The canonical core and open resources remain downloadable; no database, account, or paid service may become the only reproducible path. |
 | Interoperability | Does matching a metric name imply matching another tool? | No. Numerical equivalence requires an explicit versioned validation study. |
 
 ## Scenario matrix
 
 | ID | Comparison | Identified change | Valid observation | Main boundary | State |
 |---|---|---|---|---|---|
+| M1 | `take in` as two word tokens versus one confirmed VPC occurrence | Counting channel only | Word coverage and MWE-form coverage answer different questions | A contiguous bigram is only a candidate until its use is confirmed | Contract/fixture next |
+| M2 | `take in the explanation` versus `take the explanation in` | Continuous versus discontinuous realization | The same VPC form can have non-adjacent member tokens | Gap tokens are not MWE members | Contract/fixture next |
+| M3 | Confirmed `take in` uses with different OEWN senses | Contextual sense while form is held constant | One form can populate different sense-profile cells | Inventory membership is not automatic sense assignment | Contract/fixture next |
+| M4 | A VPC use versus `take it in the car` | VPC versus literal/directional/free combination | Surface verb-plus-`in` matching produces false positives | Requires explicit rejection or a validated detector | Contract/fixture next |
 | S1 | Equal 100-token templates with 38 lexical substitutions | Surface repetition at fixed positions | Mechanical response of counts and TTR | Frequency, semantics, naturalness, and population effects are uncontrolled | Implemented probe |
 | S2 | Identical 100-token sequence as one orthographic sentence or seven | Terminal punctuation / segmentation only | Current token-sequence metrics are invariant | This says nothing about sentence-aware metrics or natural syntax | Implemented probe |
 | S3 | First 14-token sentence versus its containing 100-token text | Nested sample length plus accumulated continuation | TTR changes when the sample grows | Sentence count, length, and added lexical composition are not separately identified | Implemented probe |
 | S4 | Same characters under documented tokenizer policies | Preprocessing policy | Sensitivity to apostrophes, hyphens, case, Unicode, and digits | No tokenizer is universally correct | Fixture evidence only |
-| S5 | Same text under an admitted frequency or lexical resource | Reference distribution and coverage | Resource-conditional score and coverage | No resource is a universal English baseline | TUBELEX English regex artifact pinned and rights-cleared for preparation; bundling remains blocked by projection, notices, performance, and fixture checks |
+| S5 | Same text under an admitted unigram or n-gram comparator | Reference distribution and coverage | Resource-conditional baseline beside MWE results | A frequent n-gram is not necessarily an MWE or a particular sense | Deferred until M1–M4 contract |
 | S6 | Rights-cleared public or corpus-derived text strata | Observed group/genre/time differences | Descriptive distribution with uncertainty | No causal, proficiency, or individual diagnosis claim | Blocked by provenance and design review |
 
-The matrix is intentionally small. Add a scenario only when it isolates a new
+M1–M4 are the critical path. S1–S4 remain useful completed scaffolding; S5–S6
+must not displace MWE work. Add a scenario only when it isolates a new
 decision-relevant contrast; do not add scenarios merely to showcase another
 index.
+
+## Immediate next increment
+
+The next deliverable is a contract and project-authored gold fixtures, not a
+detector, database, or new frequency table.
+
+1. Extend the existing canonical token records with stable token IDs.
+2. Represent one MWE occurrence with member token IDs, separate gap token IDs,
+   canonical form, PARSEME-compatible category, candidate/confirmed/rejected
+   status, and provenance.
+3. Represent sense lookup and sense assignment separately, including inventory
+   ID/version and `assigned`, `ambiguous`, `abstained`, `unassigned`, and
+   `out_of_inventory` states.
+4. Add M1–M4 project-authored fixtures and expected values. Confirmed member
+   density uses the union of member-token positions and excludes gap tokens;
+   word, form, annotation, and sense-assignment denominators remain separate.
+5. Only after the contract passes dependency-free checks, derive the minimum
+   attributed OEWN form/sense subset needed by the fixtures. Evaluate an
+   existing parser/tagger against STREUSLE before writing any new detector.
 
 ## What dimensions 3 and 4 must keep separate
 

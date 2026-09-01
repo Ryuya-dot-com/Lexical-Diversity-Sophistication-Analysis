@@ -1,4 +1,4 @@
-# ldfreq open lexical-methods laboratory
+# ldfreq open MWE-aware lexical-coverage laboratory
 
 Status: static scenario probe; not an MVP or validated measurement release.
 
@@ -6,28 +6,31 @@ Canonical source: <https://github.com/Ryuya-dot-com/Lexical-Diversity-Sophistica
 
 Public technical deployment: <https://ryuya-dot-com.github.io/Lexical-Diversity-Sophistication-Analysis/>
 
-The repository name allows for a broader future direction. The current probe
-does not implement a lexical-sophistication score, frequency norm, reference
-resource, or TAALES-compatible analysis.
+The product target is an independent, open-science application that keeps
+ordinary word coverage, multiword-unit form coverage, and sense-level coverage
+separate. The current probe is only the browser-local input, comparison,
+provenance, and export foundation for that target; it is not yet an MWE analyzer.
 
-This directory is an independent browser app for auditing how lexical measures
-respond to controlled text comparisons. It currently includes project-authored
-scenarios for fixed-length repetition, sentence-segmentation invariance, and
-nested length sensitivity. It does not score writing, estimate proficiency, or
-reproduce TAALES.
+The first automatic linguistic scope is English verb-particle constructions
+(VPCs), including contiguous and separated realizations such as `take in` and
+`take it in`. Occurrence detection, form-inventory lookup, and contextual sense
+assignment are different operations. An unresolved or ambiguous sense must not
+silently fall back to the most frequent sense or to the form-level result.
 
 These fixed scenarios are the method-audit surface. The initial research
 workspace now analyzes one passage, a paired transformation, or two independent
 texts entirely inside the browser. It can also describe researcher-declared
 non-empty line units within one text while keeping the pooled result separate,
 or describe 2–100 researcher-identified documents from a pasted JSON array.
-Automatic sentence splitting, group inference, length curves, and external
-lexical resources are not implemented.
+Automatic sentence splitting, group inference, length curves, MWE/VPC
+identification, sense assignment, and external lexical resources are not
+implemented.
 
 The target is a free, reproducible open-science tool for L2 vocabulary
-researchers. The runtime is plain HTML, CSS, JavaScript, and reviewed JSON: no
-account, server analysis, paid API, analytics, database, or parent-directory
-dependency.
+researchers. The canonical core remains downloadable and auditable. A server
+or server-side resource store is admitted only when an MWE/VPC function cannot
+be delivered responsibly in the browser and the exact resource license permits
+that use; a database is not treated as a substitute for permission.
 
 ## Capabilities and non-capabilities
 
@@ -39,13 +42,13 @@ English ASCII tokenizer, and exports method metadata and SHA-256 identifiers
 without raw text. The source, fixtures, contract, citations, rights terms, and
 tests are open for audit.
 
-It cannot assess proficiency, CEFR, writing quality, authorship, causal effects,
-or population differences. It does not automatically split sentences, run
-inferential statistics, pool or rank documents, process non-English vocabulary
-generally, or measure lexical sophistication, frequency, coverage, semantics,
-or TAALES equivalence. It cannot independently verify input rights, guarantee
-device-level erasure, or reproduce an analysis from a metadata-only export when
-the exact source text was not separately preserved.
+It cannot yet identify `take in` as a VPC, distinguish it from a free or
+directional combination, recover separated members, or disambiguate its sense.
+It also cannot assess proficiency, CEFR, writing quality, authorship, causal
+effects, or population differences; measure TAALES equivalence; independently
+verify input rights; guarantee device-level erasure; or reproduce an analysis
+from a metadata-only export when the exact source text was not separately
+preserved.
 
 ## Run
 
@@ -98,7 +101,9 @@ stable cross-platform source archive.
 - Formula names do not imply numerical compatibility with TAALES, TAALED, or
   another tool.
 - Resource-dependent measures remain blocked until the artifact-level gate in
-  [`RIGHTS.md`](RIGHTS.md) passes.
+  [`RIGHTS.md`](RIGHTS.md) passes. Open resources are preferred as versioned,
+  downloadable research artifacts; server-only storage is considered only for
+  a separately permitted resource and never makes an unclear license clear.
 
 ## Method evidence
 

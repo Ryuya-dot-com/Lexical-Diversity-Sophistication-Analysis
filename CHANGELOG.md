@@ -19,11 +19,18 @@ probe without assigning it a release version or validation claim.
 - Primary-source screening ledger for frequency, CEFR, academic, morphological,
   semantic, and psycholinguistic resources, including pinned TUBELEX and
   Lancaster candidate artifacts without bundling either dataset.
+- Strategic reset making separate word, MWE-form, and MWE-sense coverage the
+  product target, with English VPCs as the first automatic scope.
+- Primary-source comparison of TAALES n-gram/polysemy behavior and screening of
+  OEWN, PHaVE, STREUSLE, and PARSEME for MWE occurrence and sense work.
 
 ### Integrity boundaries
 
 - No account, server analysis, analytics, cookie, database, external model,
   third-party runtime code, lexical resource, or raw-text export.
+- Server-side storage is not treated as licensing permission; open resources
+  remain downloadable, and restricted resources require delivery-specific
+  permission even when hidden behind an API.
 - Input count and size limits, all-or-nothing batch validation, unique normalized
   IDs, well-formed Unicode checks, and exact client-clock timestamp formatting.
 - Exported hashes and timestamps are explicitly non-authenticating; results are
