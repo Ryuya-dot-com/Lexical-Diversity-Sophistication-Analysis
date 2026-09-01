@@ -19,7 +19,7 @@ unit and what a reported denominator means.
 
 ### What will the study do?
 
-Develop and validate an open, browser-local, human-in-the-loop method for
+Develop and empirically evaluate an open, browser-local, human-in-the-loop method for
 second-language (L2) vocabulary research that:
 
 1. uses researcher-supplied patterns to find reviewable English verb-particle
@@ -65,8 +65,9 @@ be told:
   generalizable on learner-language research data;
 - TUBELEX matching and OEWN membership are resource-conditioned lookup results,
   not estimates of what a learner knows; and
-- submission becomes defensible only after a preregistered L2 measurement study
-  and intended-user study.
+- submission becomes defensible only after an honestly reported L2 measurement
+  study and intended-user study; prospective registration is needed only for
+  claims presented as confirmatory.
 
 If this distinction cannot be explained without specialist terminology, the
 method is not ready for participants, reviewers, or publication.
@@ -102,13 +103,88 @@ standard.
 | MWE reference | Pinned OEWN 2025 multiword-verb inventory projection | MWE occurrence frequency/range profile and contextual sense-frequency profile |
 | Candidate method | Researcher-supplied surface-member patterns plus manual candidates | Validated default candidate generator and an estimate of missed occurrences |
 | Contract | Separate word, MWE-form, idiomaticity, sense, and annotation states | Empirical evidence that users understand and apply those distinctions |
-| Technical evidence | Five project-authored fixtures; 40-occurrence STREUSLE projection; transparent surface baseline | Adequately sized held-out evaluation, full error analysis, and applied-L2 transfer evidence |
+| Technical evidence | Five project-authored fixtures; 40-occurrence STREUSLE projection; transparent surface baseline | Broader evaluation, full error analysis, learner-error sensitivity, and applied-L2 transfer evidence |
 | Sense evidence | All 17 OEWN `take in#v` candidates and synthetic contextual decisions | Independent contextual gold, reliability, WSD validation, or sense-frequency coverage |
-| Research data | Synthetic cases and external benchmark projection | Lawful, pinned, sampled L2 evaluation texts and annotation protocol |
-| Open science | Public source, tests, rights ledger, static deployment | Preregistration, immutable release, DOI/checksum bundle, analysis scripts and report |
+| Research data | Synthetic cases and external benchmark projection; ICNALE WE/GRA identified as local-only candidates | Corpus admission memo, reproducible sample, learner-error study, and MWE annotation protocol |
+| Open science | Public source, tests, rights ledger, static deployment | Explicit exploratory decision history, immutable release, DOI/checksum bundle, analysis scripts and report |
 
 The public prototype is therefore an **implemented method hypothesis**, not a
 validated research instrument.
+
+## Learner-language errors and corpus evidence
+
+### What the app currently does
+
+The current app preserves the submitted text and performs no spelling or
+grammar correction. That is the correct default for learner-corpus research:
+silent correction would replace the observed learner production with a new,
+researcher- or model-authored text.
+
+| Input feature | Current behavior | Consequence |
+|---|---|---|
+| ASCII misspelling such as `tkae` | Kept as a token; it may even match a noisy rare form in TUBELEX (`tkae` has source count 1) | “Matched” does not establish correct spelling, and “unmatched” does not establish an error or unknown word |
+| Misspelling inside an MWE member | Exact surface pattern normally misses it | Candidate recall falls unless the pattern declares the variant or a researcher adds the occurrence manually |
+| Noncanonical grammar around correctly spelled members | Ordered member matching may still find the candidate when members fall within the declared gap | The matcher neither validates nor corrects grammar; contextual status remains a human decision |
+| Inflected or innovative learner form | Found only when an allowed surface alternative matches | Lemmatization and error-tolerant matching are not implemented |
+| Corrected/edited version | Must be analyzed as a separate text | Raw and corrected outputs cannot be pooled or silently substituted |
+
+Thus the answer to “can it handle learner errors?” is **partly, but not
+robustly**. It can preserve, tokenize, expose reference matches/non-matches, and
+manually review many cases. It cannot currently recover misspelled MWE members,
+use reference membership to validate spelling, distinguish an error from an
+innovative/off-list form, or determine whether noncanonical grammar still
+instantiates the target construction.
+
+### Error-policy to evaluate before adding correction code
+
+1. Keep the original learner text as the primary observation.
+2. Never autocorrect before measurement without retaining an immutable original
+   and a token-level correction map with source, confidence, and decision
+   provenance.
+3. If a corrected version is justified, report raw and corrected analyses as a
+   paired sensitivity analysis, not as interchangeable inputs.
+4. Separate at least `matched`, `unmatched`, `researcher-normalized`, and
+   `unresolved` in any future correction-aware contract; unmatched alone is not
+   an error label.
+5. Measure how spelling, morphology, and syntax affect word matching, candidate
+   recall, member boundaries, and document-level conclusions before choosing a
+   spellchecker, parser, BERT model, or handcrafted variant list.
+
+### ICNALE GRA disposition
+
+ICNALE GRA v2.1 is a strong **exploratory sensitivity dataset** because it
+contains 140 essays drawn from ICNALE Written Essays, fully edited versions of
+those essays, and ratings from 80 raters. The original/edited pairs can show how
+expert editing changes word-profile membership, candidate yield, confirmed MWE
+accounting, and interpretation.
+
+The 140 essays may contain too few VPC/VID occurrences for stable prevalence or
+error-stratum estimates. ICNALE Written Essays v2.6 offers a much larger pool
+(5,600 essays; about 1.3 million words) for a local exploratory distribution
+study and selection of a documented annotation sample. Use GRA for paired
+error/edit sensitivity and the larger WE module, if admitted, for breadth; do
+not pretend that one corpus role substitutes for the other.
+
+It does not solve every evidence need:
+
+- GRA and WE are not MWE span/category gold corpora;
+- a fully edited essay may change wording and syntax as well as spelling, so the
+  pair is not a pure spelling-error intervention;
+- access requires registration for the download package; and
+- ICNALE terms prohibit reproducing or redistributing part or all of its data.
+
+Accordingly, keep ICNALE text outside this public repository. A reproducible
+study can publish corpus version, sample IDs, selection code, hashes where
+permitted, derived statistics, and instructions for registered users, subject
+to a project-specific review of whether each derived output is publishable.
+The paired GRA analysis belongs in the exploratory phase; a separately
+annotated subset or another licensed corpus is still required for MWE recall
+and boundary evaluation.
+
+Kyle and Eguchi's learner-corpus work is a valid precedent for empirical corpus
+analysis and for publishing analysis code and derived tables. It supports using
+learner corpora here; it does not imply that learner errors are harmless to
+tokenization, dependency parsing, candidate recall, or construct validity.
 
 ## Critical-reviewer audit
 
@@ -118,11 +194,11 @@ validated research instrument.
 |---|---|---|---|
 | 1 | “Coverage” is underdefined | Current TUBELEX output is surface-form profile membership and OEWN output is lexicon membership. Neither is automatically conventional lexical coverage, learner knowledge, or MWE frequency coverage. | Qualify every measure by resource, unit, and denominator; either admit a lawful MWE frequency/range reference or narrow the paper to inventory-aware lexical reporting. |
 | 2 | The novelty is a feature difference, not a demonstrated methods contribution | TAALES, Multi-Word Units Profiler, phrase profilers, and annotation tools already cover adjacent steps. | Show empirically which occurrences or interpretations are lost by word-only/list-only workflows and what the proposed bridge changes. |
-| 3 | No relevant L2 evidence exists | Synthetic examples and a small general-English benchmark do not establish usefulness for L2 vocabulary research. | Freeze a lawful applied-L2 sampling frame and report document-level measurement consequences with uncertainty. |
+| 3 | No relevant L2 evidence exists | Synthetic examples and a small general-English benchmark do not establish usefulness for L2 vocabulary research. | Admit a lawful applied-L2 sampling frame, beginning with an exploratory ICNALE GRA original/edited sensitivity analysis, and report document-level consequences with uncertainty. |
 | 4 | False negatives are invisible | User-supplied patterns can only review candidates they generate. A polished review UI cannot recover missed MWEs. | Evaluate candidate recall first, especially discontinuous and unseen forms, and expose the candidate source and known ceiling in every export. |
 | 5 | Human “gold” is undefined | Confirming VPC/VID status and boundaries requires judgment; project-authored fixtures are not independent validation. | Publish annotation guidelines, train at least two independent annotators where new gold is created, adjudicate disagreements, and report category/span agreement. |
-| 6 | The paper is trying to validate too much | Detection, form coverage, sense assignment, usability, pedagogy, and all MWE types would require different data and validity arguments. | Limit the confirmatory first paper to English VPC/VID form-level reporting; keep sense and broader idioms exploratory or future work. |
-| 7 | User value is assumed | Researchers may not understand separate denominators or may find manual review too burdensome. | Run predeclared task and interpretation studies with intended L2 vocabulary researchers, recording critical errors and review effort. |
+| 6 | The paper is trying to validate too much | Detection, form coverage, sense assignment, usability, pedagogy, and all MWE types would require different data and validity arguments. | Limit the first paper to exploratory English VPC/VID form-level reporting; keep sense and broader idioms as diagnostics or future work. |
+| 7 | User value is assumed | Researchers may not understand separate denominators or may find manual review too burdensome. | Run declared task and interpretation studies with intended L2 vocabulary researchers, recording critical errors and review effort. |
 | 8 | Resource choice may drive the result | TUBELEX models audiovisual/spoken exposure; OEWN is a lexicon, not a corpus. Tokenizers also differ by design. | Treat resource/tokenizer sensitivity as a named limitation and, only if required by RQ1, add one justified written-register contrast. |
 | 9 | Generality is overstated | English VPC/VID evidence cannot support “MWE” in general, multilingual use, or pedagogical importance. | Put English VPC/VID in the title, abstract, sampling frame, interface, and claim boundary. |
 | 10 | Reproducibility is ahead of validity | Hashes and tests reproduce calculations but cannot validate the construct or response process. | Organize the paper around a validity argument; present software reproducibility as one evidence source, not the conclusion. |
@@ -173,9 +249,9 @@ frequency-based MWE coverage estimate.
 
 ## Research questions
 
-### Confirmatory questions
+### Core exploratory questions
 
-1. **Measurement consequence:** On a preregistered sample of L2-relevant English
+1. **Measurement consequence:** On a declared sample of L2-relevant English
    texts, how much confirmed VPC/VID member-token mass and form-inventory
    information is hidden by a word-only report, and how much varies across
    documents?
@@ -195,22 +271,48 @@ frequency-based MWE coverage estimate.
   aggregate benchmark score?
 
 Contextual sense assignment, broader idioms, multilingual transfer, learner
-knowledge, proficiency relations, and pedagogical decisions are not
-confirmatory questions for the first paper.
+knowledge, proficiency relations, and pedagogical decisions are not core
+questions for the first paper.
 
-## Validation design to preregister
+## Exploration and prospective validation design
+
+### Registration policy
+
+This project is currently exploratory method development. It does not need a
+preregistration before inspecting development corpora, revising definitions,
+discovering failure modes, or generating hypotheses. Requiring one now would
+create false certainty and encourage pretending that already informed choices
+were specified in advance.
+
+The minimum open-science requirement for this phase is instead:
+
+- label analyses and decisions as exploratory;
+- preserve dated versions, code, outputs, discarded alternatives, and reasons
+  for changing the method;
+- state which data informed each change; and
+- avoid confirmatory language, threshold claims, and post hoc generalization.
+
+Prospective registration becomes useful only if the eventual paper adds a
+confirmatory claim. After an exploratory pilot, freeze the relevant method,
+sample partition, hypotheses, outcomes, exclusions, uncertainty method, and
+success criteria before opening a genuinely untouched holdout. Register that
+bounded validation study, not the entire software project. A later registration
+cannot make already inspected data confirmatory.
 
 ### Evidence lanes
 
 | Lane | Data | Purpose | Separation rule |
 |---|---|---|---|
-| Development | Project-authored diagnostics and a declared training/development partition | Fix contracts, annotation guidance, and candidate method | Never report as held-out performance |
-| Technical holdout | Rights-compliant English VPC/VID annotations with contiguous/discontinuous and seen/unseen strata | Exact span, category, and candidate-recall evidence | Freeze before final method selection |
-| Applied-L2 sample | Lawfully usable English learner or L2-facing texts sampled by a written protocol | Estimate document-level measurement consequences | No claim beyond the sampled genres/population |
+| Development | Project-authored diagnostics and a declared training/development partition | Revise contracts, annotation guidance, and candidate method | Report as exploratory development only |
+| ICNALE GRA original/edited pairs | Registered-user, local-only corpus data | Explore sensitivity to expert editing and learner-language noise | Not MWE gold; do not redistribute text or call edits pure spelling correction |
+| Technical holdout | Rights-compliant English VPC/VID annotations with contiguous/discontinuous and seen/unseen strata | Optional confirmatory exact-span, category, and candidate-recall evidence | Use as holdout only if genuinely uninspected and prospectively frozen |
+| Applied-L2 sample | Lawfully usable English learner or L2-facing texts sampled by a written protocol | Estimate document-level measurement consequences | Label exploratory unless a confirmatory sampling/analysis plan was frozen in advance |
 | User study | Intended L2 vocabulary researchers; practitioners only if a practitioner claim remains | Task completion, interpretation, reproducibility, burden | Ethics and data-management approval before recruitment |
 | Diagnostic sense cases | Project-authored or lawfully annotated polysemy/literalness contrasts | Demonstrate why sense cannot be collapsed into form | Exploratory; not WSD validation |
 
-The applied-L2 corpus decision is a Phase 0 blocker. Record population, genre,
+The applied-L2 corpus admission record is a Phase 0 task, not a data-availability
+blocker. ICNALE makes access feasible, but its role and restrictions still need
+to be fixed. Record population, genre,
 task, proficiency metadata if used, sampling unit, author/document clustering,
 license, consent/ethics basis, redistribution boundary, and the exact text made
 available to annotators. “Public” and “free” are not sufficient rights states.
@@ -229,10 +331,11 @@ Before new gold decisions:
 5. report exact-span and category agreement rather than a single undifferentiated
    coefficient.
 
-The protocol must set sample sizes from a precision or information target, not
-from convenience. Numerical success thresholds are fixed after a development
-pilot and before the held-out data are inspected; this roadmap does not invent
-them in advance of feasibility evidence.
+Sample sizes should follow a precision or information target rather than
+convenience. Exploratory work reports uncertainty without retrofitted pass/fail
+thresholds. Numerical success criteria are needed only for a later confirmatory
+claim and must then be fixed after the development pilot and before the holdout
+is inspected.
 
 ### Comparators
 
@@ -289,12 +392,12 @@ support it.
 
 | Phase | Required output | Exit gate | State |
 |---|---|---|---|
-| 0. Claim and protocol freeze | One-page claim map, qualified terminology, corpus/resource decision memo, annotation plan, sampling/analysis plan, dev/holdout split, failure thresholds | Another researcher can state the target construct, unit, comparison, population, and exclusions without reading source code | **Next; not complete** |
+| 0. Exploratory charter and corpus admission | One-page claim map, qualified terminology, ICNALE WE/GRA rights-and-role memo, annotation plan, exploratory questions, and dated decision log | Another researcher can state the target construct, unit, corpus role, comparison, and exclusions without reading source code | **Next; not complete** |
 | 1. Product truthfulness | UI/export names match the frozen estimands; candidate source and unresolved ceiling are visible; real-browser/accessibility gate passes | No display implies learner knowledge, universal English, automatic confirmation, or MWE frequency when only membership exists | Partial |
-| 2. Data and gold admission | Lawful applied-L2 sample, annotation guide, independent decisions, adjudication record, immutable hashes | Rights/ethics and annotation evidence permit independent audit | Not started |
-| 3. Technical validation | Frozen baseline predictions and stratified span/category/error results | Candidate recall and correction burden pass preregistered thresholds; otherwise narrow the task or keep the tool manual | Only a transparent floor exists |
-| 4. Measurement study | Document-level word-only/MWE-aware consequences and sensitivity analyses | The added MWE channel changes decision-relevant reporting often enough to justify the method; otherwise report a negative result | Not started |
-| 5. Intended-user validation | Predeclared researcher tasks, interpretation evidence, burden, qualitative failures | Intended users can complete and correctly interpret the core workflow at the preregistered standard | Not started |
+| 2. Exploratory learner-data study | Local ICNALE WE distribution study, GRA original/edited analysis, error taxonomy, paired sensitivity results, and MWE annotation feasibility | The study identifies which learner-language phenomena materially affect matching and candidate review without redistributing corpus text | Not started |
+| 3. Technical evaluation | Baseline predictions and stratified span/category/error results; optional prospectively frozen holdout | Candidate recall and correction burden are reported honestly; a validated-analyzer claim requires prospectively defined criteria | Only a transparent floor exists |
+| 4. Measurement study | Document-level word-only/MWE-aware consequences and sensitivity analyses | The evidence establishes the observed boundary; a negative or heterogeneous result is acceptable | Not started |
+| 5. Intended-user evaluation | Declared researcher tasks, interpretation evidence, burden, qualitative failures | The paper reports what intended users can and cannot complete or interpret; a success-rate claim requires a prospective standard | Not started |
 | 6. Frozen open release | Versioned source, data/retrieval instructions, code, predictions, analysis, checksums, licenses, protocol, report, archive identifier | Clean-room reproduction and browser acceptance succeed from the archive | Not started |
 | 7. RMAL submission | Methods-first manuscript and supplement tied to the frozen release | Every manuscript claim maps to a passed evidence gate | Not started |
 
@@ -304,12 +407,13 @@ MWE-aware method is not worth its cost.
 
 ## Stop/go decisions
 
-1. **No lawful applied-L2 sample:** stop empirical generalization; publish only
-   a protocol/tool note elsewhere or obtain a new data basis.
+1. **ICNALE use cannot be made reproducible within its terms:** keep it as an
+   unshared exploratory audit, obtain permission, or choose another corpus; do
+   not copy its text into the release.
 2. **No lawful MWE frequency/range resource:** continue with form-inventory and
    member-accounting claims, but remove “MWE frequency coverage” from the first
    paper.
-3. **Candidate recall below the frozen threshold:** do not market an automatic
+3. **Candidate recall is practically inadequate:** do not market an automatic
    analyzer; keep manual candidate addition and evaluate one better baseline.
 4. **Manual burden is unacceptable:** reduce the target category or improve
    ranking; do not hide the burden in aggregate accuracy.
@@ -322,21 +426,24 @@ MWE-aware method is not worth its cost.
 
 Do these next, in order:
 
-1. write the preregistration-ready claim/evidence matrix and choose the
-   form-level first-paper scope;
+1. write an exploratory claim/evidence matrix and choose the form-level
+   first-paper scope;
 2. audit and rename every unqualified UI/export use of “coverage” against the
    measurement table above;
-3. select one lawful applied-L2 evaluation sample and decide whether a lawful
-   MWE frequency/range profile exists; record a go/no-go decision for each;
-4. freeze annotation guidance, development data, technical holdout, primary
-   outcomes, uncertainty method, and failure thresholds;
+3. create an ICNALE WE v2.6/GRA v2.1 admission memo, a local-only distribution
+   plan, and an original/edited sensitivity plan; decide separately whether a
+   lawful MWE frequency/range profile exists;
+4. define the learner-error taxonomy, exploratory outcomes, annotation guidance,
+   and uncertainty summaries; reserve an untouched holdout only if a later
+   confirmatory claim is planned;
 5. complete real-browser, keyboard, narrow-screen, network, and screen-reader
    checks on the existing vertical slice;
-6. run a development-only annotation and user-task pilot, revise once, then
-   freeze the confirmatory protocol.
+6. run an exploratory annotation and user-task pilot and preserve the decision
+   history; optionally register a bounded follow-up validation after the method
+   stabilizes.
 
 Only after these six steps may the project compare BERT, fastText, a parser, or
-another candidate method. Add one dependency only if it improves a predeclared
+another candidate method. Add one dependency only if it improves a declared
 decision-relevant outcome enough to justify model/data rights, payload,
 compute, privacy, and reproducibility costs.
 
@@ -366,7 +473,9 @@ contracts.
 
 Before submission:
 
-- preregister the confirmatory protocol before inspecting final holdout results;
+- archive the exploratory decision history; if the manuscript later makes a
+  confirmatory claim, prospectively register only that bounded validation before
+  inspecting its holdout;
 - archive permissible materials, predictions, analysis, annotation guidance,
   and a simulated or redacted substitute when primary text cannot be shared;
 - tag an immutable source release and publish checksums plus an archive DOI;
@@ -390,15 +499,16 @@ The paper should be readable without opening the app:
 2. **Operationalization:** define candidate, confirmed occurrence, member, gap,
    inventory membership, unresolved mass, and each reference-conditioned rate.
 3. **Method:** describe the human-reviewed workflow and open implementation.
-4. **Technical validity:** report held-out candidate/span/category results and
-   error strata.
+4. **Technical evaluation:** report candidate/span/category results, error
+   strata, learner-error sensitivity, and any genuinely prospective holdout.
 5. **Measurement consequence:** report what changes on the applied-L2 sample and
    under sensitivity choices.
 6. **Response process:** report whether intended users can perform and interpret
    the method.
 7. **Boundary:** state where the method fails, what remains manual, and which
    populations/resources are not represented.
-8. **Open materials:** map every result to the frozen protocol and archive.
+8. **Open materials:** map every result to its dated exploratory decision record
+   or prospectively registered analysis and to the frozen archive.
 
 The title and abstract must say **English VPC/VID** unless broader evidence is
 actually collected. “Objective” should mean explicit and repeatable decisions,
@@ -425,6 +535,9 @@ It cannot yet answer 3–6 empirically. That is the critical path.
 
 - [RMAL official scope](https://shop.elsevier.com/journals/research-methods-in-applied-linguistics/2772-7661)
 - [Computational reproducibility in applied linguistics](https://doi.org/10.1016/j.rmal.2022.100030)
+- [ICNALE modules, GRA description, and terms](https://language.sakura.ne.jp/icnale/)
+- [Kyle and Eguchi (2021)](https://doi.org/10.21832/9781788924863-007)
+- [Kyle and Eguchi analysis resources](https://github.com/kristopherkyle/dependency_bigrams_Kyle_Eguchi_2021)
 - [TUBELEX](https://aclanthology.org/2025.coling-main.641/)
 - [Open English WordNet 2025](https://github.com/globalwordnet/english-wordnet/releases/tag/2025-edition)
 - [Public technical deployment](https://ryuya-dot-com.github.io/Lexical-Diversity-Sophistication-Analysis/)
