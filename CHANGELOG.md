@@ -16,6 +16,9 @@ probe without assigning it a release version or validation claim.
 - Per-input SHA-256 identifiers, metadata-only export, explicit rights
   attestation, dual licensing, and an artifact-level resource admission gate.
 - Public technical deployment from the canonical repository's `main` root.
+- Primary-source screening ledger for frequency, CEFR, academic, morphological,
+  semantic, and psycholinguistic resources, including pinned TUBELEX and
+  Lancaster candidate artifacts without bundling either dataset.
 
 ### Integrity boundaries
 

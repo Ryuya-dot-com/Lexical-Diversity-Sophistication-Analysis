@@ -30,16 +30,88 @@ code, lexical resources, and research records are not part of this repository.
 | TAALES | Official site states CC BY-NC-SA 4.0 and more than 400 lexical-sophistication indices. | Sharing or adaptation must comply with NonCommercial, attribution, and ShareAlike conditions; permissive relicensing is not available under those terms. The notice also does not establish rights to every underlying list/corpus. | Methodological reference only; no code/data import and no equivalence claim. |
 | COCA | Official download page offers frequency data and corpus text through paid products. | Purchase/access is not public redistribution permission; browser bundling could expose licensed data. | Exclude unless explicit rights for the exact artifact and delivery mode are obtained. |
 | Open English WordNet | Official repository states CC BY 4.0 and also preserves attribution to the underlying Princeton WordNet material. | Attribution and incorporated-material notices must travel with an exact pinned release; semantic-resource scores have sense/POS/coverage assumptions. | Candidate B; not yet bundled. |
-| TUBELEX | Official repository publishes aggregate frequency lists and code under BSD-3-Clause, states that full corpus text cannot be published, and documents some evaluation resources it cannot redistribute. | Repository-level license must be checked against the exact frequency artifact and upstream platform/content constraints; frequency reflects a particular multilingual YouTube-subtitle sample and processing pipeline. | Candidate B pending artifact-level notice, version, hash, and maintainer confirmation if needed. |
-| NGSL family | A currently reachable project page states CC BY-SA 4.0 for NGSL-Spoken, but the site presentation/domain provenance is presently unreliable and this does not establish terms for every NGSL artifact. | ShareAlike packaging, artifact identity, corpus provenance, and current authoritative source require review. | Candidate C; do not bundle from mirrors or legacy parent files. |
+| TUBELEX | The official repository publishes aggregate word-frequency and dispersion lists alongside a BSD-3-Clause license and states that full corpus text is not published. In a 2026-08-10 repository issue, the maintainer expressly confirmed that the published frequency lists are covered by BSD-3-Clause and may be redistributed, incorporated commercially, or reformatted under its conditions. The pinned English regex artifact was independently streamed and checked below. | YouTube-subtitle sampling, normalization, denominator, and upstream-content constraints remain part of the construct record even though the frequency-list redistribution question is resolved. | Candidate B1; rights-cleared for preparation, but not bundled until projection, notice, performance, and fixture checks pass. |
+| Leipzig Corpora Collection | Official terms state that downloadable text corpora are CC BY, while other data/applications are offered for private and scientific use under CC BY-NC. Download packages include a frequency-ordered `*_words.txt`. | The exact English corpus, date, genre, package, and boundary between the CC BY download and CC BY-NC services must be fixed before deriving a browser table. Web/news/Wikipedia samples are not interchangeable baselines. | Candidate B2 for a contrasting written register; no artifact selected yet. |
+| Lancaster Sensorimotor Norms | The official OSF project and article license the data under CC BY 4.0. The aggregated 39,707-concept CSV has a public artifact identifier and SHA-256 recorded below. | Sensorimotor strength is a semantic/experiential norm, not a synonym for lexical sophistication. The 17 MB CSV needs an attributed, reproducible browser subset or researcher-supplied loading path. | Candidate B3 for a later semantic profile; not a frequency baseline. |
+| `wordfreq` | The official project says its code is Apache-licensed and redistributable data are CC BY-SA 4.0; it combines multiple domains and upstream sources and explicitly advises against conversion to CSV because attribution would be lost. | ShareAlike/attribution packaging, Python-specific normalization, mixed-domain weighting, large size, and a data snapshot through about 2021 make a silent browser extraction inappropriate. | Candidate C; evaluate only as a separately attributed add-on or external validation source. |
+| SUBTLEX-US | Ghent University's official page provides 51-million-token American subtitle frequencies and contextual diversity; the paper says the norms are freely available for research purposes. | Research availability does not explicitly grant this project general redistribution, modification, or public browser delivery. Wordform/POS/Zipf files are distinct artifacts. | Candidate C; researcher-supplied use or written permission only. |
+| EFLLex | UCLouvain provides 15,280 English lemmas with level frequencies across A1–C1 under CC BY-NC-SA 4.0. | NonCommercial and ShareAlike terms conflict with an unrestricted canonical core; textbook/receptive-frequency distributions are not learner mastery thresholds. | Candidate C; segregated researcher-supplied use only unless licensing strategy changes. |
+| MorphoLex-en | The official repository contains roughly 70,000 English entries and morphological variables under CC BY-NC-SA 4.0. | NonCommercial and ShareAlike restrictions plus segmentation and family assumptions prevent inclusion in the permissively reusable core. | Candidate C; researcher-supplied or separately licensed module only. |
+| NGSL/NAWL family | Previously indexed project pages stated CC BY-SA 4.0 for some named lists, but the former project domain resolved to unrelated gambling content during the 2026-09-01 review. | A stale search result or mirror is not an authoritative artifact. ShareAlike packaging, exact version, corpus provenance, and current rights-holder source are unresolved. | Candidate C; quarantine until an authoritative stable source is confirmed. |
+| Academic Word List / Academic Vocabulary List | University and author sites describe downloadable lists; the AVL is derived from COCA academic data. No explicit open redistribution license for the exact artifacts was found in the reviewed primary pages. | Free download and teaching/research use do not establish modification or browser redistribution rights; family/lemma/POS definitions also differ. | Candidate C; cite methods or accept researcher-supplied files, but do not bundle. |
+| English Vocabulary Profile | Official terms permit personal noncommercial research/teaching uses and require prior written consent for broader reuse; Cambridge separately licenses dictionary data. | Account-bound access and restrictive reuse terms are incompatible with a freely redistributable static core. CEFR assignments are sense- and evidence-specific, not a universal word difficulty scale. | Candidate D; exclude from the bundle without a separate written license. |
 
 Primary evidence links:
 
 - TAALES: <https://www.linguisticanalysistools.org/taales.html>
 - COCA downloads: <https://www.english-corpora.org/coca/help/download.asp>
 - Open English WordNet: <https://github.com/globalwordnet/english-wordnet>
-- TUBELEX: <https://github.com/naist-nlp/tubelex>
-- NGSL-Spoken page reviewed: <https://www.newgeneralservicelist.org/ngsls>
+- TUBELEX repository, license clarification, and paper: <https://github.com/naist-nlp/tubelex>, <https://github.com/naist-nlp/tubelex/issues/2#issuecomment-5235410477>, <https://aclanthology.org/2025.coling-main.641/>
+- Leipzig terms and download format: <https://wortschatz.uni-leipzig.de/en/usage>, <https://wortschatz.uni-leipzig.de/public/documents/Format_Download_File-eng.pdf>
+- Lancaster Sensorimotor Norms: <https://osf.io/7emr6/>, <https://doi.org/10.3758/s13428-019-01316-z>
+- `wordfreq`: <https://github.com/rspeer/wordfreq>
+- SUBTLEX-US: <https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexus>
+- EFLLex: <https://cental.uclouvain.be/cefrlex/efllex/download/>
+- MorphoLex-en: <https://github.com/hugomailhot/MorphoLex-en>
+- Academic Word List and Academic Vocabulary List: <https://www.wgtn.ac.nz/lals/resources/academicwordlist/information>, <https://www.academicwords.info/>
+- English Vocabulary Profile terms: <https://englishprofile.org/?menu=evp-terms-of-use>
+
+## Pinned candidate evidence
+
+No external resource has entered the active tree. The checks below establish a
+reviewable candidate identity; they do not by themselves admit the artifact.
+
+### B1 — TUBELEX English regex frequency and dispersion
+
+- Repository commit: `7cb5fb36add76b83a266d1967536e1a1d3faa513`
+  (2025-04-24).
+- Artifact: `frequencies/tubelex-en-regex.tsv.xz`, 3,198,336 bytes; Git blob
+  SHA-1 `be2ca3c9076cfc4bdc58bc1599ea20f410964c4d`.
+- Independently streamed SHA-256 on 2026-09-01:
+  `363de2f2ea58c3b4ff25306a6819c7424198d250902b3b0e566573015560c3ec`.
+- Observed schema: `word`, `count`, `videos`, `channels`, and 15 `count:*`
+  category columns. There are 445,954 lines including the header and total row.
+- The `[TOTAL]` row reports 179,139,158 tokens, 105,733 videos, and 68,405
+  channels. It occurs at line 2,615, not at the final line as the README states;
+  an importer must locate and validate the label rather than assume row order.
+- The table contains punctuation and non-ASCII entries. Any English-ASCII
+  projection would be a documented derived artifact, not the original list;
+  coverage must use an explicit denominator and report unmatched input.
+- Rights evidence: the repository maintainer's 2026-08-10 response confirms
+  that published frequency lists and reformatted copies are covered by the
+  repository's BSD-3-Clause conditions.
+- Before admission: define the projection, preserve the upstream identity, add
+  attribution and notice files, test browser transfer/memory cost, and create
+  independent numerical fixtures.
+
+### B2 — Leipzig written-register candidate
+
+The official download format supplies word, frequency, optional POS/baseform,
+source, and metadata files. Selection remains deliberately open because choosing
+news, web, Wikipedia, country, year, and corpus size is a construct decision, not
+just a download decision. The next review must pin one English package and its
+license notice before computing a checksum or derived list.
+
+### B3 — Lancaster semantic candidate
+
+- OSF project `7emr6`, Data component `rwhs6`, CC BY 4.0.
+- Aggregated artifact `Lancaster_sensorimotor_norms_for_39707_words.csv`, OSF
+  file `48wsc`, 17,196,336 bytes, version 1.
+- OSF-recorded SHA-256:
+  `445d363fb1f9f3e50b86d88e2f46cdc9a22b5dd8a713ce4e7be2a773d57f43c5`.
+- Use only the aggregated word-level artifact. A corrected 2024 file applies to
+  trial-level participant data; the OSF component states the aggregated norms
+  were unaffected.
+
+### Researcher-supplied route
+
+SUBTLEX-US, EFLLex, MorphoLex-en, and other lawfully held tables can still be
+scientifically useful without entering this repository. A future local-file
+adapter may accept a documented table, hash it in the browser, require the
+researcher to name its version and rights basis, and export coverage and column
+mapping. The app must not provide, proxy, or silently normalize a restricted
+artifact. Implement this route only with the first concrete schema; a generic
+plugin system is not justified.
 
 ## Admission record required per artifact
 

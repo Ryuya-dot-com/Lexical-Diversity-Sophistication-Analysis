@@ -127,7 +127,7 @@ file-level method, provenance, rights, and numerical review.
 | S2 | Identical 100-token sequence as one orthographic sentence or seven | Terminal punctuation / segmentation only | Current token-sequence metrics are invariant | This says nothing about sentence-aware metrics or natural syntax | Implemented probe |
 | S3 | First 14-token sentence versus its containing 100-token text | Nested sample length plus accumulated continuation | TTR changes when the sample grows | Sentence count, length, and added lexical composition are not separately identified | Implemented probe |
 | S4 | Same characters under documented tokenizer policies | Preprocessing policy | Sensitivity to apostrophes, hyphens, case, Unicode, and digits | No tokenizer is universally correct | Fixture evidence only |
-| S5 | Same text under an admitted frequency or lexical resource | Reference distribution and coverage | Resource-conditional score and coverage | No resource is a universal English baseline | Blocked by rights and construct review |
+| S5 | Same text under an admitted frequency or lexical resource | Reference distribution and coverage | Resource-conditional score and coverage | No resource is a universal English baseline | TUBELEX English regex artifact pinned and rights-cleared for preparation; bundling remains blocked by projection, notices, performance, and fixture checks |
 | S6 | Rights-cleared public or corpus-derived text strata | Observed group/genre/time differences | Descriptive distribution with uncertainty | No causal, proficiency, or individual diagnosis claim | Blocked by provenance and design review |
 
 The matrix is intentionally small. Add a scenario only when it isolates a new
