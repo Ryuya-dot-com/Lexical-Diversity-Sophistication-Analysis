@@ -7,6 +7,11 @@ probe without assigning it a release version or validation claim.
 
 ### Added
 
+- Criterion-evidence roadmap for testing whether component-known but
+  contextually unknown MWEs under-specify conventional 95%/98% word-token
+  coverage, separating list, source-corpus, and tested person-to-text profiles
+  and requiring non-priming word/MWE knowledge measures before any adjusted
+  coverage score or threshold claim.
 - Focused literature search and 81-page, page-level close-reading record for
   learner-error parsing, MWU profiling, MWE complexity, erroneous collocation
   detection, MWE-aware vocabulary coverage, and sense-aware lexical

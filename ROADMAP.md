@@ -1,35 +1,43 @@
-# Open MWE-aware lexical reporting: RMAL roadmap
+# Open MWE-aware lexical-coverage measurement: RMAL roadmap
 
-Status: research claim reset and evidence-gated plan, reviewed 2026-09-01
+Status: MWE-aware coverage construct and criterion-evidence plan, reviewed 2026-09-01
 
 ## One-minute answer
 
-In plain language: the study asks what a word-only analysis hides when an
-expression such as `take it in` must also be reviewed as one lexical unit, and
-whether L2 researchers can report that extra information reproducibly.
+In plain language: the study asks whether conventional word-token coverage can
+misstate usable lexical coverage when a reader knows `take`, `it`, and `in`
+but not the contextual meaning of `take ... in`, and whether a separate,
+auditable MWE channel explains reading comprehension differences among texts
+or readers with the same nominal 95% or 98% word coverage.
 
 ### What problem does this study address?
 
-Word-level lexical profilers can count `take`, `it`, and `in` while hiding the
-fact that `take ... in` may be one discontinuous verb-particle construction.
-Contiguous n-gram lookup misses the separated form, while dictionary or list
-membership alone cannot decide whether a particular occurrence is an MWE or
-which contextual sense applies. This changes what is treated as the lexical
-unit and what a reported denominator means.
+Word-level lexical profilers can count `take`, `it`, and `in` as known while
+hiding that `take ... in` may be one discontinuous verb-particle construction
+whose contextual meaning remains unknown. A text can therefore have 95%
+word-token coverage under a conventional profile while its functional lexical
+burden differs from another text at the same percentage. Contiguous n-gram
+lookup misses separated forms, while dictionary or list membership alone
+cannot decide whether a particular occurrence is an MWE or whether the reader
+knows its contextual sense.
 
 ### What will the study do?
 
-Develop and empirically evaluate an open, browser-local, human-in-the-loop method for
-second-language (L2) vocabulary research that:
+Develop and empirically evaluate an open, browser-local, human-in-the-loop method
+for second-language (L2) vocabulary research that:
 
-1. uses researcher-supplied patterns to find reviewable English verb-particle
+1. keeps conventional word-list and source-to-target corpus profiles as named
+   baselines rather than treating either as learner knowledge;
+2. uses researcher-supplied patterns to find reviewable English verb-particle
    construction (VPC) and verbal-idiom (VID) candidates, including separated
    members;
-2. lets a researcher confirm, reject, correct, or leave each candidate
+3. lets a researcher confirm, reject, correct, or leave each candidate
    unresolved;
-3. reports word-profile membership, confirmed-MWE accounting, MWE-inventory
-   membership, and unresolved mass as separate quantities; and
-4. exports the decisions, denominators, resource versions, and limitations
+4. reports word knowledge/profile membership, MWE-form knowledge, contextual
+   MWE-sense knowledge, component-only gaps, and unresolved mass separately;
+5. tests whether the MWE quantities add criterion-related information about
+   reading comprehension after conventional word-token coverage; and
+6. exports the decisions, denominators, resource versions, and limitations
    needed to reproduce the report.
 
 The Web app is the executable implementation of the method. It is not the
@@ -37,9 +45,11 @@ research contribution by itself.
 
 ### What will the first paper claim?
 
-> A transparent, human-reviewed workflow can expose MWE lexical units that a
-> word-only report masks, while preserving uncertainty and making every
-> denominator and resource decision auditable in L2 vocabulary research.
+> Conventional word-token coverage under-specifies lexical coverage when known
+> component words form contextually unknown MWEs; a separate, human-reviewed
+> MWE channel provides reproducible information about that hidden burden and,
+> if supported by criterion data, reading comprehension beyond nominal word
+> coverage alone.
 
 That claim is provisional until technical, measurement, and intended-user
 evidence pass the gates below.
@@ -47,30 +57,100 @@ evidence pass the gates below.
 ### What will it not claim?
 
 The first paper will not claim automatic MWE analysis, complete English MWE
-coverage, learner knowledge, text difficulty, writing quality, proficiency,
-CEFR level, pedagogical priority, causal effects, or valid contextual sense
-assignment. It will not present a combined word/MWE score.
+coverage, a universal replacement for 95% or 98%, text difficulty from lexis
+alone, writing quality, proficiency, CEFR level, pedagogical priority, or causal
+effects. It will not subtract MWE tokens from word coverage or present a
+combined word/MWE percentage unless independent criterion evidence first
+supports a defensible weighting rule.
 
 ## Is the purpose transparent now?
 
-At the purpose level, yes: the study is about **the consequences of lexical-unit
-decisions for transparent L2 lexical reporting**. Detection, interface design,
-and resource engineering are supporting components.
+At the purpose level, yes: the study is about **whether lexical-unit decisions
+leave conventional word-token coverage under-specified as an explanation of L2
+reading comprehension**. Detection, interface design, corpus transfer, and
+resource engineering are supporting components.
 
 At the evidence level, not yet. A beginning graduate student should currently
 be told:
 
 - the app can demonstrate the workflow on a text;
-- the app cannot yet show that the workflow is accurate, useful, or
-  generalizable on learner-language research data;
+- the app cannot yet show that the workflow is accurate, useful, or related to
+  reading comprehension;
 - TUBELEX matching and OEWN membership are resource-conditioned lookup results,
   not estimates of what a learner knows; and
-- submission becomes defensible only after an honestly reported L2 measurement
-  study and intended-user study; prospective registration is needed only for
-  claims presented as confirmatory.
+- a claim about 95% or 98% becomes defensible only after individual word and MWE
+  knowledge are related to comprehension across multiple readers, texts, and
+  items; prospective registration is needed only for the frozen criterion
+  study, not the current exploratory development.
 
 If this distinction cannot be explained without specialist terminology, the
 method is not ready for participants, reviewers, or publication.
+
+## Coverage-threshold lineage and the new hypothesis
+
+“Nation's 95% threshold” is useful shorthand but not an accurate attribution of
+a single established cutoff. Laufer (1989) associated 95% with a greater chance
+of minimal comprehension under a low comprehension criterion. Hu and Nation
+(2000) found that 95% generally did not yield good comprehension and inferred
+that about 98% would be needed for most learners. Nation (2006) then used 98%
+as the coverage target for estimating vocabulary sizes required for unassisted
+reading and listening. Schmitt, Jiang, and Grabe (2011) found a largely linear
+coverage-comprehension relationship rather than a sharp threshold and judged
+98% a more reasonable target for academic reading.
+
+The recent partial replication by Kremmel et al. (2023) makes a universal
+percentage still less defensible: results varied by genre and response format,
+and even the 98% condition did not generally reach the stipulated 85%
+comprehension criterion. The project must therefore treat 95% and 98% as
+historically important reference points, not natural constants to be replaced
+with another universal number.
+
+Existing phraseological evidence supplies the missing mechanism. Martinez and
+Murphy (2011) held high-frequency component words constant but found worse and
+overestimated comprehension when those words occurred in MWEs. Kremmel,
+Brunfaut, and Alderson (2017) found phraseological knowledge related strongly
+to EFL reading and retained information beyond a traditional vocabulary
+measure. These studies motivate, but do not validate, the present measurement
+method.
+
+### Construct decision
+
+The primary target is now a project-defined **person-by-text MWE-aware lexical
+knowledge profile**: whether a particular reader demonstrates the single-word
+and contextual MWE meanings needed in a particular text. It remains a profile,
+not a new combined coverage percentage. Two non-personal profiles remain useful
+but cannot substitute for that criterion:
+
+| Profile | Admitted use | Forbidden inference |
+|---|---|---|
+| Fixed list-to-text, such as a declared 2K list | Reproduce conventional hypothetical word coverage and create material strata | The participant knows every item in the list |
+| Source-corpus-to-target-corpus, such as textbook to examination | Describe directional lexical recurrence or curricular alignment after frequency/range rules | An occurrence in the source was attended to, learned, or retained |
+| Tested person-to-text | Estimate the proportion of target word and MWE occurrences whose required meanings the participant demonstrates | Comprehension is guaranteed or caused by lexical knowledge alone |
+
+The first two profiles are application and sensitivity modes. The third is the
+criterion-validity mode required for any claim about the 95%/98% literature.
+ICNALE learner production is not the first criterion dataset for this question.
+
+### Falsifiable hypothesis
+
+At the same measured word-token coverage, readers with more **component-only
+gaps**—all component words known but the contextual MWE meaning not known—will
+show lower reading comprehension. A model containing separately measured MWE
+knowledge should provide useful out-of-sample information beyond conventional
+word-token coverage.
+
+The method must also retain the reverse **holistic-only gap**: the reader knows
+the contextual MWE despite one or more member tokens failing the conventional
+single-word rule. That pattern would mean word-token coverage understates rather
+than overstates usable phrase knowledge. Its prevalence and consequences are
+exploratory; it must not be forced into the directional primary hypothesis.
+
+This hypothesis fails in a scientifically useful way if the MWE channel has
+unreliable measurement, adds negligible information after word knowledge and
+prespecified controls, works only for comprehension items that directly test
+the target phrase, or fails to generalize across held-out readers, texts, and
+items. In those cases the tool remains an annotation/reporting aid and must not
+claim to revise lexical-coverage theory.
 
 ## Contribution hierarchy
 
@@ -79,15 +159,17 @@ is now fixed.
 
 | Rank | Contribution | Role in the first RMAL paper |
 |---|---|---|
-| 1 | MWE-aware lexical reporting method for L2 vocabulary research | Primary contribution |
-| 2 | Open browser implementation with auditable exports | Executable method and open material |
-| 3 | Candidate-generation accuracy | Necessary technical validity evidence |
-| 4 | Intended-user task and interpretation evidence | Necessary use/response-process evidence |
-| 5 | Contextual sense assignment | Data-model demonstration only; no first-paper validity claim |
-| 6 | General lexical diversity or sophistication | Out of scope |
+| 1 | Construct extension: word coverage plus a separate MWE knowledge channel | Primary contribution |
+| 2 | Criterion evidence against L2 reading comprehension | Required substantive validity evidence |
+| 3 | Open browser implementation with auditable exports | Executable method and open material |
+| 4 | Candidate and contextual-decision accuracy | Required technical validity evidence |
+| 5 | Intended-user task and interpretation evidence | Required response-process evidence |
+| 6 | Source-to-target corpus alignment | Applied use case and sensitivity analysis |
+| 7 | General lexical diversity or sophistication | Out of scope |
 
-The planned manuscript is an empirical methods article, not a software note,
-benchmark paper, corpus paper, or pedagogical intervention study. RMAL is a
+The planned manuscript is an empirical measurement-method article with
+criterion evidence, not a software note, benchmark paper, corpus paper, or
+pedagogical intervention study. RMAL is a
 plausible target because its official scope covers applied-linguistics research
 design, coding, analysis, reporting, ethics, and open science, but it requires
 the method or tool to be examined from an applied-linguistics perspective and
@@ -103,15 +185,20 @@ standard.
 | MWE reference | Pinned OEWN 2025 multiword-verb inventory projection | MWE occurrence frequency/range profile and contextual sense-frequency profile |
 | Candidate method | Researcher-supplied surface-member patterns plus manual candidates | Validated default candidate generator and an estimate of missed occurrences |
 | Contract | Separate word, MWE-form, idiomaticity, sense, and annotation states | Empirical evidence that users understand and apply those distinctions |
-| Technical evidence | Five project-authored fixtures; 40-occurrence STREUSLE projection; transparent surface baseline | Broader evaluation, full error analysis, learner-error sensitivity, and applied-L2 transfer evidence |
+| Technical evidence | Five project-authored fixtures; 40-occurrence STREUSLE projection; transparent surface baseline | Broader occurrence/sense evaluation, full error analysis, and transfer to the selected reading materials |
 | Sense evidence | All 17 OEWN `take in#v` candidates and synthetic contextual decisions | Independent contextual gold, reliability, WSD validation, or sense-frequency coverage |
-| Research data | Synthetic cases and external benchmark projection; ICNALE WE/GRA identified as local-only candidates | Corpus admission memo, reproducible sample, learner-error study, and MWE annotation protocol |
+| Research data | Synthetic cases and external benchmark projection; ICNALE WE/GRA identified as optional local-only production resources | Multiple natural passage materials, participant word/MWE knowledge evidence, comprehension outcomes, corpus admission memo, and MWE annotation protocol |
 | Open science | Public source, tests, rights ledger, static deployment | Explicit exploratory decision history, immutable release, DOI/checksum bundle, analysis scripts and report |
 
 The public prototype is therefore an **implemented method hypothesis**, not a
 validated research instrument.
 
 ## Learner-language errors and corpus evidence
+
+This section remains a valid later robustness lane, but it is no longer on the
+critical path to the coverage-comprehension claim. Learner writing cannot
+establish what a reader knows in an input text, and raw/edited sensitivity
+cannot validate a 95% or 98% comprehension interpretation.
 
 ### What the app currently does
 
@@ -177,7 +264,7 @@ Accordingly, keep ICNALE text outside this public repository. A reproducible
 study can publish corpus version, sample IDs, selection code, hashes where
 permitted, derived statistics, and instructions for registered users, subject
 to a project-specific review of whether each derived output is publishable.
-The paired GRA analysis belongs in the exploratory phase; a separately
+The paired GRA analysis belongs in an optional exploratory phase; a separately
 annotated subset or another licensed corpus is still required for MWE recall
 and boundary evaluation.
 
@@ -192,16 +279,18 @@ tokenization, dependency parsing, candidate recall, or construct validity.
 
 | Priority | Reviewer objection | Why it is serious | Required answer before submission |
 |---|---|---|---|
-| 1 | “Coverage” is underdefined | Current TUBELEX output is surface-form profile membership and OEWN output is lexicon membership. Neither is automatically conventional lexical coverage, learner knowledge, or MWE frequency coverage. | Qualify every measure by resource, unit, and denominator; either admit a lawful MWE frequency/range reference or narrow the paper to inventory-aware lexical reporting. |
-| 2 | The novelty is a feature difference, not a demonstrated methods contribution | TAALES, Multi-Word Units Profiler, phrase profilers, and annotation tools already cover adjacent steps. | Show empirically which occurrences or interpretations are lost by word-only/list-only workflows and what the proposed bridge changes. |
-| 3 | No relevant L2 evidence exists | Synthetic examples and a small general-English benchmark do not establish usefulness for L2 vocabulary research. | Admit a lawful applied-L2 sampling frame, beginning with an exploratory ICNALE GRA original/edited sensitivity analysis, and report document-level consequences with uncertainty. |
+| 1 | “Coverage” still mixes three constructs | TUBELEX membership, 2K-list coverage, source-corpus recurrence, and tested learner knowledge support different inferences; only the last can directly enter a coverage-comprehension claim. | Freeze `L_word(k)`, `C_word(A→B)`, `P_word`, `P_mwe_sense`, and every denominator; never substitute one for another. |
+| 2 | “MWEs matter for reading” is already known | Martinez and Murphy and Kremmel, Brunfaut, and Alderson already show comprehension and phraseological-knowledge effects. A highlighter or another correlation is not novel. | Demonstrate an auditable person-by-text coverage operationalization and test its incremental held-out information beyond measured word-token coverage. |
+| 3 | No criterion evidence exists | Synthetic examples, corpus recurrence, ICNALE production, and a general-English occurrence benchmark cannot show that the proposed quantities relate to reading comprehension. | Run the multi-passage person × text × item criterion study with contextual word/MWE knowledge and global comprehension outcomes. |
 | 4 | False negatives are invisible | User-supplied patterns can only review candidates they generate. A polished review UI cannot recover missed MWEs. | Evaluate candidate recall first, especially discontinuous and unseen forms, and expose the candidate source and known ceiling in every export. |
 | 5 | Human “gold” is undefined | Confirming VPC/VID status and boundaries requires judgment; project-authored fixtures are not independent validation. | Publish annotation guidelines, train at least two independent annotators where new gold is created, adjudicate disagreements, and report category/span agreement. |
-| 6 | The paper is trying to validate too much | Detection, form coverage, sense assignment, usability, pedagogy, and all MWE types would require different data and validity arguments. | Limit the first paper to exploratory English VPC/VID form-level reporting; keep sense and broader idioms as diagnostics or future work. |
+| 6 | The paper is still trying to validate too much | Detection, contextual knowledge, comprehension, corpus transfer, usability, pedagogy, and all MWE types require different evidence. | Limit the core claim to English VPC/VID contextual knowledge and reading; keep source-to-target work illustrative, ICNALE optional, broader idioms deferred, and pedagogy out. |
 | 7 | User value is assumed | Researchers may not understand separate denominators or may find manual review too burdensome. | Run declared task and interpretation studies with intended L2 vocabulary researchers, recording critical errors and review effort. |
-| 8 | Resource choice may drive the result | TUBELEX models audiovisual/spoken exposure; OEWN is a lexicon, not a corpus. Tokenizers also differ by design. | Treat resource/tokenizer sensitivity as a named limitation and, only if required by RQ1, add one justified written-register contrast. |
+| 8 | Knowledge testing creates the effect it claims to measure | Pretesting can teach or prime MWEs, posttesting can include contextual learning, and form recognition does not establish contextual meaning. | Use a piloted separate/counterbalanced session, contextual-sense scoring evidence, and a declared missing/uncertain policy. |
 | 9 | Generality is overstated | English VPC/VID evidence cannot support “MWE” in general, multilingual use, or pedagogical importance. | Put English VPC/VID in the title, abstract, sampling frame, interface, and claim boundary. |
-| 10 | Reproducibility is ahead of validity | Hashes and tests reproduce calculations but cannot validate the construct or response process. | Organize the paper around a validity argument; present software reproducibility as one evidence source, not the conclusion. |
+| 10 | The 95%/98% framing invites a false replacement threshold | Prior evidence is largely continuous and varies by text, task, and population. An “MWE-adjusted 96.4%” would be arbitrary without independent weighting evidence. | Model word and MWE quantities separately and continuously; report predictions at 95%/98% only as reference points and validate any later combined rule on new data. |
+| 11 | Resource choice may drive nominal coverage | TUBELEX models audiovisual/spoken exposure, word lists differ in units and ranking, and OEWN is a lexicon rather than corpus frequency. | Freeze one lawful conventional list for the main material profile and treat TUBELEX, OEWN, and source-corpus variants as named sensitivity resources. |
+| 12 | Reproducibility is ahead of validity | Hashes and tests reproduce calculations but cannot validate the construct or response process. | Organize the paper around a validity argument; present software reproducibility as one evidence source, not the conclusion. |
 
 ### Important but non-fatal limitations
 
@@ -225,6 +314,21 @@ tokenization, dependency parsing, candidate recall, or construct validity.
 Every result must name its observed unit, reference function, numerator,
 denominator, tokenizer, missing-value policy, and excluded inference.
 
+Target criterion quantities:
+
+| Symbol | Admitted meaning | Current state |
+|---|---|---|
+| `P_word` | For participant *p* and text *t*, target word tokens marked known under a frozen conventional single-word knowledge rule / eligible word tokens in *t*; MWE members remain individually scored | Not implemented; must reproduce the word-only construct without silently testing the phrase |
+| `P_mwe_form` | Confirmed target MWE occurrences whose form/function is recognized by *p* / eligible confirmed target MWE occurrences | Not implemented |
+| `P_mwe_sense` | Confirmed target MWE occurrences whose contextual meaning is demonstrated by *p* / sense-eligible confirmed target MWE occurrences | Not implemented; primary MWE criterion quantity |
+| `G_component_only` | Target MWE occurrences whose member tokens are all marked known by `P_word` but whose contextual MWE meaning is not demonstrated by *p* / sense-eligible confirmed target MWE occurrences | Not implemented; central diagnostic, not an adjusted percentage |
+| `G_holistic_only` | Target MWE occurrences whose contextual meaning is demonstrated by *p* despite one or more member tokens failing `P_word` / sense-eligible confirmed target MWE occurrences | Not implemented; reverse-direction diagnostic |
+| `L_word(k)` | Target word tokens matched by a frozen list through level *k* / eligible target word tokens | Not implemented; hypothetical conventional baseline only |
+| `C_word(A→B)` | Target-corpus *B* word tokens matched by an inventory derived from source corpus *A* under declared frequency/range rules / eligible word tokens in *B* | Not implemented; curricular-recurrence mode only |
+| `C_mwe(A→B)` | Confirmed MWE occurrences in *B* whose form or sense meets separately declared evidence rules in *A* / eligible confirmed MWE occurrences in *B* | Not implemented; occurrence in *A* is not learning |
+
+Current software diagnostic quantities:
+
 | Symbol | Admitted meaning | Current state |
 |---|---|---|
 | `W_token` | TUBELEX-profile-matched surface tokens / all tokens produced by the TUBELEX-specific tokenizer | Implemented; label as profile membership coverage |
@@ -240,39 +344,50 @@ denominator, tokenizer, missing-value policy, and excluded inference.
 No formula may average word and MWE channels. A word token can remain in the
 word report while also being a member of a confirmed MWE; `M_member` makes that
 overlap visible. The study examines the consequence of reporting that overlap,
-not an allegedly superior single score.
+not an allegedly superior single score. An unknown three-word MWE must not be
+declared equivalent to one, two, or three unknown word tokens without criterion
+evidence: transparency, contextual importance, reader knowledge, and task can
+change its effect.
 
-The term “lexical coverage” must be followed by its resource and unit. If an
-open MWE frequency/range profile cannot be lawfully admitted, the first paper
-must use **MWE-aware lexical reporting** or **inventory membership**, not imply a
-frequency-based MWE coverage estimate.
+The term “lexical coverage” must be followed by its reference and unit. Only the
+tested person-to-text mode may be related directly to learner comprehension.
+List and source-corpus modes must be labelled **list-conditioned hypothetical
+coverage**, **directional corpus recurrence**, or **inventory membership** as
+appropriate; a lawful frequency resource does not turn occurrence into learner
+knowledge.
 
 ## Research questions
 
 ### Core exploratory questions
 
-1. **Measurement consequence:** On a declared sample of L2-relevant English
-   texts, how much confirmed VPC/VID member-token mass and form-inventory
-   information is hidden by a word-only report, and how much varies across
-   documents?
-2. **Technical adequacy:** With a fixed candidate method, how accurately are
-   VPC/VID spans and categories surfaced for review, particularly for
-   discontinuous and train-unseen occurrences, and how much human correction is
-   required?
+1. **Construct and criterion consequence:** At the same measured `P_word`, does
+   `G_component_only` relate to lower global and MWE-critical reading
+   comprehension, and does separately measured `P_mwe_sense` add useful
+   out-of-sample information beyond a prespecified word-only model?
+2. **Technical and scoring adequacy:** With a fixed candidate method, how
+   accurately are VPC/VID spans and categories surfaced for review, particularly for
+   discontinuous and train-unseen occurrences; how reliably can contextual MWE
+   knowledge be scored; and how much human correction is required?
 3. **Response process and utility:** Can intended L2 vocabulary researchers
    complete the workflow, reproduce a result, and correctly state what each
    denominator does and does not mean without verbal coaching?
 
 ### Secondary sensitivity questions
 
-- How do candidate source, tokenization, unresolved policy, and reference
-  profile change the reported values?
+- How do candidate source, tokenization, unresolved policy, 2K-list version,
+  source corpus, frequency/range rule, and word-unit definition change the
+  reported values?
 - Which errors materially change document-level conclusions rather than only an
   aggregate benchmark score?
+- Do MWE transparency, discontinuity, genre, target centrality, and response
+  format moderate the relationship without supporting a universal new cutoff?
+- How often does `G_holistic_only` reverse the assumed direction of word-only
+  misclassification?
 
-Contextual sense assignment, broader idioms, multilingual transfer, learner
-knowledge, proficiency relations, and pedagogical decisions are not core
-questions for the first paper.
+Broader idioms, multilingual transfer, learner writing quality, proficiency
+prediction, and pedagogical decisions are not core questions for the first
+paper. Contextual MWE knowledge is now core; fully automatic word-sense
+disambiguation remains out of scope.
 
 ## Exploration and prospective validation design
 
@@ -299,20 +414,105 @@ success criteria before opening a genuinely untouched holdout. Register that
 bounded validation study, not the entire software project. A later registration
 cannot make already inspected data confirmatory.
 
+### Criterion-study architecture
+
+The smallest design capable of informing the 95%/98% literature has three
+stages. A corpus-only demonstration or intended-user study cannot replace the
+third stage.
+
+1. **Material and measurement development:** select multiple natural English
+   passages and identify contextual VPC/VID occurrences, including separated
+   forms. Create counterbalanced versions in which conventional word-list
+   coverage is held near the same value while MWE burden differs, using
+   high-frequency component words and natural paraphrases. Expert review must
+   verify meaning preservation, naturalness, and whether each target MWE is
+   necessary or merely incidental to comprehension.
+2. **Exploratory pilot:** test the word-meaning measure, contextual MWE-meaning
+   measure, passage versions, response formats, timing, and scoring reliability.
+   Use the pilot to estimate participant, text, and item variance and simulate
+   the confirmatory sample size. Revise materials only here.
+3. **Prospectively frozen criterion study:** recruit the declared L2 reading
+   population, administer several counterbalanced passages, and measure each
+   participant's required word and MWE meanings in a separate or counterbalanced
+   session to limit test priming. Analyze genuinely untouched readers, texts,
+   or items under the registered split.
+
+The design must not assume that list membership equals knowledge. Nominal 95%
+and 98% list conditions describe materials; `P_word` is computed from each
+participant's demonstrated contextual knowledge and analyzed continuously.
+Predicted comprehension at 95% and 98% may be reported as interpretable
+reference points, but the analysis must not force a discontinuity there.
+
+The primary outcome is global passage comprehension scored without requiring a
+direct definition of each target MWE. MWE-critical comprehension items and
+delayed recall are secondary outcomes. If only MWE-definition or MWE-critical
+items improve, the result may show local phrase knowledge but cannot establish
+an improvement in global lexical-coverage measurement. Reading time may be
+recorded with the ordinary browser clock as an exploratory outcome; eye
+tracking is not required for the first study.
+
+The frozen analysis compares, at minimum:
+
+- a word-only model using `P_word` plus prespecified passage, task, and reader
+  controls;
+- a prespecified extension adding `P_mwe_sense`; and
+- a prespecified extension adding `G_component_only`.
+
+The two MWE quantities need not enter the same model because they are
+structurally related. Their roles and comparison rule must be frozen after the
+pilot rather than selected from whichever model looks strongest.
+
+Use crossed participant, passage, and item variation where the design supports
+it, report uncertainty and held-out performance, and inspect calibration rather
+than selecting predictors stepwise. MWE transparency, discontinuity, genre,
+and target centrality are prespecified moderators only if the pilot supplies
+enough information; otherwise they remain descriptive strata. Do not tune a
+new combined coverage formula on the same data used to claim that it works.
+
+### Design threats that can invalidate the claim
+
+- Altering MWE and comparison passages must not also alter propositional
+  content, syntax, length, cohesion, or answer cues enough to explain the result.
+- Pretesting the exact MWEs immediately before reading can teach or prime them;
+  posttesting alone can confound prior knowledge with contextual learning.
+- A form-recognition item cannot establish knowledge of the contextual MWE
+  sense. The single-word test must measure meaning rather than spelling while
+  remaining independent of the phrase meaning it is meant to omit; that tension
+  is part of the conventional construct being tested, not something to hide.
+- Word and MWE knowledge are graded. Any binary known/unknown rule must define
+  partial and uncertain responses and be checked against a prespecified
+  polytomous or probabilistic sensitivity analysis.
+- Treating all MWEs as equal ignores transparency and discourse centrality;
+  treating an unknown three-token MWE as three unknown words invents a weight.
+- Assuming that MWE knowledge can only lower coverage ignores holistically known
+  expressions with an individually unknown member; retain both mismatch
+  directions before proposing any adjustment.
+- Questions written around the target phrases can make MWE knowledge
+  tautologically predictive. Global and target-critical outcomes must remain
+  separate.
+- One passage, one genre, or one learner group cannot support a universal
+  threshold claim, even with a large participant count.
+- Artificially concentrating opaque MWEs may create power while destroying
+  ecological validity; using only natural prevalence may provide too little
+  within-text variation. The pilot must quantify this tradeoff and freeze the
+  admitted passage domain.
+
 ### Evidence lanes
 
 | Lane | Data | Purpose | Separation rule |
 |---|---|---|---|
 | Development | Project-authored diagnostics and a declared training/development partition | Revise contracts, annotation guidance, and candidate method | Report as exploratory development only |
+| Coverage materials pilot | Multiple natural, counterbalanced passages near conventional 95%/98% reference points | Calibrate knowledge measures, MWE manipulation, comprehension tasks, scoring, and variance | Pilot readers, texts, and items cannot silently become confirmatory holdout data |
+| Criterion study | Tested L2 readers × multiple passages × comprehension items | Test incremental information from `P_mwe_sense` and `G_component_only` beyond `P_word` | Prospective protocol, non-priming knowledge design, crossed dependence, and genuine holdout required for confirmatory language |
+| Source-to-target application | Lawfully usable instructional and target corpora | Demonstrate directional word/MWE recurrence such as textbook → examination | Corpus occurrence is not learner knowledge or comprehension |
 | ICNALE GRA original/edited pairs | Registered-user, local-only corpus data | Explore sensitivity to expert editing and learner-language noise | Not MWE gold; do not redistribute text or call edits pure spelling correction |
 | Technical holdout | Rights-compliant English VPC/VID annotations with contiguous/discontinuous and seen/unseen strata | Optional confirmatory exact-span, category, and candidate-recall evidence | Use as holdout only if genuinely uninspected and prospectively frozen |
-| Applied-L2 sample | Lawfully usable English learner or L2-facing texts sampled by a written protocol | Estimate document-level measurement consequences | Label exploratory unless a confirmatory sampling/analysis plan was frozen in advance |
 | User study | Intended L2 vocabulary researchers; practitioners only if a practitioner claim remains | Task completion, interpretation, reproducibility, burden | Ethics and data-management approval before recruitment |
 | Diagnostic sense cases | Project-authored or lawfully annotated polysemy/literalness contrasts | Demonstrate why sense cannot be collapsed into form | Exploratory; not WSD validation |
 
-The applied-L2 corpus admission record is a Phase 0 task, not a data-availability
-blocker. ICNALE makes access feasible, but its role and restrictions still need
-to be fixed. Record population, genre,
+The reading-material and source-to-target corpus admission records are Phase 0
+tasks, not data-availability blockers. ICNALE remains a later production-noise
+resource rather than the main criterion dataset. Record population, genre,
 task, proficiency metadata if used, sampling unit, author/document clustering,
 license, consent/ethics basis, redistribution boundary, and the exact text made
 available to annotators. “Public” and “free” are not sufficient rights states.
@@ -341,11 +541,17 @@ is inspected.
 
 Use the smallest set that answers the research questions:
 
-1. the TUBELEX word-only report;
-2. the current all-confirmed surface-pattern negative control;
-3. one transparent list/n-gram or rule-based candidate baseline that can be
+1. one frozen and lawfully reproducible conventional 1K/2K-banded word-list
+   profile for nominal material coverage;
+2. participant-specific contextual word knowledge (`P_word`) as the substantive
+   word-only criterion model;
+3. the current all-confirmed surface-pattern negative control;
+4. one transparent list/n-gram or rule-based candidate baseline that can be
    reproduced lawfully; and
-4. at most one contextual model only after the first three are frozen.
+5. at most one contextual model only after the first four are frozen.
+
+TUBELEX remains an optional spoken-exposure frequency contrast, not the default
+word-knowledge baseline and not evidence that a participant knows an item.
 
 TAALES and Multi-Word Units Profiler remain methodological and interface
 comparators. Do not claim numerical equivalence, copy restricted payloads, or
@@ -367,12 +573,26 @@ Technical outcomes:
 
 Measurement outcomes:
 
-- per-document `W_token`, `W_type`, `M_member`, `M_inventory_token`,
-  `M_inventory_type`, `A_review`, and `U_review`;
+- per-person-by-text `P_word`, `P_mwe_form`, `P_mwe_sense`,
+  `G_component_only`, and `G_holistic_only`, retaining missing and unresolved
+  decisions;
+- nominal `L_word(k)` and optional source-to-target `C_word(A→B)` and
+  `C_mwe(A→B)` as separately labelled profiles;
+- per-document software diagnostics `W_token`, `W_type`, `M_member`,
+  `M_inventory_token`, `M_inventory_type`, `A_review`, and `U_review`;
 - paired within-document consequences of word-only versus MWE-aware reporting;
 - sensitivity to candidate method, unresolved policy, and any admitted reference
   contrast; and
 - annotated cases where the methodological interpretation changes.
+
+Criterion outcomes:
+
+- global passage comprehension as the primary outcome;
+- MWE-critical item accuracy and delayed recall as secondary outcomes;
+- incremental information, uncertainty, calibration, and held-out performance
+  of the MWE quantities beyond the frozen word-only model; and
+- predicted outcomes at 95% and 98% `P_word` as reference points without fitting
+  an unsupported step threshold.
 
 User outcomes:
 
@@ -392,14 +612,15 @@ support it.
 
 | Phase | Required output | Exit gate | State |
 |---|---|---|---|
-| 0. Exploratory charter and corpus admission | One-page claim map, qualified terminology, ICNALE WE/GRA rights-and-role memo, annotation plan, exploratory questions, and dated decision log | Another researcher can state the target construct, unit, corpus role, comparison, and exclusions without reading source code | **Next; not complete** |
+| 0. Construct and material charter | One-page claim map; accurate 95%/98% lineage; person/list/corpus profile separation; passage, word-test, MWE-test, comprehension, and source-corpus admission criteria; dated decision log | Another researcher can state the target construct, unit, criterion, comparison, and exclusions without reading source code | **Next; not complete** |
 | 1. Product truthfulness | UI/export names match the frozen estimands; candidate source and unresolved ceiling are visible; real-browser/accessibility gate passes | No display implies learner knowledge, universal English, automatic confirmation, or MWE frequency when only membership exists | Partial |
-| 2. Exploratory learner-data study | Local ICNALE WE distribution study, GRA original/edited analysis, error taxonomy, paired sensitivity results, and MWE annotation feasibility | The study identifies which learner-language phenomena materially affect matching and candidate review without redistributing corpus text | Not started |
-| 3. Technical evaluation | Baseline predictions and stratified span/category/error results; optional prospectively frozen holdout | Candidate recall and correction burden are reported honestly; a validated-analyzer claim requires prospectively defined criteria | Only a transparent floor exists |
-| 4. Measurement study | Document-level word-only/MWE-aware consequences and sensitivity analyses | The evidence establishes the observed boundary; a negative or heterogeneous result is acceptable | Not started |
-| 5. Intended-user evaluation | Declared researcher tasks, interpretation evidence, burden, qualitative failures | The paper reports what intended users can and cannot complete or interpret; a success-rate claim requires a prospective standard | Not started |
-| 6. Frozen open release | Versioned source, data/retrieval instructions, code, predictions, analysis, checksums, licenses, protocol, report, archive identifier | Clean-room reproduction and browser acceptance succeed from the archive | Not started |
-| 7. RMAL submission | Methods-first manuscript and supplement tied to the frozen release | Every manuscript claim maps to a passed evidence gate | Not started |
+| 2. Exploratory criterion pilot | Multiple natural passage versions; contextual word/MWE knowledge measures; global and target-critical comprehension tasks; scoring evidence; variance estimates and simulation-based sample plan | The manipulation is natural, non-tautological, measurable, and capable of distinguishing word coverage from component-only MWE gaps | Not started |
+| 3. Technical evaluation | Baseline predictions and stratified span/category/sense/error results on the selected passage domain; optional prospectively frozen holdout | Candidate recall, contextual-decision reliability, and correction burden are reported honestly | Only a transparent occurrence floor exists |
+| 4. Frozen criterion study | Registered person × passage × item design; word-only and MWE-extended models; uncertainty, calibration, and genuine held-out results | Any claim beyond reporting is supported after `P_word`; a negative or heterogeneous result is accepted without inventing a new score | Not started |
+| 5. Applied corpus and user evaluation | Directional source-to-target example plus declared researcher tasks, interpretation evidence, burden, and qualitative failures | Corpus recurrence is not presented as knowledge, and users correctly interpret all profile types | Not started |
+| 6. Optional learner-production robustness | Local ICNALE WE/GRA raw/edited sensitivity and error taxonomy | Kept outside the critical path unless the paper retains learner-writing claims | Deferred |
+| 7. Frozen open release | Versioned source, permissible materials, data/retrieval instructions, code, predictions, analysis, checksums, licenses, protocol, report, archive identifier | Clean-room reproduction and browser acceptance succeed from the archive | Not started |
+| 8. RMAL submission | Methods-first manuscript and supplement tied to the frozen release | Every manuscript claim maps to a passed evidence gate | Not started |
 
 Failure at a gate changes the claim; it does not trigger silent tuning on the
 holdout. Negative findings remain publishable evidence if they clarify when an
@@ -407,42 +628,52 @@ MWE-aware method is not worth its cost.
 
 ## Stop/go decisions
 
-1. **ICNALE use cannot be made reproducible within its terms:** keep it as an
-   unshared exploratory audit, obtain permission, or choose another corpus; do
-   not copy its text into the release.
-2. **No lawful MWE frequency/range resource:** continue with form-inventory and
+1. **Contextual word/MWE knowledge cannot be measured without priming or weak
+   scoring:** do not claim to inform 95%/98% coverage; narrow the paper to an
+   annotation/reporting method.
+2. **MWE quantities add negligible held-out information after `P_word`:** report
+   the boundary and do not create an adjusted coverage score.
+3. **The MWE manipulation changes nonlexical passage properties:** redesign in
+   the pilot or use a naturalistic observational design with narrower causal
+   language.
+4. **No lawful MWE frequency/range resource:** continue with form-inventory and
    member-accounting claims, but remove “MWE frequency coverage” from the first
    paper.
-3. **Candidate recall is practically inadequate:** do not market an automatic
+5. **Candidate recall is practically inadequate:** do not market an automatic
    analyzer; keep manual candidate addition and evaluate one better baseline.
-4. **Manual burden is unacceptable:** reduce the target category or improve
+6. **Manual burden is unacceptable:** reduce the target category or improve
    ranking; do not hide the burden in aggregate accuracy.
-5. **Users misinterpret outputs:** revise labels/instructions and rerun a new
+7. **Users misinterpret outputs:** revise labels/instructions and rerun a new
    evaluation sample; unit tests cannot substitute for response-process evidence.
-6. **MWE-aware reporting rarely changes interpretation:** report the boundary or
+8. **MWE-aware reporting rarely changes interpretation:** report the boundary or
    reconsider whether a standalone tool is justified.
+9. **ICNALE use cannot be made reproducible within its terms:** keep it as an
+   unshared optional audit, obtain permission, or omit it; do not copy its text
+   into the release.
 
 ## Immediate execution order
 
 Do these next, in order:
 
-1. write an exploratory claim/evidence matrix and choose the form-level
-   first-paper scope;
-2. audit and rename every unqualified UI/export use of “coverage” against the
-   measurement table above;
-3. create an ICNALE WE v2.6/GRA v2.1 admission memo, a local-only distribution
-   plan, and an original/edited sensitivity plan; decide separately whether a
-   lawful MWE frequency/range profile exists;
-4. define the learner-error taxonomy, exploratory outcomes, annotation guidance,
-   and uncertainty summaries; reserve an untouched holdout only if a later
-   confirmatory claim is planned;
-5. complete real-browser, keyboard, narrow-screen, network, and screen-reader
-   checks on the existing vertical slice;
-6. run an exploratory annotation and user-task pilot and preserve the decision
-   history; optionally register a bounded follow-up validation after the method
-   stabilizes.
+1. write the construct/evidence matrix that separates `L_word(k)`,
+   `C_word(A→B)`, `P_word`, `P_mwe_sense`, `G_component_only`, and
+   `G_holistic_only`, and record the 95%/98% attribution and non-inferences;
+2. specify passage-pair admission, naturalness review, global comprehension,
+   target-critical comprehension, contextual word knowledge, contextual MWE
+   knowledge, and anti-priming requirements;
+3. select only a small development set of natural VPC/VID contrasts and design
+   the exploratory pilot before adding another reference dataset or model;
+4. audit and rename every unqualified UI/export use of “coverage” against the
+   frozen construct table; keep the current TUBELEX and OEWN outputs explicitly
+   diagnostic;
+5. pilot the measures, preserve every material change, estimate crossed sources
+   of variance, and simulate the later sample size;
+6. complete candidate/scoring reliability and intended-user pilots, then
+   prospectively register only the untouched criterion study;
+7. run the criterion study before returning to optional ICNALE learner-writing
+   robustness or BERT/fastText comparisons.
 
-Only after these six steps may the project compare BERT, fastText, a parser, or
+Only after these seven steps may the project compare BERT, fastText, a parser, or
 another candidate method. Add one dependency only if it improves a declared
 decision-relevant outcome enough to justify model/data rights, payload,
 compute, privacy, and reproducibility costs.
@@ -451,11 +682,12 @@ compute, privacy, and reproducibility costs.
 
 The following are legitimate later studies, not first-paper requirements:
 
-- validated contextual sense assignment and sense-frequency reporting;
+- automatic contextual sense assignment and corpus sense-frequency reporting;
 - non-verbal idioms and broader MWE taxonomies;
 - multilingual transfer;
-- multiple word-reference profiles and register-sensitive comparisons;
-- group modelling, proficiency relations, or pedagogical intervention studies;
+- multiple source-corpus profiles and broad register-sensitive comparisons;
+- ICNALE learner-production error robustness unless a writing claim is restored;
+- proficiency prediction or pedagogical intervention studies;
 - annotation-team accounts, assignment, adjudication, and version management;
 - a server, database, API, or private resource service.
 
@@ -494,21 +726,29 @@ hashes identify bytes, not authorship or trusted time.
 
 The paper should be readable without opening the app:
 
-1. **Problem:** word-only and list-only procedures can hide or misclassify MWE
-   lexical units and denominators in L2 vocabulary research.
-2. **Operationalization:** define candidate, confirmed occurrence, member, gap,
-   inventory membership, unresolved mass, and each reference-conditioned rate.
-3. **Method:** describe the human-reviewed workflow and open implementation.
-4. **Technical evaluation:** report candidate/span/category results, error
-   strata, learner-error sensitivity, and any genuinely prospective holdout.
-5. **Measurement consequence:** report what changes on the applied-L2 sample and
-   under sensitivity choices.
-6. **Response process:** report whether intended users can perform and interpret
-   the method.
-7. **Boundary:** state where the method fails, what remains manual, and which
-   populations/resources are not represented.
-8. **Open materials:** map every result to its dated exploratory decision record
-   or prospectively registered analysis and to the frozen archive.
+1. **Problem:** conventional known-word token coverage can mark all components
+   of an unknown contextual MWE as covered, leaving 95%/98% interpretations
+   under-specified.
+2. **Evidence boundary:** present 95% and 98% as historically important reference
+   points whose relationship with comprehension varies by reader, genre, task,
+   and measurement—not as fixed laws.
+3. **Operationalization:** separate list-to-text, source-corpus-to-target, and
+   tested person-to-text profiles; define occurrence, member, gap, contextual
+   sense, component-only gap, unresolved mass, and every denominator.
+4. **Method:** describe passage/knowledge/comprehension measurement, the
+   human-reviewed workflow, and the open implementation.
+5. **Technical evaluation:** report candidate/span/category/contextual-decision
+   results, scoring reliability, error strata, correction burden, and any
+   genuinely prospective holdout.
+6. **Criterion evidence:** compare the frozen word-only and MWE-extended models
+   on global and MWE-critical comprehension, with uncertainty, calibration, and
+   held-out results at continuous coverage and the 95%/98% reference points.
+7. **Applied and response evidence:** demonstrate one directional corpus use
+   case and report whether intended users can perform and correctly interpret
+   the three profile types.
+8. **Boundary and open materials:** state where the method fails, avoid a new
+   universal threshold or combined score without evidence, and map every result
+   to its decision record, prospective protocol where applicable, and archive.
 
 The title and abstract must say **English VPC/VID** unless broader evidence is
 actually collected. “Objective” should mean explicit and repeatable decisions,
@@ -521,19 +761,30 @@ all of the following from the manuscript and archive:
 
 1. What applied-linguistics measurement problem is being solved?
 2. What exactly is the lexical unit in each channel?
-3. Which population, texts, MWE categories, resources, and tokenizers were used?
-4. How many candidates were missed, corrected, rejected, or unresolved?
-5. What changed relative to the word-only and transparent baseline reports?
-6. Can intended researchers perform and interpret the method?
-7. Which claims are unsupported?
-8. Can every reported number be independently reproduced?
+3. How do list, corpus-recurrence, and tested learner-knowledge profiles differ?
+4. Which population, texts, MWE categories, resources, and tokenizers were used?
+5. How were contextual word and MWE knowledge measured without circularity or
+   uncontrolled priming?
+6. How many candidates were missed, corrected, rejected, or unresolved?
+7. Does the MWE channel add held-out information beyond measured word coverage,
+   including at the 95% and 98% reference points?
+8. Can intended researchers perform and interpret the method?
+9. Which claims are unsupported?
+10. Can every reported number be independently reproduced?
 
-Today the project can answer 1, 2, and much of 8 at the software-contract level.
-It cannot yet answer 3–6 empirically. That is the critical path.
+Today the project can answer 1, much of 2, and part of 10 at the
+software-contract level. It cannot yet answer 3–8 empirically. That is the
+critical path.
 
 ## Core references and live records
 
 - [Focused literature search and page-level close reading](LITERATURE_CLOSE_READ.md)
+- [Hu and Nation (2000), unknown vocabulary density and comprehension](https://doi.org/10.64152/10125/66973)
+- [Nation (2006), vocabulary size for 98% reading/listening coverage](https://doi.org/10.3138/cmlr.63.1.59)
+- [Schmitt, Jiang, and Grabe (2011), word coverage and comprehension](https://doi.org/10.1111/j.1540-4781.2011.01146.x)
+- [Kremmel et al. (2023), partial replication and threshold critique](https://doi.org/10.1111/lang.12622)
+- [Martinez and Murphy (2011), MWE effects on L2 reading](https://ora.ox.ac.uk/objects/uuid%3Aebfa9868-f48b-40da-9b74-513684f28c25)
+- [Kremmel, Brunfaut, and Alderson (2017), phraseological knowledge and reading](https://doi.org/10.1093/applin/amv070)
 - [RMAL official scope](https://shop.elsevier.com/journals/research-methods-in-applied-linguistics/2772-7661)
 - [Computational reproducibility in applied linguistics](https://doi.org/10.1016/j.rmal.2022.100030)
 - [ICNALE modules, GRA description, and terms](https://language.sakura.ne.jp/icnale/)
