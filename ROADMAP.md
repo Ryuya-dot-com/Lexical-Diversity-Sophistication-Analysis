@@ -291,12 +291,18 @@ release exercise should reveal whether a repeated automation need actually
 exists.
 
 The initial tracking audit on 2026-09-01 found this directory to be the Git root
-with no configured remote, symlinks, file over 1 MB, or high-confidence
-credential signature in the candidate source files. The first local source
-snapshot was committed to `main`; the ignored legacy MWE/VPC roadmap and Python
-caches are not tracked release inputs. LF is normalized by `.gitattributes`.
-This snapshot is not a tag, remote publication, security certification, or
-public release.
+with no symlinks, file over 1 MB, or high-confidence credential signature in the
+candidate source files. The local snapshot was merged with the one-line GitHub
+placeholder history and pushed to the canonical repository's `main` branch;
+the repository CI passed. The ignored legacy MWE/VPC roadmap and Python caches
+are not tracked release inputs, and LF is normalized by `.gitattributes`.
+Public source availability is not a tag, citable archive, security
+certification, browser acceptance, research validation, or formal release.
+
+The canonical repository name includes “Sophistication” as a possible future
+direction. The current admitted construct remains surface lexical amount,
+variety, repetition, and method sensitivity; no sophistication score or
+resource-dependent measure is implemented.
 
 ## Representative-user interpretation check
 

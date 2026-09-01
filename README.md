@@ -2,6 +2,12 @@
 
 Status: static scenario probe; not an MVP or validated measurement release.
 
+Canonical source: <https://github.com/Ryuya-dot-com/Lexical-Diversity-Sophistication-Analysis>
+
+The repository name allows for a broader future direction. The current probe
+does not implement a lexical-sophistication score, frequency norm, reference
+resource, or TAALES-compatible analysis.
+
 This directory is an independent browser app for auditing how lexical measures
 respond to controlled text comparisons. It currently includes project-authored
 scenarios for fixed-length repetition, sentence-segmentation invariance, and
