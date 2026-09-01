@@ -1,0 +1,161 @@
+{
+  "contract_version": "0.1.0-probe",
+  "status": "technical-probe",
+  "project_license": "MIT OR CC-BY-4.0",
+  "external_resource_dependencies": [],
+  "scope": {
+    "input_language": "English",
+    "allowed_content": ["synthetic", "rights-cleared-published"],
+    "construct": "method sensitivity of surface lexical amount, variety, and repetition",
+    "claims": "descriptive-only",
+    "excluded_inferences": [
+      "proficiency",
+      "CEFR",
+      "writing-quality",
+      "authorship",
+      "causal-effect",
+      "population-generalization"
+    ]
+  },
+  "input": {
+    "mode": "bundled-scenarios-and-browser-local-workspace",
+    "user_supplied_text": true,
+    "runtime_analysis": true,
+    "processing_location": "browser-memory-only",
+    "max_utf16_code_units_per_text": 1000000,
+    "max_utf16_code_units_per_id": 100,
+    "max_utf16_code_units_per_label": 100,
+    "max_utf16_code_units_per_provenance": 500,
+    "max_utf16_code_units_per_design_note": 1000,
+    "max_declared_segments_per_text": 1000,
+    "max_documents_per_batch": 100,
+    "max_combined_utf16_code_units_per_batch": 5000000,
+    "max_utf16_code_units_per_batch_json": 6000000
+  },
+  "tokenizer": {
+    "unit": "ASCII alphabetic word with internal straight or curly apostrophes",
+    "case": "ASCII lowercase",
+    "apostrophe_normalization": "curly-to-straight",
+    "hyphens": "split",
+    "digits_and_underscores": "exclude-adjacent-candidate",
+    "non_ascii_letter_words": "exclude-whole-word-without-partial-match",
+    "order": "left-to-right"
+  },
+  "metrics": {
+    "tokens": "number of normalized tokenizer units",
+    "types": "number of distinct normalized tokenizer units",
+    "type_token_ratio": "types divided by tokens; zero when tokens is zero",
+    "hapax_types": "number of normalized types occurring exactly once"
+  },
+  "method_references": {
+    "fergadiotis-wright-green-2015": {
+      "citation": "Fergadiotis, G., Wright, H. H., & Green, S. B. (2015). Psychometric evaluation of lexical diversity indices: Assessing length effects. Journal of Speech, Language, and Hearing Research, 58(3), 840–852.",
+      "doi": "10.1044/2015_JSLHR-L-14-0280",
+      "url": "https://doi.org/10.1044/2015_JSLHR-L-14-0280",
+      "supports_ja": "TTRの標本長による交絡と、構成概念妥当性を実装一致から推定できないという解釈境界。"
+    },
+    "zenker-kyle-2021": {
+      "citation": "Zenker, F., & Kyle, K. (2021). Investigating minimum text lengths for lexical diversity indices. Assessing Writing, 47, 100505.",
+      "doi": "10.1016/j.asw.2020.100505",
+      "url": "https://doi.org/10.1016/j.asw.2020.100505",
+      "supports_ja": "単純TTRの定義と、当該L2論証エッセイ標本の50–200 token範囲で観測された長さ依存性。"
+    }
+  },
+  "metric_reference_ids": {
+    "tokens": [],
+    "types": [],
+    "type_token_ratio": [
+      "fergadiotis-wright-green-2015",
+      "zenker-kyle-2021"
+    ],
+    "hapax_types": []
+  },
+  "reference_scope": "The references support the stated TTR definition and interpretation limits; they do not validate this application, its tokenizer, bundled scenarios, or any population inference.",
+  "limitations": [
+    "type_token_ratio is length-sensitive and is not a cross-text quality score",
+    "with both texts fixed at 100 tokens, type_token_ratio is exactly types divided by 100 and is not independent evidence",
+    "sentence punctuation is discarded, so segmentation-only changes are invariant by design for every displayed metric",
+    "the nested-length scenario changes both sample size and accumulated lexical composition and does not identify a sentence-count effect",
+    "the bundled pair controls token count and sentence frames but not lexical frequency, semantics, familiarity, or naturalness",
+    "the visible contrast was deliberately engineered and is not an effect estimate for naturally occurring text",
+    "the workspace supports one text, researcher-declared line units, a descriptive two-text difference, or a descriptive document batch and provides no automatic sentence-level group-level or inferential analysis",
+    "declared-segment mode treats non-empty lines as researcher-declared units and does not perform automatic sentence segmentation",
+    "declared segments within one text are not independent authors participants or population observations",
+    "documents in a batch are not assumed to be independent participants and the unweighted distribution is not a population estimate",
+    "the rights attestation is supplied by the researcher and is not independently verified by the application",
+    "the SHA-256 identifies the analyzed UTF-8 string but is not anonymization and the metadata-only export cannot reproduce a result without the separately preserved source text",
+    "the exported hash and client-clock timestamp are not a signature proof of authorship or trusted proof of when analysis occurred and the JSON can be edited after export",
+    "implementation parity does not establish construct validity"
+  ],
+  "presentation": {
+    "result_source": "shared-browser-calculation-checked-against-reviewed-values",
+    "comparison_direction": "second sample minus first sample within the selected scenario",
+    "normative_labels": false
+  },
+  "rounding": {
+    "metric": "type_token_ratio",
+    "decimal_places": 6,
+    "method": "round-half-up"
+  },
+  "workspace": {
+    "relationships": ["single", "declared-segments", "paired", "independent", "batch"],
+    "relationship_meanings": {
+      "single": "one declared text span; no difference",
+      "declared-segments": "one text containing two or more researcher-declared non-empty line units; no between-participant inference",
+      "paired": "two deliberately related texts; second minus first",
+      "independent": "two separately sampled texts; descriptive second-minus-first difference only",
+      "batch": "two to one hundred researcher-identified documents; per-document values and unweighted descriptive distribution only"
+    },
+    "required_attestation": "synthetic-or-rights-cleared-published; no personal-confidential-unpublished-or-private-learner-text",
+    "export_schema_version": "0.1.0-probe",
+    "export_format": "JSON",
+    "raw_text_in_export": false,
+    "content_identity": "SHA-256 of exact UTF-8 input",
+    "input_identifier": "trimmed case-sensitive id unique within each exported record",
+    "record_timestamp": "required exact Date.toISOString UTC string from the client clock; not a trusted timestamp signature or evidence of analysis time",
+    "metadata_normalization": "trim leading and trailing whitespace from id label provenance and sampling/comparison design; preserve text exactly",
+    "unicode_validation": "reject strings containing unpaired UTF-16 surrogates before UTF-8 hashing or export; requires String.prototype.isWellFormed",
+    "sampling_and_comparison_design": "required researcher-supplied note",
+    "declared_segment_rule": "split exact input at LF or CRLF; ignore whitespace-only lines; preserve non-empty line order; do not infer sentences",
+    "declared_segment_summary": "unweighted minimum median and maximum across declared lines; even-count median is the arithmetic mean of the two middle values; descriptive only",
+    "batch_input": "JSON array of objects with unique id label provenance and text strings; preserve array order; all-or-nothing validation",
+    "batch_summary": "unweighted minimum median and maximum across documents; no pooled score groups ranking or inference",
+    "comparison_direction": "second input minus first input",
+    "statistical_inference": false,
+    "warning_codes": [
+      "descriptive-only",
+      "ttr-length-sensitive",
+      "no-recognized-tokens",
+      "researcher-declared-segments",
+      "segments-not-independent-observations",
+      "pooled-and-segment-statistics-not-equivalent",
+      "batch-documents-not-independent",
+      "batch-summary-unweighted",
+      "types-and-ttr-algebraically-dependent-at-fixed-length",
+      "cross-length-difference-confounded",
+      "independent-texts-not-causal"
+    ],
+    "warning_meanings_ja": {
+      "descriptive-only": "表示値は入力テキストと指定手続きの記述であり、評価・診断・統計推測ではない。",
+      "ttr-length-sensitive": "TTRは標本長に依存するため、長さの異なるテキストを単純順位化できない。",
+      "no-recognized-tokens": "現在のASCII英語tokenizerが認識したtokenが0件の入力を含む。",
+      "researcher-declared-segments": "各単位は自動文分割ではなく、研究者が改行で宣言した非空行である。",
+      "segments-not-independent-observations": "同一テキスト内の行を独立した著者・参加者・母集団標本として扱えない。",
+      "pooled-and-segment-statistics-not-equivalent": "全文をpoolした値と行別値の分布・平均は異なる量であり、置き換えられない。",
+      "batch-documents-not-independent": "バッチ内の文書を独立した参加者・母集団標本とは仮定していない。依存関係は設計メモで管理する必要がある。",
+      "batch-summary-unweighted": "文書別分布は各文書を1行として等しく数えた記述値であり、pool値・順位・母集団推定ではない。",
+      "types-and-ttr-algebraically-dependent-at-fixed-length": "同じtoken数ではTypes差とTTR差は代数的に従属し、独立した証拠ではない。",
+      "cross-length-difference-confounded": "token数が異なるため、TTR差には長さと語彙構成が同時に関与する。",
+      "independent-texts-not-causal": "独立した2テキストの差だけでは、母集団差や因果効果を推論できない。"
+    }
+  },
+  "retention": {
+    "bundled_source": "static-reviewed-synthetic-samples",
+    "user_source": "live form memory only; application performs no durable write",
+    "network_transmission": false,
+    "durable_storage": false,
+    "clear_control": "explicit reset and best-effort pagehide reset; browser or device memory/history erasure is not guaranteed",
+    "raw_text_export": false,
+    "explicit_metadata_export": true
+  }
+}

@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out the independent repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Verify contracts and fixtures
+        run: |
+          python3 -m unittest discover -s tests -v
+          python3 -m json.tool metric_contract.json >/dev/null
+          python3 -m json.tool samples.json >/dev/null
+          python3 -m json.tool tests/fixtures/metric_cases.json >/dev/null
+          node --check app.mjs
+          node --check metrics.mjs
+          node tests/verify_contract.mjs
+
+      - name: Verify the independent static boundary
+        run: |
+          test "$(git rev-parse --show-toplevel)" = "${GITHUB_WORKSPACE}"
+          test -z "$(find . -type l -print -quit)"
+          test ! -e app.py
+          test ! -e Dockerfile
+          test ! -e requirements.txt
+          test ! -e ldfreq_webapp_master_roadmap_20260831.html
+          for file in .gitattributes CHANGELOG.md LICENSE.md README.md RIGHTS.md ROADMAP.md metric_contract.json samples.json; do
+            test -f "$file"
+          done
+
+      - name: Verify checkout cleanliness
+        run: |
+          git diff --check
+          git diff --exit-code
+          test -z "$(git status --porcelain=v1 --untracked-files=all)"

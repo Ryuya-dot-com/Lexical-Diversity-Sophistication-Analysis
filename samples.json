@@ -1,0 +1,183 @@
+{
+  "samples_version": "0.3.0-probe",
+  "comparison_sets": [
+    {
+      "id": "matched-repetition",
+      "label_ja": "語彙反復を変えた100-token対",
+      "question_ja": "token数と文型を揃えたとき、内容語の反復を減らすと基本集計はどう変わるか。",
+      "design": {
+        "held_constant_ja": [
+          "英語100 token（このprobeのtokenizerによる）",
+          "公共図書館という話題と説明文genre",
+          "文数、句読点、文型、内容語を置く位置",
+          "100 token位置のうち62位置は同一"
+        ],
+        "manipulated_ja": "置換条件では、反復条件の38の内容語位置を異なる表現へ置き換えた。tokenの追加・削除・並べ替えはしていない。",
+        "not_controlled_ja": [
+          "語の頻度、文字数、意味の具体性、句の親密度",
+          "自然さ、読みやすさ、文章品質",
+          "実際の学習者・著者・genreへの一般化"
+        ],
+        "interpretation_ja": "この一対は指標の機械的な反応が見えやすいよう差を意図的に大きくした教材である。差の大きさは自然な文章での効果推定ではなく、置換条件の優秀さも示さない。"
+      },
+      "samples": [
+        {
+          "id": "repeated-content",
+          "label_ja": "反復条件",
+          "text": "At the public library, visitors read books, borrow books, discuss books, and recommend books. During morning programs, children explore stories, share stories, illustrate stories, and retell stories. Afternoon groups study local history, examine local history, debate local history, and preserve local history. Evening workshops help residents write plans, revise plans, present plans, and improve plans. Staff members arrange quiet rooms, clean quiet rooms, reserve quiet rooms, and monitor quiet rooms. Volunteers welcome new readers, guide new readers, support new readers, and encourage new readers. These repeated patterns make the example deliberately repetitive for a transparent lexical comparison in this demonstration.",
+          "provenance": {
+            "kind": "synthetic",
+            "author": "project",
+            "created_on": "2026-09-01",
+            "authoring_method": "paired project-authored template with deliberate content-word repetition",
+            "review_status": "internal-probe",
+            "rights_status": "project-authored; MIT or CC BY 4.0"
+          },
+          "result": {
+            "tokens": 100,
+            "types": 67,
+            "type_token_ratio": 0.67,
+            "hapax_types": 56
+          }
+        },
+        {
+          "id": "varied-content",
+          "label_ja": "置換条件",
+          "text": "At the public library, visitors read novels, borrow guides, discuss essays, and recommend biographies. During morning programs, children explore folktales, share poems, illustrate comics, and retell memories. Afternoon groups study town records, examine family archives, debate oral histories, and preserve civic documents. Evening workshops help residents write proposals, revise drafts, present findings, and improve projects. Staff members arrange reading rooms, clean study areas, reserve meeting spaces, and monitor computer stations. Volunteers welcome young visitors, guide recent members, support curious guests, and encourage first patrons. These varied choices make the example deliberately diverse for a transparent lexical comparison in this demonstration.",
+          "provenance": {
+            "kind": "synthetic",
+            "author": "project",
+            "created_on": "2026-09-01",
+            "authoring_method": "paired project-authored template with distinct content-word substitutions at matched token positions",
+            "review_status": "internal-probe",
+            "rights_status": "project-authored; MIT or CC BY 4.0"
+          },
+          "result": {
+            "tokens": 100,
+            "types": 91,
+            "type_token_ratio": 0.91,
+            "hapax_types": 86
+          }
+        }
+      ]
+    },
+    {
+      "id": "segmentation-invariance",
+      "label_ja": "同じ100 tokenの1文／7文",
+      "question_ja": "token列を変えず、句点をセミコロンへ置き換えて1文にしたとき、現在の語彙集計は変わるか。",
+      "design": {
+        "held_constant_ja": [
+          "正規化後の100 tokenとその順序",
+          "語形、語の頻度分布、内容、表記上の大文字・小文字",
+          "tokenizerと4つの集計規則"
+        ],
+        "manipulated_ja": "7文条件の文末6か所を、1文条件ではセミコロンに置き換えた。語は追加、削除、置換、並べ替えしていない。",
+        "not_controlled_ja": [
+          "長い1文としての自然さ、統語的妥当性、可読性",
+          "sentence tokenizerによる文数判定（このprobeは実装していない）",
+          "文境界を利用する統語・談話・文単位の指標への一般化"
+        ],
+        "interpretation_ja": "値が同じなのは、現在の4指標が句読点と文境界を捨てたtoken列だけを使うためである。文数が語彙研究で常に無関係だという証拠ではない。"
+      },
+      "samples": [
+        {
+          "id": "one-sentence-segmentation",
+          "label_ja": "1文条件",
+          "text": "At the public library, visitors read books, borrow books, discuss books, and recommend books; During morning programs, children explore stories, share stories, illustrate stories, and retell stories; Afternoon groups study local history, examine local history, debate local history, and preserve local history; Evening workshops help residents write plans, revise plans, present plans, and improve plans; Staff members arrange quiet rooms, clean quiet rooms, reserve quiet rooms, and monitor quiet rooms; Volunteers welcome new readers, guide new readers, support new readers, and encourage new readers; These repeated patterns make the example deliberately repetitive for a transparent lexical comparison in this demonstration.",
+          "provenance": {
+            "kind": "synthetic",
+            "author": "project",
+            "created_on": "2026-09-01",
+            "authoring_method": "project-authored 100-token sample with six internal periods changed to semicolons",
+            "review_status": "internal-probe",
+            "rights_status": "project-authored; MIT or CC BY 4.0"
+          },
+          "result": {
+            "tokens": 100,
+            "types": 67,
+            "type_token_ratio": 0.67,
+            "hapax_types": 56
+          }
+        },
+        {
+          "id": "seven-sentence-segmentation",
+          "label_ja": "7文条件",
+          "text": "At the public library, visitors read books, borrow books, discuss books, and recommend books. During morning programs, children explore stories, share stories, illustrate stories, and retell stories. Afternoon groups study local history, examine local history, debate local history, and preserve local history. Evening workshops help residents write plans, revise plans, present plans, and improve plans. Staff members arrange quiet rooms, clean quiet rooms, reserve quiet rooms, and monitor quiet rooms. Volunteers welcome new readers, guide new readers, support new readers, and encourage new readers. These repeated patterns make the example deliberately repetitive for a transparent lexical comparison in this demonstration.",
+          "provenance": {
+            "kind": "synthetic",
+            "author": "project",
+            "created_on": "2026-09-01",
+            "authoring_method": "project-authored seven-sentence 100-token source used for punctuation-only transformation",
+            "review_status": "internal-probe",
+            "rights_status": "project-authored; MIT or CC BY 4.0"
+          },
+          "result": {
+            "tokens": 100,
+            "types": 67,
+            "type_token_ratio": 0.67,
+            "hapax_types": 56
+          }
+        }
+      ]
+    },
+    {
+      "id": "nested-length",
+      "label_ja": "14-token先頭文／100-token全文",
+      "question_ja": "同じ合成文の先頭14 tokenから100 tokenまで範囲を広げると、基本集計とTTRはどう変わるか。",
+      "design": {
+        "held_constant_ja": [
+          "短い条件の14 tokenは長い条件の完全な先頭部分",
+          "公共図書館という話題、反復的な作成方針、tokenizer",
+          "既存tokenの語形と順序"
+        ],
+        "manipulated_ja": "長い条件は短い条件に続く86 tokenと6文を追加した、入れ子の比較である。",
+        "not_controlled_ja": [
+          "token数と文数を別々にした効果",
+          "追加部分の語彙構成、語の出現位置、局所的反復",
+          "同じ長さの独立標本や自然な学習者テキストへの一般化"
+        ],
+        "interpretation_ja": "この差は長さだけの純粋な効果ではなく、長さと追加された語彙構成の合成である。TTRが標本範囲に依存することは示せるが、文数の因果効果や文章の優劣は示せない。"
+      },
+      "samples": [
+        {
+          "id": "nested-prefix-14",
+          "label_ja": "14-token先頭文",
+          "text": "At the public library, visitors read books, borrow books, discuss books, and recommend books.",
+          "provenance": {
+            "kind": "synthetic",
+            "author": "project",
+            "created_on": "2026-09-01",
+            "authoring_method": "first orthographic sentence of the project-authored 100-token repeated-content sample",
+            "review_status": "internal-probe",
+            "rights_status": "project-authored; MIT or CC BY 4.0"
+          },
+          "result": {
+            "tokens": 14,
+            "types": 11,
+            "type_token_ratio": 0.785714,
+            "hapax_types": 10
+          }
+        },
+        {
+          "id": "nested-full-100",
+          "label_ja": "100-token全文",
+          "text": "At the public library, visitors read books, borrow books, discuss books, and recommend books. During morning programs, children explore stories, share stories, illustrate stories, and retell stories. Afternoon groups study local history, examine local history, debate local history, and preserve local history. Evening workshops help residents write plans, revise plans, present plans, and improve plans. Staff members arrange quiet rooms, clean quiet rooms, reserve quiet rooms, and monitor quiet rooms. Volunteers welcome new readers, guide new readers, support new readers, and encourage new readers. These repeated patterns make the example deliberately repetitive for a transparent lexical comparison in this demonstration.",
+          "provenance": {
+            "kind": "synthetic",
+            "author": "project",
+            "created_on": "2026-09-01",
+            "authoring_method": "project-authored 100-token sample containing the 14-token condition as its exact prefix",
+            "review_status": "internal-probe",
+            "rights_status": "project-authored; MIT or CC BY 4.0"
+          },
+          "result": {
+            "tokens": 100,
+            "types": 67,
+            "type_token_ratio": 0.67,
+            "hapax_types": 56
+          }
+        }
+      ]
+    }
+  ]
+}

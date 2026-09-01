@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; connect-src 'self'; form-action 'none'; base-uri 'none'; object-src 'none'">
+  <title>ldfreq — Open lexical-methods laboratory</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { margin: 0; background: #f4f1e8; color: #17211f; }
+    main { width: min(72rem, calc(100% - 2rem)); margin: 3rem auto; }
+    h1 { max-width: 18ch; margin: .2rem 0 .6rem; font-size: clamp(2rem, 5vw, 3.8rem); line-height: 1.05; }
+    h2, h3 { line-height: 1.25; }
+    .eyebrow { color: #9a3e35; font-size: .8rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .notice, .panel, .sample-card, fieldset { padding: 1rem; border: 1px solid #b9cec8; border-radius: .7rem; background: #fffdf7; }
+    .notice { border-left: .35rem solid #9a3e35; }
+    .question { margin: 2rem 0 1rem; }
+    .design-grid, .comparison-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .design-grid { margin-bottom: 1rem; }
+    .comparison-grid { margin: 1rem 0; }
+    .sample-text { min-height: 16rem; padding: .8rem; overflow-wrap: anywhere; white-space: pre-wrap; border: 1px solid #d7d3c8; border-radius: .4rem; background: white; font: inherit; line-height: 1.6; }
+    .metric-name { display: block; font-size: .8rem; font-weight: 400; color: #596762; }
+    .meta { font-size: .85rem; }
+    .panel { margin-top: 1rem; }
+    .scenario-picker { margin: 1.5rem 0 1rem; }
+    .scenario-picker label { display: block; margin-bottom: .4rem; font-weight: 700; }
+    .scenario-picker select { width: min(100%, 34rem); padding: .65rem; border: 1px solid #61736d; border-radius: .35rem; background: white; color: inherit; font: inherit; }
+    form { display: grid; gap: 1rem; }
+    fieldset { margin: 0; }
+    legend, label { font-weight: 700; }
+    .field { display: grid; gap: .35rem; margin-top: .8rem; }
+    input[type="text"], textarea, form select { box-sizing: border-box; width: 100%; padding: .65rem; border: 1px solid #61736d; border-radius: .35rem; background: white; color: inherit; font: inherit; }
+    textarea { min-height: 10rem; resize: vertical; line-height: 1.5; }
+    textarea.design-note { min-height: 6rem; }
+    .attestation { display: flex; gap: .55rem; align-items: flex-start; font-weight: 400; }
+    .attestation input { margin-top: .25rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: .7rem; }
+    button { padding: .65rem .9rem; border: 1px solid #0b665c; border-radius: .35rem; background: #0b665c; color: white; font: inherit; font-weight: 700; cursor: pointer; }
+    button[type="reset"] { background: white; color: #0b665c; }
+    button:disabled { cursor: not-allowed; opacity: .55; }
+    .hash { overflow-wrap: anywhere; font-family: ui-monospace, monospace; font-size: .75rem; }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: .5rem; border-bottom: 1px solid #d7d3c8; text-align: right; font-variant-numeric: tabular-nums; }
+    th:first-child, td:first-child { text-align: left; }
+    dl { display: grid; grid-template-columns: 1fr auto; gap: .5rem 1rem; }
+    dt, dd { margin: 0; }
+    dd { font-variant-numeric: tabular-nums; font-weight: 700; }
+    ul { padding-left: 1.25rem; }
+    a { color: #0b665c; }
+    [hidden] { display: none; }
+    @media (max-width: 48rem) {
+      main { margin-top: 1.5rem; }
+      .design-grid, .comparison-grid { grid-template-columns: 1fr; }
+      .sample-text { min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Static scenario probe · open methods</p>
+    <h1>語彙指標は何に反応するか</h1>
+    <p>L2語彙研究者が、統制範囲の異なる合成テキスト比較から、基本集計とTTRの反応・不変性・限界を監査する実験室です。ここでいう客観性は、手続きを追試できることを意味し、構成概念や標本選択が価値中立だという意味ではありません。</p>
+
+    <section class="notice" aria-labelledby="scope-title">
+      <h2 id="scope-title">先に読む制約</h2>
+      <p>「1文と複数文」の比較には、句読点だけを変える比較と、標本長・文数・語彙構成を同時に変える比較があります。両者は同じ問いではありません。値の高低や差の大きさは能力、CEFR、文章品質、著者、優劣、自然な文章での効果量を表しません。</p>
+    </section>
+
+    <div class="scenario-picker">
+      <label for="scenario">比較シナリオ</label>
+      <select id="scenario"></select>
+    </div>
+    <p id="scenario-status" role="status" aria-live="polite">比較データを読み込んでいます…</p>
+    <section id="comparison" hidden>
+      <h2 class="question" id="question"></h2>
+      <div class="design-grid">
+        <section class="panel" aria-labelledby="held-title">
+          <h3 id="held-title">揃えたもの</h3>
+          <ul id="held"></ul>
+        </section>
+        <section class="panel" aria-labelledby="uncontrolled-title">
+          <h3 id="uncontrolled-title">揃えていないもの</h3>
+          <ul id="uncontrolled"></ul>
+        </section>
+      </div>
+      <section class="panel" aria-labelledby="manipulation-title">
+        <h3 id="manipulation-title">操作と解釈境界</h3>
+        <p id="manipulation"></p>
+        <p id="interpretation"></p>
+      </section>
+      <div class="comparison-grid" id="cards"></div>
+      <section class="panel" aria-labelledby="difference-title">
+        <h2 id="difference-title">観測された差</h2>
+        <p id="difference-direction"></p>
+        <dl id="differences"></dl>
+        <p id="dependency-note"></p>
+      </section>
+      <section class="panel" aria-labelledby="method-title">
+        <h2 id="method-title">方法と再現情報</h2>
+        <p id="contract-version"></p>
+        <dl id="method"></dl>
+        <h3>方法論出典と適用範囲</h3>
+        <ul id="method-references"></ul>
+        <p class="meta">出典はTTRの定義と長さに関する解釈限界を支えるもので、このアプリ、tokenizer、合成シナリオ、母集団推論を妥当化するものではありません。</p>
+        <p><a href="metric_contract.json">Machine-readable metric contract</a> · <a href="samples.json">Sample manifest and provenance</a></p>
+      </section>
+    </section>
+
+    <section class="panel" aria-labelledby="workspace-title">
+      <h2 id="workspace-title">端末内研究ワークスペース</h2>
+      <p>合成テキストまたは権利確認済み公開テキストを、このページ内だけで分析します。アプリは本文を送信・永続保存せず、明示的に保存するJSONにも含めません。ただし、ブラウザや端末自体のメモリ・履歴・バックアップからの消去を保証する機能ではありません。JSONの時刻は端末時計由来で、hashも署名ではありません。現在は単一テキスト、研究者宣言の行単位分布、2テキスト比較、複数文書の記述だけです。</p>
+      <form id="workspace-form" autocomplete="off">
+        <div class="field">
+          <label for="relationship">比較関係</label>
+          <select id="relationship">
+            <option value="single">単一テキストを記述</option>
+            <option value="declared-segments">同一テキスト内を行単位で記述（1行＝1単位）</option>
+            <option value="batch">複数文書を文書単位で記述（JSON）</option>
+            <option value="paired">対応のある変換対を比較</option>
+            <option value="independent">独立した2テキストを記述的に比較</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="design-note">標本・比較設計メモ</label>
+          <textarea id="design-note" class="design-note" maxlength="1000" required spellcheck="false" autocomplete="off" aria-describedby="design-note-help"></textarea>
+          <span id="design-note-help" class="meta">単一なら分析範囲、行単位なら改行を単位とする根拠、複数文書なら抽出方法と文書間の関係、対応対なら保持・変更した点、独立2テキストなら抽出方法と関係を記録してください。</span>
+        </div>
+        <fieldset id="first-input">
+          <legend>テキストA</legend>
+          <div class="field"><label for="label-A">識別名</label><input id="label-A" type="text" maxlength="100" required autocomplete="off"></div>
+          <div class="field"><label for="provenance-A">出典・権利メモ</label><input id="provenance-A" type="text" maxlength="500" required autocomplete="off" aria-describedby="provenance-help"></div>
+          <div class="field"><label for="text-A">本文</label><textarea id="text-A" required spellcheck="false" autocomplete="off"></textarea></div>
+        </fieldset>
+        <fieldset id="batch-input" hidden>
+          <legend>複数文書JSON</legend>
+          <p class="meta">2–100件、JSON入力自体は最大6,000,000 UTF-16 code unitsです。各要素に文字列の <code>id</code>、<code>label</code>、<code>provenance</code>、<code>text</code> を指定してください。順序を保持し、不正な1件があれば全体を拒否します。</p>
+          <div class="field"><label for="batch-json">文書配列</label><textarea id="batch-json" required disabled spellcheck="false" autocomplete="off" placeholder='[{"id":"doc-1","label":"Document 1","provenance":"project-authored synthetic","text":"Example text."}]'></textarea></div>
+        </fieldset>
+        <fieldset id="second-input" hidden>
+          <legend>テキストB</legend>
+          <div class="field"><label for="label-B">識別名</label><input id="label-B" type="text" maxlength="100" autocomplete="off"></div>
+          <div class="field"><label for="provenance-B">出典・権利メモ</label><input id="provenance-B" type="text" maxlength="500" autocomplete="off" aria-describedby="provenance-help"></div>
+          <div class="field"><label for="text-B">本文</label><textarea id="text-B" spellcheck="false" autocomplete="off"></textarea></div>
+        </fieldset>
+        <p id="provenance-help" class="meta">例：project-authored synthetic、または公開資料の書誌情報・URL・ライセンス。本文をJSONへ含めないため、再現に必要な原資料は研究者側で保全してください。</p>
+        <label class="attestation" for="rights-attestation"><input id="rights-attestation" type="checkbox" required><span>入力は合成または権利確認済み公開テキストであり、個人情報、秘密情報、未公開原稿、学習者の非公開文書を含みません。</span></label>
+        <div class="actions">
+          <button id="analyze-button" type="submit" disabled>端末内で計算</button>
+          <button id="export-json" type="button" disabled>再現用JSONを保存</button>
+          <button type="reset">入力と結果を消去</button>
+        </div>
+      </form>
+      <p id="workspace-status" role="status" aria-live="polite">入力内容はまだ計算されていません。</p>
+      <div id="workspace-results" hidden>
+        <h3>結果</h3>
+        <div class="comparison-grid" id="workspace-cards"></div>
+        <section id="workspace-difference-panel" class="panel" aria-labelledby="workspace-difference-title" hidden>
+          <h3 id="workspace-difference-title">B − A</h3>
+          <p>記述的な差です。正負は良し悪しを意味しません。</p>
+          <dl id="workspace-differences"></dl>
+          <p id="workspace-dependency-note"></p>
+        </section>
+        <section id="segment-panel" class="panel" aria-labelledby="segment-title" hidden>
+          <h3 id="segment-title">研究者宣言単位の分布</h3>
+          <p>非空行を入力順に集計しています。自動文分割ではなく、行は独立した著者・参加者・母集団標本ではありません。</p>
+          <dl id="segment-summary"></dl>
+          <div class="table-scroll">
+            <table>
+              <caption>行単位の記述値</caption>
+              <thead><tr><th scope="col">Unit</th><th scope="col">Tokens</th><th scope="col">Types</th><th scope="col">TTR</th><th scope="col">Hapax</th></tr></thead>
+              <tbody id="segment-rows"></tbody>
+            </table>
+          </div>
+        </section>
+        <section id="batch-panel" class="panel" aria-labelledby="batch-title" hidden>
+          <h3 id="batch-title">文書単位の記述分布</h3>
+          <p>各文書を1行として等しく集計します。pool、順位、群差、独立性、母集団推定を意味しません。</p>
+          <dl id="batch-summary"></dl>
+          <div class="table-scroll">
+            <table>
+              <caption>文書別の記述値と内容識別子</caption>
+              <thead><tr><th scope="col">Document</th><th scope="col">Provenance</th><th scope="col">Tokens</th><th scope="col">Types</th><th scope="col">TTR</th><th scope="col">Hapax</th><th scope="col">SHA-256</th></tr></thead>
+              <tbody id="batch-rows"></tbody>
+            </table>
+          </div>
+        </section>
+        <h3>解釈上の警告</h3>
+        <ul id="workspace-warning-codes" class="meta"></ul>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="app.mjs"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "contract_version": "0.1.0-probe",
+  "cases": [
+    {
+      "id": "case-and-apostrophe-normalization",
+      "text": "Word word can't can’t.",
+      "expected": {
+        "tokens": 4,
+        "types": 2,
+        "type_token_ratio": 0.5,
+        "hapax_types": 0
+      }
+    },
+    {
+      "id": "hyphens-split",
+      "text": "well-known co-operate",
+      "expected": {
+        "tokens": 4,
+        "types": 4,
+        "type_token_ratio": 1.0,
+        "hapax_types": 4
+      }
+    },
+    {
+      "id": "non-ascii-and-numeric-words-do-not-partially-match",
+      "text": "café résumé 123 😀",
+      "expected": {
+        "tokens": 0,
+        "types": 0,
+        "type_token_ratio": 0.0,
+        "hapax_types": 0
+      }
+    },
+    {
+      "id": "case-folding-and-hapax",
+      "text": "Alpha ALPHA beta",
+      "expected": {
+        "tokens": 3,
+        "types": 2,
+        "type_token_ratio": 0.666667,
+        "hapax_types": 1
+      }
+    },
+    {
+      "id": "curly-and-straight-apostrophes-share-a-type",
+      "text": "rock’n’roll rock'n'roll",
+      "expected": {
+        "tokens": 2,
+        "types": 1,
+        "type_token_ratio": 0.5,
+        "hapax_types": 0
+      }
+    }
+  ]
+}

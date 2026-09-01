@@ -1,0 +1,91 @@
+import json
+from pathlib import Path
+import unittest
+
+
+ROOT = Path(__file__).parents[1]
+SAMPLES = json.loads((ROOT / "samples.json").read_text(encoding="utf-8"))
+
+
+class SampleManifestTests(unittest.TestCase):
+    def test_manifest_describes_three_reviewed_scenarios(self):
+        self.assertEqual(set(SAMPLES), {"samples_version", "comparison_sets"})
+        self.assertEqual(SAMPLES["samples_version"], "0.3.0-probe")
+        self.assertEqual(len(SAMPLES["comparison_sets"]), 3)
+
+        ids = set()
+        for comparison in SAMPLES["comparison_sets"]:
+            self.assertEqual(
+                set(comparison),
+                {"id", "label_ja", "question_ja", "design", "samples"},
+            )
+            self.assertEqual(len(comparison["samples"]), 2)
+            self.assertEqual(
+                set(comparison["design"]),
+                {
+                    "held_constant_ja",
+                    "manipulated_ja",
+                    "not_controlled_ja",
+                    "interpretation_ja",
+                },
+            )
+            for sample in comparison["samples"]:
+                self.assertEqual(
+                    set(sample), {"id", "label_ja", "text", "provenance", "result"}
+                )
+                self.assertNotIn(sample["id"], ids)
+                ids.add(sample["id"])
+                self.assertEqual(
+                    set(sample["provenance"]),
+                    {
+                        "kind",
+                        "author",
+                        "created_on",
+                        "authoring_method",
+                        "review_status",
+                        "rights_status",
+                    },
+                )
+                self.assertEqual(sample["provenance"]["kind"], "synthetic")
+                self.assertEqual(
+                    sample["provenance"]["review_status"], "internal-probe"
+                )
+                self.assertEqual(
+                    sample["provenance"]["rights_status"],
+                    "project-authored; MIT or CC BY 4.0",
+                )
+                self.assertEqual(
+                    set(sample["result"]),
+                    {"tokens", "types", "type_token_ratio", "hapax_types"},
+                )
+
+    def test_scenario_relations_are_explicit(self):
+        comparisons = {
+            item["id"]: item for item in SAMPLES["comparison_sets"]
+        }
+
+        repeated, varied = comparisons["matched-repetition"]["samples"]
+        self.assertEqual(repeated["id"], "repeated-content")
+        self.assertEqual(varied["id"], "varied-content")
+        self.assertEqual(repeated["result"]["tokens"], 100)
+        self.assertEqual(varied["result"]["tokens"], 100)
+        self.assertGreater(varied["result"]["types"], repeated["result"]["types"])
+
+        one_sentence, seven_sentences = comparisons["segmentation-invariance"][
+            "samples"
+        ]
+        self.assertEqual(one_sentence["text"].replace("; ", ". "), seven_sentences["text"])
+        self.assertEqual(one_sentence["result"], seven_sentences["result"])
+
+        short, full = comparisons["nested-length"]["samples"]
+        self.assertTrue(full["text"].startswith(short["text"]))
+        self.assertEqual(short["result"]["tokens"], 14)
+        self.assertEqual(full["result"]["tokens"], 100)
+        self.assertNotEqual(
+            short["result"]["type_token_ratio"],
+            full["result"]["type_token_ratio"],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
