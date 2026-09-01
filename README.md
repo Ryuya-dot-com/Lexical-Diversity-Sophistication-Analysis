@@ -13,8 +13,8 @@ provenance, and export foundation for that target; it is not yet an MWE analyzer
 Its primary outcome is reference-conditioned coverage with visible denominators;
 MWE detection is a necessary measurement stage, not the end product.
 
-The repository now also contains a non-UI MWE contract, four project-authored
-M1–M4 gold fixtures, and a reproducible projection of all 17 Open English
+The repository now also contains a non-UI MWE contract, five project-authored
+M1–M5 gold fixtures, and a reproducible projection of all 17 Open English
 WordNet 2025 senses for `take in#v`. Dependency-free checks verify stable token
 IDs, continuous and discontinuous members, gap exclusion, confirmed/rejected
 states, separate form and sense lookups, contextual decision provenance, and
@@ -33,11 +33,12 @@ The first automatic linguistic scope is English verb-particle constructions
 assignment are different operations. An unresolved or ambiguous sense must not
 silently fall back to the most frequent sense or to the form-level result.
 
-Phrasal verbs are not treated as all MWEs. Verbal idioms, light-verb
-constructions, non-verbal idioms, contextual idiomaticity, and fine-grained
-sense are distinct dimensions. They remain outside the executable contract
-until an explicit category scheme and a literal/idiomatic M5 fixture prevent a
-generic `idiom` bucket from hiding those differences.
+Phrasal verbs are not treated as all MWEs. M5 holds `spill the beans` constant
+across an idiomatic use and a literal physical-spilling use. Its PARSEME `VID`
+category, confirmed/rejected occurrence status, idiomaticity decision, and
+fine-grained sense state remain separate rather than collapsing into a generic
+`idiom` label. Light-verb constructions and non-verbal idioms remain outside
+the executable contract.
 
 The closest existing user-text profiling applications found in the current
 review are Masaki Eguchi's Multi-Word Units Profiler and Lextutor Phrase
@@ -111,6 +112,7 @@ Open <http://127.0.0.1:8000>. Run the dependency-free checks with:
 ```bash
 python3 -m unittest discover -s tests -v
 node tests/verify_contract.mjs
+python3 scripts/evaluate_mwe_predictions.py tests/fixtures/mwe_predictions_surface_baseline.json --check
 ```
 
 To reproduce the admitted OEWN subset, download the pinned 2025 JSON release
@@ -120,9 +122,11 @@ asset recorded in [`RIGHTS.md`](RIGHTS.md), then run:
 python3 scripts/extract_oewn_take_in.py PATH_TO_ZIP --check resources/oewn_take_in_2025.json
 ```
 
-Python is only an optional local static-file server; it is not part of the app
-runtime. Use localhost or HTTPS because the reproducibility hash uses the native
-Web Crypto API.
+Python is used for offline resource preparation and model-independent evaluation,
+and remains outside the app runtime. The included surface-list negative control
+evaluates decisions for supplied candidates only; it is not candidate generation,
+span detection, a trained model, or validation evidence. Use localhost or HTTPS
+because the reproducibility hash uses the native Web Crypto API.
 
 Original repository material is available under either MIT or CC BY 4.0 at the
 recipient's choice; see [`LICENSE.md`](LICENSE.md). The OEWN projection is

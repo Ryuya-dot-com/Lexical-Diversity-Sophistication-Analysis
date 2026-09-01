@@ -34,7 +34,7 @@ probe without assigning it a release version or validation claim.
 - Systematic eight-lane prior-art search protocol with a decision-based stopping
   rule, plus screening of PARSEME 2.0, MAGPIE, SemEval idiomaticity data,
   MWEasWSD, English VMWE annotations, CoAM, and CAIGen.
-- Dependency-free MWE occurrence/sense contract and four project-authored M1–M4
+- Dependency-free MWE occurrence/sense contract and five project-authored M1–M5
   gold cases covering stable token IDs, discontinuous gaps, contextual fixture
   senses, explicit rejection, and separate coverage denominators.
 - Pinned Open English WordNet 2025 `take in#v` projection with all 17 candidate
@@ -47,10 +47,11 @@ probe without assigning it a release version or validation claim.
 - Machine-readable reference-profile manifest template separating word,
   MWE-form, and MWE-sense channels while requiring corpus design, preprocessing,
   denominator, rights, artifact identity, validation, and removal evidence.
-- Explicit idiom boundary: PARSEME verbal-idiom categories and broader STREUSLE
-  evaluation evidence inform a future M5, while structural category,
-  occurrence status, contextual idiomaticity, and fine-grained sense remain
-  separate.
+- M5 `spill the beans` contrast with separate PARSEME `VID`, occurrence status,
+  contextual idiomaticity, and fine-grained-sense fields for idiomatic and
+  literal uses.
+- Standard-library Python evaluator for supplied MWE candidates and an
+  all-confirmed surface-list negative control; no model or runtime dependency.
 
 ### Integrity boundaries
 

@@ -1,0 +1,52 @@
+{
+  "schema_version": "0.1.0-provided-candidate-predictions",
+  "contract_version": "0.3.0-mwe",
+  "system": {
+    "id": "surface-list-all-confirmed",
+    "version": "0.1.0",
+    "kind": "transparent-negative-control",
+    "description": "Treat every supplied form candidate as confirmed; do not predict idiomaticity or sense.",
+    "external_dependencies": []
+  },
+  "cases": [
+    {"id": "M1-word-versus-confirmed-form", "occurrences": [
+      {"id": "m1-o1", "status": "confirmed", "idiomaticity_status": "not_assessed", "selected_sense_ids": []}
+    ]},
+    {"id": "M2-discontinuous-members-and-gaps", "occurrences": [
+      {"id": "m2-o1", "status": "confirmed", "idiomaticity_status": "not_assessed", "selected_sense_ids": []}
+    ]},
+    {"id": "M3-one-form-two-contextual-senses", "occurrences": [
+      {"id": "m3-o1", "status": "confirmed", "idiomaticity_status": "not_assessed", "selected_sense_ids": []},
+      {"id": "m3-o2", "status": "confirmed", "idiomaticity_status": "not_assessed", "selected_sense_ids": []}
+    ]},
+    {"id": "M4-confirm-versus-reject-context", "occurrences": [
+      {"id": "m4-o1", "status": "confirmed", "idiomaticity_status": "not_assessed", "selected_sense_ids": []},
+      {"id": "m4-o2", "status": "confirmed", "idiomaticity_status": "not_assessed", "selected_sense_ids": []}
+    ]},
+    {"id": "M5-idiomatic-versus-literal-vid", "occurrences": [
+      {"id": "m5-o1", "status": "confirmed", "idiomaticity_status": "not_assessed", "selected_sense_ids": []},
+      {"id": "m5-o2", "status": "confirmed", "idiomaticity_status": "not_assessed", "selected_sense_ids": []}
+    ]}
+  ],
+  "expected": {
+    "evaluation_scope": "provided-candidate contextual decisions; not candidate generation or span detection",
+    "system": {
+      "id": "surface-list-all-confirmed",
+      "version": "0.1.0",
+      "kind": "transparent-negative-control",
+      "description": "Treat every supplied form candidate as confirmed; do not predict idiomaticity or sense.",
+      "external_dependencies": []
+    },
+    "case_count": 5,
+    "candidate_count": 8,
+    "occurrence_decision_coverage": {"numerator": 8, "denominator": 8, "value": 1.0},
+    "occurrence_decision_accuracy": {"numerator": 6, "denominator": 8, "value": 0.75},
+    "confirmed_precision": {"numerator": 6, "denominator": 8, "value": 0.75},
+    "confirmed_recall": {"numerator": 6, "denominator": 6, "value": 1.0},
+    "confirmed_f1": 0.857143,
+    "idiomaticity_prediction_coverage": {"numerator": 0, "denominator": 2, "value": 0.0},
+    "idiomaticity_accuracy": {"numerator": 0, "denominator": 0, "value": null},
+    "sense_prediction_coverage": {"numerator": 0, "denominator": 2, "value": 0.0},
+    "sense_exact_match_accuracy": {"numerator": 0, "denominator": 0, "value": null}
+  }
+}

@@ -177,7 +177,7 @@ STREUSLE provides a broader lexical-expression layer spanning noun, verb, and
 prepositional expressions, but its labels and Web-review sample do not become a
 universal MWE taxonomy or frequency reference.
 
-Future idiom handling must therefore keep four coordinates separate:
+Idiom handling keeps four coordinates separate:
 
 - structural category and category-scheme version;
 - confirmed/rejected/unresolved occurrence status;
@@ -185,11 +185,12 @@ Future idiom handling must therefore keep four coordinates separate:
 - inventory-specific fine-grained sense, including abstention and
   out-of-inventory states.
 
-The current executable contract still admits only English `VPC.full` and
-`VPC.semi`. Do not rename every idiom as a VPC or add an unconstrained `idiom`
-bucket. Generalize the category field only with an M5 literal/idiomatic fixture,
-an explicit scheme namespace, and a round-trip check against an applicable
-open annotation format.
+The executable fixture contract admits English `VPC.full`, `VPC.semi`, and
+`VID`; M5 supplies the literal/idiomatic contrast for `VID`. Do not rename every
+idiom as a VPC or add an unconstrained `idiom` bucket. This synthetic contract
+does not claim import/export compatibility; an applicable open annotation
+format still requires a separate round-trip fixture before interoperability is
+claimed.
 
 ## What TAALES does and does not settle
 
@@ -376,7 +377,7 @@ publication.
 | M2 | `take in the explanation` versus `take the explanation in` | Continuous versus discontinuous realization | The same VPC form can have non-adjacent member tokens | Gap tokens are not MWE members | Contract/fixture implemented |
 | M3 | Confirmed `take in` uses with different contextual senses | Contextual sense while form is held constant | One form can populate different sense-profile cells | OEWN supplies 17 candidates, not the contextual gold decision or pedagogical priority | OEWN 2025 candidate projection and project-reviewed assignments implemented in the non-UI fixture |
 | M4 | Comprehension `took it in` versus locative `took it in the car rather than on the bus` | Contextual VPC status with the same `took`–`it`–`in` surface sequence | A pronoun can occupy the non-member gap, while identical local tokens can still require opposite decisions | Surface matching cannot decide whether `in` is a particle or heads a location phrase | Context-disambiguated confirmed/rejected fixture implemented |
-| M5 | One lexicalized idiom form in idiomatic and literal contexts | Contextual idiomaticity while form is held constant | Form membership, occurrence status, idiomaticity, and fine-grained sense are not interchangeable | PARSEME VID covers verbal idioms but not all non-verbal idioms; scheme choice precedes implementation | Planned; blocked on explicit category/idiomaticity contract |
+| M5 | `spill the beans` in idiomatic and literal physical-spilling contexts | Contextual idiomaticity while form is held constant | Form membership, occurrence status, idiomaticity, and fine-grained sense are not interchangeable | PARSEME VID covers verbal idioms but not all non-verbal idioms; two synthetic uses do not validate a classifier | VID/category and idiomaticity contract implemented; no automatic classifier |
 | S1 | Equal 100-token templates with 38 lexical substitutions | Surface repetition at fixed positions | Mechanical response of counts and TTR | Frequency, semantics, naturalness, and population effects are uncontrolled | Implemented probe |
 | S2 | Identical 100-token sequence as one orthographic sentence or seven | Terminal punctuation / segmentation only | Current token-sequence metrics are invariant | This says nothing about sentence-aware metrics or natural syntax | Implemented probe |
 | S3 | First 14-token sentence versus its containing 100-token text | Nested sample length plus accumulated continuation | TTR changes when the sample grows | Sentence count, length, and added lexical composition are not separately identified | Implemented probe |
@@ -384,7 +385,7 @@ publication.
 | S5 | Same text under an admitted unigram or n-gram comparator | Reference distribution and coverage | Resource-conditional baseline beside MWE results | A frequent n-gram is not necessarily an MWE or a particular sense | Deferred to resource-backed validation |
 | S6 | Rights-cleared public or corpus-derived text strata | Observed group/genre/time differences | Descriptive distribution with uncertainty | No causal, proficiency, or individual diagnosis claim | Blocked by provenance and design review |
 
-The M1–M4 contract/fixture increment is complete, but automatic candidate
+The M1–M5 contract/fixture increment is complete, but automatic candidate
 generation, occurrence decisions, and sense assignment are not. S1–S4 remain
 useful completed scaffolding; S5–S6 must not displace MWE work. Add a scenario
 only when it isolates a new decision-relevant contrast; do not add scenarios
@@ -396,18 +397,23 @@ The dependency-free `mwe_contract.json`, `tests/fixtures/mwe_cases.json`, and
 shared summarizer now implement the contract-and-fixture increment:
 
 - stable one-based token IDs tied to the existing canonical tokenizer;
-- member and gap token IDs, PARSEME-compatible VPC category, canonical form,
+- member and gap token IDs, PARSEME-compatible VPC/VID categories, canonical form,
   candidate/confirmed/rejected status, and decision provenance;
 - separate versioned form lookup, sense lookup, and sense-assignment states,
   including `assigned`, `ambiguous`, `abstained`, `unassigned`, and
   `out_of_inventory`;
-- M1–M4 project-authored fixtures with checked expected values and explicit
+- M1–M5 project-authored fixtures with checked expected values and explicit
   provenance for terminal contextual-sense decisions; confirmed member density
   uses the union of member IDs and excludes gaps, while every coverage result
   preserves numerator and denominator and uses `null` when undefined;
 - a positive pronoun-object VPC and a locative rejection with the same local
   `took it in` sequence, proving that `it` can be a gap without making the
   surface sequence automatically confirmable;
+- an idiomatic and literal `spill the beans` contrast with category,
+  occurrence status, idiomaticity, and fine-grained-sense state kept separate;
+- a standard-library evaluator for contextual decisions over supplied
+  candidates, plus an all-confirmed surface-list negative control. Its scores
+  are contract checks, not model evidence or span-detection performance;
 - the separately licensed OEWN 2025 `take in#v` projection as the complete M3
   candidate set, verified against the pinned release asset rather than copied
   from an unversioned live page.

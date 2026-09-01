@@ -93,6 +93,7 @@ export function summarizeMweDocument(document, contract) {
     if (!contract.occurrence_record.categories.includes(occurrence.category)) {
       throw new Error(`Unknown MWE category: ${occurrence.category}.`);
     }
+    validateIdiomaticity(occurrence, contract);
     const members = occurrence.member_token_ids;
     const gaps = occurrence.gap_token_ids;
     if (!Array.isArray(members) || members.length < 2 || new Set(members).size !== members.length) {
@@ -116,7 +117,8 @@ export function summarizeMweDocument(document, contract) {
       throw new Error(`MWE gap tokens do not match the member span: ${occurrence.id}.`);
     }
     if (occurrence.status === 'candidate') {
-      if (occurrence.decision || occurrence.form_lookup || occurrence.sense) {
+      if (occurrence.decision || occurrence.form_lookup || occurrence.sense ||
+          occurrence.idiomaticity.status !== 'not_assessed') {
         throw new Error(`Unresolved candidate carries a terminal result: ${occurrence.id}.`);
       }
       unresolved.push(occurrence);
@@ -145,6 +147,13 @@ export function summarizeMweDocument(document, contract) {
       status, confirmed.filter(item => item.sense.assignment_status === status).length
     ])
   );
+  const idiomaticityStatuses = Object.fromEntries(
+    contract.occurrence_record.idiomaticity_statuses.map(status => [
+      status,
+      document.occurrences.filter(item => item.idiomaticity.status === status).length
+    ])
+  );
+  const idiomaticityAssessed = document.occurrences.length - idiomaticityStatuses.not_assessed;
   return {
     token_count: document.tokens.length,
     candidate_occurrence_count: document.occurrences.length,
@@ -156,11 +165,28 @@ export function summarizeMweDocument(document, contract) {
     occurrence_annotation_coverage: coverage(
       confirmed.length + rejected.length, document.occurrences.length
     ),
+    idiomaticity_annotation_coverage: coverage(
+      idiomaticityAssessed, document.occurrences.length
+    ),
+    idiomaticity_status_counts: idiomaticityStatuses,
     form_inventory_coverage: coverage(formMatched, confirmed.length),
     sense_inventory_coverage: coverage(senseMatched, confirmed.length),
     sense_assignment_coverage: coverage(senseAssigned, senseMatched),
     sense_assignment_status_counts: senseStatuses
   };
+}
+
+function validateIdiomaticity(occurrence, contract) {
+  const idiomaticity = occurrence.idiomaticity;
+  if (!idiomaticity ||
+      !contract.occurrence_record.idiomaticity_statuses.includes(idiomaticity.status) ||
+      !Object.hasOwn(idiomaticity, 'decision')) {
+    throw new Error(`MWE occurrence lacks idiomaticity state: ${occurrence.id}.`);
+  }
+  const assessed = idiomaticity.status !== 'not_assessed';
+  if (assessed !== Boolean(idiomaticity.decision?.source && idiomaticity.decision?.note)) {
+    throw new Error(`Idiomaticity decision provenance is inconsistent: ${occurrence.id}.`);
+  }
 }
 
 function validateConfirmedOccurrence(occurrence, contract) {
@@ -169,8 +195,9 @@ function validateConfirmedOccurrence(occurrence, contract) {
   if (!form || !contract.occurrence_record.form_lookup_statuses.includes(form.status)) {
     throw new Error(`Confirmed occurrence lacks form lookup: ${occurrence.id}.`);
   }
-  if (!form.inventory_id || !form.inventory_version) {
-    throw new Error(`Form inventory identity is missing: ${occurrence.id}.`);
+  const formLookupAttempted = form.status !== 'not_attempted';
+  if (formLookupAttempted !== Boolean(form.inventory_id && form.inventory_version)) {
+    throw new Error(`Form inventory identity is inconsistent: ${occurrence.id}.`);
   }
   if ((form.status === 'matched') !== Boolean(form.entry_id)) {
     throw new Error(`Form lookup result is inconsistent: ${occurrence.id}.`);
@@ -182,8 +209,9 @@ function validateConfirmedOccurrence(occurrence, contract) {
   if (!Object.hasOwn(sense, 'decision')) {
     throw new Error(`Sense decision field is missing: ${occurrence.id}.`);
   }
-  if (!sense.inventory_id || !sense.inventory_version) {
-    throw new Error(`Sense inventory identity is missing: ${occurrence.id}.`);
+  const senseLookupAttempted = sense.lookup_status !== 'not_attempted';
+  if (senseLookupAttempted !== Boolean(sense.inventory_id && sense.inventory_version)) {
+    throw new Error(`Sense inventory identity is inconsistent: ${occurrence.id}.`);
   }
   const candidates = sense.candidate_sense_ids;
   const selected = sense.selected_sense_ids;

@@ -1,6 +1,6 @@
 {
-  "contract_version": "0.2.1-mwe",
-  "fixture_version": "0.2.1",
+  "contract_version": "0.3.0-mwe",
+  "fixture_version": "0.3.0",
   "provenance": {
     "kind": "synthetic",
     "author": "project team",
@@ -29,8 +29,9 @@
           "member_token_ids": ["t2", "t3"],
           "gap_token_ids": [],
           "decision": {"source": "project-authored-gold-review", "note": "Confirmed VPC fixture."},
+          "idiomaticity": {"status": "not_assessed", "decision": null},
           "form_lookup": {"inventory_id": "oewn", "inventory_version": "2025", "status": "matched", "entry_id": "take in#v"},
-          "sense": {"inventory_id": "oewn", "inventory_version": "2025", "lookup_status": "not_attempted", "candidate_sense_ids": [], "assignment_status": "unassigned", "selected_sense_ids": [], "decision": null}
+          "sense": {"inventory_id": null, "inventory_version": null, "lookup_status": "not_attempted", "candidate_sense_ids": [], "assignment_status": "unassigned", "selected_sense_ids": [], "decision": null}
         }
       ],
       "expected": {
@@ -42,6 +43,8 @@
         "confirmed_member_token_count": 2,
         "confirmed_member_density": {"numerator": 2, "denominator": 5, "value": 0.4},
         "occurrence_annotation_coverage": {"numerator": 1, "denominator": 1, "value": 1},
+        "idiomaticity_annotation_coverage": {"numerator": 0, "denominator": 1, "value": 0},
+        "idiomaticity_status_counts": {"idiomatic": 0, "literal": 0, "ambiguous": 0, "not_assessed": 1},
         "form_inventory_coverage": {"numerator": 1, "denominator": 1, "value": 1},
         "sense_inventory_coverage": {"numerator": 0, "denominator": 1, "value": 0},
         "sense_assignment_coverage": {"numerator": 0, "denominator": 0, "value": null},
@@ -67,8 +70,9 @@
           "member_token_ids": ["t2", "t5"],
           "gap_token_ids": ["t3", "t4"],
           "decision": {"source": "project-authored-gold-review", "note": "Separated particle fixture; gap tokens are not members."},
+          "idiomaticity": {"status": "not_assessed", "decision": null},
           "form_lookup": {"inventory_id": "oewn", "inventory_version": "2025", "status": "matched", "entry_id": "take in#v"},
-          "sense": {"inventory_id": "oewn", "inventory_version": "2025", "lookup_status": "not_attempted", "candidate_sense_ids": [], "assignment_status": "unassigned", "selected_sense_ids": [], "decision": null}
+          "sense": {"inventory_id": null, "inventory_version": null, "lookup_status": "not_attempted", "candidate_sense_ids": [], "assignment_status": "unassigned", "selected_sense_ids": [], "decision": null}
         }
       ],
       "expected": {
@@ -80,6 +84,8 @@
         "confirmed_member_token_count": 2,
         "confirmed_member_density": {"numerator": 2, "denominator": 5, "value": 0.4},
         "occurrence_annotation_coverage": {"numerator": 1, "denominator": 1, "value": 1},
+        "idiomaticity_annotation_coverage": {"numerator": 0, "denominator": 1, "value": 0},
+        "idiomaticity_status_counts": {"idiomatic": 0, "literal": 0, "ambiguous": 0, "not_assessed": 1},
         "form_inventory_coverage": {"numerator": 1, "denominator": 1, "value": 1},
         "sense_inventory_coverage": {"numerator": 0, "denominator": 1, "value": 0},
         "sense_assignment_coverage": {"numerator": 0, "denominator": 0, "value": null},
@@ -117,6 +123,7 @@
           "member_token_ids": ["t2", "t3"],
           "gap_token_ids": [],
           "decision": {"source": "project-authored-gold-review", "note": "Confirmed contextual VPC fixture."},
+          "idiomaticity": {"status": "not_assessed", "decision": null},
           "form_lookup": {"inventory_id": "oewn", "inventory_version": "2025", "status": "matched", "entry_id": "take in#v"},
           "sense": {
             "inventory_id": "oewn",
@@ -143,6 +150,7 @@
           "member_token_ids": ["t10", "t11"],
           "gap_token_ids": [],
           "decision": {"source": "project-authored-gold-review", "note": "Confirmed contextual VPC fixture."},
+          "idiomaticity": {"status": "not_assessed", "decision": null},
           "form_lookup": {"inventory_id": "oewn", "inventory_version": "2025", "status": "matched", "entry_id": "take in#v"},
           "sense": {
             "inventory_id": "oewn",
@@ -171,6 +179,8 @@
         "confirmed_member_token_count": 4,
         "confirmed_member_density": {"numerator": 4, "denominator": 17, "value": 0.235294},
         "occurrence_annotation_coverage": {"numerator": 2, "denominator": 2, "value": 1},
+        "idiomaticity_annotation_coverage": {"numerator": 0, "denominator": 2, "value": 0},
+        "idiomaticity_status_counts": {"idiomatic": 0, "literal": 0, "ambiguous": 0, "not_assessed": 2},
         "form_inventory_coverage": {"numerator": 2, "denominator": 2, "value": 1},
         "sense_inventory_coverage": {"numerator": 2, "denominator": 2, "value": 1},
         "sense_assignment_coverage": {"numerator": 2, "denominator": 2, "value": 1},
@@ -212,8 +222,9 @@
           "member_token_ids": ["t8", "t10"],
           "gap_token_ids": ["t9"],
           "decision": {"source": "project-authored-gold-review", "note": "Confirmed comprehension VPC; the pronoun it is the object between the verb and particle, not an MWE member."},
+          "idiomaticity": {"status": "not_assessed", "decision": null},
           "form_lookup": {"inventory_id": "oewn", "inventory_version": "2025", "status": "matched", "entry_id": "take in#v"},
-          "sense": {"inventory_id": "oewn", "inventory_version": "2025", "lookup_status": "not_attempted", "candidate_sense_ids": [], "assignment_status": "unassigned", "selected_sense_ids": [], "decision": null}
+          "sense": {"inventory_id": null, "inventory_version": null, "lookup_status": "not_attempted", "candidate_sense_ids": [], "assignment_status": "unassigned", "selected_sense_ids": [], "decision": null}
         },
         {
           "id": "m4-o2",
@@ -223,6 +234,7 @@
           "member_token_ids": ["t12", "t14"],
           "gap_token_ids": ["t13"],
           "decision": {"source": "project-authored-gold-review", "note": "Rejected: the contrast with on the bus makes in the car a location phrase rather than the take in particle."},
+          "idiomaticity": {"status": "not_assessed", "decision": null},
           "form_lookup": null,
           "sense": null
         }
@@ -236,7 +248,74 @@
         "confirmed_member_token_count": 2,
         "confirmed_member_density": {"numerator": 2, "denominator": 21, "value": 0.095238},
         "occurrence_annotation_coverage": {"numerator": 2, "denominator": 2, "value": 1},
+        "idiomaticity_annotation_coverage": {"numerator": 0, "denominator": 2, "value": 0},
+        "idiomaticity_status_counts": {"idiomatic": 0, "literal": 0, "ambiguous": 0, "not_assessed": 2},
         "form_inventory_coverage": {"numerator": 1, "denominator": 1, "value": 1},
+        "sense_inventory_coverage": {"numerator": 0, "denominator": 1, "value": 0},
+        "sense_assignment_coverage": {"numerator": 0, "denominator": 0, "value": null},
+        "sense_assignment_status_counts": {"assigned": 0, "ambiguous": 0, "abstained": 0, "unassigned": 1, "out_of_inventory": 0}
+      }
+    },
+    {
+      "id": "M5-idiomatic-versus-literal-vid",
+      "text": "Nora finally spilled the beans about the surprise, but Leo accidentally spilled the beans across the floor.",
+      "tokens": [
+        {"id": "t1", "position": 1, "surface": "Nora", "normalized": "nora"},
+        {"id": "t2", "position": 2, "surface": "finally", "normalized": "finally"},
+        {"id": "t3", "position": 3, "surface": "spilled", "normalized": "spilled"},
+        {"id": "t4", "position": 4, "surface": "the", "normalized": "the"},
+        {"id": "t5", "position": 5, "surface": "beans", "normalized": "beans"},
+        {"id": "t6", "position": 6, "surface": "about", "normalized": "about"},
+        {"id": "t7", "position": 7, "surface": "the", "normalized": "the"},
+        {"id": "t8", "position": 8, "surface": "surprise", "normalized": "surprise"},
+        {"id": "t9", "position": 9, "surface": "but", "normalized": "but"},
+        {"id": "t10", "position": 10, "surface": "Leo", "normalized": "leo"},
+        {"id": "t11", "position": 11, "surface": "accidentally", "normalized": "accidentally"},
+        {"id": "t12", "position": 12, "surface": "spilled", "normalized": "spilled"},
+        {"id": "t13", "position": 13, "surface": "the", "normalized": "the"},
+        {"id": "t14", "position": 14, "surface": "beans", "normalized": "beans"},
+        {"id": "t15", "position": 15, "surface": "across", "normalized": "across"},
+        {"id": "t16", "position": 16, "surface": "the", "normalized": "the"},
+        {"id": "t17", "position": 17, "surface": "floor", "normalized": "floor"}
+      ],
+      "occurrences": [
+        {
+          "id": "m5-o1",
+          "canonical_form": "spill the beans",
+          "category": "VID",
+          "status": "confirmed",
+          "member_token_ids": ["t3", "t5"],
+          "gap_token_ids": ["t4"],
+          "decision": {"source": "project-authored-gold-review", "note": "Confirmed verbal-idiom use meaning that Nora revealed the surprise."},
+          "idiomaticity": {"status": "idiomatic", "decision": {"source": "project-authored-gold-review", "note": "The surrounding context supports the conventional reveal-a-secret interpretation."}},
+          "form_lookup": {"inventory_id": null, "inventory_version": null, "status": "not_attempted", "entry_id": null},
+          "sense": {"inventory_id": null, "inventory_version": null, "lookup_status": "not_attempted", "candidate_sense_ids": [], "assignment_status": "unassigned", "selected_sense_ids": [], "decision": null}
+        },
+        {
+          "id": "m5-o2",
+          "canonical_form": "spill the beans",
+          "category": "VID",
+          "status": "rejected",
+          "member_token_ids": ["t12", "t14"],
+          "gap_token_ids": ["t13"],
+          "decision": {"source": "project-authored-gold-review", "note": "Rejected as a VMWE occurrence because the beans were physically spilled."},
+          "idiomaticity": {"status": "literal", "decision": {"source": "project-authored-gold-review", "note": "The floor context supports literal physical spilling rather than the conventional idiomatic meaning."}},
+          "form_lookup": null,
+          "sense": null
+        }
+      ],
+      "expected": {
+        "token_count": 17,
+        "candidate_occurrence_count": 2,
+        "confirmed_occurrence_count": 1,
+        "rejected_occurrence_count": 1,
+        "unresolved_occurrence_count": 0,
+        "confirmed_member_token_count": 2,
+        "confirmed_member_density": {"numerator": 2, "denominator": 17, "value": 0.117647},
+        "occurrence_annotation_coverage": {"numerator": 2, "denominator": 2, "value": 1},
+        "idiomaticity_annotation_coverage": {"numerator": 2, "denominator": 2, "value": 1},
+        "idiomaticity_status_counts": {"idiomatic": 1, "literal": 1, "ambiguous": 0, "not_assessed": 0},
+        "form_inventory_coverage": {"numerator": 0, "denominator": 1, "value": 0},
         "sense_inventory_coverage": {"numerator": 0, "denominator": 1, "value": 0},
         "sense_assignment_coverage": {"numerator": 0, "denominator": 0, "value": null},
         "sense_assignment_status_counts": {"assigned": 0, "ambiguous": 0, "abstained": 0, "unassigned": 1, "out_of_inventory": 0}

@@ -1,5 +1,5 @@
 {
-  "contract_version": "0.2.1-mwe",
+  "contract_version": "0.3.0-mwe",
   "status": "resource-backed-gold-fixture-contract-not-runtime-analyzer",
   "project_license": "MIT OR CC-BY-4.0",
   "external_resource_dependencies": [
@@ -14,11 +14,11 @@
   ],
   "scope": {
     "language": "English",
-    "automatic_category": "English verb-particle constructions",
+    "reviewed_categories": "English verbal multiword-expression candidates",
     "category_scheme": {
       "id": "parseme-vmwe-guidelines-1.2",
       "url": "https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2/",
-      "projection": ["VPC.full", "VPC.semi"]
+      "projection": ["VPC.full", "VPC.semi", "VID"]
     },
     "claims": "project-authored contract verification with a pinned OEWN candidate-sense projection",
     "not_implemented": [
@@ -45,16 +45,25 @@
       "member_token_ids",
       "gap_token_ids",
       "decision",
+      "idiomaticity",
       "form_lookup",
       "sense"
     ],
     "statuses": ["candidate", "confirmed", "rejected"],
-    "categories": ["VPC.full", "VPC.semi"],
+    "categories": ["VPC.full", "VPC.semi", "VID"],
     "member_rule": "two or more unique token IDs in document order",
     "gap_rule": "every non-member token strictly between the first and last member; a gap may contain a pronoun or full noun-phrase object and is not an MWE member",
     "overlap_rule": "a token may belong to multiple occurrences; confirmed member density counts the union once",
     "decision_rule": "confirmed and rejected occurrences require provenance and a note; unresolved candidates have no terminal decision",
     "form_lookup_statuses": ["matched", "out_of_inventory", "not_attempted"],
+    "inventory_identity_rule": "matched or out_of_inventory requires both inventory ID and version; not_attempted requires both to be null",
+    "idiomaticity_statuses": ["idiomatic", "literal", "ambiguous", "not_assessed"],
+    "idiomaticity_rules": [
+      "idiomaticity is separate from structural category, occurrence status, and fine-grained sense",
+      "idiomatic, literal, and ambiguous decisions require project provenance",
+      "not_assessed carries no idiomaticity decision",
+      "an unresolved candidate is always not_assessed"
+    ],
     "sense_lookup_statuses": ["matched", "out_of_inventory", "not_attempted"],
     "sense_assignment_statuses": [
       "assigned",
@@ -65,6 +74,7 @@
     ],
     "sense_rules": [
       "confirmed occurrences always carry explicit form and sense records",
+      "not_attempted lookup carries no invented inventory identity",
       "a matched candidate list contains the complete admitted sense projection for that form and part of speech",
       "assigned selects exactly one candidate sense",
       "ambiguous preserves at least two selected candidate senses",
@@ -77,6 +87,7 @@
   "measurement": {
     "confirmed_member_density": "union of confirmed member token IDs divided by all word tokens; gap tokens are excluded",
     "occurrence_annotation_coverage": "confirmed plus rejected occurrences divided by all candidate occurrences",
+    "idiomaticity_annotation_coverage": "idiomatic, literal, or ambiguous decisions divided by all candidate occurrences",
     "form_inventory_coverage": "confirmed occurrences with a matched form divided by confirmed occurrences",
     "sense_inventory_coverage": "confirmed occurrences with matched sense candidates divided by confirmed occurrences",
     "sense_assignment_coverage": "assigned occurrences divided by confirmed occurrences with matched sense candidates",

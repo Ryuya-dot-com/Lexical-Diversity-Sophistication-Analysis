@@ -71,7 +71,10 @@ assert.deepEqual(
 for (const testCase of mweFixture.cases) {
   assert.deepEqual(summarizeMweDocument(testCase, mweContract), testCase.expected, testCase.id);
 }
-assert.deepEqual(mweFixture.cases.map(testCase => testCase.id.slice(0, 2)), ['M1', 'M2', 'M3', 'M4']);
+assert.deepEqual(
+  mweFixture.cases.map(testCase => testCase.id.slice(0, 2)),
+  ['M1', 'M2', 'M3', 'M4', 'M5']
+);
 for (const occurrence of mweFixture.cases[2].occurrences) {
   assert.deepEqual(occurrence.sense.candidate_sense_ids, oewnTakeInSenseIds);
   assert.ok(occurrence.sense.decision.source);
@@ -83,6 +86,15 @@ for (const occurrence of pronounContrast.occurrences) {
   assert.deepEqual(occurrence.member_token_ids.map(id => pronounTokens.get(id)), ['took', 'in']);
   assert.deepEqual(occurrence.gap_token_ids.map(id => pronounTokens.get(id)), ['it']);
 }
+const idiomContrast = mweFixture.cases[4];
+assert.deepEqual(idiomContrast.occurrences.map(item => item.category), ['VID', 'VID']);
+assert.deepEqual(idiomContrast.occurrences.map(item => item.status), ['confirmed', 'rejected']);
+assert.deepEqual(
+  idiomContrast.occurrences.map(item => item.idiomaticity.status),
+  ['idiomatic', 'literal']
+);
+assert.equal(idiomContrast.occurrences[0].form_lookup.inventory_id, null);
+assert.equal(idiomContrast.occurrences[0].sense.inventory_id, null);
 const invalidGapCase = structuredClone(mweFixture.cases[1]);
 invalidGapCase.occurrences[0].gap_token_ids = [];
 assert.throws(
@@ -101,6 +113,8 @@ for (const [status, selected] of [
 ]) {
   const stateCase = structuredClone(mweFixture.cases[0]);
   Object.assign(stateCase.occurrences[0].sense, {
+    inventory_id: 'fixture-inventory',
+    inventory_version: '1',
     lookup_status: 'matched',
     candidate_sense_ids: ['fixture:sense:one', 'fixture:sense:two'],
     assignment_status: status,
@@ -113,6 +127,7 @@ for (const [status, selected] of [
 }
 const outOfInventoryCase = structuredClone(mweFixture.cases[0]);
 Object.assign(outOfInventoryCase.occurrences[0].sense, {
+  inventory_id: 'fixture-inventory', inventory_version: '1',
   lookup_status: 'out_of_inventory', assignment_status: 'out_of_inventory'
 });
 assert.equal(
@@ -125,6 +140,20 @@ missingSenseDecisionCase.occurrences[0].sense.decision = null;
 assert.throws(
   () => summarizeMweDocument(missingSenseDecisionCase, mweContract),
   /Sense decision provenance is inconsistent/
+);
+const missingIdiomaticityDecisionCase = structuredClone(mweFixture.cases[4]);
+missingIdiomaticityDecisionCase.occurrences[0].idiomaticity.decision = null;
+assert.throws(
+  () => summarizeMweDocument(missingIdiomaticityDecisionCase, mweContract),
+  /Idiomaticity decision provenance is inconsistent/
+);
+const inventedInventoryCase = structuredClone(mweFixture.cases[4]);
+Object.assign(inventedInventoryCase.occurrences[0].form_lookup, {
+  inventory_id: 'not-actually-used', inventory_version: '1'
+});
+assert.throws(
+  () => summarizeMweDocument(inventedInventoryCase, mweContract),
+  /Form inventory identity is inconsistent/
 );
 const unresolvedCase = structuredClone(mweFixture.cases[3]);
 Object.assign(unresolvedCase.occurrences[1], {status: 'candidate', decision: null});

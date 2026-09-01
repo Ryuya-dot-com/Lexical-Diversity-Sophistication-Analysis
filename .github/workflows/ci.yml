@@ -24,6 +24,7 @@ jobs:
           python3 -m json.tool metric_contract.json >/dev/null
           python3 -m json.tool samples.json >/dev/null
           python3 -m json.tool tests/fixtures/metric_cases.json >/dev/null
+          python3 scripts/evaluate_mwe_predictions.py tests/fixtures/mwe_predictions_surface_baseline.json --check >/dev/null
           node --check app.mjs
           node --check metrics.mjs
           node tests/verify_contract.mjs
