@@ -10,11 +10,15 @@ const sampleUrl = new URL('../samples.json', import.meta.url);
 const contractUrl = new URL('../metric_contract.json', import.meta.url);
 const mweContractUrl = new URL('../mwe_contract.json', import.meta.url);
 const mweFixtureUrl = new URL('./fixtures/mwe_cases.json', import.meta.url);
+const oewnSubsetUrl = new URL('../resources/oewn_take_in_2025.json', import.meta.url);
+const oewnNoticeUrl = new URL('../resources/OEWN_WORDNET_NOTICE.txt', import.meta.url);
 const fixture = JSON.parse(readFileSync(fixtureUrl, 'utf8'));
 const sampleDocument = JSON.parse(readFileSync(sampleUrl, 'utf8'));
 const contract = JSON.parse(readFileSync(contractUrl, 'utf8'));
 const mweContract = JSON.parse(readFileSync(mweContractUrl, 'utf8'));
 const mweFixture = JSON.parse(readFileSync(mweFixtureUrl, 'utf8'));
+const oewnSubset = JSON.parse(readFileSync(oewnSubsetUrl, 'utf8'));
+const oewnNotice = readFileSync(oewnNoticeUrl, 'utf8');
 
 assert.equal(contract.contract_version, '0.1.0-probe');
 assert.equal(fixture.contract_version, contract.contract_version);
@@ -24,7 +28,39 @@ for (const testCase of fixture.cases) {
 assert.equal(roundedRatio(1, 128), 0.007813);
 
 assert.equal(mweFixture.contract_version, mweContract.contract_version);
-assert.deepEqual(mweContract.external_resource_dependencies, []);
+assert.deepEqual(mweContract.external_resource_dependencies, [{
+  id: 'oewn', version: '2025', subset_id: oewnSubset.subset_id,
+  path: 'resources/oewn_take_in_2025.json', license: 'CC-BY-4.0 AND WordNet',
+  use: 'complete take in#v candidate-sense projection for reviewed fixtures'
+}]);
+const oewnTakeInSenseIds = [
+  'take_in%2:42:00::', 'take_in%2:32:00::', 'take_in%2:43:00::',
+  'take_in%2:41:00::', 'take_in%2:40:09::', 'take_in%2:39:06::',
+  'take_in%2:35:01::', 'take_in%2:35:00::', 'take_in%2:31:00::',
+  'take_in%2:40:00::', 'take_in%2:39:00::', 'take_in%2:35:02::',
+  'take_in%2:35:04::', 'take_in%2:34:01::', 'take_in%2:34:00::',
+  'take_in%2:30:03::', 'take_in%2:30:00::'
+];
+assert.equal(oewnSubset.resource.artifact_size_bytes, 9986555);
+assert.equal(
+  oewnSubset.resource.artifact_sha256,
+  '7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51'
+);
+assert.equal(oewnSubset.projection.entry_id, 'take in#v');
+assert.equal(oewnSubset.projection.sense_count, 17);
+assert.equal(oewnSubset.license.local_notice, 'resources/OEWN_WORDNET_NOTICE.txt');
+assert.match(oewnNotice, /WordNet 3\.1 Copyright 2011 by Princeton University/);
+assert.deepEqual(oewnSubset.projection.senses.map(sense => sense.sense_id), oewnTakeInSenseIds);
+assert.equal(
+  oewnSubset.projection.senses.find(sense => sense.sense_id === 'take_in%2:31:00::')
+    .definitions[0],
+  'take up mentally'
+);
+assert.equal(
+  oewnSubset.projection.senses.find(sense => sense.sense_id === 'take_in%2:32:00::')
+    .definitions[0],
+  'fool or hoax'
+);
 assert.deepEqual(
   mweContract.occurrence_record.categories, mweContract.scope.category_scheme.projection
 );
@@ -36,6 +72,10 @@ for (const testCase of mweFixture.cases) {
   assert.deepEqual(summarizeMweDocument(testCase, mweContract), testCase.expected, testCase.id);
 }
 assert.deepEqual(mweFixture.cases.map(testCase => testCase.id.slice(0, 2)), ['M1', 'M2', 'M3', 'M4']);
+for (const occurrence of mweFixture.cases[2].occurrences) {
+  assert.deepEqual(occurrence.sense.candidate_sense_ids, oewnTakeInSenseIds);
+  assert.ok(occurrence.sense.decision.source);
+}
 const invalidGapCase = structuredClone(mweFixture.cases[1]);
 invalidGapCase.occurrences[0].gap_token_ids = [];
 assert.throws(
@@ -57,7 +97,8 @@ for (const [status, selected] of [
     lookup_status: 'matched',
     candidate_sense_ids: ['fixture:sense:one', 'fixture:sense:two'],
     assignment_status: status,
-    selected_sense_ids: selected
+    selected_sense_ids: selected,
+    decision: {source: 'project-authored-state-test', note: `Exercise ${status} state.`}
   });
   const result = summarizeMweDocument(stateCase, mweContract);
   assert.equal(result.sense_assignment_status_counts[status], 1);
@@ -71,6 +112,12 @@ assert.equal(
   summarizeMweDocument(outOfInventoryCase, mweContract)
     .sense_assignment_status_counts.out_of_inventory,
   1
+);
+const missingSenseDecisionCase = structuredClone(mweFixture.cases[2]);
+missingSenseDecisionCase.occurrences[0].sense.decision = null;
+assert.throws(
+  () => summarizeMweDocument(missingSenseDecisionCase, mweContract),
+  /Sense decision provenance is inconsistent/
 );
 const unresolvedCase = structuredClone(mweFixture.cases[3]);
 Object.assign(unresolvedCase.occurrences[1], {status: 'candidate', decision: null});

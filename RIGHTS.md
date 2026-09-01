@@ -12,11 +12,12 @@ record. The decisions below are conservative project gates, not legal advice.
 | Item | Origin | Runtime use | Current decision |
 |---|---|---|---|
 | `index.html`, contracts, and tests | Original project code | Static browser app and verification | Dual-licensed MIT or CC BY 4.0 at the recipient's choice; no third-party runtime code. |
-| Scenarios in `samples.json` and MWE cases in `tests/fixtures/mwe_cases.json` | Project-authored synthetic transformations and reviewed `take in` contract cases | Browser comparisons and dependency-free contract verification | Dual-licensed MIT or CC BY 4.0; fixture-only sense IDs make no OEWN compatibility claim, and no person, learner corpus, API, or third-party text is included. |
-| `mwe_contract.json` and MWE summarizer | Original project schema and deterministic validation/coverage logic | Included in the auditable static source and invoked by contract tests, but not exposed through the public UI or used as an automatic MWE analyzer | Dual-licensed MIT or CC BY 4.0; no external resource or model dependency. |
+| Scenarios in `samples.json` and MWE cases in `tests/fixtures/mwe_cases.json` | Project-authored synthetic transformations and reviewed `take in` contract cases | Browser comparisons and dependency-free contract verification | Dual-licensed MIT or CC BY 4.0. M3 refers to OEWN sense IDs, but its contextual assignments are project decisions rather than OEWN gold labels; no person or learner corpus is included. |
+| `mwe_contract.json` and MWE summarizer | Original project schema and deterministic validation/coverage logic | Included in the auditable static source and invoked by contract tests, but not exposed through the public UI or used as an automatic MWE analyzer | Dual-licensed MIT or CC BY 4.0; the schema declares the separately licensed OEWN projection below. |
+| `resources/oewn_take_in_2025.json` and `resources/OEWN_WORDNET_NOTICE.txt` | Project-derived projection of the Open English WordNet 2025 `take in#v` entry and retained upstream notice | Complete 17-sense candidate inventory for M3 fixture validation; not loaded by the public UI and not a contextual WSD model | OEWN CC BY 4.0 plus the underlying WordNet License. Attribution, source identity, modifications, citation, license text, and no-endorsement notice travel with the subset. |
 | Researcher-entered text | Researcher-selected synthetic or rights-cleared published material | Browser-memory calculation only | Not bundled, transmitted, retained, or included in JSON; the checkbox records user attestation but is not a legal determination by the app. |
 | Exported analysis record | Project schema plus researcher labels, provenance, hashes, client-clock time, and results, including document-batch rows | Explicit local JSON download | Raw text is omitted. The researcher controls and must review labels/provenance before sharing; the editable JSON, hash, and timestamp are not signatures or proof of authorship/time. |
-| Lexical lists, corpora, models, dictionaries | None bundled | None | Not admitted. |
+| Other lexical lists, corpora, models, dictionaries | None bundled | None | Not admitted. |
 | Browser platform | User agent | Rendering and local calculation | No installed package or third-party script. |
 | Python and Node.js | Local/CI environment | Tests and optional static serving only | Not shipped as application dependencies. |
 | Method citations | Bibliographic metadata and DOI links | Interpretation evidence only | Attributed in the metric contract and export; no third-party code, data, or article text is copied. |
@@ -33,7 +34,7 @@ records are not part of this repository.
 | Multi-Word Units Profiler 2.0.1 | The live site labels the profiler CC BY-NC-SA 4.0 and offers four research-based lists. Eguchi's 2021 presentation documents Python/spaCy lemmatization and parsing, n-gram/dependency candidate extraction, list matching, highlighted text, and item tables. Project-authored probes confirmed both contiguous and dependency-separated matches while the M1-M4 `take in` strings remained unmarked. | The site-level license does not establish reusable licenses for each incorporated list, example, frequency, or corpus-derived field; no corresponding source/data release was located in this review. The hosted POST sends raw input to PythonAnywhere, and no retention guarantee is presented on the input page. Its list-driven matches are not contextual VPC or fine-sense gold labels. | Primary behavioral comparator and methodological/UI prior art only. Do not copy code, lists, examples, or frequency fields, automate the hosted service, or send protected research text without permission and a documented privacy basis. |
 | Lextutor Phrase Profiler 1.2 | The official page describes matching up to 30,000 words against selectable phrase/collocation lists; its Multiwords page distinguishes this from n-gram and MI-based extractors. | No explicit open redistribution license for the profiler payloads was found on the reviewed pages, and each incorporated list has separate rights and construct assumptions. Hosted input leaves the researcher's browser. | Secondary behavioral comparator only; do not copy its lists or make it a required reproducibility dependency. |
 | COCA | The official download page sells word-frequency and 2–5-gram data and describes more than 40 million downloadable n-grams. | Purchase/offline processing does not state permission to expose the data through this public service. Hiding it in a database would not establish server-use, public-query, or derived-output rights. | Exclude unless written permission covers the exact artifact and delivery/output mode. |
-| Open English WordNet | The official repository releases OEWN under CC BY 4.0. Its 2025 entry for `take in` has 17 verb senses, demonstrating that the MWE needs an inventory entry distinct from `take` and `in`. | Attribution and incorporated-material notices must travel with the exact pinned release. Inventory membership and sense count do not perform contextual WSD, and automatic use must preserve ambiguity/abstention. | Candidate B-MWE1 for the first open form/sense inventory; not yet bundled. |
+| Open English WordNet | The official repository releases OEWN under CC BY 4.0. Its 2025 entry for `take in` has 17 verb senses, demonstrating that the MWE needs an inventory entry distinct from `take` and `in`. | Attribution and incorporated-material notices must travel with the exact pinned release. Inventory membership and sense count do not perform contextual WSD, and automatic use must preserve ambiguity/abstention. | B-MWE1 admitted only as the pinned, attributed `take in#v` field projection used by M3; no full dictionary, automatic lookup, or WSD claim. |
 | PHaVE List | Garnier and Schmitt's article defines 150 frequent phrasal verbs and key meaning senses covering at least 75% of their COCA occurrences. | This is the closest L2-pedagogical target, but the publisher labels the article restricted access and routes reuse of its non-OA supplemental lists to the copyright holder. COCA-derived percentages add a separate provenance question. | Candidate C-MWE2 for method/citation or written permission; do not copy the lists, glosses, examples, or percentages into the app. |
 | STREUSLE | The official repository provides more than 55,000 words, more than 3,000 MWE instances, supersenses, recoverable gaps, and PARSEME-compatible VPC categories; annotations are CC BY-SA 4.0. | It is a web-review gold corpus and coarse semantic annotation, not a general phrasal-verb frequency or fine-grained sense inventory. ShareAlike and source-text notices require separate packaging. | Candidate C-MWE3 as a segregated validation corpus and existing-tagger benchmark, not the canonical runtime lexicon. |
 | PARSEME guidelines | The official guidelines define verbal MWEs, syntactic variants, lexicalized components/open slots, and VPC tests under CC BY 4.0. | Guidelines establish annotation decisions, not an English production detector or fine-grained sense inventory. Corpus licenses must be checked per language/release. | Methodological source for the VPC annotation contract; no new category scheme should be invented first. |
@@ -86,10 +87,42 @@ Primary evidence links:
 - Academic Word List and Academic Vocabulary List: <https://www.wgtn.ac.nz/lals/resources/academicwordlist/information>, <https://www.academicwords.info/>
 - English Vocabulary Profile terms: <https://englishprofile.org/?menu=evp-terms-of-use>
 
-## Pinned candidate evidence
+## Pinned resource evidence
 
-No external resource has entered the active tree. The checks below establish a
-reviewable candidate identity; they do not by themselves admit the artifact.
+B-MWE1 is the only external lexical resource admitted to the active tree. The
+other checks establish reviewable candidate identities but do not admit those
+artifacts.
+
+### B-MWE1 — OEWN 2025 `take in#v` projection
+
+- Official release: Open English WordNet 2025 Edition, released 2025-12-31;
+  tag `2025-edition`, repository commit
+  `dc343f2683279ecbb13fab4e2fd778d7b162d287`.
+- Source asset: `english-wordnet-2025-json.zip`, 9,986,555 bytes. The GitHub
+  release reports—and the downloaded asset independently matched—SHA-256
+  `7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51`
+  on 2026-09-01.
+- Projection: the one verb entry `take in#v`, all 17 sense keys, and only the
+  linked synset ID, ILI, definition, synonyms, and source examples needed for
+  human review. Lexical/synset relations and subcategorization frames are
+  omitted; source wording is unchanged.
+- Reproduction: download the exact asset and run
+  `python3 scripts/extract_oewn_take_in.py PATH --check resources/oewn_take_in_2025.json`.
+  The standard-library script rejects any source with a different SHA-256 or a
+  candidate set other than 17 unique senses.
+- Rights: the OEWN notice requires attribution to both Princeton WordNet and
+  the Open English WordNet team. The subset retains the CC BY 4.0 link, the
+  underlying WordNet License link and exact local notice,
+  copyright/attribution, modification, source, citation, and no-endorsement
+  notices. It is not covered by this project's dual-license grant.
+- Construct boundary: OEWN supplies the complete candidate inventory for this
+  form and POS, not occurrence detection, sense frequencies, L2 pedagogical
+  priority, or contextual gold labels. M3's two assignments are visibly
+  project-authored decisions and the contract preserves ambiguity and
+  abstention.
+- Removal: delete the projection, remove its contract dependency, and return
+  M3 to clearly project-only toy IDs or an unavailable inventory state. Never
+  substitute a new OEWN release under the 2025 identifier.
 
 ### B1 — TUBELEX English regex frequency and dispersion
 

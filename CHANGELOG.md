@@ -37,11 +37,16 @@ probe without assigning it a release version or validation claim.
 - Dependency-free MWE occurrence/sense contract and four project-authored M1–M4
   gold cases covering stable token IDs, discontinuous gaps, contextual fixture
   senses, explicit rejection, and separate coverage denominators.
+- Pinned Open English WordNet 2025 `take in#v` projection with all 17 candidate
+  senses, source hash, attribution/license notices, a standard-library
+  reproducer, project-authored M3 assignments, and mandatory sense-decision
+  provenance.
 
 ### Integrity boundaries
 
 - No account, server analysis, analytics, cookie, database, external model,
-  third-party runtime code, lexical resource, or raw-text export.
+  third-party runtime code, automatic lexical-resource lookup, or raw-text
+  export. The admitted OEWN subset is fixture-only and not loaded by the UI.
 - Server-side storage is not treated as licensing permission; open resources
   remain downloadable, and restricted resources require delivery-specific
   permission even when hidden behind an API.

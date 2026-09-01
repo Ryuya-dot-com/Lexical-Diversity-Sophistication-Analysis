@@ -1,8 +1,17 @@
 {
-  "contract_version": "0.1.0-mwe",
-  "status": "gold-fixture-contract-not-runtime-analyzer",
+  "contract_version": "0.2.0-mwe",
+  "status": "resource-backed-gold-fixture-contract-not-runtime-analyzer",
   "project_license": "MIT OR CC-BY-4.0",
-  "external_resource_dependencies": [],
+  "external_resource_dependencies": [
+    {
+      "id": "oewn",
+      "version": "2025",
+      "subset_id": "oewn-2025-take-in-v",
+      "path": "resources/oewn_take_in_2025.json",
+      "license": "CC-BY-4.0 AND WordNet",
+      "use": "complete take in#v candidate-sense projection for reviewed fixtures"
+    }
+  ],
   "scope": {
     "language": "English",
     "automatic_category": "English verb-particle constructions",
@@ -11,12 +20,13 @@
       "url": "https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2/",
       "projection": ["VPC.full", "VPC.semi"]
     },
-    "claims": "project-authored contract verification only",
+    "claims": "project-authored contract verification with a pinned OEWN candidate-sense projection",
     "not_implemented": [
       "automatic-candidate-generation",
       "automatic-occurrence-identification",
       "automatic-sense-assignment",
-      "external-inventory-integration"
+      "public-mwe-review-interface",
+      "runtime-resource-lookup"
     ]
   },
   "token_record": {
@@ -55,10 +65,12 @@
     ],
     "sense_rules": [
       "confirmed occurrences always carry explicit form and sense records",
+      "a matched candidate list contains the complete admitted sense projection for that form and part of speech",
       "assigned selects exactly one candidate sense",
       "ambiguous preserves at least two selected candidate senses",
       "abstained requires matched candidates but selects no sense",
       "unassigned and out_of_inventory select no sense",
+      "assigned, ambiguous, and abstained states require project decision provenance; an inventory supplies candidates but does not validate contextual assignment",
       "rejected and unresolved candidate occurrences carry no inventory or sense result"
     ]
   },

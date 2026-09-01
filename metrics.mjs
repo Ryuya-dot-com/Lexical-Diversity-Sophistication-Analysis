@@ -179,6 +179,9 @@ function validateConfirmedOccurrence(occurrence, contract) {
       !contract.occurrence_record.sense_assignment_statuses.includes(sense.assignment_status)) {
     throw new Error(`Confirmed occurrence lacks sense state: ${occurrence.id}.`);
   }
+  if (!Object.hasOwn(sense, 'decision')) {
+    throw new Error(`Sense decision field is missing: ${occurrence.id}.`);
+  }
   if (!sense.inventory_id || !sense.inventory_version) {
     throw new Error(`Sense inventory identity is missing: ${occurrence.id}.`);
   }
@@ -195,6 +198,10 @@ function validateConfirmedOccurrence(occurrence, contract) {
   if (['assigned', 'ambiguous', 'abstained'].includes(sense.assignment_status) &&
       sense.lookup_status !== 'matched') {
     throw new Error(`Sense assignment lacks matched candidates: ${occurrence.id}.`);
+  }
+  const decided = ['assigned', 'ambiguous', 'abstained'].includes(sense.assignment_status);
+  if (decided !== Boolean(sense.decision?.source && sense.decision?.note)) {
+    throw new Error(`Sense decision provenance is inconsistent: ${occurrence.id}.`);
   }
   const selectedCount = sense.assignment_status === 'assigned'
     ? 1 : sense.assignment_status === 'ambiguous' ? 2 : 0;

@@ -11,12 +11,13 @@ ordinary word coverage, multiword-unit form coverage, and sense-level coverage
 separate. The current probe is only the browser-local input, comparison,
 provenance, and export foundation for that target; it is not yet an MWE analyzer.
 
-The repository now also contains a non-UI MWE contract and four
-project-authored M1–M4 gold fixtures. Dependency-free checks verify stable token
+The repository now also contains a non-UI MWE contract, four project-authored
+M1–M4 gold fixtures, and a reproducible projection of all 17 Open English
+WordNet 2025 senses for `take in#v`. Dependency-free checks verify stable token
 IDs, continuous and discontinuous members, gap exclusion, confirmed/rejected
-states, separate form and sense lookups, contextual fixture senses, and visible
-coverage numerators and denominators. This is contract evidence, not automatic
-MWE detection or validation on learner data.
+states, separate form and sense lookups, contextual decision provenance, and
+visible coverage numerators and denominators. This is resource-backed contract
+evidence, not automatic MWE detection or validation on learner data.
 
 The first automatic linguistic scope is English verb-particle constructions
 (VPCs), including contiguous and separated realizations such as `take in` and
@@ -45,8 +46,8 @@ texts entirely inside the browser. It can also describe researcher-declared
 non-empty line units within one text while keeping the pooled result separate,
 or describe 2–100 researcher-identified documents from a pasted JSON array.
 Automatic sentence splitting, group inference, length curves, MWE/VPC
-identification, sense assignment, and external lexical resources are not
-implemented.
+identification, sense assignment, and runtime lexical-resource lookup are not
+implemented. The OEWN projection is exercised only by the non-UI gold checks.
 
 The target is a free, reproducible open-science tool for L2 vocabulary
 researchers. The canonical core remains downloadable and auditable. A server
@@ -66,8 +67,10 @@ tests are open for audit.
 
 It cannot yet identify `take in` as a VPC, distinguish it from a free or
 directional combination, recover separated members, or disambiguate its sense
-from unannotated user text. The implemented MWE fixtures exercise reviewed gold
-records only; the public interface still exposes no MWE workflow.
+from unannotated user text. OEWN supplies 17 candidate senses but no contextual
+choice, frequency, or L2 pedagogical ranking. The implemented MWE fixtures
+exercise reviewed gold records only; the public interface still exposes no MWE
+workflow.
 
 It also cannot assess proficiency, CEFR, writing quality, authorship, causal
 effects, or population differences; measure TAALES equivalence; independently
@@ -88,13 +91,22 @@ python3 -m unittest discover -s tests -v
 node tests/verify_contract.mjs
 ```
 
+To reproduce the admitted OEWN subset, download the pinned 2025 JSON release
+asset recorded in [`RIGHTS.md`](RIGHTS.md), then run:
+
+```bash
+python3 scripts/extract_oewn_take_in.py PATH_TO_ZIP --check resources/oewn_take_in_2025.json
+```
+
 Python is only an optional local static-file server; it is not part of the app
 runtime. Use localhost or HTTPS because the reproducibility hash uses the native
 Web Crypto API.
 
 Original repository material is available under either MIT or CC BY 4.0 at the
-recipient's choice; see [`LICENSE.md`](LICENSE.md). Third-party resources are
-not included in that grant.
+recipient's choice; see [`LICENSE.md`](LICENSE.md). The OEWN projection is
+separately licensed under OEWN CC BY 4.0 and the underlying WordNet License;
+its attribution and source notices are recorded in the resource and
+[`RIGHTS.md`](RIGHTS.md).
 
 Current unreleased changes and verification gaps are recorded in
 [`CHANGELOG.md`](CHANGELOG.md). No version, DOI, or public-release claim has been
@@ -103,7 +115,9 @@ stable cross-platform source archive.
 
 ## Scope boundary
 
-- Only reviewed, project-authored synthetic text is bundled.
+- Analysis scenarios contain only reviewed, project-authored synthetic text.
+  The separately licensed OEWN projection contains source definitions and
+  examples for one lexical entry and is not user or learner text.
 - Browser-local free text is restricted to synthetic or rights-cleared
   published material after an explicit attestation.
 - No learner writing, personal data, confidential material, unpublished
@@ -126,9 +140,11 @@ stable cross-platform source archive.
 - Formula names do not imply numerical compatibility with TAALES, TAALED, or
   another tool.
 - Resource-dependent measures remain blocked until the artifact-level gate in
-  [`RIGHTS.md`](RIGHTS.md) passes. Open resources are preferred as versioned,
-  downloadable research artifacts; server-only storage is considered only for
-  a separately permitted resource and never makes an unclear license clear.
+  [`RIGHTS.md`](RIGHTS.md) passes. The admitted OEWN projection passes that gate
+  only for non-UI `take in#v` candidate-sense validation. Open resources are
+  preferred as versioned, downloadable research artifacts; server-only storage
+  is considered only for a separately permitted resource and never makes an
+  unclear license clear.
 
 ## Method evidence
 

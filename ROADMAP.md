@@ -307,7 +307,7 @@ publication.
 |---|---|---|---|---|---|
 | M1 | `take in` as two word tokens versus one confirmed VPC occurrence | Counting channel only | Word coverage and MWE-form coverage answer different questions | A contiguous bigram is only a candidate until its use is confirmed | Contract/fixture implemented |
 | M2 | `take in the explanation` versus `take the explanation in` | Continuous versus discontinuous realization | The same VPC form can have non-adjacent member tokens | Gap tokens are not MWE members | Contract/fixture implemented |
-| M3 | Confirmed `take in` uses with different contextual senses | Contextual sense while form is held constant | One form can populate different sense-profile cells | Fixture-only sense IDs test the contract but do not establish OEWN compatibility | Contract/fixture implemented; OEWN mapping pending |
+| M3 | Confirmed `take in` uses with different contextual senses | Contextual sense while form is held constant | One form can populate different sense-profile cells | OEWN supplies 17 candidates, not the contextual gold decision or pedagogical priority | OEWN 2025 candidate projection and project-reviewed assignments implemented in the non-UI fixture |
 | M4 | A VPC use versus `take it in the car` | VPC versus literal/directional/free combination | Surface verb-plus-`in` matching produces false positives | Requires explicit rejection or a validated detector | Contract/fixture implemented |
 | S1 | Equal 100-token templates with 38 lexical substitutions | Surface repetition at fixed positions | Mechanical response of counts and TTR | Frequency, semantics, naturalness, and population effects are uncontrolled | Implemented probe |
 | S2 | Identical 100-token sequence as one orthographic sentence or seven | Terminal punctuation / segmentation only | Current token-sequence metrics are invariant | This says nothing about sentence-aware metrics or natural syntax | Implemented probe |
@@ -333,18 +333,26 @@ shared summarizer now implement the contract-and-fixture increment:
 - separate versioned form lookup, sense lookup, and sense-assignment states,
   including `assigned`, `ambiguous`, `abstained`, `unassigned`, and
   `out_of_inventory`;
-- M1–M4 project-authored fixtures with checked expected values; confirmed member
-  density uses the union of member IDs and excludes gaps, while every coverage
-  result preserves numerator and denominator and uses `null` when undefined.
+- M1–M4 project-authored fixtures with checked expected values and explicit
+  provenance for terminal contextual-sense decisions; confirmed member density
+  uses the union of member IDs and excludes gaps, while every coverage result
+  preserves numerator and denominator and uses `null` when undefined;
+- the separately licensed OEWN 2025 `take in#v` projection as the complete M3
+  candidate set, verified against the pinned release asset rather than copied
+  from an unversioned live page.
 
-The next increment is resource-backed validation, not a database or another
-metric. Derive the minimum attributed OEWN form/sense subset required to replace
-the fixture-only M3 sense IDs, pin a current English VPC evaluation projection,
-and benchmark transparent list/dependency matching plus one published baseline.
-Use STREUSLE and current PARSEME data for occurrence errors, MAGPIE only for
-literal/idiomatic transfer checks, and OEWN-backed cases for fine-sense
-assignment. Separately prove a minimal PARSEME occurrence round trip before
-promising FLAT interoperability.
+The minimum OEWN increment is now admitted: a deterministic standard-library
+extractor pins the 2025 JSON artifact and retains the complete 17-sense
+`take in#v` candidate set while omitting unrelated dictionary data. M3 maps its
+synthetic contexts to the understanding and deception senses with separate
+project decision provenance; OEWN is not represented as the annotator.
+
+The next increment is occurrence validation, not a database or another metric.
+Pin a current English VPC evaluation projection and benchmark transparent
+list/dependency matching plus one published baseline. Use STREUSLE and current
+PARSEME data for occurrence errors, MAGPIE only for literal/idiomatic transfer
+checks, and OEWN-backed cases for fine-sense assignment. Separately prove a
+minimal PARSEME occurrence round trip before promising FLAT interoperability.
 
 ## What dimensions 3 and 4 must keep separate
 
@@ -425,6 +433,10 @@ issue should be framed as evidence of improper conduct by another project.
   MIT or CC BY 4.0 at the recipient's choice.
 - [ ] Keep future third-party notices and any license-incompatible resource
   packages distinct from the original project grant.
+- [x] Admit the OEWN 2025 `take in#v` projection only with an exact release
+  hash, deterministic extractor, complete 17-sense candidate set, both required
+  license links, attribution/modification notice, removal path, and fixture
+  checks.
 - [ ] Publish source, static build, contracts, fixtures, tests, citations,
   release checksum, changelog, and a citable archived release together.
 - [x] Keep the current core usable from a local static server, without

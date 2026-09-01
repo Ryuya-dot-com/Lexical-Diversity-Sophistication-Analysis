@@ -17,6 +17,12 @@ web app contributors, 2026” with a link to the release used.
 Third-party material is not covered by this grant. It must carry its own notice
 and license before being added to the release.
 
+`resources/oewn_take_in_2025.json` is such third-party-derived material. It is
+licensed under Open English WordNet's CC BY 4.0 terms and the underlying WordNet
+License, with attribution and source links embedded in that file and recorded
+in `RIGHTS.md`; the full upstream WordNet notice is retained in
+`resources/OEWN_WORDNET_NOTICE.txt`.
+
 ## MIT License
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of

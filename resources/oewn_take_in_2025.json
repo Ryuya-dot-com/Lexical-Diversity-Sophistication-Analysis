@@ -1,0 +1,373 @@
+{
+  "subset_schema_version": "1.0.0",
+  "subset_id": "oewn-2025-take-in-v",
+  "resource": {
+    "id": "oewn",
+    "title": "Open English WordNet",
+    "version": "2025",
+    "release_tag": "2025-edition",
+    "release_date": "2025-12-31",
+    "repository_commit": "dc343f2683279ecbb13fab4e2fd778d7b162d287",
+    "artifact": "english-wordnet-2025-json.zip",
+    "artifact_size_bytes": 9986555,
+    "artifact_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+    "artifact_url": "https://github.com/globalwordnet/english-wordnet/releases/download/2025-edition/english-wordnet-2025-json.zip",
+    "retrieved_on": "2026-09-01"
+  },
+  "license": {
+    "oewn": "CC-BY-4.0",
+    "underlying_wordnet": "WordNet License",
+    "attribution": "Based on or incorporating elements of the Princeton University WordNet database and Open English WordNet 2025, copyright 2019-present The Open English WordNet Team.",
+    "license_url": "https://github.com/globalwordnet/english-wordnet/blob/2025-edition/LICENSE.md",
+    "wordnet_license_url": "https://github.com/globalwordnet/english-wordnet/blob/2025-edition/WNDB_License.txt",
+    "local_notice": "resources/OEWN_WORDNET_NOTICE.txt",
+    "no_endorsement": "No endorsement by Princeton University or the Open English WordNet Team is implied."
+  },
+  "citation": {
+    "authors": "John P. McCrae, Alexandre Rademaker, Francis Bond, Ewa Rudnicka, and Christiane Fellbaum",
+    "year": 2019,
+    "title": "English WordNet 2019 – An Open-Source WordNet for English",
+    "url": "https://aclanthology.org/2019.gwc-1.31/"
+  },
+  "projection": {
+    "entry_id": "take in#v",
+    "lemma": "take in",
+    "part_of_speech": "v",
+    "sense_count": 17,
+    "included_fields": [
+      "sense_id",
+      "synset_id",
+      "ili",
+      "definitions",
+      "synonyms",
+      "synset_examples",
+      "entry_examples"
+    ],
+    "omitted_source_fields": [
+      "lexical_relations",
+      "synset_relations",
+      "subcategorization_frames"
+    ],
+    "modification_note": "Project-derived field projection for browser-local sense review; source wording is unchanged.",
+    "senses": [
+      {
+        "sense_id": "take_in%2:42:00::",
+        "synset_id": "02663091-v",
+        "ili": "i34950",
+        "definitions": [
+          "provide with shelter"
+        ],
+        "synonyms": [
+          "take in"
+        ],
+        "synset_examples": [],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:32:00::",
+        "synset_id": "00856586-v",
+        "ili": "i25905",
+        "definitions": [
+          "fool or hoax"
+        ],
+        "synonyms": [
+          "gull",
+          "dupe",
+          "slang",
+          "befool",
+          "cod",
+          "fool",
+          "put on",
+          "take in",
+          "put one over",
+          "put one across"
+        ],
+        "synset_examples": [
+          "The immigrant was duped because he trusted everyone",
+          "You can't fool me!"
+        ],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:43:00::",
+        "synset_id": "02771422-v",
+        "ili": "i35508",
+        "definitions": [
+          "suck or take up or in"
+        ],
+        "synonyms": [
+          "absorb",
+          "take in"
+        ],
+        "synset_examples": [
+          "A black star absorbs all matter"
+        ],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:41:00::",
+        "synset_id": "02498233-v",
+        "ili": "i34184",
+        "definitions": [
+          "visit for entertainment"
+        ],
+        "synonyms": [
+          "take in"
+        ],
+        "synset_examples": [
+          "take in the sights"
+        ],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:40:09::",
+        "synset_id": "02222955-v",
+        "ili": "i32835",
+        "definitions": [
+          "call for and obtain payment of"
+        ],
+        "synonyms": [
+          "collect",
+          "take in"
+        ],
+        "synset_examples": [
+          "we collected over a million dollars in outstanding debts",
+          "he collected the rent"
+        ],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:39:06::",
+        "synset_id": "02155378-v",
+        "ili": "i32509",
+        "definitions": [
+          "see or watch"
+        ],
+        "synonyms": [
+          "watch",
+          "view",
+          "see",
+          "catch",
+          "take in"
+        ],
+        "synset_examples": [
+          "view a show on television",
+          "This program will be seen all over the world",
+          "view an exhibition",
+          "Catch a show on Broadway",
+          "see a movie"
+        ],
+        "entry_examples": [
+          "Sam and Sue take in the movie"
+        ]
+      },
+      {
+        "sense_id": "take_in%2:35:01::",
+        "synset_id": "01472854-v",
+        "ili": "i29070",
+        "definitions": [
+          "express willingness to have in one's home or environs"
+        ],
+        "synonyms": [
+          "receive",
+          "take in",
+          "invite"
+        ],
+        "synset_examples": [
+          "The community warmly received the refugees"
+        ],
+        "entry_examples": [
+          "Sam cannot take in Sue"
+        ]
+      },
+      {
+        "sense_id": "take_in%2:35:00::",
+        "synset_id": "01217350-v",
+        "ili": "i27695",
+        "definitions": [
+          "fold up"
+        ],
+        "synonyms": [
+          "take in",
+          "gather in"
+        ],
+        "synset_examples": [
+          "take in the sails"
+        ],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:31:00::",
+        "synset_id": "00603650-v",
+        "ili": "i24771",
+        "definitions": [
+          "take up mentally"
+        ],
+        "synonyms": [
+          "absorb",
+          "assimilate",
+          "ingest",
+          "take in"
+        ],
+        "synset_examples": [
+          "he absorbed the knowledge or beliefs of his tribe"
+        ],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:40:00::",
+        "synset_id": "02294200-v",
+        "ili": "i33178",
+        "definitions": [
+          "earn on some commercial or business transaction; earn as salary or wages"
+        ],
+        "synonyms": [
+          "gain",
+          "take in",
+          "clear",
+          "make",
+          "earn",
+          "realize",
+          "realise",
+          "pull in",
+          "bring in"
+        ],
+        "synset_examples": [
+          "How much do you make a month in your new job?",
+          "She earns a lot in her new job",
+          "this merger brought in lots of money",
+          "He clears $5,000 each month"
+        ],
+        "entry_examples": [
+          "They take in the money"
+        ]
+      },
+      {
+        "sense_id": "take_in%2:39:00::",
+        "synset_id": "02193614-v",
+        "ili": "i32700",
+        "definitions": [
+          "hear, usually without the knowledge of the speakers"
+        ],
+        "synonyms": [
+          "catch",
+          "take in",
+          "overhear"
+        ],
+        "synset_examples": [
+          "We overheard the conversation at the next table"
+        ],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:35:02::",
+        "synset_id": "01543626-v",
+        "ili": "i29436",
+        "definitions": [
+          "accept"
+        ],
+        "synonyms": [
+          "take in",
+          "take up"
+        ],
+        "synset_examples": [
+          "The cloth takes up the liquid"
+        ],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:35:04::",
+        "synset_id": "01541851-v",
+        "ili": "i29428",
+        "definitions": [
+          "take in, also metaphorically"
+        ],
+        "synonyms": [
+          "absorb",
+          "suck",
+          "imbibe",
+          "soak up",
+          "sop up",
+          "suck up",
+          "draw",
+          "take in",
+          "take up"
+        ],
+        "synset_examples": [
+          "The sponge absorbs water well",
+          "She drew strength from the minister's words"
+        ],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:34:01::",
+        "synset_id": "01200618-v",
+        "ili": "i27611",
+        "definitions": [
+          "take up as if with a sponge"
+        ],
+        "synonyms": [
+          "take in",
+          "sop up",
+          "suck in",
+          "take up"
+        ],
+        "synset_examples": [],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:34:00::",
+        "synset_id": "01159300-v",
+        "ili": "i27410",
+        "definitions": [
+          "serve oneself to, or consume regularly"
+        ],
+        "synonyms": [
+          "consume",
+          "ingest",
+          "take in",
+          "take",
+          "have"
+        ],
+        "synset_examples": [
+          "Have another bowl of chicken soup!",
+          "I don't take sugar in my coffee"
+        ],
+        "entry_examples": [
+          "They take in more bread"
+        ]
+      },
+      {
+        "sense_id": "take_in%2:30:03::",
+        "synset_id": "00414120-v",
+        "ili": "i23789",
+        "definitions": [
+          "take into one's family"
+        ],
+        "synonyms": [
+          "adopt",
+          "take in"
+        ],
+        "synset_examples": [
+          "They adopted two children from Nicaragua"
+        ],
+        "entry_examples": []
+      },
+      {
+        "sense_id": "take_in%2:30:00::",
+        "synset_id": "00304881-v",
+        "ili": "i23245",
+        "definitions": [
+          "make (clothes) smaller"
+        ],
+        "synonyms": [
+          "take in"
+        ],
+        "synset_examples": [
+          "Please take in this skirt — I've lost weight"
+        ],
+        "entry_examples": []
+      }
+    ]
+  }
+}
