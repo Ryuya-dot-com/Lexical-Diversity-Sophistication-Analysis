@@ -14,6 +14,7 @@ record. The decisions below are conservative project gates, not legal advice.
 | `index.html`, contracts, and tests | Original project code | Static browser app and verification | Dual-licensed MIT or CC BY 4.0 at the recipient's choice; no third-party runtime code. |
 | Scenarios in `samples.json` and MWE cases in `tests/fixtures/mwe_cases.json` | Project-authored synthetic transformations and reviewed `take in`/`spill the beans` contract cases | Browser comparisons and dependency-free contract verification | Dual-licensed MIT or CC BY 4.0. M3 refers to OEWN sense IDs, but its contextual assignments are project decisions rather than OEWN gold labels; no person or learner corpus is included. |
 | `scripts/evaluate_mwe_predictions.py` and the surface-list prediction fixture | Original project code and synthetic negative-control predictions | Offline evaluation of occurrence, idiomaticity, and sense decisions for already supplied candidates | Dual-licensed MIT or CC BY 4.0; no model, weights, training corpus, or third-party Python package is included. |
+| `benchmarks/streusle_v5_vpc_vid.json`, `scripts/check_streusle_v5.py`, and `resources/STREUSLE_NOTICE.md` | Project-authored external benchmark profile, checker, and attribution/rights notice based on pinned STREUSLE 5.0 metadata | Offline artifact verification and transparent VPC/VID baseline only; no corpus or upstream code is bundled or loaded by the Web app | Original checker and notice are dual-licensed MIT or CC BY 4.0. The profile preserves STREUSLE CC BY-SA 4.0 and source-text permission boundaries; researchers obtain the exact release separately. |
 | `mwe_contract.json` and MWE summarizer | Original project schema and deterministic validation/coverage logic | Included in the auditable static source and invoked by contract tests, but not exposed through the public UI or used as an automatic MWE analyzer | Dual-licensed MIT or CC BY 4.0; the schema declares the separately licensed OEWN projection below. |
 | `reference_profile_template.json` | Original project manifest template | Defines the evidence required for one resource projection and one word/MWE-form/MWE-sense coverage channel; not a resource, uploader, or runtime profile | Dual-licensed MIT or CC BY 4.0; null fields prevent the template from masquerading as an admitted resource. |
 | `resources/oewn_take_in_2025.json` and `resources/OEWN_WORDNET_NOTICE.txt` | Project-derived projection of the Open English WordNet 2025 `take in#v` entry and retained upstream notice | Complete 17-sense candidate inventory for M3 fixture validation; not loaded by the public UI and not a contextual WSD model | OEWN CC BY 4.0 plus the underlying WordNet License. Attribution, source identity, modifications, citation, license text, and no-endorsement notice travel with the subset. |
@@ -21,7 +22,7 @@ record. The decisions below are conservative project gates, not legal advice.
 | Exported analysis record | Project schema plus researcher labels, provenance, hashes, client-clock time, and results, including document-batch rows | Explicit local JSON download | Raw text is omitted. The researcher controls and must review labels/provenance before sharing; the editable JSON, hash, and timestamp are not signatures or proof of authorship/time. |
 | Other lexical lists, corpora, models, dictionaries | None bundled | None | Not admitted. |
 | Browser platform | User agent | Rendering and local calculation | No installed package or third-party script. |
-| Python and Node.js | Local/CI environment | Tests and optional static serving only | Not shipped as application dependencies. |
+| Python and Node.js | Local/CI environment | Tests, offline resource/benchmark verification, and optional static serving only | Not shipped as application dependencies. |
 | Method citations | Bibliographic metadata and DOI links | Interpretation evidence only | Attributed in the metric contract and export; no third-party code, data, or article text is copied. |
 
 The archived MWE/VPC roadmap is an evidence inventory, not a release input.
@@ -38,9 +39,9 @@ records are not part of this repository.
 | COCA | The official download page sells word-frequency and 2–5-gram data and describes more than 40 million downloadable n-grams. | Purchase/offline processing does not state permission to expose the data through this public service. Hiding it in a database would not establish server-use, public-query, or derived-output rights. | Exclude unless written permission covers the exact artifact and delivery/output mode. |
 | Open English WordNet | The official repository releases OEWN under CC BY 4.0. Its 2025 entry for `take in` has 17 verb senses, demonstrating that the MWE needs an inventory entry distinct from `take` and `in`. | Attribution and incorporated-material notices must travel with the exact pinned release. Inventory membership and sense count do not perform contextual WSD, and automatic use must preserve ambiguity/abstention. | B-MWE1 admitted only as the pinned, attributed `take in#v` field projection used by M3; no full dictionary, automatic lookup, or WSD claim. |
 | PHaVE List | Garnier and Schmitt's article defines 150 frequent phrasal verbs and key meaning senses covering at least 75% of their COCA occurrences. | This is the closest L2-pedagogical target, but the publisher labels the article restricted access and routes reuse of its non-OA supplemental lists to the copyright holder. COCA-derived percentages add a separate provenance question. | Candidate C-MWE2 for method/citation or written permission; do not copy the lists, glosses, examples, or percentages into the app. |
-| STREUSLE | The official repository's 5.0 release (2025-11-15) provides more than 55,000 Web-review words, more than 3,000 MWE instances, supersenses across noun/verb/preposition expressions, recoverable gaps, and PARSEME-derived verbal categories; annotations are CC BY-SA 4.0. | It is a genre-specific lexical-semantic gold corpus, not a general English frequency distribution, universal all-MWE taxonomy, or OEWN-compatible fine-sense inventory. ShareAlike and source-text notices require separate packaging. | Candidate C-MWE3 as a segregated all-type occurrence/category evaluation corpus and existing-tagger benchmark, not a lexical-coverage reference distribution. |
+| STREUSLE | The official repository's 5.0 release (2025-11-15) provides more than 55,000 Web-review words, more than 3,000 MWE instances, supersenses across noun/verb/preposition expressions, recoverable gaps, and PARSEME-derived verbal categories; annotations are CC BY-SA 4.0. | It is a genre-specific lexical-semantic gold corpus, not a general English frequency distribution, literal-negative corpus, universal taxonomy, or OEWN-compatible fine-sense inventory. Its README distinguishes CC BY-SA annotations from source sentences/PTB annotations redistributed with Google/LDC permission. | B-MWE2 admitted as an external, non-bundled STREUSLE 5.0 VPC/VID offline benchmark profile. No corpus text, annotation rows, upstream code, or model enters the Web app or permissive core. |
 | PARSEME guidelines | The official guidelines distinguish verbal idioms, light-verb constructions, inherently reflexive/adpositional verbs, multi-verb constructions, VPCs, and language-specific categories under CC BY 4.0. | The scheme is deliberately verbal and excludes many non-verbal idioms. Guidelines establish annotation decisions, not an English production detector, contextual idiomaticity scale, or fine-grained sense inventory. Corpus licenses must be checked per language/release. | Methodological source for VPC and future verbal-idiom contracts; do not use `VID` as a catch-all for non-verbal idioms. |
-| PARSEME corpus/shared task 2.0 | The 2026 shared-task paper reports 17 languages, all five syntactic category families, ten identification systems including a baseline, and a new paraphrasing task. Official GitLab tags pin the 2025 training and blind releases. | The guidelines' license does not automatically establish the license and source-text terms for every language corpus, model, or derived artifact. All-type performance is not English-VPC performance. | Current benchmark frame; select and pin an English VPC projection only after file-level license, split, and provenance review. |
+| PARSEME corpus/shared task 2.0 | The 2026 shared-task paper reports 17 languages, all five syntactic category families, ten identification systems including a baseline, and a new paraphrasing task. The fixed `st2.0-release-training-v1` tree contains 14 production language directories but no English directory; English occurs only in `subtask1_trial`. | The guidelines' license does not establish every corpus/model term, and a trial file is not an English production holdout. All-type multilingual performance is not English-VPC performance. | Current multilingual method frame and format trial only. Do not describe PARSEME 2.0 as this project's English production benchmark; use the pinned STREUSLE profile. |
 | MAGPIE | The official repository publishes 56,622 BNC-based potentially idiomatic-expression instances across 1,756 types, crowdsourced sense labels, confidence filtering, and random/type-disjoint splits under CC BY 4.0. | It primarily supports literal/idiomatic contextual classification across idiom types; it is not a VPC occurrence corpus or an OEWN-compatible fine-sense gold standard. BNC-derived context and notices must remain visible. | Candidate B-MWE4 for a segregated M4 transfer/error benchmark; do not use it to validate fine-sense coverage. |
 | SemEval-2022 Task 2 idiomaticity data/code | The shared task provides English, Portuguese, and Galician contextual idiomaticity data; the official repository contains data and preprocessing under GPL-3.0. | Binary idiomaticity and sentence representation differ from VPC identification and fine-sense assignment. Repository licensing still requires checking incorporated source text and each artifact. | Secondary benchmark/method source only; no runtime or model dependency. |
 | MWEasWSD | The published method filters rule-generated MWE candidates using context and sense glosses and reports results on DiMSUM and PARSEME English. The official code is AGPL-3.0. | The repository combines SemCor, PARSEME, DiMSUM, synthetic annotations, and separately hosted models; a code license does not flatten those data/model terms. Its model stack is not browser-minimal. | Published baseline candidate; reproduce externally on a pinned test projection before considering any component. |
@@ -91,9 +92,10 @@ Primary evidence links:
 
 ## Pinned resource evidence
 
-B-MWE1 is the only external lexical resource admitted to the active tree. The
-other checks establish reviewable candidate identities but do not admit those
-artifacts.
+B-MWE1 is the only bundled external lexical resource. B-MWE2 admits only an
+external offline benchmark profile: its corpus remains in the upstream
+checkout. The other checks establish reviewable candidate identities but do
+not admit those artifacts.
 
 ### B-MWE1 — OEWN 2025 `take in#v` projection
 
@@ -125,6 +127,32 @@ artifacts.
 - Removal: delete the projection, remove its contract dependency, and return
   M3 to clearly project-only toy IDs or an unavailable inventory state. Never
   substitute a new OEWN release under the 2025 identifier.
+
+### B-MWE2 — external STREUSLE 5.0 VPC/VID benchmark profile
+
+- Official release: tag `v5.0`, commit
+  `8ba61fe4f216e7967500a862554a4fff79d25f5d`, dated 2025-11-15.
+- Pinned JSON artifacts: train 16,845,570 bytes / SHA-256
+  `36aef0205a6e2e154b681d7520858693a264d3c40ba7d97c089345bbd1149a22`;
+  dev 2,050,638 bytes / `56cc1783962ce8c9f06b7649ffdccb48cea14ee7e4a8be2e35214ffc71303e9a`;
+  test 2,051,895 bytes / `f8144e6227db2e845cda4aa832f8d5644cb40b9e743d1dbe05663dd687d2c70c`.
+- Projection: strong `V.VPC.full`, `V.VPC.semi`, and `V.VID` occurrences only.
+  Test has 40 target occurrences/35 types, including 16 discontinuous
+  occurrences and 16 occurrences whose casefolded `lexlemma` is unseen in
+  train.
+- Transparent floor: contiguous train-lemma matching yields exact-span
+  precision 0.386364, recall 0.425, F1 0.404762; exact span-plus-category F1
+  0.380952; discontinuous and unseen recall are both zero.
+- Reproduction: obtain the free tagged release separately and run
+  `python3 scripts/check_streusle_v5.py PATH --check --surface-baseline`. The
+  checker validates all three hashes before reading the projection and emits no
+  raw text.
+- Rights: retain [`resources/STREUSLE_NOTICE.md`](resources/STREUSLE_NOTICE.md).
+  No upstream corpus, annotations, code, or model is copied here. STREUSLE is an
+  occurrence benchmark, not a reference distribution or fine-sense resource.
+- Removal: delete the metadata profile, checker, notice, and related claims. No
+  corpus artifact requires deletion from this repository because none is
+  bundled.
 
 ### B1 — TUBELEX English regex frequency and dispersion
 

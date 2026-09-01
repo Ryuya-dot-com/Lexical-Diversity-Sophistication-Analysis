@@ -8,9 +8,28 @@ SAMPLES = json.loads((ROOT / "samples.json").read_text(encoding="utf-8"))
 REFERENCE_TEMPLATE = json.loads(
     (ROOT / "reference_profile_template.json").read_text(encoding="utf-8")
 )
+MWE_CONTRACT = json.loads((ROOT / "mwe_contract.json").read_text(encoding="utf-8"))
+STREUSLE_PROFILE = json.loads(
+    (ROOT / "benchmarks/streusle_v5_vpc_vid.json").read_text(encoding="utf-8")
+)
 
 
 class SampleManifestTests(unittest.TestCase):
+    def test_streusle_profile_is_external_and_matches_the_mwe_contract(self):
+        self.assertEqual(
+            set(STREUSLE_PROFILE["projection"]["category_mapping"].values()),
+            set(MWE_CONTRACT["occurrence_record"]["categories"]),
+        )
+        self.assertFalse(STREUSLE_PROFILE["rights"]["data_bundled_here"])
+        self.assertFalse(STREUSLE_PROFILE["rights"]["upstream_code_copied_here"])
+        self.assertEqual(
+            STREUSLE_PROFILE["expected_report"]["test"]["target_occurrences"], 40
+        )
+        self.assertEqual(
+            STREUSLE_PROFILE["expected_surface_baseline"]["unseen_exact_span_recall"]["value"],
+            0.0,
+        )
+
     def test_reference_profile_template_keeps_channels_and_evidence_separate(self):
         self.assertEqual(
             REFERENCE_TEMPLATE["allowed_values"]["coverage_channel"],

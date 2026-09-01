@@ -1,0 +1,127 @@
+{
+  "profile_version": "0.1.0",
+  "profile_id": "streusle-v5-vpc-vid-offline",
+  "status": "admitted-external-offline-benchmark-data-not-bundled",
+  "purpose": "Evaluate English strong VPC and VID occurrence identification on fixed train/dev/test splits; never use this Web-review corpus as a lexical-coverage reference distribution.",
+  "source": {
+    "name": "STREUSLE",
+    "release": "5.0",
+    "release_date": "2025-11-15",
+    "repository": "https://github.com/nert-nlp/streusle",
+    "tag": "v5.0",
+    "commit": "8ba61fe4f216e7967500a862554a4fff79d25f5d",
+    "retrieved_on": "2026-09-01",
+    "language": "English",
+    "domain": "English Web Treebank Web reviews",
+    "ud_version": "2.17"
+  },
+  "artifacts": {
+    "train": {
+      "path": "train/streusle.ud_train.json",
+      "size_bytes": 16845570,
+      "sha256": "36aef0205a6e2e154b681d7520858693a264d3c40ba7d97c089345bbd1149a22"
+    },
+    "dev": {
+      "path": "dev/streusle.ud_dev.json",
+      "size_bytes": 2050638,
+      "sha256": "56cc1783962ce8c9f06b7649ffdccb48cea14ee7e4a8be2e35214ffc71303e9a"
+    },
+    "test": {
+      "path": "test/streusle.ud_test.json",
+      "size_bytes": 2051895,
+      "sha256": "f8144e6227db2e845cda4aa832f8d5644cb40b9e743d1dbe05663dd687d2c70c"
+    }
+  },
+  "projection": {
+    "source_layer": "strong MWEs in each sentence's smwes object",
+    "category_mapping": {
+      "V.VPC.full": "VPC.full",
+      "V.VPC.semi": "VPC.semi",
+      "V.VID": "VID"
+    },
+    "member_tokens": "toknums in source order",
+    "discontinuous_rule": "max(toknums) - min(toknums) + 1 is greater than len(toknums)",
+    "type_identity": "Unicode-casefolded lexlemma within this release",
+    "excluded": [
+      "weak MWE groups",
+      "non-VPC/VID strong categories",
+      "single-word lexical expressions",
+      "supersense and fine-grained OEWN-sense scoring",
+      "literal negative candidates and contextual idiomaticity labels"
+    ]
+  },
+  "expected_report": {
+    "train": {
+      "sentences": 2725,
+      "tokens": 44811,
+      "target_occurrences": 544,
+      "target_types": 351,
+      "discontinuous_target_occurrences": 158,
+      "categories": {"V.VID": 272, "V.VPC.full": 184, "V.VPC.semi": 88}
+    },
+    "dev": {
+      "sentences": 554,
+      "tokens": 5396,
+      "target_occurrences": 40,
+      "target_types": 38,
+      "discontinuous_target_occurrences": 14,
+      "categories": {"V.VID": 23, "V.VPC.full": 12, "V.VPC.semi": 5},
+      "types_seen_in_train": 16,
+      "types_unseen_in_train": 22,
+      "unseen_occurrences": 22
+    },
+    "test": {
+      "sentences": 535,
+      "tokens": 5381,
+      "target_occurrences": 40,
+      "target_types": 35,
+      "discontinuous_target_occurrences": 16,
+      "categories": {"V.VID": 24, "V.VPC.full": 11, "V.VPC.semi": 5},
+      "types_seen_in_train": 19,
+      "types_unseen_in_train": 16,
+      "unseen_occurrences": 16
+    }
+  },
+  "expected_surface_baseline": {
+    "algorithm": "casefolded contiguous token-lemma matching of train target types; most frequent train category with lexical tie-break",
+    "train_target_types": 351,
+    "exact_span": {"correct": 17, "predicted": 44, "gold": 40, "precision": 0.386364, "recall": 0.425, "f1": 0.404762},
+    "exact_span_and_category": {"correct": 16, "predicted": 44, "gold": 40, "precision": 0.363636, "recall": 0.4, "f1": 0.380952},
+    "discontinuous_exact_span": {"correct": 0, "predicted": 0, "gold": 16, "precision": null, "recall": 0.0, "f1": 0.0},
+    "seen_exact_span_recall": {"matched": 17, "gold": 24, "value": 0.708333},
+    "unseen_exact_span_recall": {"matched": 0, "gold": 16, "value": 0.0}
+  },
+  "scoring": {
+    "project_checker": "scripts/check_streusle_v5.py provides target-only exact-span and exact-span-plus-category scores for its declared surface baseline",
+    "official_evaluator": "streuseval.py from the same v5.0 checkout remains the independent all-STREUSLE evaluator",
+    "official_evaluator_sha256": "99875196a4c28cc237222c6d1d45b4ea37421e9ef065d8077f602a221a28c2d1",
+    "primary_claims": [
+      "target-only exact strong-expression identification precision, recall, and F1",
+      "target-only exact span-plus-category precision, recall, and F1",
+      "gappy, seen-type, and unseen-type recall",
+      "all-type link and token-tag diagnostics only when the official evaluator is run separately",
+      "seen and unseen lexlemma strata reported separately by this profile"
+    ],
+    "prohibited_claims": [
+      "STREUSLE validates lexical coverage, L2 proficiency, or pedagogical importance",
+      "STREUSLE supersenses equal OEWN fine-grained senses",
+      "a score on Web reviews generalizes to learner writing or other registers",
+      "the project-authored supplied-candidate evaluator measures automatic span detection"
+    ]
+  },
+  "rights": {
+    "annotation_and_ud_license": "CC-BY-SA-4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "source_sentence_and_ptb_notice": "The upstream README says source sentences and PTB annotations are redistributed with permission of Google and the Linguistic Data Consortium, respectively.",
+    "local_notice": "resources/STREUSLE_NOTICE.md",
+    "data_bundled_here": false,
+    "upstream_code_copied_here": false,
+    "reason_not_bundled": "Keep upstream source-text permissions and ShareAlike packaging intact; researchers obtain the exact free tagged release and run the local checker offline."
+  },
+  "reproduction": {
+    "checkout": "git clone --depth 1 --branch v5.0 https://github.com/nert-nlp/streusle.git PATH",
+    "check": "python3 scripts/check_streusle_v5.py PATH --check --surface-baseline",
+    "network_during_analysis": false,
+    "raw_text_exported_by_project_checker": false
+  }
+}

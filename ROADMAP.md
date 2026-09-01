@@ -157,8 +157,10 @@ No single corpus is a theory-free default. The initial resource portfolio is:
    yet.
 3. **OEWN 2025** for MWE-form and sense inventory membership, not corpus
    frequency. Only the `take in#v` projection is currently admitted.
-4. **STREUSLE and current PARSEME English data** as occurrence/category
-   evaluation corpora, not general frequency baselines. Their genre, sampling,
+4. **STREUSLE 5.0** as the pinned external English occurrence/category
+   benchmark, not a general frequency baseline. The PARSEME 2.0 production
+   training release has no English directory; its English trial data remains a
+   format/method reference rather than a holdout benchmark. Genre, sampling,
    annotation, source-text, and ShareAlike boundaries remain visible.
 
 [`reference_profile_template.json`](reference_profile_template.json) is the
@@ -277,12 +279,14 @@ therefore searched and compared in separate lanes:
 | L2 pedagogical priority | Which forms and senses merit teaching or testing attention? | PHaVE and academic MWU-list research | A pedagogical importance layer, not occurrence truth or learner knowledge |
 | Coverage reporting | What denominator and unresolved mass does each layer expose? | TAALES, existing profilers, this project's measurement contract | Product gap: keep word, confirmed form, annotation, and sense coverage separate |
 
-The 2026 PARSEME 2.0 shared task materially updates the earlier search frame:
-its corpus covers verbal, nominal, adjectival, adverbial, and functional MWEs
-in 17 languages, and its identification subtask received ten systems including
-the baseline. The first product scope remains English VPCs, but evaluation must
-use the newest applicable English release and an explicit VPC projection rather
-than treating PARSEME 1.2 or two hand-picked taggers as the whole field.
+The 2026 PARSEME 2.0 shared task materially updates the multilingual method
+frame: its corpus covers verbal, nominal, adjectival, adverbial, and functional
+MWEs in 17 languages, and its identification subtask received ten systems
+including the baseline. However, the fixed production training release has no
+English directory; English appears only in the trial tree. It therefore cannot
+serve as this project's current English holdout. The admitted English benchmark
+is the explicit VPC/VID projection of STREUSLE 5.0, while PARSEME 2.0 remains a
+format, category, and multilingual-system comparator.
 
 Every shortlisted artifact gets one record for task, target unit/categories,
 language/domain, discontinuity/overlap behavior, input/output and hosted-text
@@ -424,12 +428,21 @@ extractor pins the 2025 JSON artifact and retains the complete 17-sense
 synthetic contexts to the understanding and deception senses with separate
 project decision provenance; OEWN is not represented as the annotator.
 
-The next increment is occurrence validation, not a database or another metric.
-Pin a current English VPC evaluation projection and benchmark transparent
-list/dependency matching plus one published baseline. Use STREUSLE and current
-PARSEME data for occurrence errors, MAGPIE only for literal/idiomatic transfer
-checks, and OEWN-backed cases for fine-sense assignment. Separately prove a
-minimal PARSEME occurrence round trip before promising FLAT interoperability.
+The first occurrence-validation increment is now pinned: an external-only
+STREUSLE 5.0 projection checks 40 English VPC/VID test occurrences, including
+16 discontinuous and 16 train-unseen occurrences. A contiguous train-lemma
+surface baseline obtains exact-span F1 0.404762 and zero recall in both hard
+strata. This is a transparent floor, not a detector claim or a coverage result.
+
+The next increment is one offline contextual/dependency-aware occurrence
+baseline evaluated against the same fixed projection. A contextual transformer
+may rerank candidates; fastText may supply a cheap static-semantic comparator,
+but neither embedding is itself an MWE definition. Add a runtime model only if
+it improves predeclared exact-span, category, discontinuous, and unseen-item
+results enough to justify its model/data license, download size, compute, and
+privacy cost. MAGPIE remains segregated for literal/idiomatic transfer checks,
+and OEWN-backed cases for fine-sense assignment. Separately prove a minimal
+PARSEME occurrence round trip before promising FLAT interoperability.
 
 ## What dimensions 3 and 4 must keep separate
 

@@ -52,6 +52,14 @@ probe without assigning it a release version or validation claim.
   literal uses.
 - Standard-library Python evaluator for supplied MWE candidates and an
   all-confirmed surface-list negative control; no model or runtime dependency.
+- Pinned, external-only STREUSLE 5.0 VPC/VID benchmark profile with exact
+  artifact hashes, fixed train/dev/test strata, target-only scoring, and a
+  dependency-free contiguous-lemma baseline. The test floor is exact-span F1
+  0.404762 with zero recall on discontinuous and train-unseen occurrences; no
+  corpus text or upstream evaluator code is bundled.
+- Corrected the shared-task evidence boundary: the PARSEME 2.0 production
+  training release has no English directory, so its English trial is retained
+  only as a format/method reference rather than represented as a holdout.
 
 ### Integrity boundaries
 

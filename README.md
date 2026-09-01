@@ -40,6 +40,12 @@ fine-grained sense state remain separate rather than collapsing into a generic
 `idiom` label. Light-verb constructions and non-verbal idioms remain outside
 the executable contract.
 
+The first external occurrence benchmark is a metadata-only offline profile for
+STREUSLE 5.0. Its fixed English test projection contains 40 strong VPC/VID
+occurrences, including 16 discontinuous occurrences. No corpus text or upstream
+code is bundled. A deliberately weak contiguous train-lemma baseline obtains
+exact-span F1 0.404762 and zero recall on discontinuous and train-unseen items.
+
 The closest existing user-text profiling applications found in the current
 review are Masaki Eguchi's Multi-Word Units Profiler and Lextutor Phrase
 Profiler. The former uses n-gram and dependency candidates to highlight entries
@@ -52,8 +58,10 @@ separate, auditable word/MWE-form/MWE-sense coverage channels.
 Prior art is reviewed by task rather than by product name: discovery,
 list-conditioned profiling, occurrence identification, annotation, contextual
 idiomaticity, fine-grained sense assignment, L2 pedagogical priority, and
-coverage reporting. The latest PARSEME shared task and open contextual corpora
-are benchmark candidates, not automatic runtime dependencies.
+coverage reporting. STREUSLE 5.0 is the pinned English occurrence benchmark;
+PARSEME 2.0 remains a multilingual method/format comparator because its fixed
+production training release has no English directory. Neither is an automatic
+runtime dependency.
 
 These fixed scenarios are the method-audit surface. The initial research
 workspace now analyzes one passage, a paired transformation, or two independent
@@ -79,6 +87,9 @@ documents. It reports tokens, types, simple TTR, and hapax types under one fixed
 English ASCII tokenizer, and exports method metadata and SHA-256 identifiers
 without raw text. The source, fixtures, contract, citations, rights terms, and
 tests are open for audit.
+With a separately obtained STREUSLE 5.0 checkout, the offline checker also
+verifies exact train/dev/test artifacts and reproduces the declared VPC/VID
+surface baseline.
 
 It cannot yet identify `take in` as a VPC, distinguish it from a free or
 directional combination, recover separated members, or disambiguate its sense
@@ -113,6 +124,7 @@ Open <http://127.0.0.1:8000>. Run the dependency-free checks with:
 python3 -m unittest discover -s tests -v
 node tests/verify_contract.mjs
 python3 scripts/evaluate_mwe_predictions.py tests/fixtures/mwe_predictions_surface_baseline.json --check
+python3 scripts/check_streusle_v5.py --self-check
 ```
 
 To reproduce the admitted OEWN subset, download the pinned 2025 JSON release
@@ -122,10 +134,19 @@ asset recorded in [`RIGHTS.md`](RIGHTS.md), then run:
 python3 scripts/extract_oewn_take_in.py PATH_TO_ZIP --check resources/oewn_take_in_2025.json
 ```
 
+To reproduce the external occurrence baseline without copying the corpus into
+this repository:
+
+```bash
+git clone --depth 1 --branch v5.0 https://github.com/nert-nlp/streusle.git PATH
+python3 scripts/check_streusle_v5.py PATH --check --surface-baseline
+```
+
 Python is used for offline resource preparation and model-independent evaluation,
 and remains outside the app runtime. The included surface-list negative control
 evaluates decisions for supplied candidates only; it is not candidate generation,
-span detection, a trained model, or validation evidence. Use localhost or HTTPS
+span detection, or a trained model. The STREUSLE checker is a separate offline
+occurrence benchmark and never loads research text into the Web app. Use localhost or HTTPS
 because the reproducibility hash uses the native Web Crypto API.
 
 Original repository material is available under either MIT or CC BY 4.0 at the
