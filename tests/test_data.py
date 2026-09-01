@@ -5,9 +5,28 @@ import unittest
 
 ROOT = Path(__file__).parents[1]
 SAMPLES = json.loads((ROOT / "samples.json").read_text(encoding="utf-8"))
+REFERENCE_TEMPLATE = json.loads(
+    (ROOT / "reference_profile_template.json").read_text(encoding="utf-8")
+)
 
 
 class SampleManifestTests(unittest.TestCase):
+    def test_reference_profile_template_keeps_channels_and_evidence_separate(self):
+        self.assertEqual(
+            REFERENCE_TEMPLATE["allowed_values"]["coverage_channel"],
+            ["word", "mwe_form", "mwe_sense"],
+        )
+        manifest = REFERENCE_TEMPLATE["manifest_template"]
+        self.assertEqual(set(manifest), set(REFERENCE_TEMPLATE["required_sections"]))
+        self.assertIsNone(manifest["construct"]["coverage_channel"])
+        self.assertIsNone(manifest["source"]["artifact_sha256"])
+        self.assertIsNone(manifest["measurement"]["denominator_definition"])
+        self.assertIsNone(manifest["rights"]["browser_delivery_permitted"])
+        self.assertIn(
+            "no profile becomes a silent universal default; every result exports its profile identity and limitations",
+            REFERENCE_TEMPLATE["admission_rules"],
+        )
+
     def test_manifest_describes_three_reviewed_scenarios(self):
         self.assertEqual(set(SAMPLES), {"samples_version", "comparison_sets"})
         self.assertEqual(SAMPLES["samples_version"], "0.3.0-probe")

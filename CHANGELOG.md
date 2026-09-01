@@ -44,6 +44,13 @@ probe without assigning it a release version or validation claim.
 - Context-disambiguated M4 pronoun contrast: confirmed comprehension
   `took it in` and rejected locative `took it in the car rather than on the
   bus`, both preserving `it` as a non-member gap.
+- Machine-readable reference-profile manifest template separating word,
+  MWE-form, and MWE-sense channels while requiring corpus design, preprocessing,
+  denominator, rights, artifact identity, validation, and removal evidence.
+- Explicit idiom boundary: PARSEME verbal-idiom categories and broader STREUSLE
+  evaluation evidence inform a future M5, while structural category,
+  occurrence status, contextual idiomaticity, and fine-grained sense remain
+  separate.
 
 ### Integrity boundaries
 

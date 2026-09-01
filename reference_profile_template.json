@@ -1,0 +1,121 @@
+{
+  "template_version": "0.1.0",
+  "status": "manifest-template-not-resource-or-runtime-loader",
+  "purpose": "Describe one versioned reference projection for one lexical-coverage channel without treating any corpus as universal.",
+  "allowed_values": {
+    "coverage_channel": ["word", "mwe_form", "mwe_sense"],
+    "reference_function": ["frequency_distribution", "dispersion_distribution", "inventory_membership"],
+    "source_kind": ["corpus_aggregate", "lexicon", "researcher_supplied"],
+    "profile_status": ["candidate", "admitted", "deprecated", "withdrawn"]
+  },
+  "required_sections": [
+    "identity",
+    "construct",
+    "source",
+    "corpus_design",
+    "processing",
+    "table",
+    "measurement",
+    "rights",
+    "validation"
+  ],
+  "manifest_template": {
+    "identity": {
+      "profile_id": null,
+      "profile_version": null,
+      "title": null,
+      "profile_status": "candidate",
+      "language": "en"
+    },
+    "construct": {
+      "coverage_channel": null,
+      "reference_function": null,
+      "unit": null,
+      "population_or_exposure_claim": null,
+      "excluded_inferences": []
+    },
+    "source": {
+      "source_kind": null,
+      "creator_or_rights_holder": null,
+      "canonical_url": null,
+      "release_or_edition": null,
+      "retrieved_on": null,
+      "artifact_name": null,
+      "artifact_size_bytes": null,
+      "artifact_sha256": null
+    },
+    "corpus_design": {
+      "applies": null,
+      "registers": [],
+      "language_varieties": [],
+      "time_span": {"start": null, "end": null},
+      "sampling_frame": null,
+      "sampling_unit": null,
+      "token_count": null,
+      "document_count": null,
+      "balancing_or_weighting": null,
+      "known_biases": []
+    },
+    "processing": {
+      "source_tokenization": null,
+      "input_tokenizer_mapping": null,
+      "normalization": null,
+      "case_policy": null,
+      "lemmatization": null,
+      "part_of_speech_policy": null,
+      "word_family_policy": null,
+      "mwe_matching_policy": null,
+      "sense_mapping_policy": null,
+      "derivation_command": null,
+      "derivation_code_commit": null
+    },
+    "table": {
+      "path": null,
+      "format": null,
+      "encoding": "UTF-8",
+      "compression": null,
+      "row_unit": null,
+      "columns": [],
+      "total_row_rule": null,
+      "duplicate_key_rule": null
+    },
+    "measurement": {
+      "numerator_definition": null,
+      "denominator_definition": null,
+      "frequency_or_rank_formula": null,
+      "band_boundaries": [],
+      "rank_tie_policy": null,
+      "dispersion_field": null,
+      "missing_item_policy": null,
+      "zero_denominator_policy": "value is null; preserve numerator and denominator"
+    },
+    "rights": {
+      "license_identifier": null,
+      "license_url": null,
+      "redistribution_permitted": null,
+      "modification_permitted": null,
+      "browser_delivery_permitted": null,
+      "derived_output_publication_permitted": null,
+      "required_attribution": null,
+      "notice_paths": [],
+      "restrictions": [],
+      "reviewed_on": null
+    },
+    "validation": {
+      "fixture_ids": [],
+      "expected_results": [],
+      "cross_tool_claim": "none",
+      "browser_size_or_latency_evidence": null,
+      "removal_or_replacement_procedure": null
+    }
+  },
+  "admission_rules": [
+    "one manifest describes one resource projection and one coverage channel",
+    "corpus-derived and lexicon-derived profiles are not interchangeable",
+    "a frequency profile records corpus register, time, variety, sampling, preprocessing, and denominator",
+    "an MWE form or sense profile never substitutes component-word frequencies for the MWE",
+    "no profile becomes a silent universal default; every result exports its profile identity and limitations",
+    "evaluation corpora are benchmarks unless their sampling design also supports the declared reference claim",
+    "unknown rights, provenance, formula, or removal fields keep a profile at candidate status"
+  ]
+}

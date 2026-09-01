@@ -124,6 +124,73 @@ file-level method, provenance, rights, and numerical review.
    project-authored fixtures are the default. A server or restricted resource
    requires a demonstrated research need and a sustainable free-access plan.
 
+## Primary coverage estimand
+
+The primary product purpose is reference-conditioned lexical coverage, not MWE
+detection for its own sake and not another general lexical-diversity dashboard.
+Detection, review, and sense decisions are required only because an invalid
+lexical unit produces an invalid coverage numerator and denominator.
+
+Three coverage channels remain distinct:
+
+| Channel | Observed unit | Reference role | Denominator that must remain visible |
+|---|---|---|---|
+| Word | Recognized word token, with surface/lemma/family policy fixed per profile | Frequency or dispersion distribution | All recognized word tokens in the declared text unit |
+| MWE form | Confirmed MWE occurrence or distinct confirmed form, never silently mixed | Form inventory or form-frequency distribution | Confirmed occurrences for token coverage; distinct confirmed forms for type coverage |
+| MWE sense | Confirmed occurrence plus explicit inventory-specific sense state | Sense inventory and, only if available, sense-frequency distribution | Confirmed occurrences for inventory coverage; matched candidates for assignment coverage |
+
+Annotation coverage is a fourth *quality-control measure*, not a lexical-
+coverage channel: confirmed plus rejected candidates divided by all candidates.
+Likewise, idiomaticity is a contextual annotation dimension, not a synonym for
+MWE form or fine-grained sense coverage.
+
+No single corpus is a theory-free default. The initial resource portfolio is:
+
+1. **TUBELEX English regex candidate** for a word-form frequency and dispersion
+   profile approximating contemporary audiovisual/spoken exposure. It is not a
+   general English, academic, written, or learner-knowledge norm. Its published
+   aggregate is rights-cleared for preparation, but its tokenizer projection,
+   band boundaries, ties, and browser payload still block admission.
+2. **One exact Leipzig written-register package**, to be selected and pinned as
+   a contrast rather than pooled silently with TUBELEX. News, Web, Wikipedia,
+   country, year, and corpus size are construct choices; no package is admitted
+   yet.
+3. **OEWN 2025** for MWE-form and sense inventory membership, not corpus
+   frequency. Only the `take in#v` projection is currently admitted.
+4. **STREUSLE and current PARSEME English data** as occurrence/category
+   evaluation corpora, not general frequency baselines. Their genre, sampling,
+   annotation, source-text, and ShareAlike boundaries remain visible.
+
+[`reference_profile_template.json`](reference_profile_template.json) is the
+machine-readable admission template. One completed manifest describes one
+resource projection and one coverage channel, including corpus design,
+preprocessing, table schema, formula/denominator, rights, hash, validation, and
+removal. It is not a generic uploader or a runtime resource.
+
+## Beyond phrasal verbs
+
+VPC is the first automatic validation slice, not the ontology of all MWEs.
+PARSEME 1.2 separately defines verbal idioms (VID), light-verb constructions,
+inherently reflexive/adpositional verbs, multi-verb constructions, and VPCs.
+It explicitly excludes many non-verbal idioms from its universal VMWE scope.
+STREUSLE provides a broader lexical-expression layer spanning noun, verb, and
+prepositional expressions, but its labels and Web-review sample do not become a
+universal MWE taxonomy or frequency reference.
+
+Future idiom handling must therefore keep four coordinates separate:
+
+- structural category and category-scheme version;
+- confirmed/rejected/unresolved occurrence status;
+- contextual idiomaticity: idiomatic, literal, ambiguous, or not assessed;
+- inventory-specific fine-grained sense, including abstention and
+  out-of-inventory states.
+
+The current executable contract still admits only English `VPC.full` and
+`VPC.semi`. Do not rename every idiom as a VPC or add an unconstrained `idiom`
+bucket. Generalize the category field only with an M5 literal/idiomatic fixture,
+an explicit scheme namespace, and a round-trip check against an applicable
+open annotation format.
+
 ## What TAALES does and does not settle
 
 TAALES 2.2/2.8.1 has separate unigram and contiguous bigram/trigram indices.
@@ -309,6 +376,7 @@ publication.
 | M2 | `take in the explanation` versus `take the explanation in` | Continuous versus discontinuous realization | The same VPC form can have non-adjacent member tokens | Gap tokens are not MWE members | Contract/fixture implemented |
 | M3 | Confirmed `take in` uses with different contextual senses | Contextual sense while form is held constant | One form can populate different sense-profile cells | OEWN supplies 17 candidates, not the contextual gold decision or pedagogical priority | OEWN 2025 candidate projection and project-reviewed assignments implemented in the non-UI fixture |
 | M4 | Comprehension `took it in` versus locative `took it in the car rather than on the bus` | Contextual VPC status with the same `took`–`it`–`in` surface sequence | A pronoun can occupy the non-member gap, while identical local tokens can still require opposite decisions | Surface matching cannot decide whether `in` is a particle or heads a location phrase | Context-disambiguated confirmed/rejected fixture implemented |
+| M5 | One lexicalized idiom form in idiomatic and literal contexts | Contextual idiomaticity while form is held constant | Form membership, occurrence status, idiomaticity, and fine-grained sense are not interchangeable | PARSEME VID covers verbal idioms but not all non-verbal idioms; scheme choice precedes implementation | Planned; blocked on explicit category/idiomaticity contract |
 | S1 | Equal 100-token templates with 38 lexical substitutions | Surface repetition at fixed positions | Mechanical response of counts and TTR | Frequency, semantics, naturalness, and population effects are uncontrolled | Implemented probe |
 | S2 | Identical 100-token sequence as one orthographic sentence or seven | Terminal punctuation / segmentation only | Current token-sequence metrics are invariant | This says nothing about sentence-aware metrics or natural syntax | Implemented probe |
 | S3 | First 14-token sentence versus its containing 100-token text | Nested sample length plus accumulated continuation | TTR changes when the sample grows | Sentence count, length, and added lexical composition are not separately identified | Implemented probe |

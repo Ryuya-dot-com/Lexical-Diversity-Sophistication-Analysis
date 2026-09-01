@@ -10,6 +10,8 @@ The product target is an independent, open-science application that keeps
 ordinary word coverage, multiword-unit form coverage, and sense-level coverage
 separate. The current probe is only the browser-local input, comparison,
 provenance, and export foundation for that target; it is not yet an MWE analyzer.
+Its primary outcome is reference-conditioned coverage with visible denominators;
+MWE detection is a necessary measurement stage, not the end product.
 
 The repository now also contains a non-UI MWE contract, four project-authored
 M1–M4 gold fixtures, and a reproducible projection of all 17 Open English
@@ -30,6 +32,12 @@ The first automatic linguistic scope is English verb-particle constructions
 `take it in`. Occurrence detection, form-inventory lookup, and contextual sense
 assignment are different operations. An unresolved or ambiguous sense must not
 silently fall back to the most frequent sense or to the form-level result.
+
+Phrasal verbs are not treated as all MWEs. Verbal idioms, light-verb
+constructions, non-verbal idioms, contextual idiomaticity, and fine-grained
+sense are distinct dimensions. They remain outside the executable contract
+until an explicit category scheme and a literal/idiomatic M5 fixture prevent a
+generic `idiom` bucket from hiding those differences.
 
 The closest existing user-text profiling applications found in the current
 review are Masaki Eguchi's Multi-Word Units Profiler and Lextutor Phrase
@@ -77,6 +85,14 @@ from unannotated user text. OEWN supplies 17 candidate senses but no contextual
 choice, frequency, or L2 pedagogical ranking. The implemented MWE fixtures
 exercise reviewed gold records only; the public interface still exposes no MWE
 workflow.
+
+No reference corpus is yet active in the browser UI. TUBELEX English is the
+first word-frequency/dispersion candidate, a future exact Leipzig package is a
+written-register contrast, OEWN is an inventory rather than a corpus, and
+STREUSLE/PARSEME are evaluation data rather than general frequency baselines.
+[`reference_profile_template.json`](reference_profile_template.json) records
+the corpus design, unit, preprocessing, denominator, rights, artifact hash,
+validation, and removal path required before any profile is admitted.
 
 It also cannot assess proficiency, CEFR, writing quality, authorship, causal
 effects, or population differences; measure TAALES equivalence; independently
@@ -151,6 +167,9 @@ stable cross-platform source archive.
   preferred as versioned, downloadable research artifacts; server-only storage
   is considered only for a separately permitted resource and never makes an
   unclear license clear.
+- A reference result always names one completed resource profile. The app must
+  not silently pool registers, substitute a lexicon for a frequency corpus, or
+  present TUBELEX, Leipzig, OEWN, STREUSLE, or PARSEME as a universal norm.
 
 ## Method evidence
 
