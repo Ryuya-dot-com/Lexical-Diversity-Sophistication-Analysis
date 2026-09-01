@@ -27,6 +27,9 @@ probe without assigning it a release version or validation claim.
   portals, the STREUSLE recognizer, and PyMUSAS: reuse conventions,
   interchange, and measured baselines instead of rebuilding an annotation
   platform.
+- MWU Profiler 2.0.1 prior-art review, including its list-driven n-gram and
+  dependency pipeline, hosted-input and resource-rights boundaries, and a
+  project-authored `take in`/known-item black-box comparison.
 
 ### Integrity boundaries
 

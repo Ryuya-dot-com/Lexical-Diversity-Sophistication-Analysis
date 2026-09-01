@@ -107,12 +107,13 @@ file-level method, provenance, rights, and numerical review.
    confirmation, inventory lookup, and contextual sense assignment are separate
    stages. `ambiguous`, `abstained`, `unassigned`, and `out_of_inventory` remain
    observable states.
-3. **Reuse before invention.** FLAT/PARSEME supply an established MWE
-   annotation workflow and conventions; STREUSLE supplies validation data;
+3. **Reuse before invention.** Eguchi's Multi-Word Units Profiler supplies the
+   closest user-text profiling prior art; FLAT/PARSEME supply an established
+   MWE annotation workflow and conventions; STREUSLE supplies validation data;
    Open English WordNet supplies an open sense inventory; TAALES supplies
-   unigram and contiguous n-gram comparators. A new annotation platform,
-   detector, or sense inventory needs evidence that these cannot meet the
-   admitted need.
+   unigram and contiguous n-gram comparators. A new profiler, annotation
+   platform, detector, or sense inventory needs evidence that these cannot meet
+   the admitted need.
 4. **Rights before implementation.** A tool license, an algorithm description,
    a corpus license, and permission to redistribute derived tables are four
    separate questions.
@@ -140,6 +141,48 @@ verb entry with 17 listed senses, but the parent's ordinary raw-text profile
 does not detect that MWE entry. Rebuilding another unigram profile would repeat
 existing work without solving the stated construct problem.
 
+## What Multi-Word Units Profiler settles and leaves open
+
+Eguchi's 2021 presentation describes Multi-Word Units Profiler 2.0.1 as a free
+Web application for research and pedagogy. It accepts user text, lemmatizes and
+parses it with spaCy, extracts contiguous n-gram and dependency candidates,
+matches them against selected corpus-based MWU lists, and returns highlighted
+text plus item tables. Dependency extraction is specifically used to recover
+dislocated collocations. The live 2.0.1 interface currently offers the PHRASE
+List, Academic Formulas List, Biber et al. lexical bundles, and Academic
+Collocations List.
+
+This is closer to the product target than TAALES and must be the primary
+profiling comparator. It also sharpens the remaining gap:
+
+- list membership is not contextual confirmation that an occurrence is an MWE;
+- absence from a selected list is not evidence that an expression is not an
+  MWE;
+- dependency-linked collocations and English VPCs are overlapping but different
+  target constructs;
+- item highlighting and occurrence tables do not by themselves provide
+  separate word-, confirmed-form-, annotation-, and sense-coverage
+  denominators;
+- the presentation identifies false positives and expert evaluation as open
+  development issues, so its output must not be treated as gold annotation;
+- its four list payloads have separate provenance and reuse questions, and the
+  hosted form sends input text to a server.
+
+A 2026-09-01 black-box check used only project-authored sentences. With all
+four lists selected, the live app left `take in`, separated `take ... in`, and
+literal/directional `take it in the car` unmarked. It did mark the listed
+expression `account for` and the dependency-separated collocation
+`make ... observation`. This is a reproducible behavioral observation about
+those inputs and list selections, not a general accuracy estimate or proof that
+the first three strings are absent from every resource.
+
+The design consequence is reuse, not replication: retain annotated-text and
+item-table views as interaction precedents; use lemma-list plus dependency
+matching as the first transparent automatic baseline if browser-local or
+server-side parsing is later justified; and keep human confirmation, sense
+assignment, denominators, resource versions, and export provenance as this
+project's added measurement layer.
+
 ## Existing-tool boundary
 
 MWE-related Web tools exist, but they solve different stages. In the tools
@@ -149,6 +192,7 @@ sense-coverage outputs.
 
 | Existing tool | What it already covers | Boundary for this project | Decision |
 |---|---|---|---|
+| Multi-Word Units Profiler 2.0.1 | User-text MWU highlighting and item tables from four research-based lists using n-gram and dependency candidates | List-driven pedagogical profiling, not confirmed VPC or contextual-sense coverage; hosted processing and third-party list rights remain separate | Primary Web-profile comparator and UI/pipeline prior art; do not copy code or lists, and do not send protected research text |
 | PARSEME-configured FLAT | Web-based, multi-user MWE annotation with token/span structures, provenance, confidence, permissions, and versioned documents | Annotation/review platform, not an L2 lexical-coverage or fine-sense analysis; the public PARSEME instance requires an account | Treat as the closest external annotation workflow; preserve PARSEME-compatible occurrence interchange instead of forking or embedding FLAT |
 | INCEpTION | Actively maintained, open-source Web annotation, curation, configurable layers, and assisted recommendations | General-purpose rather than MWE-specific; discontinuous spans are represented through relations or links rather than native discontinuous spans | Optional external multi-annotator workflow if FLAT interchange is insufficient; no runtime dependency |
 | PARSEME KonText and STREUSLE ANNIS | Browser search over already annotated corpora, including MWE member identifiers and discontinuous examples | Corpus exploration, not annotation or analysis of a researcher's new text | Link as audit/teaching evidence; do not mistake corpus search for a detector |
@@ -247,9 +291,10 @@ detector, database, or new frequency table.
    word, form, annotation, and sense-assignment denominators remain separate.
 5. Only after the contract passes dependency-free checks, derive the minimum
    attributed OEWN form/sense subset needed by the fixtures. Evaluate the
-   STREUSLE recognizer and PyMUSAS against pinned STREUSLE data before writing
-   any new detector; separately prove a minimal PARSEME occurrence round trip
-   before promising FLAT interoperability.
+   Multi-Word Units Profiler's observable behavior, the STREUSLE recognizer,
+   and PyMUSAS against the project-authored cases or pinned STREUSLE data before
+   writing any new detector; separately prove a minimal PARSEME occurrence
+   round trip before promising FLAT interoperability.
 
 ## What dimensions 3 and 4 must keep separate
 
