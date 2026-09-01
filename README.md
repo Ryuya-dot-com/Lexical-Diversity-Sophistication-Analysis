@@ -27,6 +27,24 @@ researchers. The runtime is plain HTML, CSS, JavaScript, and reviewed JSON: no
 account, server analysis, paid API, analytics, database, or parent-directory
 dependency.
 
+## Capabilities and non-capabilities
+
+The probe can inspect three synthetic contrasts, including a one-sentence versus
+seven-sentence punctuation contrast. In the browser it can describe one text,
+researcher-declared non-empty lines, paired or independent texts, and 2–100
+documents. It reports tokens, types, simple TTR, and hapax types under one fixed
+English ASCII tokenizer, and exports method metadata and SHA-256 identifiers
+without raw text. The source, fixtures, contract, citations, rights terms, and
+tests are open for audit.
+
+It cannot assess proficiency, CEFR, writing quality, authorship, causal effects,
+or population differences. It does not automatically split sentences, run
+inferential statistics, pool or rank documents, process non-English vocabulary
+generally, or measure lexical sophistication, frequency, coverage, semantics,
+or TAALES equivalence. It cannot independently verify input rights, guarantee
+device-level erasure, or reproduce an analysis from a metadata-only export when
+the exact source text was not separately preserved.
+
 ## Run
 
 ```bash
