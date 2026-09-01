@@ -1,6 +1,6 @@
 # Open MWE-aware lexical-coverage laboratory roadmap
 
-Status: MWE/VPC strategic reset and rights gate, reviewed 2026-09-01
+Status: RMAL-targeted product and validation reset, reviewed 2026-09-01
 
 This repository is an independent, free, browser-based methods laboratory for
 L2 vocabulary researchers. Its primary job is to prevent multiword lexical
@@ -10,9 +10,9 @@ unresolved states, resource coverage, and invalid inferences.
 
 The first automatic scope is English verb-particle constructions (VPCs). The
 current surface-count scenarios are useful browser and method-audit scaffolding,
-not the product definition. General lexical sophistication, all-type MWE,
-multilingual analysis, automated proficiency scoring, and TAALES replication
-are not initial goals.
+not the product definition and not a publishable contribution by themselves.
+General lexical sophistication, all-type MWE, multilingual analysis, automated
+proficiency scoring, and TAALES replication are not initial goals.
 
 The ignored `ldfreq_webapp_master_roadmap_20260831.html` correctly preserved
 the original construct priorities but over-specified a three-service system
@@ -20,7 +20,58 @@ before the minimal measurement contract existed. This roadmap restores its
 word/MWE/sense separation and human-review requirements without adopting that
 premature architecture.
 
-## Product shape
+## Publication target and contribution
+
+The final project outcome is a submission to **Research Methods in Applied
+Linguistics (RMAL)**, not merely a deployed website. The journal's official
+scope, checked on 2026-09-01, includes methods for applied-linguistics research
+design, data coding, analysis, reporting, ethics, and open science. The planned
+submission must therefore demonstrate an applied-linguistics method that solves
+a consequential measurement problem; a feature tour or software announcement
+is insufficient. Source: [official RMAL journal description](https://shop.elsevier.com/journals/research-methods-in-applied-linguistics/2772-7661).
+
+Working contribution:
+
+> An open, reviewable method for estimating lexical coverage in L2 research
+> while preventing multiword occurrences from being silently reduced to
+> independent word tokens.
+
+The primary paper audience is L2 vocabulary researchers. English-language
+teaching practitioners are a secondary design and interpretation audience, not
+a source of untested pedagogical-effect claims. The paper must show the full
+chain from operational definition to candidate review, separate denominators,
+error analysis, user interpretation, and reproducible reporting.
+
+The provisional manuscript form is an empirical methods article. Recheck the
+current RMAL Guide for Authors immediately before manuscript preparation and
+again before submission; do not freeze word limits, formatting, declarations,
+or open-access costs from a dated roadmap.
+
+## Minimum useful product
+
+The next release is accepted only if a researcher can complete this single
+end-to-end task in the public interface:
+
+> Paste one English text; inspect highlighted VPC/VID candidates including
+> separated members; confirm, reject, or leave them unresolved; select an
+> admitted reference profile; view ordinary-word and confirmed-MWE coverage
+> with separate numerators, denominators, unmatched items, and unresolved mass;
+> export an occurrence table plus a self-describing method record.
+
+This path is the product. The current TTR scenarios become a secondary method-
+audit/tutorial surface. Offline contracts, resource projections, and benchmark
+scores count as enabling evidence only when they protect or validate a visible
+step in this path.
+
+The first useful increment is deliberately narrow: one text, English VPC/VID,
+transparent candidate generation, human review, form-level coverage, and tidy
+CSV plus method JSON. Automatic fine-sense assignment, group inference,
+general all-MWE coverage, and contextual models are later increments. Sense
+states remain in the contract so uncertainty is not collapsed, but sense-level
+automation is not required for the first submission unless it receives its own
+validation evidence.
+
+## Product surfaces
 
 The product has three deliberately different surfaces:
 
@@ -33,9 +84,12 @@ The product has three deliberately different surfaces:
    and sense-assignment coverage remain separate outputs. There is no default
    combined score.
 3. **Method audit:** fixed, project-authored scenarios expose what a metric
-   changes, ignores, and confounds. The current probe implements this surface.
-   Its browser-local workspace applies admitted methods to synthetic or
-   rights-cleared published text selected by the researcher. The app writes no
+   changes, ignores, and confounds. The current probe implements only this
+   supporting surface.
+   The current browser-local workspace still restricts input to synthetic or
+   rights-cleared published text. Before a useful release, replace that blanket
+   restriction with a researcher-authorization boundary that can include
+   appropriately governed and de-identified learner text. The app writes no
    durable copy and provides explicit/best-effort clearing, but cannot guarantee
    erasure from browser/device memory, history, or backups. The JSON export
    deliberately omits the text, so the researcher must preserve the exact
@@ -54,7 +108,7 @@ The workspace must support research questions, not just input-box shapes:
 | Test length sensitivity | Nested prefixes/windows or repeated subsamples | Value-by-length curve and sampling rule | Calling a compositional change a pure length effect | Fixed scenario only |
 | Compare resources | Same tokens under two admitted reference resources | Values, coverage, unmatched items, resource metadata | Calling one corpus a universal baseline | Blocked by rights review |
 
-Batch and group workflows come after a stable per-document contract. The app
+Batch and group workflows come after the single-text MWE-aware path. The app
 must never silently convert sentences into independent participants, pool texts
 before analysis, or infer a statistical model from uploaded filenames.
 
@@ -73,7 +127,11 @@ Its implemented contract requires:
   each, 5,000,000 combined, and 6,000,000 in the raw JSON before parsing; input
   order and unique IDs are preserved;
 - one provenance statement per document, one explicit relationship/sampling
-  note for the batch, and the existing content-scope attestation for every item;
+  note for the batch, and the current public-text-only attestation; before a
+  useful release, replace the latter with an attestation that the researcher is
+  authorized to process the data under applicable consent, ethics, privacy, and
+  institutional requirements because public availability is not the only
+  lawful research basis;
 - all-or-nothing validation: malformed items, duplicate IDs, exceeded limits,
   ill-formed Unicode, or a document with zero recognized tokens reject the
   batch and name the item when applicable;
@@ -101,13 +159,22 @@ file-level method, provenance, rights, and numerical review.
 
 ## Priority order
 
-1. **Restore the construct before adding metrics.** Ordinary word coverage,
-   MWE-form coverage, and MWE-sense coverage are different estimands.
-2. **Occurrence before sense.** VPC candidate generation, occurrence
+1. **User value before more infrastructure.** Complete the single-text MWE-
+   aware coverage path before adding another benchmark, model, metric, database,
+   batch mode, or governance layer.
+2. **Restore the construct in the interface.** Ordinary word coverage,
+   confirmed MWE-form coverage, unresolved candidate mass, and MWE-sense
+   coverage are different estimands. A contract that users cannot invoke is not
+   a product feature.
+3. **Occurrence before sense.** VPC candidate generation, occurrence
    confirmation, inventory lookup, and contextual sense assignment are separate
    stages. `ambiguous`, `abstained`, `unassigned`, and `out_of_inventory` remain
    observable states.
-3. **Reuse before invention.** Eguchi's Multi-Word Units Profiler supplies the
+4. **Actionable output before additional indices.** Show the lexical items,
+   member/gap spans, decisions, unmatched items, and denominators that produced
+   a result. Aggregate scores alone do not support research coding or teaching
+   decisions.
+5. **Reuse before invention.** Eguchi's Multi-Word Units Profiler supplies the
    closest user-text profiling prior art; FLAT/PARSEME supply an established
    MWE annotation workflow and conventions; PARSEME 2.0, CoAM, STREUSLE,
    MAGPIE, and SemEval idiomaticity data supply different validation targets;
@@ -115,14 +182,50 @@ file-level method, provenance, rights, and numerical review.
    unigram and contiguous n-gram comparators. A new profiler, annotation
    platform, detector, or sense inventory needs evidence that these cannot meet
    the admitted need.
-4. **Rights before implementation.** A tool license, an algorithm description,
-   a corpus license, and permission to redistribute derived tables are four
-   separate questions.
-5. **Auditability before convenience.** Raw values, formulas, parameters,
+6. **Rights and ethics before data admission.** A tool license, an algorithm
+   description, a corpus license, and permission to redistribute derived tables
+   are four separate questions. Local processing does not remove consent,
+   privacy, or institutional obligations, but the app must not forbid all
+   authorized non-public learner data by default.
+7. **Auditability before claims.** Raw values, formulas, parameters,
    coverage, versions, and exclusions remain visible and exportable.
-6. **Open access before feature breadth.** Static browser execution and
+8. **Open access before feature breadth.** Static browser execution and
    project-authored fixtures are the default. A server or restricted resource
    requires a demonstrated research need and a sustainable free-access plan.
+
+## RMAL evidence programme
+
+| Phase | Required outcome | Evidence | Current state |
+|---|---|---|---|
+| 0. Claim freeze | One method problem, intended users, operational definitions, exclusions, and planned comparisons | Versioned protocol and analysis plan | In progress in this roadmap |
+| 1. Useful vertical slice | The minimum useful product can analyze one text from input through reviewed occurrence export | Task-level browser checks and example release | Not implemented; highest priority |
+| 2. Resource/data admission | At least one word-reference profile, one MWE inventory, and one applied-L2 evaluation sample have lawful, pinned, documented use | Manifests, hashes, notices, sampling/ethics record | OEWN partial; STREUSLE benchmark only; word and L2 profiles absent |
+| 3. Technical validation | Candidate identification and category decisions are evaluated on fixed held-out data, with contiguous/discontinuous and seen/unseen errors separated | Exact-span/category results, baselines, prediction files, error taxonomy | Transparent STREUSLE floor only; not an adequate detector |
+| 4. Measurement validation | Word-only and MWE-aware coverage are compared on relevant L2 texts and the consequences of unit decisions are quantified | Predeclared estimands, sensitivity analyses, annotated examples, uncertainty | Not started |
+| 5. Human evaluation | Intended users can complete the workflow and correctly interpret outputs; expert annotation reliability and adjudication are documented where human gold is created | Justified sample, task completion, interpretation errors, agreement, qualitative feedback | Not started |
+| 6. Open release and manuscript | The exact tool, protocol, materials, permissible data, code, predictions, analyses, and reporting artifacts are archived and citable | Immutable release, DOI, checksums, data/code statement, manuscript supplement | Not started |
+
+The validation study must be designed before inspecting its final held-out
+results. Predeclare the unit of analysis, sampling frame, target population,
+gold-annotation procedure, missing/unresolved treatment, primary metrics,
+subgroup/error strata, comparisons, and claim thresholds. Exploratory work
+remains labelled exploratory. STREUSLE alone cannot establish validity for L2
+learner writing, teaching materials, pedagogical importance, or sense coverage.
+
+Provisional paper questions:
+
+1. How does treating reviewed MWEs as lexical units change word- and MWE-level
+   coverage estimates relative to a transparent word-only analysis?
+2. How accurately and transparently does the workflow identify contiguous and
+   discontinuous English VPC/VID occurrences, including unseen types?
+3. Which candidate, reference-resource, and human-review decisions most affect
+   the reported numerators, denominators, and unresolved mass?
+4. Can intended L2 researchers complete and interpret the workflow without
+   making the invalid inferences the interface is designed to prevent?
+
+These questions are provisional until the usable vertical slice and feasible
+data sources are fixed. Do not retrofit the research questions to whichever
+results happen to look strongest.
 
 ## Primary coverage estimand
 
@@ -351,9 +454,10 @@ publication.
 - PHaVE/COCA/TAALES-derived payloads do not become admissible merely because the
   rows are hidden behind an API. Written permission or a user-supplied lawful
   copy remains necessary where the public terms do not cover the delivery.
-- Sending research text to a server is a separate privacy decision. Until an
-  automatic VPC benchmark justifies it, the minimum path is browser-local text,
-  project-authored fixtures, open inventory data, and human confirmation.
+- Sending research text to a server is a separate privacy decision. The minimum
+  useful path remains browser-local text, project-authored fixtures, open
+  inventory data, and human confirmation; move text server-side only if a
+  measured user need cannot be met locally and ethics/privacy review permits it.
 
 ## Multi-lens review
 
@@ -434,15 +538,19 @@ STREUSLE 5.0 projection checks 40 English VPC/VID test occurrences, including
 surface baseline obtains exact-span F1 0.404762 and zero recall in both hard
 strata. This is a transparent floor, not a detector claim or a coverage result.
 
-The next increment is one offline contextual/dependency-aware occurrence
-baseline evaluated against the same fixed projection. A contextual transformer
-may rerank candidates; fastText may supply a cheap static-semantic comparator,
-but neither embedding is itself an MWE definition. Add a runtime model only if
-it improves predeclared exact-span, category, discontinuous, and unseen-item
-results enough to justify its model/data license, download size, compute, and
-privacy cost. MAGPIE remains segregated for literal/idiomatic transfer checks,
-and OEWN-backed cases for fine-sense assignment. Separately prove a minimal
-PARSEME occurrence round trip before promising FLAT interoperability.
+The next increment is the public single-text review and coverage path, not
+another offline model comparison. Reuse the existing occurrence contract and
+transparent baseline to render candidates, member/gap spans, decisions,
+denominators, and exports. After that path is usable, evaluate one dependency-
+or contextual baseline against the same fixed STREUSLE projection. A contextual
+transformer may rerank candidates and fastText may supply a cheap static-
+semantic comparator, but neither embedding is itself an MWE definition. Add a
+runtime model only if it improves predeclared exact-span, category,
+discontinuous, and unseen-item results enough to justify its model/data license,
+download size, compute, and privacy cost. MAGPIE remains segregated for
+literal/idiomatic transfer checks, and OEWN-backed cases for fine-sense
+assignment. Prove a minimal PARSEME occurrence round trip only when an external
+annotation workflow enters the validation study.
 
 ## What dimensions 3 and 4 must keep separate
 
@@ -519,6 +627,17 @@ issue should be framed as evidence of improper conduct by another project.
 
 ## Open-science release gate
 
+- [ ] Complete the minimum useful single-text MWE-aware coverage path; do not
+  release the TTR method-audit probe as the research tool described in the
+  manuscript.
+- [ ] Admit and expose at least one word-reference profile and one MWE inventory
+  with visible versions, denominators, unmatched items, and removal paths.
+- [ ] Export reviewed occurrence/member/gap/category/status rows as tidy CSV and
+  the full method/resource/decision record as JSON.
+- [ ] Replace the public-text-only attestation with a local-processing notice
+  and researcher authorization/ethics attestation suitable for lawfully used,
+  appropriately governed learner data; obtain institutional/legal review where
+  required rather than presenting the app as legal advice.
 - [x] Dual-license original code, documentation, contracts, and fixtures under
   MIT or CC BY 4.0 at the recipient's choice.
 - [ ] Keep future third-party notices and any license-incompatible resource
@@ -551,12 +670,23 @@ issue should be framed as evidence of improper conduct by another project.
   reproducibility of older releases.
 - [ ] Test keyboard, narrow-screen, contrast, and screen-reader behaviour in
   real browsers.
-- [ ] Run the scenario interpretation check with representative L2 vocabulary
-  researchers before calling the app an MVP.
+- [ ] Run predeclared task and interpretation studies with representative L2
+  vocabulary researchers; include English-language teaching practitioners for
+  any practitioner-usability claim.
+- [ ] Freeze a confirmatory held-out set before final model selection and retain
+  all prediction files needed to reproduce the reported error analysis.
+- [ ] Archive the validation protocol, annotation guidelines, code, permissible
+  data or retrieval instructions, analyses, release checksum, and reporting
+  materials cited by the manuscript.
+- [ ] Verify the current RMAL Guide for Authors, article type, declarations,
+  data/code availability wording, AI-use disclosure, and submission files at
+  manuscript freeze and again immediately before upload.
 
-**Release gate:** a third party with only the archived release can reproduce a
-displayed value, identify all rights and method dependencies, and state what the
-comparison does not establish. Free access alone does not pass this gate.
+**Release gate:** an intended user can complete the MWE-aware task and act on
+the item-level output, while a third party can reproduce a displayed value,
+identify every decision/right/method dependency, and state what the result does
+not establish. Reproducibility without utility, or utility without traceability,
+does not pass.
 
 ## Correction and version governance
 
@@ -584,21 +714,33 @@ comparison does not establish. Free access alone does not pass this gate.
   tests, licenses/notices, citations, changelog, and a checksum manifest. A DOI
   or repository tag identifies that immutable bundle, not the mutable website.
 
-## Release packaging sequence
+## Release and submission sequence
 
-1. Pass the real-browser and representative-researcher gates; freeze a version
-   and move the relevant `CHANGELOG.md` entries out of `Unreleased`.
-2. Confirm creator names, repository URL, release date, version, license choice,
+1. Freeze the method claim and validation protocol before confirmatory data or
+   final held-out results are inspected.
+2. Complete the useful vertical slice, resource admission, technical validation,
+   L2 measurement study, and representative-user study; report failures and
+   unresolved cases rather than silently tuning them away.
+3. Pass the real-browser and representative-user gates; freeze a version and
+   move the relevant `CHANGELOG.md` entries out of `Unreleased`.
+4. Confirm creator names, repository URL, release date, version, license choice,
    and archive identifier before writing citation metadata. Do not invent or
    preassign a DOI.
-3. Tag the exact tracked source tree. The static app has no build product: archive
+5. Tag the exact tracked source tree. The static app has no build product: archive
    the source, contracts, fixtures, tests, licenses/notices, citations, and
    changelog together.
-4. Compute SHA-256 after the archive is final, publish the archive and checksum
+6. Compute SHA-256 after the archive is final, publish the archive and checksum
    together, and never reuse the version or identifier for altered bytes.
-5. Extract the published archive into a clean directory, run its documented
+7. Extract the published archive into a clean directory, run its documented
    checks, serve it locally, repeat the acceptance gate, and verify that no
    parent-directory or ignored evidence-vault file entered the bundle.
+8. Write the RMAL manuscript from the frozen protocol, release, and analysis
+   outputs. The paper foregrounds the methodological problem, operationalization,
+   validation, error boundaries, and consequences for L2 research—not the UI
+   implementation chronology.
+9. Audit every number, table, link, citation, availability statement, ethics
+   statement, declaration, and supplement against the immutable release before
+   submission.
 
 No packaging script is justified before the first version is frozen; the first
 release exercise should reveal whether a repeated automation need actually
@@ -620,20 +762,28 @@ direction. The current admitted construct remains surface lexical amount,
 variety, repetition, and method sensitivity; no sophistication score or
 resource-dependent measure is implemented.
 
-## Representative-user interpretation check
+## Representative-user task and interpretation study
 
-For each scenario, ask at least three L2 vocabulary researchers, without verbal
-coaching:
+Use a justified, predeclared sample of intended users rather than a convenience
+minimum of three. Without verbal coaching, ask L2 vocabulary researchers to:
 
-1. What exactly was held constant and changed?
-2. Which apparent variables remain confounded?
-3. Which result is algebraically dependent on another?
-4. What population, quality, proficiency, or causal claim is not supported?
-5. What method/resource metadata would be needed to reproduce the value?
+1. analyze a supplied text and locate a contiguous VPC, a separated VPC, a
+   rejected free combination, and an unresolved candidate;
+2. correct at least one candidate decision and explain how the change affects
+   each relevant numerator and denominator;
+3. distinguish word coverage, MWE-form coverage, annotation coverage, and
+   unresolved mass without coaching;
+4. export item-level CSV and method JSON, then identify the resource, version,
+   decision provenance, and text identity needed for reproduction;
+5. state which proficiency, quality, population, pedagogical, and causal claims
+   the result does not support.
 
-Three users can expose obvious interpretation failures; they do not validate
-the construct or generalize usability. Record anonymous task outcomes only and
-do not add analytics.
+Teaching practitioners complete a parallel task only if the paper makes a
+practitioner-usability claim: identify candidate items for review and explain
+why the output does not automatically determine text suitability or what must
+be taught. Record task success, time, critical errors, interpretation accuracy,
+and qualitative feedback under an approved ethics/data-management plan; do not
+add product analytics.
 
 ## Pending real-browser acceptance gate
 
@@ -642,10 +792,12 @@ structural checks and actual HTTP delivery passed but visual and assistive-
 technology claims remain unverified. Before release, run this exact manual gate
 in current Chromium, Firefox, and Safari plus at least one screen reader:
 
-1. Reach every control by keyboard, see focus, change all five modes, and return
-   to the scenario selector without a trap.
-2. Analyze one text; verify the displayed value and 64-character SHA-256 against
-   the saved JSON, then confirm that the JSON contains no source text.
+1. Reach every control in the minimum useful MWE-aware path by keyboard, see
+   focus, review candidates, change decisions, export results, and return to the
+   input without a trap.
+2. Analyze one text containing contiguous, separated, rejected, and unresolved
+   cases; verify highlighted member/gap tokens and every displayed denominator
+   against CSV/JSON, then confirm that exports follow the declared text policy.
 3. Analyze three declared lines with one blank line; verify three rows, pooled
    values, min/median/max, and the non-independence warnings.
 4. Analyze three JSON documents; verify input order, per-document hashes,
@@ -661,11 +813,17 @@ in current Chromium, Firefox, and Safari plus at least one screen reader:
 9. Inspect the network panel: only the page, `app.mjs`, `metrics.mjs`, and the two
    reviewed JSON files may load; analysis and export must add no request.
 
-Failure of any item blocks an MVP claim; it does not justify adding a framework.
+Failure of the first two items blocks any useful-tool or manuscript claim even
+if the legacy TTR workspace passes every remaining check. It does not justify
+adding a framework.
 
 ## Ponytail disposition
 
 Keep the app as static HTML, CSS, JavaScript, JSON, and dependency-free checks.
 Do not add R, FastAPI, Plumber, a database, accounts, queues, caches, containers,
-or external models until an admitted scenario cannot run transparently and
-freely without them.
+or external models until the minimum useful product cannot run transparently
+and freely without them. Do not add another model or benchmark before the
+single-text MWE-aware path exists. Add BERT/fastText only after the transparent
+baseline and human-review workflow are usable and a fixed evaluation shows a
+decision-relevant gain. Do not create manuscript templates or submission
+automation until the validation evidence and release are frozen.
