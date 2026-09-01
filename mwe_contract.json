@@ -1,5 +1,5 @@
 {
-  "contract_version": "0.2.0-mwe",
+  "contract_version": "0.2.1-mwe",
   "status": "resource-backed-gold-fixture-contract-not-runtime-analyzer",
   "project_license": "MIT OR CC-BY-4.0",
   "external_resource_dependencies": [
@@ -51,7 +51,7 @@
     "statuses": ["candidate", "confirmed", "rejected"],
     "categories": ["VPC.full", "VPC.semi"],
     "member_rule": "two or more unique token IDs in document order",
-    "gap_rule": "every non-member token strictly between the first and last member; gaps are not MWE members",
+    "gap_rule": "every non-member token strictly between the first and last member; a gap may contain a pronoun or full noun-phrase object and is not an MWE member",
     "overlap_rule": "a token may belong to multiple occurrences; confirmed member density counts the union once",
     "decision_rule": "confirmed and rejected occurrences require provenance and a note; unresolved candidates have no terminal decision",
     "form_lookup_statuses": ["matched", "out_of_inventory", "not_attempted"],

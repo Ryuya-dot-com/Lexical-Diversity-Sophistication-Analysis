@@ -41,6 +41,9 @@ probe without assigning it a release version or validation claim.
   senses, source hash, attribution/license notices, a standard-library
   reproducer, project-authored M3 assignments, and mandatory sense-decision
   provenance.
+- Context-disambiguated M4 pronoun contrast: confirmed comprehension
+  `took it in` and rejected locative `took it in the car rather than on the
+  bus`, both preserving `it` as a non-member gap.
 
 ### Integrity boundaries
 

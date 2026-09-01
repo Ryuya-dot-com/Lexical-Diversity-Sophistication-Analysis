@@ -308,7 +308,7 @@ publication.
 | M1 | `take in` as two word tokens versus one confirmed VPC occurrence | Counting channel only | Word coverage and MWE-form coverage answer different questions | A contiguous bigram is only a candidate until its use is confirmed | Contract/fixture implemented |
 | M2 | `take in the explanation` versus `take the explanation in` | Continuous versus discontinuous realization | The same VPC form can have non-adjacent member tokens | Gap tokens are not MWE members | Contract/fixture implemented |
 | M3 | Confirmed `take in` uses with different contextual senses | Contextual sense while form is held constant | One form can populate different sense-profile cells | OEWN supplies 17 candidates, not the contextual gold decision or pedagogical priority | OEWN 2025 candidate projection and project-reviewed assignments implemented in the non-UI fixture |
-| M4 | A VPC use versus `take it in the car` | VPC versus literal/directional/free combination | Surface verb-plus-`in` matching produces false positives | Requires explicit rejection or a validated detector | Contract/fixture implemented |
+| M4 | Comprehension `took it in` versus locative `took it in the car rather than on the bus` | Contextual VPC status with the same `took`–`it`–`in` surface sequence | A pronoun can occupy the non-member gap, while identical local tokens can still require opposite decisions | Surface matching cannot decide whether `in` is a particle or heads a location phrase | Context-disambiguated confirmed/rejected fixture implemented |
 | S1 | Equal 100-token templates with 38 lexical substitutions | Surface repetition at fixed positions | Mechanical response of counts and TTR | Frequency, semantics, naturalness, and population effects are uncontrolled | Implemented probe |
 | S2 | Identical 100-token sequence as one orthographic sentence or seven | Terminal punctuation / segmentation only | Current token-sequence metrics are invariant | This says nothing about sentence-aware metrics or natural syntax | Implemented probe |
 | S3 | First 14-token sentence versus its containing 100-token text | Nested sample length plus accumulated continuation | TTR changes when the sample grows | Sentence count, length, and added lexical composition are not separately identified | Implemented probe |
@@ -337,6 +337,9 @@ shared summarizer now implement the contract-and-fixture increment:
   provenance for terminal contextual-sense decisions; confirmed member density
   uses the union of member IDs and excludes gaps, while every coverage result
   preserves numerator and denominator and uses `null` when undefined;
+- a positive pronoun-object VPC and a locative rejection with the same local
+  `took it in` sequence, proving that `it` can be a gap without making the
+  surface sequence automatically confirmable;
 - the separately licensed OEWN 2025 `take in#v` projection as the complete M3
   candidate set, verified against the pinned release asset rather than copied
   from an unversioned live page.

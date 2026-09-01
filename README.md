@@ -19,6 +19,12 @@ states, separate form and sense lookups, contextual decision provenance, and
 visible coverage numerators and denominators. This is resource-backed contract
 evidence, not automatic MWE detection or validation on learner data.
 
+The M4 fixture explicitly represents the pronoun-object pattern `took it in`:
+`took` and `in` are MWE members and `it` is a non-member gap. The same surface
+sequence is confirmed in a comprehension context and rejected when `in the car`
+is disambiguated by contrast with `on the bus`. This proves the record model,
+not automatic parsing.
+
 The first automatic linguistic scope is English verb-particle constructions
 (VPCs), including contiguous and separated realizations such as `take in` and
 `take it in`. Occurrence detection, form-inventory lookup, and contextual sense

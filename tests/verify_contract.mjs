@@ -76,6 +76,13 @@ for (const occurrence of mweFixture.cases[2].occurrences) {
   assert.deepEqual(occurrence.sense.candidate_sense_ids, oewnTakeInSenseIds);
   assert.ok(occurrence.sense.decision.source);
 }
+const pronounContrast = mweFixture.cases[3];
+const pronounTokens = new Map(pronounContrast.tokens.map(token => [token.id, token.normalized]));
+assert.deepEqual(pronounContrast.occurrences.map(occurrence => occurrence.status), ['confirmed', 'rejected']);
+for (const occurrence of pronounContrast.occurrences) {
+  assert.deepEqual(occurrence.member_token_ids.map(id => pronounTokens.get(id)), ['took', 'in']);
+  assert.deepEqual(occurrence.gap_token_ids.map(id => pronounTokens.get(id)), ['it']);
+}
 const invalidGapCase = structuredClone(mweFixture.cases[1]);
 invalidGapCase.occurrences[0].gap_token_ids = [];
 assert.throws(
