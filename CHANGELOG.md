@@ -7,6 +7,10 @@ probe without assigning it a release version or validation claim.
 
 ### Added
 
+- Focused literature search and 81-page, page-level close-reading record for
+  learner-error parsing, MWU profiling, MWE complexity, erroneous collocation
+  detection, MWE-aware vocabulary coverage, and sense-aware lexical
+  sophistication, with explicit design consequences and non-inferences.
 - Admitted, browser-loaded reference profiles for 410,400 TUBELEX English regex
   ASCII word forms and 2,847 OEWN 2025 ASCII multiword verb forms, with pinned
   source hashes, full manifests, notices, removal procedures, and a deterministic

@@ -533,6 +533,7 @@ It cannot yet answer 3–6 empirically. That is the critical path.
 
 ## Core references and live records
 
+- [Focused literature search and page-level close reading](LITERATURE_CLOSE_READ.md)
 - [RMAL official scope](https://shop.elsevier.com/journals/research-methods-in-applied-linguistics/2772-7661)
 - [Computational reproducibility in applied linguistics](https://doi.org/10.1016/j.rmal.2022.100030)
 - [ICNALE modules, GRA description, and terms](https://language.sakura.ne.jp/icnale/)
