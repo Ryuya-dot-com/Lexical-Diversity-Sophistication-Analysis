@@ -198,7 +198,7 @@ file-level method, provenance, rights, and numerical review.
 | Phase | Required outcome | Evidence | Current state |
 |---|---|---|---|
 | 0. Claim freeze | One method problem, intended users, operational definitions, exclusions, and planned comparisons | Versioned protocol and analysis plan | In progress in this roadmap |
-| 1. Useful vertical slice | The minimum useful product can analyze one text from input through reviewed occurrence export | Task-level browser checks and example release | Not implemented; highest priority |
+| 1. Useful vertical slice | The minimum useful product can analyze one text from input through reviewed occurrence export | Task-level browser checks and example release | Partial: user-pattern candidates, manual review, decisions, CSV, and method JSON implemented; reference coverage absent |
 | 2. Resource/data admission | At least one word-reference profile, one MWE inventory, and one applied-L2 evaluation sample have lawful, pinned, documented use | Manifests, hashes, notices, sampling/ethics record | OEWN partial; STREUSLE benchmark only; word and L2 profiles absent |
 | 3. Technical validation | Candidate identification and category decisions are evaluated on fixed held-out data, with contiguous/discontinuous and seen/unseen errors separated | Exact-span/category results, baselines, prediction files, error taxonomy | Transparent STREUSLE floor only; not an adequate detector |
 | 4. Measurement validation | Word-only and MWE-aware coverage are compared on relevant L2 texts and the consequences of unit decisions are quantified | Predeclared estimands, sensitivity analyses, annotated examples, uncertainty | Not started |
@@ -538,11 +538,15 @@ STREUSLE 5.0 projection checks 40 English VPC/VID test occurrences, including
 surface baseline obtains exact-span F1 0.404762 and zero recall in both hard
 strata. This is a transparent floor, not a detector claim or a coverage result.
 
-The next increment is the public single-text review and coverage path, not
-another offline model comparison. Reuse the existing occurrence contract and
-transparent baseline to render candidates, member/gap spans, decisions,
-denominators, and exports. After that path is usable, evaluate one dependency-
-or contextual baseline against the same fixed STREUSLE projection. A contextual
+The public single-text candidate-review half is now implemented: researcher-
+supplied patterns produce reviewable member/gap candidates, manual candidates
+and confirm/reject/unresolved decisions are supported, and occurrence CSV plus
+metadata-only method JSON are exported. The next increment is the coverage
+half, not another detector or model: admit and expose one pinned word-reference
+profile and one lawful MWE-form inventory, then report separate word and MWE
+numerators, denominators, and unmatched items. Only after that vertical slice is
+usable should one dependency or contextual baseline be evaluated against the
+same fixed STREUSLE projection. A contextual
 transformer may rerank candidates and fastText may supply a cheap static-
 semantic comparator, but neither embedding is itself an MWE definition. Add a
 runtime model only if it improves predeclared exact-span, category,
@@ -632,12 +636,12 @@ issue should be framed as evidence of improper conduct by another project.
   manuscript.
 - [ ] Admit and expose at least one word-reference profile and one MWE inventory
   with visible versions, denominators, unmatched items, and removal paths.
-- [ ] Export reviewed occurrence/member/gap/category/status rows as tidy CSV and
+- [x] Export reviewed occurrence/member/gap/category/status rows as tidy CSV and
   the full method/resource/decision record as JSON.
-- [ ] Replace the public-text-only attestation with a local-processing notice
-  and researcher authorization/ethics attestation suitable for lawfully used,
-  appropriately governed learner data; obtain institutional/legal review where
-  required rather than presenting the app as legal advice.
+- [x] Add a local-processing notice and researcher authorization/ethics
+  attestation to the MWE path for lawfully used, appropriately governed learner
+  data; obtain institutional/legal review where required rather than presenting
+  the app as legal advice.
 - [x] Dual-license original code, documentation, contracts, and fixtures under
   MIT or CC BY 4.0 at the recipient's choice.
 - [ ] Keep future third-party notices and any license-incompatible resource

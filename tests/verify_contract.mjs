@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {
-  analyze, analyzeDeclaredSegments, makeExportRecord, parseBatchJson, roundedRatio, sha256,
-  summarizeMweDocument, tokenize
+  analyze, analyzeDeclaredSegments, findMweCandidates, makeExportRecord, makeMweReviewRecord,
+  mweOccurrencesCsv, parseBatchJson, parseMwePatternTsv, roundedRatio, sha256,
+  summarizeMweDocument, tokenize, tokenRecords
 } from '../metrics.mjs';
 
 const fixtureUrl = new URL('./fixtures/metric_cases.json', import.meta.url);
@@ -26,6 +27,63 @@ for (const testCase of fixture.cases) {
   assert.deepEqual(analyze(testCase.text), testCase.expected, testCase.id);
 }
 assert.equal(roundedRatio(1, 128), 0.007813);
+
+const patternTsv = [
+  'VPC.full\ttake in\ttake/takes/took/taken/taking in\t4',
+  'VID\tspill the beans\tspill/spills/spilled/spilling bean/beans\t2'
+].join('\n');
+const patterns = parseMwePatternTsv(
+  patternTsv, ['VPC.full', 'VPC.semi', 'VID']
+);
+assert.equal(patterns.length, 2);
+assert.deepEqual(tokenRecords('They took it in.').map(token => token.surface), [
+  'They', 'took', 'it', 'in'
+]);
+const candidateDocument = findMweCandidates(
+  'They took it in, then spilled the beans.', patterns
+);
+candidateDocument.text = 'They took it in, then spilled the beans.';
+assert.deepEqual(
+  candidateDocument.occurrences.map(item => [item.canonical_form, item.member_token_ids, item.gap_token_ids]),
+  [
+    ['take in', ['t2', 't4'], ['t3']],
+    ['spill the beans', ['t6', 't8'], ['t7']]
+  ]
+);
+assert.throws(
+  () => parseMwePatternTsv('VPC.full take in', ['VPC.full']),
+  /four tab-separated/
+);
+assert.throws(
+  () => findMweCandidates('take it in take it in', patterns, 1),
+  /candidate count exceeds/
+);
+assert.throws(
+  () => findMweCandidates('x'.repeat(100_001), patterns),
+  /exceeds 100,000/
+);
+const mweReviewRecord = await makeMweReviewRecord({
+  document: candidateDocument,
+  contract: mweContract,
+  patternSource: patternTsv,
+  tokenizer: contract.tokenizer,
+  authorizationAttested: true,
+  generatedAt: '2026-09-01T00:00:00.000Z'
+});
+assert.equal(mweReviewRecord.text.raw_text_included, false);
+assert.equal(mweReviewRecord.input_authorization.attested, true);
+assert.deepEqual(mweReviewRecord.active_runtime_resources, []);
+assert.ok(!JSON.stringify(mweReviewRecord).includes(candidateDocument.text));
+assert.match(mweReviewRecord.text.sha256_utf8, /^[0-9a-f]{64}$/);
+assert.match(mweOccurrencesCsv(candidateDocument, mweContract), /"take in"/);
+await assert.rejects(
+  makeMweReviewRecord({
+    document: candidateDocument, contract: mweContract, patternSource: patternTsv,
+    tokenizer: contract.tokenizer, authorizationAttested: false,
+    generatedAt: '2026-09-01T00:00:00.000Z'
+  }),
+  /authorization attestation/
+);
 
 assert.equal(mweFixture.contract_version, mweContract.contract_version);
 assert.deepEqual(mweContract.external_resource_dependencies, [{

@@ -19,6 +19,13 @@
     .design-grid { margin-bottom: 1rem; }
     .comparison-grid { margin: 1rem 0; }
     .sample-text { min-height: 16rem; padding: .8rem; overflow-wrap: anywhere; white-space: pre-wrap; border: 1px solid #d7d3c8; border-radius: .4rem; background: white; font: inherit; line-height: 1.6; }
+    .token-picker, .token-context { display: flex; flex-wrap: wrap; gap: .35rem; padding: .75rem; border: 1px solid #d7d3c8; border-radius: .4rem; background: white; }
+    .token-choice { padding: .25rem .4rem; border-radius: .3rem; background: #edf3f1; font-weight: 400; }
+    .token-member { padding: .15rem .25rem; border-radius: .25rem; background: #bfe5dc; font-weight: 800; }
+    .token-gap { padding: .15rem .25rem; border-radius: .25rem; background: #f7e6ad; }
+    .occurrence-card { margin-top: .8rem; padding: .8rem; border: 1px solid #d7d3c8; border-radius: .4rem; background: white; }
+    .occurrence-card h4 { margin: 0 0 .6rem; }
+    .occurrence-controls { display: grid; grid-template-columns: minmax(12rem, 1fr) auto; gap: .6rem; margin-top: .7rem; align-items: end; }
     .metric-name { display: block; font-size: .8rem; font-weight: 400; color: #596762; }
     .meta { font-size: .85rem; }
     .panel { margin-top: 1rem; }
@@ -52,19 +59,65 @@
     @media (max-width: 48rem) {
       main { margin-top: 1.5rem; }
       .design-grid, .comparison-grid { grid-template-columns: 1fr; }
+      .occurrence-controls { grid-template-columns: 1fr; }
       .sample-text { min-height: auto; }
     }
   </style>
 </head>
 <body>
   <main>
-    <p class="eyebrow">Static scenario probe · open methods</p>
-    <h1>語彙指標は何に反応するか</h1>
-    <p>L2語彙研究者が、統制範囲の異なる合成テキスト比較から、基本集計とTTRの反応・不変性・限界を監査する実験室です。ここでいう客観性は、手続きを追試できることを意味し、構成概念や標本選択が価値中立だという意味ではありません。</p>
+    <p class="eyebrow">Browser-local MWE review · open methods</p>
+    <h1>MWEを単語に分解しない語彙分析へ</h1>
+    <p>L2語彙研究者が、英文中のmultiword-expression候補を確認し、通常語とMWEを区別したカバー率へ進むためのオープンな方法実験室です。現在は、利用者指定パターンによるVPC/VID候補の端末内レビューと、基本集計の方法監査を提供します。候補は自動的な正解ではありません。</p>
 
     <section class="notice" aria-labelledby="scope-title">
       <h2 id="scope-title">先に読む制約</h2>
-      <p>「1文と複数文」の比較には、句読点だけを変える比較と、標本長・文数・語彙構成を同時に変える比較があります。両者は同じ問いではありません。値の高低や差の大きさは能力、CEFR、文章品質、著者、優劣、自然な文章での効果量を表しません。</p>
+      <p>パターン一致はMWE候補であり、文脈内でのMWE成立を保証しません。confirm、reject、未解決を分け、gap tokenをmemberとして数えないでください。現在のレビュー集計は参照コーパスカバー率、習得、難易度、CEFR、教育的重要度を表しません。</p>
+    </section>
+
+    <section class="panel" aria-labelledby="mwe-workspace-title">
+      <h2 id="mwe-workspace-title">MWE候補レビュー</h2>
+      <p>英文と利用者指定パターンから、連続・非連続のVPC/VID候補を端末内で抽出します。候補のmemberとgapを確認し、confirm、reject、または未解決として記録できます。これは形式候補のcoding支援であり、自動的なMWE判定、意味判定、参照コーパスカバー率ではありません。</p>
+      <form id="mwe-form" autocomplete="off">
+        <div class="field">
+          <label for="mwe-text">分析する英文</label>
+          <textarea id="mwe-text" maxlength="100000" required spellcheck="false" autocomplete="off" placeholder="The explanation was dense, but Mira eventually took it in."></textarea>
+        </div>
+        <div class="field">
+          <label for="mwe-patterns">候補パターンTSV</label>
+          <textarea id="mwe-patterns" class="design-note" required spellcheck="false" autocomplete="off" aria-describedby="mwe-pattern-help">VPC.full&#9;take in&#9;take/takes/took/taken/taking in&#9;4
+VID&#9;spill the beans&#9;spill/spills/spilled/spilling bean/beans&#9;2</textarea>
+          <span id="mwe-pattern-help" class="meta">1行＝category、canonical form、member表層形、member間の最大gap数の4列TSV。member候補は <code>/</code> で列挙します。例の2行は機能確認用で、網羅的・頻度順・教育的重要度順のリストではありません。</span>
+        </div>
+        <label class="attestation" for="mwe-authorization"><input id="mwe-authorization" type="checkbox" required><span>私は、適用される同意、研究倫理、プライバシー、所属機関の要件に従って、このテキストを端末内で処理する権限を確認しました。アプリはこの権限や匿名化を独立確認しません。</span></label>
+        <div class="actions">
+          <button id="mwe-analyze-button" type="submit" disabled>候補を抽出</button>
+          <button type="reset">MWE入力と結果を消去</button>
+        </div>
+        <p id="mwe-status" role="status" aria-live="polite">MWE候補はまだ抽出されていません。</p>
+        <div id="mwe-results" hidden>
+          <section class="panel" aria-labelledby="mwe-summary-title">
+            <h3 id="mwe-summary-title">レビュー集計</h3>
+            <dl id="mwe-summary"></dl>
+          </section>
+          <fieldset>
+            <legend>候補を手動追加</legend>
+            <p class="meta">memberにするtokenを2個以上選択してください。間の未選択tokenはgapとして記録されます。</p>
+            <div id="mwe-token-picker" class="token-picker"></div>
+            <div class="field"><label for="manual-canonical-form">Canonical form</label><input id="manual-canonical-form" type="text" maxlength="100" autocomplete="off"></div>
+            <div class="field"><label for="manual-mwe-category">Category</label><select id="manual-mwe-category"><option value="VPC.full">VPC.full</option><option value="VPC.semi">VPC.semi</option><option value="VID">VID</option></select></div>
+            <p><button id="add-manual-mwe" type="button">選択tokenを候補に追加</button></p>
+          </fieldset>
+          <h3>候補ごとの判定</h3>
+          <p class="meta">confirm／rejectには判断根拠を入力します。未解決へ戻すと判断根拠は削除されます。</p>
+          <div id="mwe-occurrences"></div>
+          <div class="actions">
+            <button id="export-mwe-csv" type="button">Occurrence CSVを保存</button>
+            <button id="export-mwe-json" type="button">方法JSONを保存</button>
+          </div>
+          <p class="meta">出力は本文を含みませんが、canonical formと研究者の判断根拠を含みます。共有前に機密性と再識別リスクを確認してください。</p>
+        </div>
+      </form>
     </section>
 
     <section class="panel" aria-labelledby="capabilities-title">
@@ -73,6 +126,8 @@
         <section aria-labelledby="can-do-title">
           <h3 id="can-do-title">できること</h3>
           <ul>
+            <li>利用者指定パターンから、連続・非連続のVPC/VID候補を抽出し、memberとgapを確認する。</li>
+            <li>候補をconfirm、reject、未解決として記録し、item-level CSVと方法JSONへ保存する。</li>
             <li>合成した1文／7文、同じ長さ、異なる長さの比較から、指標の反応と交絡を確認する。</li>
             <li>1テキスト、研究者が改行で宣言した単位、2テキスト、2–100文書を端末内で記述する。</li>
             <li>英語ASCII語を一定の規則で数え、Tokens、Types、TTR、Hapax typesを表示する。</li>
@@ -83,6 +138,8 @@
         <section aria-labelledby="cannot-do-title">
           <h3 id="cannot-do-title">できないこと</h3>
           <ul>
+            <li>MWE候補を自動的に正解と判定し、文脈的意味や教育的重要度を決定する。</li>
+            <li>通常語とMWEを分離した参照コーパスカバー率を計算する。</li>
             <li>能力、CEFR、文章品質、著者、因果効果、母集団差を評価・推定する。</li>
             <li>文を自動分割し、群検定、順位付け、pool、統計推測を行う。</li>
             <li>語彙洗練性、頻度、語彙範囲、意味、TAALESとの数値互換性を測る。</li>
@@ -93,6 +150,8 @@
       </div>
     </section>
 
+    <h2 class="question">基本集計の方法監査（補助）</h2>
+    <p>以下の合成比較はTTRと標本設計の限界を確認する教材です。「1文と複数文」の比較では、句読点だけを変える場合と、標本長・文数・語彙構成を同時に変える場合を区別します。</p>
     <div class="scenario-picker">
       <label for="scenario">比較シナリオ</label>
       <select id="scenario"></select>

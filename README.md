@@ -1,6 +1,6 @@
 # ldfreq open MWE-aware lexical-coverage laboratory
 
-Status: static scenario probe; not an MVP or validated measurement release.
+Status: browser-local MWE review prototype; not a validated measurement release.
 
 Canonical source: <https://github.com/Ryuya-dot-com/Lexical-Diversity-Sophistication-Analysis>
 
@@ -8,18 +8,22 @@ Public technical deployment: <https://ryuya-dot-com.github.io/Lexical-Diversity-
 
 The product target is an independent, open-science application that keeps
 ordinary word coverage, multiword-unit form coverage, and sense-level coverage
-separate. The current probe is only the browser-local input, comparison,
-provenance, and export foundation for that target; it is not yet an MWE analyzer.
-Its primary outcome is reference-conditioned coverage with visible denominators;
-MWE detection is a necessary measurement stage, not the end product.
+separate. The current prototype supports browser-local, researcher-reviewed MWE
+candidates but is not a validated automatic MWE analyzer. Its primary outcome
+remains reference-conditioned coverage with visible denominators; candidate
+review is a necessary measurement stage, not the end product.
 
-The repository now also contains a non-UI MWE contract, five project-authored
+The repository contains a public MWE review workflow, a versioned MWE contract,
+five project-authored
 M1–M5 gold fixtures, and a reproducible projection of all 17 Open English
 WordNet 2025 senses for `take in#v`. Dependency-free checks verify stable token
 IDs, continuous and discontinuous members, gap exclusion, confirmed/rejected
 states, separate form and sense lookups, contextual decision provenance, and
-visible coverage numerators and denominators. This is resource-backed contract
-evidence, not automatic MWE detection or validation on learner data.
+visible review numerators and denominators. The UI accepts a small researcher-
+supplied TSV of surface-member alternatives, generates continuous or
+discontinuous candidates, permits manual member/gap correction, and exports
+reviewed occurrences. This is transparent coding support, not automatic MWE
+confirmation, reference-corpus coverage, or validation on learner data.
 
 The M4 fixture explicitly represents the pronoun-object pattern `took it in`:
 `took` and `in` are MWE members and `it` is a non-member gap. The same surface
@@ -27,7 +31,7 @@ sequence is confirmed in a comprehension context and rejected when `in the car`
 is disambiguated by contrast with `on the bus`. This proves the record model,
 not automatic parsing.
 
-The first automatic linguistic scope is English verb-particle constructions
+The first candidate-review scope is English verb-particle constructions
 (VPCs), including contiguous and separated realizations such as `take in` and
 `take it in`. Occurrence detection, form-inventory lookup, and contextual sense
 assignment are different operations. An unresolved or ambiguous sense must not
@@ -68,9 +72,10 @@ workspace now analyzes one passage, a paired transformation, or two independent
 texts entirely inside the browser. It can also describe researcher-declared
 non-empty line units within one text while keeping the pooled result separate,
 or describe 2–100 researcher-identified documents from a pasted JSON array.
-Automatic sentence splitting, group inference, length curves, MWE/VPC
-identification, sense assignment, and runtime lexical-resource lookup are not
-implemented. The OEWN projection is exercised only by the non-UI gold checks.
+Automatic sentence splitting, group inference, length curves, validated MWE/VPC
+identification, sense assignment, reference-conditioned coverage, and runtime
+lexical-resource lookup are not implemented. The OEWN projection is exercised
+only by the non-UI gold checks.
 
 The target is a free, reproducible open-science tool for L2 vocabulary
 researchers. The canonical core remains downloadable and auditable. A server
@@ -80,7 +85,13 @@ that use; a database is not treated as a substitute for permission.
 
 ## Capabilities and non-capabilities
 
-The probe can inspect three synthetic contrasts, including a one-sentence versus
+The prototype can generate VPC/VID form candidates from researcher-supplied
+surface patterns, preserve discontinuous members and intervening gaps, accept
+manual candidates, record confirmed/rejected/unresolved decisions with notes,
+and export occurrence CSV plus metadata-only method JSON. The two starter
+patterns are functional examples, not an inventory.
+
+It can also inspect three synthetic contrasts, including a one-sentence versus
 seven-sentence punctuation contrast. In the browser it can describe one text,
 researcher-declared non-empty lines, paired or independent texts, and 2–100
 documents. It reports tokens, types, simple TTR, and hapax types under one fixed
@@ -91,12 +102,11 @@ With a separately obtained STREUSLE 5.0 checkout, the offline checker also
 verifies exact train/dev/test artifacts and reproduces the declared VPC/VID
 surface baseline.
 
-It cannot yet identify `take in` as a VPC, distinguish it from a free or
-directional combination, recover separated members, or disambiguate its sense
-from unannotated user text. OEWN supplies 17 candidate senses but no contextual
-choice, frequency, or L2 pedagogical ranking. The implemented MWE fixtures
-exercise reviewed gold records only; the public interface still exposes no MWE
-workflow.
+It can surface a declared `take in` pattern, including `take it in`, as a
+candidate, but it cannot confirm that candidate as a VPC, distinguish it
+automatically from a free or directional combination, or disambiguate its
+sense. OEWN supplies 17 candidate senses but no contextual choice, frequency,
+or L2 pedagogical ranking. Human review remains part of the measurement method.
 
 No reference corpus is yet active in the browser UI. TUBELEX English is the
 first word-frequency/dispersion candidate, a future exact Leipzig package is a

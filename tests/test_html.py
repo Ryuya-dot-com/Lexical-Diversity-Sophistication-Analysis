@@ -94,7 +94,7 @@ class HtmlContractTests(unittest.TestCase):
                 self.assertNotIn(forbidden, app_source)
         network_calls_removed = app_source.replace(
             "fetch('samples.json')", ""
-        ).replace("fetch('metric_contract.json')", "")
+        ).replace("fetch('metric_contract.json')", "").replace("fetch('mwe_contract.json')", "")
         self.assertNotIn("fetch(", network_calls_removed)
         self.assertIn('<script type="module" src="app.mjs"></script>', source)
         self.assertIn("Content-Security-Policy", source)
@@ -106,6 +106,9 @@ class HtmlContractTests(unittest.TestCase):
         self.assertIn('id="can-do-title"', source)
         self.assertIn('id="cannot-do-title"', source)
         self.assertIn('id="workspace-form"', source)
+        self.assertIn('id="mwe-form"', source)
+        self.assertIn('id="mwe-occurrences"', source)
+        self.assertIn('id="export-mwe-csv"', source)
         self.assertIn('id="method-references"', source)
         self.assertIn('id="rights-attestation"', source)
         self.assertIn('<option value="declared-segments">', source)

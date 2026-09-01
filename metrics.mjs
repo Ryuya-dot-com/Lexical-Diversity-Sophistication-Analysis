@@ -22,10 +22,133 @@ export function parseBatchJson(source, maximum) {
   }
 }
 
+export function tokenRecords(text) {
+  return [...text.matchAll(tokenPattern)].map((match, index) => ({
+    id: `t${index + 1}`,
+    position: index + 1,
+    surface: match[1],
+    normalized: match[1].replaceAll('’', "'").toLowerCase()
+  }));
+}
+
 export function tokenize(text) {
-  return [...text.matchAll(tokenPattern)].map(match =>
-    match[1].replaceAll('’', "'").toLowerCase()
-  );
+  return tokenRecords(text).map(token => token.normalized);
+}
+
+export function parseMwePatternTsv(source, categories, maximumRows = 500) {
+  if (typeof source !== 'string' || !Array.isArray(categories)) {
+    throw new Error('MWE patterns require TSV text and declared categories.');
+  }
+  if (source.length > 100_000) throw new Error('MWE pattern TSV exceeds 100,000 characters.');
+  requireWellFormed(source, 'MWE pattern TSV');
+  const rows = source.split(/\r?\n/).map(line => line.trim())
+    .filter(line => line && !line.startsWith('#'));
+  if (!rows.length || rows.length > maximumRows) {
+    throw new Error(`MWE pattern TSV requires 1–${maximumRows} data rows.`);
+  }
+  const seen = new Set();
+  return rows.map((row, index) => {
+    const columns = row.split('\t').map(value => value.trim());
+    if (columns.length !== 4) {
+      throw new Error(`MWE pattern row ${index + 1} requires four tab-separated fields.`);
+    }
+    const [category, canonicalForm, pattern, rawMaximumGap] = columns;
+    if (!categories.includes(category) || !canonicalForm || canonicalForm.length > 100) {
+      throw new Error(`Invalid MWE category or canonical form at row ${index + 1}.`);
+    }
+    if (!pattern || pattern.length > 500) {
+      throw new Error(`Invalid MWE member pattern at row ${index + 1}.`);
+    }
+    const maximumGap = Number(rawMaximumGap);
+    if (!Number.isInteger(maximumGap) || maximumGap < 0 || maximumGap > 8) {
+      throw new Error(`MWE maximum gap must be an integer from 0 to 8 at row ${index + 1}.`);
+    }
+    const members = pattern.split(/\s+/).filter(Boolean).map(member => {
+      const alternatives = [...new Set(member.split('/').map(value => {
+        const normalized = tokenize(value);
+        if (normalized.length !== 1) {
+          throw new Error(`Invalid MWE member alternative at row ${index + 1}.`);
+        }
+        return normalized[0];
+      }))];
+      if (!alternatives.length) {
+        throw new Error(`Missing MWE member alternatives at row ${index + 1}.`);
+      }
+      return alternatives;
+    });
+    if (members.length < 2 || members.length > 5) {
+      throw new Error(`MWE patterns require 2–5 member positions at row ${index + 1}.`);
+    }
+    const key = JSON.stringify([category, canonicalForm.toLowerCase(), members, maximumGap]);
+    if (seen.has(key)) throw new Error(`Duplicate MWE pattern at row ${index + 1}.`);
+    seen.add(key);
+    return {
+      id: `pattern-${index + 1}`,
+      category,
+      canonical_form: canonicalForm,
+      members,
+      maximum_gap: maximumGap
+    };
+  });
+}
+
+export function findMweCandidates(text, patterns, maximumCandidates = 500) {
+  if (typeof text !== 'string' || !Array.isArray(patterns) ||
+      !Number.isInteger(maximumCandidates) || maximumCandidates < 1) {
+    throw new Error('MWE candidate search parameters are invalid.');
+  }
+  if (text.length > 100_000) throw new Error('MWE review text exceeds 100,000 characters.');
+  requireWellFormed(text, 'MWE review text');
+  const tokens = tokenRecords(text);
+  const found = [];
+  const seen = new Set();
+  const add = (pattern, positions) => {
+    const memberIds = positions.map(position => tokens[position].id);
+    const key = JSON.stringify([pattern.category, pattern.canonical_form, memberIds]);
+    if (seen.has(key)) return;
+    if (found.length >= maximumCandidates) {
+      throw new Error(`MWE candidate count exceeds the reviewed limit of ${maximumCandidates}.`);
+    }
+    seen.add(key);
+    const memberSet = new Set(memberIds);
+    found.push({
+      id: '',
+      canonical_form: pattern.canonical_form,
+      category: pattern.category,
+      status: 'candidate',
+      member_token_ids: memberIds,
+      gap_token_ids: tokens.slice(positions[0] + 1, positions.at(-1))
+        .map(token => token.id).filter(id => !memberSet.has(id)),
+      decision: null,
+      idiomaticity: {status: 'not_assessed', decision: null},
+      form_lookup: null,
+      sense: null,
+      candidate_source: {kind: 'user-pattern', pattern_id: pattern.id}
+    });
+  };
+  for (const pattern of patterns) {
+    const extend = positions => {
+      const memberIndex = positions.length;
+      if (memberIndex === pattern.members.length) return add(pattern, positions);
+      const start = positions.length ? positions.at(-1) + 1 : 0;
+      const end = positions.length
+        ? Math.min(tokens.length, start + pattern.maximum_gap + 1)
+        : tokens.length;
+      for (let position = start; position < end; position += 1) {
+        if (pattern.members[memberIndex].includes(tokens[position].normalized)) {
+          extend([...positions, position]);
+        }
+      }
+    };
+    extend([]);
+  }
+  found.sort((first, second) => {
+    const firstStart = Number(first.member_token_ids[0].slice(1));
+    const secondStart = Number(second.member_token_ids[0].slice(1));
+    return firstStart - secondStart || first.canonical_form.localeCompare(second.canonical_form);
+  });
+  found.forEach((occurrence, index) => { occurrence.id = `mwe-${index + 1}`; });
+  return {tokens, occurrences: found};
 }
 
 export function roundedRatio(numerator, denominator) {
@@ -299,6 +422,78 @@ export async function sha256(text) {
   );
   return [...new Uint8Array(digest)]
     .map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+function csvCell(value) {
+  return `"${String(value ?? '').replaceAll('"', '""')}"`;
+}
+
+export function mweOccurrencesCsv(document, contract) {
+  summarizeMweDocument(document, contract);
+  const header = [
+    'occurrence_id', 'canonical_form', 'category', 'status', 'member_token_ids',
+    'gap_token_ids', 'candidate_source', 'decision_note'
+  ];
+  const rows = document.occurrences.map(item => [
+    item.id, item.canonical_form, item.category, item.status,
+    item.member_token_ids.join(' '), item.gap_token_ids.join(' '),
+    item.candidate_source?.kind, item.decision?.note
+  ]);
+  return [header, ...rows].map(row => row.map(csvCell).join(',')).join('\n') + '\n';
+}
+
+export async function makeMweReviewRecord({
+  document, contract, patternSource, tokenizer, authorizationAttested, generatedAt
+}) {
+  if (typeof patternSource !== 'string' || typeof generatedAt !== 'string') {
+    throw new Error('MWE review export metadata is missing.');
+  }
+  if (authorizationAttested !== true) {
+    throw new Error('MWE review export requires input authorization attestation.');
+  }
+  const generatedDate = new Date(generatedAt);
+  if (!Number.isFinite(generatedDate.getTime()) || generatedDate.toISOString() !== generatedAt) {
+    throw new Error('MWE review timestamp must be an exact UTC ISO string.');
+  }
+  return {
+    schema_version: '0.1.0-mwe-review',
+    generated_at: generatedAt,
+    contract_version: contract.contract_version,
+    method: {
+      candidate_generation: contract.candidate_generation,
+      automatic_confirmation: false,
+      tokenizer,
+      categories: contract.occurrence_record.categories
+    },
+    active_runtime_resources: [],
+    input_authorization: {attested: true, independently_verified_by_app: false},
+    text: {
+      sha256_utf8: await sha256(document.text),
+      token_count: document.tokens.length,
+      raw_text_included: false
+    },
+    pattern_tsv: {
+      sha256_utf8: await sha256(patternSource),
+      included: false
+    },
+    summary: summarizeMweDocument(document, contract),
+    occurrences: document.occurrences.map(item => ({
+      id: item.id,
+      canonical_form: item.canonical_form,
+      category: item.category,
+      status: item.status,
+      member_token_ids: item.member_token_ids,
+      gap_token_ids: item.gap_token_ids,
+      candidate_source: item.candidate_source,
+      decision: item.decision
+    })),
+    limitations: [
+      'surface patterns generate candidates but do not confirm MWE status',
+      'the included starter patterns are not a comprehensive or pedagogically ranked inventory',
+      'reference-corpus word or MWE coverage is not implemented in this increment',
+      'exact source text and pattern TSV must be preserved separately to reproduce this record'
+    ]
+  };
 }
 
 export async function makeExportRecord({

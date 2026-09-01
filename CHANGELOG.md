@@ -7,6 +7,13 @@ probe without assigning it a release version or validation claim.
 
 ### Added
 
+- Browser-local VPC/VID candidate review from researcher-supplied four-column
+  TSV patterns, including discontinuous member/gap display, manual candidates,
+  confirmed/rejected/unresolved decisions with required notes, occurrence CSV,
+  and metadata-only method JSON.
+- A separate authorization/ethics attestation for appropriately governed text
+  in the MWE workflow; candidate patterns and raw text remain local and are
+  represented in method JSON by SHA-256 identifiers rather than copied text.
 - Three project-authored method-audit scenarios for repetition, punctuation-only
   segmentation, and nested length sensitivity.
 - Browser-local single-text, researcher-declared-line, paired, independent-two-
@@ -65,7 +72,9 @@ probe without assigning it a release version or validation claim.
 
 - No account, server analysis, analytics, cookie, database, external model,
   third-party runtime code, automatic lexical-resource lookup, or raw-text
-  export. The admitted OEWN subset is fixture-only and not loaded by the UI.
+  export. User patterns create review candidates but do not automatically
+  confirm MWE status. The admitted OEWN subset is fixture-only and not loaded
+  by the UI.
 - Server-side storage is not treated as licensing permission; open resources
   remain downloadable, and restricted resources require delivery-specific
   permission even when hidden behind an API.

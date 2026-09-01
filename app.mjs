@@ -1,4 +1,7 @@
-import {analyze, makeExportRecord, parseBatchJson} from './metrics.mjs';
+import {
+  analyze, findMweCandidates, makeExportRecord, makeMweReviewRecord, mweOccurrencesCsv,
+  parseBatchJson, parseMwePatternTsv, summarizeMweDocument
+} from './metrics.mjs';
 
 const labels = {
   tokens: 'Tokens', types: 'Types',
@@ -16,10 +19,266 @@ const batchInput = document.getElementById('batch-input');
 const workspaceStatus = document.getElementById('workspace-status');
 const workspaceResults = document.getElementById('workspace-results');
 const exportButton = document.getElementById('export-json');
+const mweForm = document.getElementById('mwe-form');
+const mweStatus = document.getElementById('mwe-status');
+const mweResults = document.getElementById('mwe-results');
 let comparisonSets;
 let contract;
+let mweContract;
 let currentExport;
+let mweDocument;
+let mwePatternSource;
+let nextMweId = 1;
 let analysisRevision = 0;
+
+function downloadText(filename, content, type) {
+  const url = URL.createObjectURL(new Blob([content], {type}));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url));
+}
+
+function ratioText(item) {
+  return `${item.numerator}/${item.denominator} (${item.value ?? 'undefined'})`;
+}
+
+function reviewedOccurrence(occurrence, status, note) {
+  const reviewed = structuredClone(occurrence);
+  reviewed.status = status;
+  reviewed.decision = status === 'candidate'
+    ? null : {source: 'researcher-browser-review', note: note.trim()};
+  reviewed.idiomaticity = {status: 'not_assessed', decision: null};
+  reviewed.form_lookup = status === 'confirmed'
+    ? {inventory_id: null, inventory_version: null, status: 'not_attempted', entry_id: null}
+    : null;
+  reviewed.sense = status === 'confirmed'
+    ? {
+        inventory_id: null, inventory_version: null, lookup_status: 'not_attempted',
+        candidate_sense_ids: [], assignment_status: 'unassigned',
+        selected_sense_ids: [], decision: null
+      }
+    : null;
+  return reviewed;
+}
+
+function renderMweTokenPicker() {
+  const picker = document.getElementById('mwe-token-picker');
+  picker.replaceChildren(...mweDocument.tokens.map(token => {
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.value = token.id;
+    label.className = 'token-choice';
+    label.append(input, ` ${token.position}:${token.surface}`);
+    return label;
+  }));
+}
+
+function renderOccurrenceContext(occurrence) {
+  const context = document.createElement('div');
+  const members = new Set(occurrence.member_token_ids);
+  const gaps = new Set(occurrence.gap_token_ids);
+  const positions = occurrence.member_token_ids.map(id => Number(id.slice(1)));
+  const start = Math.max(0, positions[0] - 4);
+  const end = Math.min(mweDocument.tokens.length, positions.at(-1) + 3);
+  context.className = 'token-context';
+  context.setAttribute('aria-label', 'Candidate context: bold green tokens are members; yellow tokens are gaps.');
+  context.replaceChildren(...mweDocument.tokens.slice(start, end).map(token => {
+    const span = document.createElement(members.has(token.id) ? 'strong' : 'span');
+    if (members.has(token.id)) span.className = 'token-member';
+    if (gaps.has(token.id)) span.className = 'token-gap';
+    span.textContent = `${token.position}:${token.surface}`;
+    return span;
+  }));
+  return context;
+}
+
+function setMweDecision(occurrenceId, status, noteInput) {
+  const index = mweDocument.occurrences.findIndex(item => item.id === occurrenceId);
+  if (index < 0) return;
+  if (status !== 'candidate' && !noteInput.value.trim()) {
+    noteInput.setCustomValidity('Confirm／rejectには判断根拠が必要です。');
+    noteInput.reportValidity();
+    return;
+  }
+  noteInput.setCustomValidity('');
+  mweDocument.occurrences[index] = reviewedOccurrence(
+    mweDocument.occurrences[index], status, noteInput.value
+  );
+  renderMweReview();
+}
+
+function occurrenceCard(occurrence) {
+  const article = document.createElement('article');
+  const heading = document.createElement('h4');
+  const source = document.createElement('p');
+  const controls = document.createElement('div');
+  const noteField = document.createElement('div');
+  const noteLabel = document.createElement('label');
+  const note = document.createElement('input');
+  const actions = document.createElement('div');
+  article.className = 'occurrence-card';
+  heading.textContent = `${occurrence.canonical_form} · ${occurrence.category} · ${occurrence.status}`;
+  source.className = 'meta';
+  source.textContent = occurrence.candidate_source?.kind === 'manual'
+    ? 'Candidate source: manually selected members.'
+    : `Candidate source: ${occurrence.candidate_source?.pattern_id || 'declared pattern'}.`;
+  noteField.className = 'field';
+  noteLabel.htmlFor = `decision-${occurrence.id}`;
+  noteLabel.textContent = '判断根拠';
+  note.id = `decision-${occurrence.id}`;
+  note.type = 'text';
+  note.maxLength = 500;
+  note.value = occurrence.decision?.note || '';
+  note.autocomplete = 'off';
+  noteField.append(noteLabel, note);
+  actions.className = 'actions';
+  for (const [label, status] of [
+    ['Confirm', 'confirmed'], ['Reject', 'rejected'], ['未解決', 'candidate']
+  ]) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = label;
+    button.addEventListener('click', () => setMweDecision(occurrence.id, status, note));
+    actions.append(button);
+  }
+  const remove = document.createElement('button');
+  remove.type = 'button';
+  remove.textContent = '削除';
+  remove.addEventListener('click', () => {
+    mweDocument.occurrences = mweDocument.occurrences.filter(item => item.id !== occurrence.id);
+    renderMweReview();
+  });
+  actions.append(remove);
+  controls.className = 'occurrence-controls';
+  controls.append(noteField, actions);
+  article.append(heading, renderOccurrenceContext(occurrence), source, controls);
+  return article;
+}
+
+function renderMweReview() {
+  const summary = summarizeMweDocument(mweDocument, mweContract);
+  fillDefinitionList(document.getElementById('mwe-summary'), [
+    ['Word tokens', String(summary.token_count)],
+    ['Candidates', String(summary.candidate_occurrence_count)],
+    ['Confirmed / rejected / unresolved', `${summary.confirmed_occurrence_count} / ${summary.rejected_occurrence_count} / ${summary.unresolved_occurrence_count}`],
+    ['Annotation coverage', ratioText(summary.occurrence_annotation_coverage)],
+    ['Confirmed member density', ratioText(summary.confirmed_member_density)]
+  ]);
+  renderMweTokenPicker();
+  document.getElementById('mwe-occurrences').replaceChildren(
+    ...mweDocument.occurrences.map(occurrenceCard)
+  );
+  mweResults.hidden = false;
+  mweStatus.textContent = mweDocument.occurrences.length
+    ? `${mweDocument.occurrences.length}件の形式候補を表示しました。文脈を確認して判定してください。`
+    : 'パターン一致はありません。tokenを選択して候補を手動追加できます。';
+}
+
+function invalidateMweReview() {
+  if (!mweDocument) return;
+  mweDocument = null;
+  mwePatternSource = null;
+  mweResults.hidden = true;
+  mweStatus.textContent = '入力を変更しました。候補を再抽出してください。';
+}
+
+mweForm.addEventListener('submit', event => {
+  event.preventDefault();
+  try {
+    if (!document.getElementById('mwe-authorization').checked) {
+      throw new Error('テキストを処理する権限の確認が必要です。');
+    }
+    const text = document.getElementById('mwe-text').value;
+    mwePatternSource = document.getElementById('mwe-patterns').value;
+    const patterns = parseMwePatternTsv(
+      mwePatternSource, mweContract.occurrence_record.categories
+    );
+    mweDocument = {text, ...findMweCandidates(text, patterns)};
+    if (!mweDocument.tokens.length) throw new Error('ASCII英語tokenが見つかりません。');
+    nextMweId = mweDocument.occurrences.length + 1;
+    renderMweReview();
+  } catch (error) {
+    mweDocument = null;
+    mweResults.hidden = true;
+    mweStatus.textContent = error.message;
+  }
+});
+
+mweForm.addEventListener('reset', () => {
+  mweDocument = null;
+  mwePatternSource = null;
+  mweResults.hidden = true;
+  mweStatus.textContent = 'MWE入力と結果を消去しました。';
+});
+
+for (const id of ['mwe-text', 'mwe-patterns', 'mwe-authorization']) {
+  document.getElementById(id).addEventListener('input', invalidateMweReview);
+}
+
+document.getElementById('add-manual-mwe').addEventListener('click', () => {
+  if (!mweDocument) return;
+  const selected = [...document.querySelectorAll('#mwe-token-picker input:checked')]
+    .map(input => input.value);
+  const canonicalForm = document.getElementById('manual-canonical-form');
+  if (selected.length < 2 || !canonicalForm.value.trim()) {
+    mweStatus.textContent = '手動候補には2個以上のmember tokenとcanonical formが必要です。';
+    return;
+  }
+  const positions = selected.map(id => Number(id.slice(1)));
+  const memberSet = new Set(selected);
+  const duplicate = mweDocument.occurrences.some(item =>
+    item.category === document.getElementById('manual-mwe-category').value &&
+    item.canonical_form.toLowerCase() === canonicalForm.value.trim().toLowerCase() &&
+    JSON.stringify(item.member_token_ids) === JSON.stringify(selected)
+  );
+  if (duplicate) {
+    mweStatus.textContent = '同じcategory、canonical form、member tokenの候補が既にあります。';
+    return;
+  }
+  mweDocument.occurrences.push({
+    id: `mwe-${nextMweId++}`,
+    canonical_form: canonicalForm.value.trim(),
+    category: document.getElementById('manual-mwe-category').value,
+    status: 'candidate',
+    member_token_ids: selected,
+    gap_token_ids: mweDocument.tokens.slice(positions[0], positions.at(-1) - 1)
+      .map(token => token.id).filter(id => !memberSet.has(id)),
+    decision: null,
+    idiomaticity: {status: 'not_assessed', decision: null},
+    form_lookup: null,
+    sense: null,
+    candidate_source: {kind: 'manual', pattern_id: null}
+  });
+  canonicalForm.value = '';
+  renderMweReview();
+});
+
+document.getElementById('export-mwe-csv').addEventListener('click', () => {
+  if (!mweDocument) return;
+  downloadText(
+    'ldfreq-mwe-occurrences.csv',
+    mweOccurrencesCsv(mweDocument, mweContract),
+    'text/csv;charset=utf-8'
+  );
+});
+
+document.getElementById('export-mwe-json').addEventListener('click', async () => {
+  if (!mweDocument) return;
+  const record = await makeMweReviewRecord({
+    document: mweDocument,
+    contract: mweContract,
+    patternSource: mwePatternSource,
+    tokenizer: contract.tokenizer,
+    authorizationAttested: document.getElementById('mwe-authorization').checked,
+    generatedAt: new Date().toISOString()
+  });
+  downloadText('ldfreq-mwe-review.json', JSON.stringify(record, null, 2) + '\n', 'application/json');
+});
 
 function fillList(element, items) {
   element.replaceChildren(...items.map(item => {
@@ -311,7 +570,10 @@ workspaceForm.addEventListener('reset', () => {
   setTimeout(updateWorkspaceMode);
 });
 
-window.addEventListener('pagehide', () => workspaceForm.reset());
+window.addEventListener('pagehide', () => {
+  workspaceForm.reset();
+  mweForm.reset();
+});
 
 relationship.addEventListener('change', updateWorkspaceMode);
 relationship.addEventListener('change', () => invalidateWorkspace());
@@ -319,26 +581,22 @@ workspaceForm.addEventListener('input', () => invalidateWorkspace());
 
 exportButton.addEventListener('click', () => {
   if (!currentExport) return;
-  const url = URL.createObjectURL(new Blob(
-    [JSON.stringify(currentExport, null, 2) + '\n'], {type: 'application/json'}
-  ));
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'ldfreq-analysis.json';
-  document.body.append(link);
-  link.click();
-  link.remove();
-  setTimeout(() => URL.revokeObjectURL(url));
+  downloadText(
+    'ldfreq-analysis.json', JSON.stringify(currentExport, null, 2) + '\n', 'application/json'
+  );
 });
 
 async function initialize() {
   try {
-    const [samplesResponse, contractResponse] = await Promise.all([
-      fetch('samples.json'), fetch('metric_contract.json')
+    const [samplesResponse, contractResponse, mweContractResponse] = await Promise.all([
+      fetch('samples.json'), fetch('metric_contract.json'), fetch('mwe_contract.json')
     ]);
-    if (!samplesResponse.ok || !contractResponse.ok) throw new Error('比較データを読み込めませんでした。');
+    if (!samplesResponse.ok || !contractResponse.ok || !mweContractResponse.ok) {
+      throw new Error('比較データを読み込めませんでした。');
+    }
     const sampleDocument = await samplesResponse.json();
     contract = await contractResponse.json();
+    mweContract = await mweContractResponse.json();
     comparisonSets = sampleDocument.comparison_sets;
     scenario.replaceChildren(...comparisonSets.map((set, index) => {
       const option = document.createElement('option');
@@ -361,12 +619,16 @@ async function initialize() {
     comparison.hidden = false;
     renderComparison(comparisonSets[0]);
     updateWorkspaceMode();
+    document.getElementById('mwe-analyze-button').disabled = false;
     document.getElementById('analyze-button').disabled = false;
   } catch (error) {
     scenarioStatus.textContent = error.message;
-    workspaceForm.querySelectorAll('input, textarea, select, button').forEach(control => {
-      control.disabled = true;
-    });
+    mweStatus.textContent = error.message;
+    for (const form of [mweForm, workspaceForm]) {
+      form.querySelectorAll('input, textarea, select, button').forEach(control => {
+        control.disabled = true;
+      });
+    }
   }
 }
 

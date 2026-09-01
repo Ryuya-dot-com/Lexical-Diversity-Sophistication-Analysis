@@ -1,6 +1,6 @@
 {
-  "contract_version": "0.3.0-mwe",
-  "status": "resource-backed-gold-fixture-contract-not-runtime-analyzer",
+  "contract_version": "0.4.0-mwe",
+  "status": "browser-review-increment-with-resource-backed-fixtures-not-validated-analyzer",
   "project_license": "MIT OR CC-BY-4.0",
   "external_resource_dependencies": [
     {
@@ -20,14 +20,20 @@
       "url": "https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2/",
       "projection": ["VPC.full", "VPC.semi", "VID"]
     },
-    "claims": "project-authored contract verification with a pinned OEWN candidate-sense projection",
+    "claims": "transparent user-pattern candidate generation and human review with project-authored contract verification and a pinned OEWN candidate-sense projection",
     "not_implemented": [
-      "automatic-candidate-generation",
       "automatic-occurrence-identification",
       "automatic-sense-assignment",
-      "public-mwe-review-interface",
+      "reference-corpus-word-or-mwe-coverage",
       "runtime-resource-lookup"
     ]
+  },
+  "candidate_generation": {
+    "method": "ordered case-insensitive surface-member alternatives supplied as four-column TSV",
+    "columns": ["category", "canonical_form", "member_surface_pattern", "maximum_gap_per_adjacent_member_pair"],
+    "limits": {"pattern_rows": 500, "member_positions_per_pattern": 5, "maximum_gap": 8, "candidates_per_text": 500, "text_utf16_code_units": 100000},
+    "boundary": "pattern matches are candidates only; human confirmation or rejection and a decision note are required for terminal occurrence status",
+    "starter_pattern_scope": "two project-authored function examples only; not comprehensive, frequency-ranked, pedagogically ranked, or an admitted MWE reference inventory"
   },
   "token_record": {
     "required_fields": ["id", "position", "surface", "normalized"],
