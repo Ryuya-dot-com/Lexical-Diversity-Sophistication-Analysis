@@ -2,15 +2,19 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {
   analyze, analyzeDeclaredSegments, makeExportRecord, parseBatchJson, roundedRatio, sha256,
-  tokenize
+  summarizeMweDocument, tokenize
 } from '../metrics.mjs';
 
 const fixtureUrl = new URL('./fixtures/metric_cases.json', import.meta.url);
 const sampleUrl = new URL('../samples.json', import.meta.url);
 const contractUrl = new URL('../metric_contract.json', import.meta.url);
+const mweContractUrl = new URL('../mwe_contract.json', import.meta.url);
+const mweFixtureUrl = new URL('./fixtures/mwe_cases.json', import.meta.url);
 const fixture = JSON.parse(readFileSync(fixtureUrl, 'utf8'));
 const sampleDocument = JSON.parse(readFileSync(sampleUrl, 'utf8'));
 const contract = JSON.parse(readFileSync(contractUrl, 'utf8'));
+const mweContract = JSON.parse(readFileSync(mweContractUrl, 'utf8'));
+const mweFixture = JSON.parse(readFileSync(mweFixtureUrl, 'utf8'));
 
 assert.equal(contract.contract_version, '0.1.0-probe');
 assert.equal(fixture.contract_version, contract.contract_version);
@@ -18,6 +22,64 @@ for (const testCase of fixture.cases) {
   assert.deepEqual(analyze(testCase.text), testCase.expected, testCase.id);
 }
 assert.equal(roundedRatio(1, 128), 0.007813);
+
+assert.equal(mweFixture.contract_version, mweContract.contract_version);
+assert.deepEqual(mweContract.external_resource_dependencies, []);
+assert.deepEqual(
+  mweContract.occurrence_record.categories, mweContract.scope.category_scheme.projection
+);
+assert.deepEqual(
+  mweContract.occurrence_record.sense_assignment_statuses,
+  ['assigned', 'ambiguous', 'abstained', 'unassigned', 'out_of_inventory']
+);
+for (const testCase of mweFixture.cases) {
+  assert.deepEqual(summarizeMweDocument(testCase, mweContract), testCase.expected, testCase.id);
+}
+assert.deepEqual(mweFixture.cases.map(testCase => testCase.id.slice(0, 2)), ['M1', 'M2', 'M3', 'M4']);
+const invalidGapCase = structuredClone(mweFixture.cases[1]);
+invalidGapCase.occurrences[0].gap_token_ids = [];
+assert.throws(
+  () => summarizeMweDocument(invalidGapCase, mweContract),
+  /gap tokens do not match/
+);
+const invalidAbstentionCase = structuredClone(mweFixture.cases[0]);
+invalidAbstentionCase.occurrences[0].sense.assignment_status = 'abstained';
+assert.throws(
+  () => summarizeMweDocument(invalidAbstentionCase, mweContract),
+  /lacks matched candidates/
+);
+for (const [status, selected] of [
+  ['ambiguous', ['fixture:sense:one', 'fixture:sense:two']],
+  ['abstained', []]
+]) {
+  const stateCase = structuredClone(mweFixture.cases[0]);
+  Object.assign(stateCase.occurrences[0].sense, {
+    lookup_status: 'matched',
+    candidate_sense_ids: ['fixture:sense:one', 'fixture:sense:two'],
+    assignment_status: status,
+    selected_sense_ids: selected
+  });
+  const result = summarizeMweDocument(stateCase, mweContract);
+  assert.equal(result.sense_assignment_status_counts[status], 1);
+  assert.deepEqual(result.sense_assignment_coverage, {numerator: 0, denominator: 1, value: 0});
+}
+const outOfInventoryCase = structuredClone(mweFixture.cases[0]);
+Object.assign(outOfInventoryCase.occurrences[0].sense, {
+  lookup_status: 'out_of_inventory', assignment_status: 'out_of_inventory'
+});
+assert.equal(
+  summarizeMweDocument(outOfInventoryCase, mweContract)
+    .sense_assignment_status_counts.out_of_inventory,
+  1
+);
+const unresolvedCase = structuredClone(mweFixture.cases[3]);
+Object.assign(unresolvedCase.occurrences[1], {status: 'candidate', decision: null});
+const unresolvedResult = summarizeMweDocument(unresolvedCase, mweContract);
+assert.equal(unresolvedResult.unresolved_occurrence_count, 1);
+assert.deepEqual(
+  unresolvedResult.occurrence_annotation_coverage,
+  {numerator: 1, denominator: 2, value: 0.5}
+);
 
 assert.equal(sampleDocument.samples_version, '0.3.0-probe');
 assert.equal(sampleDocument.comparison_sets.length, 3);
@@ -322,6 +384,7 @@ await assert.rejects(
 
 console.log(
   `Contract verification: PASS (${fixture.cases.length} fixtures, ` +
+  `${mweFixture.cases.length} MWE gold cases, ` +
   `${sampleDocument.comparison_sets.length} scenarios, ${samples.length} samples, ` +
   `${contract.workspace.relationships.length} workspace modes, browser export)`
 );

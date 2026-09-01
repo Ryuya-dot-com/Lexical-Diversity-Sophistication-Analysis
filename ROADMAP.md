@@ -305,47 +305,46 @@ publication.
 
 | ID | Comparison | Identified change | Valid observation | Main boundary | State |
 |---|---|---|---|---|---|
-| M1 | `take in` as two word tokens versus one confirmed VPC occurrence | Counting channel only | Word coverage and MWE-form coverage answer different questions | A contiguous bigram is only a candidate until its use is confirmed | Contract/fixture next |
-| M2 | `take in the explanation` versus `take the explanation in` | Continuous versus discontinuous realization | The same VPC form can have non-adjacent member tokens | Gap tokens are not MWE members | Contract/fixture next |
-| M3 | Confirmed `take in` uses with different OEWN senses | Contextual sense while form is held constant | One form can populate different sense-profile cells | Inventory membership is not automatic sense assignment | Contract/fixture next |
-| M4 | A VPC use versus `take it in the car` | VPC versus literal/directional/free combination | Surface verb-plus-`in` matching produces false positives | Requires explicit rejection or a validated detector | Contract/fixture next |
+| M1 | `take in` as two word tokens versus one confirmed VPC occurrence | Counting channel only | Word coverage and MWE-form coverage answer different questions | A contiguous bigram is only a candidate until its use is confirmed | Contract/fixture implemented |
+| M2 | `take in the explanation` versus `take the explanation in` | Continuous versus discontinuous realization | The same VPC form can have non-adjacent member tokens | Gap tokens are not MWE members | Contract/fixture implemented |
+| M3 | Confirmed `take in` uses with different contextual senses | Contextual sense while form is held constant | One form can populate different sense-profile cells | Fixture-only sense IDs test the contract but do not establish OEWN compatibility | Contract/fixture implemented; OEWN mapping pending |
+| M4 | A VPC use versus `take it in the car` | VPC versus literal/directional/free combination | Surface verb-plus-`in` matching produces false positives | Requires explicit rejection or a validated detector | Contract/fixture implemented |
 | S1 | Equal 100-token templates with 38 lexical substitutions | Surface repetition at fixed positions | Mechanical response of counts and TTR | Frequency, semantics, naturalness, and population effects are uncontrolled | Implemented probe |
 | S2 | Identical 100-token sequence as one orthographic sentence or seven | Terminal punctuation / segmentation only | Current token-sequence metrics are invariant | This says nothing about sentence-aware metrics or natural syntax | Implemented probe |
 | S3 | First 14-token sentence versus its containing 100-token text | Nested sample length plus accumulated continuation | TTR changes when the sample grows | Sentence count, length, and added lexical composition are not separately identified | Implemented probe |
 | S4 | Same characters under documented tokenizer policies | Preprocessing policy | Sensitivity to apostrophes, hyphens, case, Unicode, and digits | No tokenizer is universally correct | Fixture evidence only |
-| S5 | Same text under an admitted unigram or n-gram comparator | Reference distribution and coverage | Resource-conditional baseline beside MWE results | A frequent n-gram is not necessarily an MWE or a particular sense | Deferred until M1–M4 contract |
+| S5 | Same text under an admitted unigram or n-gram comparator | Reference distribution and coverage | Resource-conditional baseline beside MWE results | A frequent n-gram is not necessarily an MWE or a particular sense | Deferred to resource-backed validation |
 | S6 | Rights-cleared public or corpus-derived text strata | Observed group/genre/time differences | Descriptive distribution with uncertainty | No causal, proficiency, or individual diagnosis claim | Blocked by provenance and design review |
 
-M1–M4 are the critical path. S1–S4 remain useful completed scaffolding; S5–S6
-must not displace MWE work. Add a scenario only when it isolates a new
-decision-relevant contrast; do not add scenarios merely to showcase another
-index.
+The M1–M4 contract/fixture increment is complete, but automatic candidate
+generation, occurrence decisions, and sense assignment are not. S1–S4 remain
+useful completed scaffolding; S5–S6 must not displace MWE work. Add a scenario
+only when it isolates a new decision-relevant contrast; do not add scenarios
+merely to showcase another index.
 
-## Immediate next increment
+## MWE contract increment
 
-The next deliverable is a contract and project-authored gold fixtures, not a
-detector, database, or new frequency table.
+The dependency-free `mwe_contract.json`, `tests/fixtures/mwe_cases.json`, and
+shared summarizer now implement the contract-and-fixture increment:
 
-1. Extend the existing canonical token records with stable token IDs.
-2. Represent one MWE occurrence with member token IDs, separate gap token IDs,
-   canonical form, PARSEME-compatible category, candidate/confirmed/rejected
-   status, and provenance. Keep the occurrence layer mappable to PARSEME rather
-   than inventing a competing generic annotation model.
-3. Represent sense lookup and sense assignment separately, including inventory
-   ID/version and `assigned`, `ambiguous`, `abstained`, `unassigned`, and
-   `out_of_inventory` states.
-4. Add M1–M4 project-authored fixtures and expected values. Confirmed member
-   density uses the union of member-token positions and excludes gap tokens;
-   word, form, annotation, and sense-assignment denominators remain separate.
-5. Only after the contract passes dependency-free checks, derive the minimum
-   attributed OEWN form/sense subset needed by the fixtures. Evaluate the
-   Multi-Word Units Profiler and Phrase Profiler's observable behavior, then
-   benchmark transparent list/dependency matching and at least one published
-   identification baseline against project-authored cases and a pinned English
-   VPC projection. Use STREUSLE and current PARSEME data for occurrence errors,
-   MAGPIE only for literal/idiomatic transfer checks, and OEWN-backed fixtures
-   for fine-sense assignment. Separately prove a minimal PARSEME occurrence
-   round trip before promising FLAT interoperability.
+- stable one-based token IDs tied to the existing canonical tokenizer;
+- member and gap token IDs, PARSEME-compatible VPC category, canonical form,
+  candidate/confirmed/rejected status, and decision provenance;
+- separate versioned form lookup, sense lookup, and sense-assignment states,
+  including `assigned`, `ambiguous`, `abstained`, `unassigned`, and
+  `out_of_inventory`;
+- M1–M4 project-authored fixtures with checked expected values; confirmed member
+  density uses the union of member IDs and excludes gaps, while every coverage
+  result preserves numerator and denominator and uses `null` when undefined.
+
+The next increment is resource-backed validation, not a database or another
+metric. Derive the minimum attributed OEWN form/sense subset required to replace
+the fixture-only M3 sense IDs, pin a current English VPC evaluation projection,
+and benchmark transparent list/dependency matching plus one published baseline.
+Use STREUSLE and current PARSEME data for occurrence errors, MAGPIE only for
+literal/idiomatic transfer checks, and OEWN-backed cases for fine-sense
+assignment. Separately prove a minimal PARSEME occurrence round trip before
+promising FLAT interoperability.
 
 ## What dimensions 3 and 4 must keep separate
 

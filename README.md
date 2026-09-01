@@ -11,6 +11,13 @@ ordinary word coverage, multiword-unit form coverage, and sense-level coverage
 separate. The current probe is only the browser-local input, comparison,
 provenance, and export foundation for that target; it is not yet an MWE analyzer.
 
+The repository now also contains a non-UI MWE contract and four
+project-authored M1–M4 gold fixtures. Dependency-free checks verify stable token
+IDs, continuous and discontinuous members, gap exclusion, confirmed/rejected
+states, separate form and sense lookups, contextual fixture senses, and visible
+coverage numerators and denominators. This is contract evidence, not automatic
+MWE detection or validation on learner data.
+
 The first automatic linguistic scope is English verb-particle constructions
 (VPCs), including contiguous and separated realizations such as `take in` and
 `take it in`. Occurrence detection, form-inventory lookup, and contextual sense
@@ -58,7 +65,10 @@ without raw text. The source, fixtures, contract, citations, rights terms, and
 tests are open for audit.
 
 It cannot yet identify `take in` as a VPC, distinguish it from a free or
-directional combination, recover separated members, or disambiguate its sense.
+directional combination, recover separated members, or disambiguate its sense
+from unannotated user text. The implemented MWE fixtures exercise reviewed gold
+records only; the public interface still exposes no MWE workflow.
+
 It also cannot assess proficiency, CEFR, writing quality, authorship, causal
 effects, or population differences; measure TAALES equivalence; independently
 verify input rights; guarantee device-level erasure; or reproduce an analysis

@@ -1,0 +1,73 @@
+{
+  "contract_version": "0.1.0-mwe",
+  "status": "gold-fixture-contract-not-runtime-analyzer",
+  "project_license": "MIT OR CC-BY-4.0",
+  "external_resource_dependencies": [],
+  "scope": {
+    "language": "English",
+    "automatic_category": "English verb-particle constructions",
+    "category_scheme": {
+      "id": "parseme-vmwe-guidelines-1.2",
+      "url": "https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2/",
+      "projection": ["VPC.full", "VPC.semi"]
+    },
+    "claims": "project-authored contract verification only",
+    "not_implemented": [
+      "automatic-candidate-generation",
+      "automatic-occurrence-identification",
+      "automatic-sense-assignment",
+      "external-inventory-integration"
+    ]
+  },
+  "token_record": {
+    "required_fields": ["id", "position", "surface", "normalized"],
+    "id": "unique within one document and stable for that exact tokenization",
+    "position": "one-based contiguous document order",
+    "surface": "project-reviewed token surface",
+    "normalized": "output of the metric contract tokenizer for the same token position"
+  },
+  "occurrence_record": {
+    "required_fields": [
+      "id",
+      "canonical_form",
+      "category",
+      "status",
+      "member_token_ids",
+      "gap_token_ids",
+      "decision",
+      "form_lookup",
+      "sense"
+    ],
+    "statuses": ["candidate", "confirmed", "rejected"],
+    "categories": ["VPC.full", "VPC.semi"],
+    "member_rule": "two or more unique token IDs in document order",
+    "gap_rule": "every non-member token strictly between the first and last member; gaps are not MWE members",
+    "overlap_rule": "a token may belong to multiple occurrences; confirmed member density counts the union once",
+    "decision_rule": "confirmed and rejected occurrences require provenance and a note; unresolved candidates have no terminal decision",
+    "form_lookup_statuses": ["matched", "out_of_inventory", "not_attempted"],
+    "sense_lookup_statuses": ["matched", "out_of_inventory", "not_attempted"],
+    "sense_assignment_statuses": [
+      "assigned",
+      "ambiguous",
+      "abstained",
+      "unassigned",
+      "out_of_inventory"
+    ],
+    "sense_rules": [
+      "confirmed occurrences always carry explicit form and sense records",
+      "assigned selects exactly one candidate sense",
+      "ambiguous preserves at least two selected candidate senses",
+      "abstained requires matched candidates but selects no sense",
+      "unassigned and out_of_inventory select no sense",
+      "rejected and unresolved candidate occurrences carry no inventory or sense result"
+    ]
+  },
+  "measurement": {
+    "confirmed_member_density": "union of confirmed member token IDs divided by all word tokens; gap tokens are excluded",
+    "occurrence_annotation_coverage": "confirmed plus rejected occurrences divided by all candidate occurrences",
+    "form_inventory_coverage": "confirmed occurrences with a matched form divided by confirmed occurrences",
+    "sense_inventory_coverage": "confirmed occurrences with matched sense candidates divided by confirmed occurrences",
+    "sense_assignment_coverage": "assigned occurrences divided by confirmed occurrences with matched sense candidates",
+    "zero_denominator": "ratio value is null and numerator and denominator remain visible"
+  }
+}

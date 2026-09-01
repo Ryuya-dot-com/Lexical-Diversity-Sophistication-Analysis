@@ -34,6 +34,9 @@ probe without assigning it a release version or validation claim.
 - Systematic eight-lane prior-art search protocol with a decision-based stopping
   rule, plus screening of PARSEME 2.0, MAGPIE, SemEval idiomaticity data,
   MWEasWSD, English VMWE annotations, CoAM, and CAIGen.
+- Dependency-free MWE occurrence/sense contract and four project-authored M1–M4
+  gold cases covering stable token IDs, discontinuous gaps, contextual fixture
+  senses, explicit rejection, and separate coverage denominators.
 
 ### Integrity boundaries
 

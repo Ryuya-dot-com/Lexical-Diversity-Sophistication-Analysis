@@ -1,0 +1,206 @@
+{
+  "contract_version": "0.1.0-mwe",
+  "fixture_version": "0.1.0",
+  "provenance": {
+    "kind": "synthetic",
+    "author": "project team",
+    "created_on": "2026-09-01",
+    "review_status": "project-authored-gold-contract-fixture",
+    "rights_status": "project-authored; MIT or CC BY 4.0",
+    "sense_inventory_note": "Fixture-only identifiers test state handling and make no OEWN compatibility claim."
+  },
+  "cases": [
+    {
+      "id": "M1-word-versus-confirmed-form",
+      "text": "They take in new information.",
+      "tokens": [
+        {"id": "t1", "position": 1, "surface": "They", "normalized": "they"},
+        {"id": "t2", "position": 2, "surface": "take", "normalized": "take"},
+        {"id": "t3", "position": 3, "surface": "in", "normalized": "in"},
+        {"id": "t4", "position": 4, "surface": "new", "normalized": "new"},
+        {"id": "t5", "position": 5, "surface": "information", "normalized": "information"}
+      ],
+      "occurrences": [
+        {
+          "id": "m1-o1",
+          "canonical_form": "take in",
+          "category": "VPC.full",
+          "status": "confirmed",
+          "member_token_ids": ["t2", "t3"],
+          "gap_token_ids": [],
+          "decision": {"source": "project-authored-gold-review", "note": "Confirmed VPC fixture."},
+          "form_lookup": {"inventory_id": "project-fixture-vpc-forms", "inventory_version": "0.1.0", "status": "matched", "entry_id": "fixture:take_in"},
+          "sense": {"inventory_id": "project-fixture-vpc-senses", "inventory_version": "0.1.0", "lookup_status": "not_attempted", "candidate_sense_ids": [], "assignment_status": "unassigned", "selected_sense_ids": []}
+        }
+      ],
+      "expected": {
+        "token_count": 5,
+        "candidate_occurrence_count": 1,
+        "confirmed_occurrence_count": 1,
+        "rejected_occurrence_count": 0,
+        "unresolved_occurrence_count": 0,
+        "confirmed_member_token_count": 2,
+        "confirmed_member_density": {"numerator": 2, "denominator": 5, "value": 0.4},
+        "occurrence_annotation_coverage": {"numerator": 1, "denominator": 1, "value": 1},
+        "form_inventory_coverage": {"numerator": 1, "denominator": 1, "value": 1},
+        "sense_inventory_coverage": {"numerator": 0, "denominator": 1, "value": 0},
+        "sense_assignment_coverage": {"numerator": 0, "denominator": 0, "value": null},
+        "sense_assignment_status_counts": {"assigned": 0, "ambiguous": 0, "abstained": 0, "unassigned": 1, "out_of_inventory": 0}
+      }
+    },
+    {
+      "id": "M2-discontinuous-members-and-gaps",
+      "text": "They take the explanation in.",
+      "tokens": [
+        {"id": "t1", "position": 1, "surface": "They", "normalized": "they"},
+        {"id": "t2", "position": 2, "surface": "take", "normalized": "take"},
+        {"id": "t3", "position": 3, "surface": "the", "normalized": "the"},
+        {"id": "t4", "position": 4, "surface": "explanation", "normalized": "explanation"},
+        {"id": "t5", "position": 5, "surface": "in", "normalized": "in"}
+      ],
+      "occurrences": [
+        {
+          "id": "m2-o1",
+          "canonical_form": "take in",
+          "category": "VPC.full",
+          "status": "confirmed",
+          "member_token_ids": ["t2", "t5"],
+          "gap_token_ids": ["t3", "t4"],
+          "decision": {"source": "project-authored-gold-review", "note": "Separated particle fixture; gap tokens are not members."},
+          "form_lookup": {"inventory_id": "project-fixture-vpc-forms", "inventory_version": "0.1.0", "status": "matched", "entry_id": "fixture:take_in"},
+          "sense": {"inventory_id": "project-fixture-vpc-senses", "inventory_version": "0.1.0", "lookup_status": "not_attempted", "candidate_sense_ids": [], "assignment_status": "unassigned", "selected_sense_ids": []}
+        }
+      ],
+      "expected": {
+        "token_count": 5,
+        "candidate_occurrence_count": 1,
+        "confirmed_occurrence_count": 1,
+        "rejected_occurrence_count": 0,
+        "unresolved_occurrence_count": 0,
+        "confirmed_member_token_count": 2,
+        "confirmed_member_density": {"numerator": 2, "denominator": 5, "value": 0.4},
+        "occurrence_annotation_coverage": {"numerator": 1, "denominator": 1, "value": 1},
+        "form_inventory_coverage": {"numerator": 1, "denominator": 1, "value": 1},
+        "sense_inventory_coverage": {"numerator": 0, "denominator": 1, "value": 0},
+        "sense_assignment_coverage": {"numerator": 0, "denominator": 0, "value": null},
+        "sense_assignment_status_counts": {"assigned": 0, "ambiguous": 0, "abstained": 0, "unassigned": 1, "out_of_inventory": 0}
+      }
+    },
+    {
+      "id": "M3-one-form-two-contextual-senses",
+      "text": "Mira took in the explanation, but the con artist took in the visitor with a convincing lie.",
+      "tokens": [
+        {"id": "t1", "position": 1, "surface": "Mira", "normalized": "mira"},
+        {"id": "t2", "position": 2, "surface": "took", "normalized": "took"},
+        {"id": "t3", "position": 3, "surface": "in", "normalized": "in"},
+        {"id": "t4", "position": 4, "surface": "the", "normalized": "the"},
+        {"id": "t5", "position": 5, "surface": "explanation", "normalized": "explanation"},
+        {"id": "t6", "position": 6, "surface": "but", "normalized": "but"},
+        {"id": "t7", "position": 7, "surface": "the", "normalized": "the"},
+        {"id": "t8", "position": 8, "surface": "con", "normalized": "con"},
+        {"id": "t9", "position": 9, "surface": "artist", "normalized": "artist"},
+        {"id": "t10", "position": 10, "surface": "took", "normalized": "took"},
+        {"id": "t11", "position": 11, "surface": "in", "normalized": "in"},
+        {"id": "t12", "position": 12, "surface": "the", "normalized": "the"},
+        {"id": "t13", "position": 13, "surface": "visitor", "normalized": "visitor"},
+        {"id": "t14", "position": 14, "surface": "with", "normalized": "with"},
+        {"id": "t15", "position": 15, "surface": "a", "normalized": "a"},
+        {"id": "t16", "position": 16, "surface": "convincing", "normalized": "convincing"},
+        {"id": "t17", "position": 17, "surface": "lie", "normalized": "lie"}
+      ],
+      "occurrences": [
+        {
+          "id": "m3-o1",
+          "canonical_form": "take in",
+          "category": "VPC.full",
+          "status": "confirmed",
+          "member_token_ids": ["t2", "t3"],
+          "gap_token_ids": [],
+          "decision": {"source": "project-authored-gold-review", "note": "Confirmed contextual VPC fixture."},
+          "form_lookup": {"inventory_id": "project-fixture-vpc-forms", "inventory_version": "0.1.0", "status": "matched", "entry_id": "fixture:take_in"},
+          "sense": {"inventory_id": "project-fixture-vpc-senses", "inventory_version": "0.1.0", "lookup_status": "matched", "candidate_sense_ids": ["fixture:take_in:understand", "fixture:take_in:deceive"], "assignment_status": "assigned", "selected_sense_ids": ["fixture:take_in:understand"]}
+        },
+        {
+          "id": "m3-o2",
+          "canonical_form": "take in",
+          "category": "VPC.full",
+          "status": "confirmed",
+          "member_token_ids": ["t10", "t11"],
+          "gap_token_ids": [],
+          "decision": {"source": "project-authored-gold-review", "note": "Confirmed contextual VPC fixture."},
+          "form_lookup": {"inventory_id": "project-fixture-vpc-forms", "inventory_version": "0.1.0", "status": "matched", "entry_id": "fixture:take_in"},
+          "sense": {"inventory_id": "project-fixture-vpc-senses", "inventory_version": "0.1.0", "lookup_status": "matched", "candidate_sense_ids": ["fixture:take_in:understand", "fixture:take_in:deceive"], "assignment_status": "assigned", "selected_sense_ids": ["fixture:take_in:deceive"]}
+        }
+      ],
+      "expected": {
+        "token_count": 17,
+        "candidate_occurrence_count": 2,
+        "confirmed_occurrence_count": 2,
+        "rejected_occurrence_count": 0,
+        "unresolved_occurrence_count": 0,
+        "confirmed_member_token_count": 4,
+        "confirmed_member_density": {"numerator": 4, "denominator": 17, "value": 0.235294},
+        "occurrence_annotation_coverage": {"numerator": 2, "denominator": 2, "value": 1},
+        "form_inventory_coverage": {"numerator": 2, "denominator": 2, "value": 1},
+        "sense_inventory_coverage": {"numerator": 2, "denominator": 2, "value": 1},
+        "sense_assignment_coverage": {"numerator": 2, "denominator": 2, "value": 1},
+        "sense_assignment_status_counts": {"assigned": 2, "ambiguous": 0, "abstained": 0, "unassigned": 0, "out_of_inventory": 0}
+      }
+    },
+    {
+      "id": "M4-confirm-versus-reject-context",
+      "text": "Mira took in the explanation. Mira took it in the car.",
+      "tokens": [
+        {"id": "t1", "position": 1, "surface": "Mira", "normalized": "mira"},
+        {"id": "t2", "position": 2, "surface": "took", "normalized": "took"},
+        {"id": "t3", "position": 3, "surface": "in", "normalized": "in"},
+        {"id": "t4", "position": 4, "surface": "the", "normalized": "the"},
+        {"id": "t5", "position": 5, "surface": "explanation", "normalized": "explanation"},
+        {"id": "t6", "position": 6, "surface": "Mira", "normalized": "mira"},
+        {"id": "t7", "position": 7, "surface": "took", "normalized": "took"},
+        {"id": "t8", "position": 8, "surface": "it", "normalized": "it"},
+        {"id": "t9", "position": 9, "surface": "in", "normalized": "in"},
+        {"id": "t10", "position": 10, "surface": "the", "normalized": "the"},
+        {"id": "t11", "position": 11, "surface": "car", "normalized": "car"}
+      ],
+      "occurrences": [
+        {
+          "id": "m4-o1",
+          "canonical_form": "take in",
+          "category": "VPC.full",
+          "status": "confirmed",
+          "member_token_ids": ["t2", "t3"],
+          "gap_token_ids": [],
+          "decision": {"source": "project-authored-gold-review", "note": "Confirmed VPC fixture."},
+          "form_lookup": {"inventory_id": "project-fixture-vpc-forms", "inventory_version": "0.1.0", "status": "matched", "entry_id": "fixture:take_in"},
+          "sense": {"inventory_id": "project-fixture-vpc-senses", "inventory_version": "0.1.0", "lookup_status": "matched", "candidate_sense_ids": ["fixture:take_in:understand"], "assignment_status": "assigned", "selected_sense_ids": ["fixture:take_in:understand"]}
+        },
+        {
+          "id": "m4-o2",
+          "canonical_form": "take in",
+          "category": "VPC.full",
+          "status": "rejected",
+          "member_token_ids": ["t7", "t9"],
+          "gap_token_ids": ["t8"],
+          "decision": {"source": "project-authored-gold-review", "note": "Rejected: in heads the location phrase in the car rather than the take in VPC."},
+          "form_lookup": null,
+          "sense": null
+        }
+      ],
+      "expected": {
+        "token_count": 11,
+        "candidate_occurrence_count": 2,
+        "confirmed_occurrence_count": 1,
+        "rejected_occurrence_count": 1,
+        "unresolved_occurrence_count": 0,
+        "confirmed_member_token_count": 2,
+        "confirmed_member_density": {"numerator": 2, "denominator": 11, "value": 0.181818},
+        "occurrence_annotation_coverage": {"numerator": 2, "denominator": 2, "value": 1},
+        "form_inventory_coverage": {"numerator": 1, "denominator": 1, "value": 1},
+        "sense_inventory_coverage": {"numerator": 1, "denominator": 1, "value": 1},
+        "sense_assignment_coverage": {"numerator": 1, "denominator": 1, "value": 1},
+        "sense_assignment_status_counts": {"assigned": 1, "ambiguous": 0, "abstained": 0, "unassigned": 0, "out_of_inventory": 0}
+      }
+    }
+  ]
+}

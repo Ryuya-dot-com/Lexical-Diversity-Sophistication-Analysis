@@ -49,6 +49,163 @@ export function analyze(text) {
   };
 }
 
+function coverage(numerator, denominator) {
+  return {numerator, denominator, value: denominator ? roundedRatio(numerator, denominator) : null};
+}
+
+export function summarizeMweDocument(document, contract) {
+  if (!document || typeof document.text !== 'string' || !Array.isArray(document.tokens) ||
+      !Array.isArray(document.occurrences)) {
+    throw new Error('MWE document requires token and occurrence arrays.');
+  }
+  const normalized = tokenize(document.text);
+  const tokenIds = new Set();
+  document.tokens.forEach((token, index) => {
+    const surfaceTokens = typeof token.surface === 'string' ? tokenize(token.surface) : [];
+    if (typeof token.id !== 'string' || !token.id || typeof token.surface !== 'string' ||
+        token.position !== index + 1 || token.normalized !== normalized[index] ||
+        surfaceTokens.length !== 1 || surfaceTokens[0] !== token.normalized) {
+      throw new Error('MWE token records do not match canonical tokenization.');
+    }
+    if (tokenIds.has(token.id)) throw new Error(`Duplicate MWE token ID: ${token.id}.`);
+    tokenIds.add(token.id);
+  });
+  if (normalized.length !== document.tokens.length) {
+    throw new Error('MWE token records do not match canonical tokenization.');
+  }
+  const positionById = new Map(document.tokens.map(token => [token.id, token.position]));
+  const occurrenceIds = new Set();
+  const confirmed = [];
+  const rejected = [];
+  const unresolved = [];
+  for (const occurrence of document.occurrences) {
+    if (typeof occurrence.id !== 'string' || !occurrence.id ||
+        typeof occurrence.canonical_form !== 'string' || !occurrence.canonical_form.trim()) {
+      throw new Error('MWE occurrence identity is missing.');
+    }
+    if (occurrenceIds.has(occurrence.id)) {
+      throw new Error(`Duplicate MWE occurrence ID: ${occurrence.id}.`);
+    }
+    occurrenceIds.add(occurrence.id);
+    if (!contract.occurrence_record.statuses.includes(occurrence.status)) {
+      throw new Error(`Unknown MWE occurrence status: ${occurrence.status}.`);
+    }
+    if (!contract.occurrence_record.categories.includes(occurrence.category)) {
+      throw new Error(`Unknown MWE category: ${occurrence.category}.`);
+    }
+    const members = occurrence.member_token_ids;
+    const gaps = occurrence.gap_token_ids;
+    if (!Array.isArray(members) || members.length < 2 || new Set(members).size !== members.length) {
+      throw new Error(`MWE occurrence ${occurrence.id} requires unique member tokens.`);
+    }
+    if (!Array.isArray(gaps) || new Set(gaps).size !== gaps.length) {
+      throw new Error(`MWE occurrence ${occurrence.id} requires unique gap tokens.`);
+    }
+    for (const id of [...members, ...gaps]) {
+      if (!tokenIds.has(id)) throw new Error(`Unknown token ID in ${occurrence.id}: ${id}.`);
+    }
+    const memberPositions = members.map(id => positionById.get(id));
+    if (memberPositions.some((position, index) => index && position <= memberPositions[index - 1])) {
+      throw new Error(`MWE members are not in document order: ${occurrence.id}.`);
+    }
+    // ponytail: scan each occurrence span; index tokens only if corpus benchmarks require it.
+    const expectedGaps = document.tokens
+      .slice(memberPositions[0], memberPositions.at(-1) - 1)
+      .map(token => token.id).filter(id => !members.includes(id));
+    if (JSON.stringify(gaps) !== JSON.stringify(expectedGaps)) {
+      throw new Error(`MWE gap tokens do not match the member span: ${occurrence.id}.`);
+    }
+    if (occurrence.status === 'candidate') {
+      if (occurrence.decision || occurrence.form_lookup || occurrence.sense) {
+        throw new Error(`Unresolved candidate carries a terminal result: ${occurrence.id}.`);
+      }
+      unresolved.push(occurrence);
+      continue;
+    }
+    if (!occurrence.decision?.source || !occurrence.decision?.note) {
+      throw new Error(`MWE decision provenance is missing: ${occurrence.id}.`);
+    }
+    if (occurrence.status === 'rejected') {
+      if (occurrence.form_lookup || occurrence.sense) {
+        throw new Error(`Rejected occurrence carries an inventory result: ${occurrence.id}.`);
+      }
+      rejected.push(occurrence);
+      continue;
+    }
+    validateConfirmedOccurrence(occurrence, contract);
+    confirmed.push(occurrence);
+  }
+
+  const memberIds = new Set(confirmed.flatMap(occurrence => occurrence.member_token_ids));
+  const formMatched = confirmed.filter(item => item.form_lookup.status === 'matched').length;
+  const senseMatched = confirmed.filter(item => item.sense.lookup_status === 'matched').length;
+  const senseAssigned = confirmed.filter(item => item.sense.assignment_status === 'assigned').length;
+  const senseStatuses = Object.fromEntries(
+    contract.occurrence_record.sense_assignment_statuses.map(status => [
+      status, confirmed.filter(item => item.sense.assignment_status === status).length
+    ])
+  );
+  return {
+    token_count: document.tokens.length,
+    candidate_occurrence_count: document.occurrences.length,
+    confirmed_occurrence_count: confirmed.length,
+    rejected_occurrence_count: rejected.length,
+    unresolved_occurrence_count: unresolved.length,
+    confirmed_member_token_count: memberIds.size,
+    confirmed_member_density: coverage(memberIds.size, document.tokens.length),
+    occurrence_annotation_coverage: coverage(
+      confirmed.length + rejected.length, document.occurrences.length
+    ),
+    form_inventory_coverage: coverage(formMatched, confirmed.length),
+    sense_inventory_coverage: coverage(senseMatched, confirmed.length),
+    sense_assignment_coverage: coverage(senseAssigned, senseMatched),
+    sense_assignment_status_counts: senseStatuses
+  };
+}
+
+function validateConfirmedOccurrence(occurrence, contract) {
+  const form = occurrence.form_lookup;
+  const sense = occurrence.sense;
+  if (!form || !contract.occurrence_record.form_lookup_statuses.includes(form.status)) {
+    throw new Error(`Confirmed occurrence lacks form lookup: ${occurrence.id}.`);
+  }
+  if (!form.inventory_id || !form.inventory_version) {
+    throw new Error(`Form inventory identity is missing: ${occurrence.id}.`);
+  }
+  if ((form.status === 'matched') !== Boolean(form.entry_id)) {
+    throw new Error(`Form lookup result is inconsistent: ${occurrence.id}.`);
+  }
+  if (!sense || !contract.occurrence_record.sense_lookup_statuses.includes(sense.lookup_status) ||
+      !contract.occurrence_record.sense_assignment_statuses.includes(sense.assignment_status)) {
+    throw new Error(`Confirmed occurrence lacks sense state: ${occurrence.id}.`);
+  }
+  if (!sense.inventory_id || !sense.inventory_version) {
+    throw new Error(`Sense inventory identity is missing: ${occurrence.id}.`);
+  }
+  const candidates = sense.candidate_sense_ids;
+  const selected = sense.selected_sense_ids;
+  if (!Array.isArray(candidates) || !Array.isArray(selected) ||
+      new Set(candidates).size !== candidates.length || new Set(selected).size !== selected.length ||
+      selected.some(id => !candidates.includes(id))) {
+    throw new Error(`Sense candidates are inconsistent: ${occurrence.id}.`);
+  }
+  if ((sense.lookup_status === 'matched') !== (candidates.length > 0)) {
+    throw new Error(`Sense lookup result is inconsistent: ${occurrence.id}.`);
+  }
+  if (['assigned', 'ambiguous', 'abstained'].includes(sense.assignment_status) &&
+      sense.lookup_status !== 'matched') {
+    throw new Error(`Sense assignment lacks matched candidates: ${occurrence.id}.`);
+  }
+  const selectedCount = sense.assignment_status === 'assigned'
+    ? 1 : sense.assignment_status === 'ambiguous' ? 2 : 0;
+  if ((sense.assignment_status === 'ambiguous' && selected.length < selectedCount) ||
+      (sense.assignment_status !== 'ambiguous' && selected.length !== selectedCount) ||
+      (sense.assignment_status === 'out_of_inventory') !==
+        (sense.lookup_status === 'out_of_inventory')) {
+    throw new Error(`Sense assignment is inconsistent: ${occurrence.id}.`);
+  }
+}
+
 export function resultDifference(first, second) {
   return Object.fromEntries(
     Object.keys(first).map(key => [
