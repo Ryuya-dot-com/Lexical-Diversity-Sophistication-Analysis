@@ -1,4 +1,5 @@
 const tokenPattern = /(?:^|[^\p{L}\p{N}_])([A-Za-z]+(?:['’][A-Za-z]+)*)(?=$|[^\p{L}\p{N}_])/gu;
+const tubelexTokenPattern = /(?:^|[^\p{L}\p{N}_])([A-Za-z]+)(?=$|[^\p{L}\p{N}_])/gu;
 
 function requireWellFormed(value, label) {
   if (typeof value.isWellFormed !== 'function') {
@@ -33,6 +34,136 @@ export function tokenRecords(text) {
 
 export function tokenize(text) {
   return tokenRecords(text).map(token => token.normalized);
+}
+
+export function tokenizeForTubelex(text) {
+  if (typeof text !== 'string') throw new Error('TUBELEX tokenization requires text.');
+  requireWellFormed(text, 'TUBELEX input');
+  return [...text.normalize('NFKC').matchAll(tubelexTokenPattern)]
+    .map(match => match[1].toLowerCase());
+}
+
+export function prepareWordReferenceProfile(profile) {
+  if (profile?.identity?.profile_status !== 'admitted' ||
+      profile?.construct?.coverage_channel !== 'word' ||
+      profile?.construct?.reference_function !== 'frequency_distribution' ||
+      !Array.isArray(profile.rows) || !Number.isInteger(profile.corpus_design?.token_count)) {
+    throw new Error('Word reference profile is not an admitted frequency profile.');
+  }
+  const lookup = new Map();
+  let previousCount = Infinity;
+  let previousWord = '';
+  let rank = 0;
+  profile.rows.forEach((row, index) => {
+    const [word, count] = row;
+    if (!/^[a-z]+$/.test(word) || !Number.isInteger(count) || count < 1 ||
+        count > previousCount || (count === previousCount && word <= previousWord) ||
+        lookup.has(word)) {
+      throw new Error(`Invalid word reference row ${index + 1}.`);
+    }
+    if (count < previousCount) rank = index + 1;
+    lookup.set(word, {count, rank});
+    previousCount = count;
+    previousWord = word;
+  });
+  if (lookup.size !== profile.table.projected_row_count) {
+    throw new Error('Word reference row count does not match its manifest.');
+  }
+  return {profile, lookup};
+}
+
+export function analyzeWordCoverage(text, prepared) {
+  if (!(prepared?.lookup instanceof Map)) throw new Error('Prepared word profile is required.');
+  const tokens = tokenizeForTubelex(text);
+  const textCounts = new Map();
+  for (const token of tokens) textCounts.set(token, (textCounts.get(token) || 0) + 1);
+  const corpusTokens = prepared.profile.corpus_design.token_count;
+  const items = [...textCounts].map(([word, textCount]) => {
+    const reference = prepared.lookup.get(word);
+    return {
+      word,
+      text_count: textCount,
+      status: reference ? 'matched' : 'unmatched',
+      source_count: reference?.count ?? null,
+      frequency_per_million: reference
+        ? Number((reference.count / corpusTokens * 1_000_000).toFixed(6)) : null,
+      frequency_rank: reference?.rank ?? null
+    };
+  }).sort((first, second) =>
+    Number(first.status === 'matched') - Number(second.status === 'matched') ||
+    second.text_count - first.text_count || first.word.localeCompare(second.word)
+  );
+  const matchedTypes = items.filter(item => item.status === 'matched');
+  const matchedTokens = matchedTypes.reduce((sum, item) => sum + item.text_count, 0);
+  return {
+    profile_id: prepared.profile.identity.profile_id,
+    profile_version: prepared.profile.identity.profile_version,
+    tokenizer_unit: prepared.profile.construct.unit,
+    token_coverage: coverage(matchedTokens, tokens.length),
+    type_coverage: coverage(matchedTypes.length, items.length),
+    unmatched_token_count: tokens.length - matchedTokens,
+    unmatched_type_count: items.length - matchedTypes.length,
+    items
+  };
+}
+
+export function wordCoverageCsv(result) {
+  if (!result?.token_coverage || !Array.isArray(result.items)) {
+    throw new Error('Word coverage result is required.');
+  }
+  const header = [
+    'word', 'text_count', 'status', 'source_count', 'frequency_per_million',
+    'frequency_rank', 'profile_id', 'profile_version'
+  ];
+  const rows = result.items.map(item => [
+    item.word, item.text_count, item.status, item.source_count,
+    item.frequency_per_million, item.frequency_rank, result.profile_id, result.profile_version
+  ]);
+  return [header, ...rows].map(row => row.map(csvCell).join(',')).join('\n') + '\n';
+}
+
+export function prepareMweFormReferenceProfile(profile) {
+  if (profile?.identity?.profile_status !== 'admitted' ||
+      profile?.construct?.coverage_channel !== 'mwe_form' ||
+      profile?.construct?.reference_function !== 'inventory_membership' ||
+      !Array.isArray(profile.rows)) {
+    throw new Error('MWE form reference profile is not an admitted inventory.');
+  }
+  const lookup = new Map();
+  let previousForm = '';
+  for (const [form, senseCount] of profile.rows) {
+    if (typeof form !== 'string' ||
+        !/^[a-z]+(?:'[a-z]+)*(?: [a-z]+(?:'[a-z]+)*)+$/.test(form) ||
+        !Number.isInteger(senseCount) || senseCount < 1 || form <= previousForm ||
+        lookup.has(form)) {
+      throw new Error('Invalid MWE form reference row.');
+    }
+    lookup.set(form, senseCount);
+    previousForm = form;
+  }
+  if (lookup.size !== profile.table.projected_row_count) {
+    throw new Error('MWE form reference row count does not match its manifest.');
+  }
+  return {profile, lookup};
+}
+
+function normalizedCanonicalForm(value) {
+  return value.trim().replaceAll('’', "'").toLowerCase().split(/\s+/).join(' ');
+}
+
+export function lookupMweForm(canonicalForm, prepared) {
+  if (typeof canonicalForm !== 'string' || !(prepared?.lookup instanceof Map)) {
+    throw new Error('MWE form lookup requires a canonical form and prepared profile.');
+  }
+  const normalized = normalizedCanonicalForm(canonicalForm);
+  const matched = prepared.lookup.has(normalized);
+  return {
+    inventory_id: prepared.profile.identity.profile_id,
+    inventory_version: prepared.profile.identity.profile_version,
+    status: matched ? 'matched' : 'out_of_inventory',
+    entry_id: matched ? `${normalized}#v` : null,
+    sense_count: matched ? prepared.lookup.get(normalized) : null
+  };
 }
 
 export function parseMwePatternTsv(source, categories, maximumRows = 500) {
@@ -299,6 +430,29 @@ export function summarizeMweDocument(document, contract) {
   };
 }
 
+export function summarizeMweFormCoverage(document, contract) {
+  summarizeMweDocument(document, contract);
+  const confirmed = document.occurrences.filter(item => item.status === 'confirmed');
+  const matched = confirmed.filter(item => item.form_lookup.status === 'matched');
+  const forms = new Map();
+  for (const item of confirmed) {
+    const form = normalizedCanonicalForm(item.canonical_form);
+    if (!forms.has(form)) forms.set(form, {occurrence_count: 0, status: item.form_lookup.status});
+    const record = forms.get(form);
+    record.occurrence_count += 1;
+    if (record.status !== item.form_lookup.status) {
+      throw new Error(`Inconsistent MWE form lookup for ${form}.`);
+    }
+  }
+  const matchedTypes = [...forms.values()].filter(item => item.status === 'matched').length;
+  return {
+    occurrence_coverage: coverage(matched.length, confirmed.length),
+    type_coverage: coverage(matchedTypes, forms.size),
+    unmatched_forms: [...forms].filter(([, item]) => item.status !== 'matched')
+      .map(([canonicalForm, item]) => ({canonical_form: canonicalForm, ...item}))
+  };
+}
+
 function validateIdiomaticity(occurrence, contract) {
   const idiomaticity = occurrence.idiomaticity;
   if (!idiomaticity ||
@@ -432,24 +586,54 @@ export function mweOccurrencesCsv(document, contract) {
   summarizeMweDocument(document, contract);
   const header = [
     'occurrence_id', 'canonical_form', 'category', 'status', 'member_token_ids',
-    'gap_token_ids', 'candidate_source', 'decision_note'
+    'gap_token_ids', 'candidate_source', 'decision_note', 'form_inventory_id',
+    'form_inventory_version', 'form_lookup_status', 'form_entry_id', 'form_sense_count'
   ];
   const rows = document.occurrences.map(item => [
     item.id, item.canonical_form, item.category, item.status,
     item.member_token_ids.join(' '), item.gap_token_ids.join(' '),
-    item.candidate_source?.kind, item.decision?.note
+    item.candidate_source?.kind, item.decision?.note, item.form_lookup?.inventory_id,
+    item.form_lookup?.inventory_version, item.form_lookup?.status,
+    item.form_lookup?.entry_id, item.form_lookup?.sense_count
   ]);
   return [header, ...rows].map(row => row.map(csvCell).join(',')).join('\n') + '\n';
 }
 
+function activeProfileRecord(prepared) {
+  const profile = prepared?.profile;
+  if (!profile?.identity || !profile?.source || !profile?.rights) {
+    throw new Error('Prepared reference profile metadata is missing.');
+  }
+  return {
+    profile_id: profile.identity.profile_id,
+    profile_version: profile.identity.profile_version,
+    title: profile.identity.title,
+    coverage_channel: profile.construct.coverage_channel,
+    reference_function: profile.construct.reference_function,
+    source_artifact_sha256: profile.source.artifact_sha256,
+    source_release: profile.source.release_or_edition,
+    license_identifier: profile.rights.license_identifier,
+    excluded_inferences: profile.construct.excluded_inferences
+  };
+}
+
 export async function makeMweReviewRecord({
-  document, contract, patternSource, tokenizer, authorizationAttested, generatedAt
+  document, contract, patternSource, tokenizer, authorizationAttested, generatedAt,
+  wordProfile, mweFormProfile
 }) {
   if (typeof patternSource !== 'string' || typeof generatedAt !== 'string') {
     throw new Error('MWE review export metadata is missing.');
   }
   if (authorizationAttested !== true) {
     throw new Error('MWE review export requires input authorization attestation.');
+  }
+  const wordCoverage = analyzeWordCoverage(document.text, wordProfile);
+  for (const occurrence of document.occurrences.filter(item => item.status === 'confirmed')) {
+    const expected = lookupMweForm(occurrence.canonical_form, mweFormProfile);
+    if (['inventory_id', 'inventory_version', 'status', 'entry_id', 'sense_count']
+      .some(key => occurrence.form_lookup[key] !== expected[key])) {
+      throw new Error(`MWE form lookup does not match the active profile: ${occurrence.id}.`);
+    }
   }
   const generatedDate = new Date(generatedAt);
   if (!Number.isFinite(generatedDate.getTime()) || generatedDate.toISOString() !== generatedAt) {
@@ -465,18 +649,32 @@ export async function makeMweReviewRecord({
       tokenizer,
       categories: contract.occurrence_record.categories
     },
-    active_runtime_resources: [],
+    active_runtime_resources: [activeProfileRecord(wordProfile), activeProfileRecord(mweFormProfile)],
     input_authorization: {attested: true, independently_verified_by_app: false},
     text: {
       sha256_utf8: await sha256(document.text),
-      token_count: document.tokens.length,
+      mwe_token_count: document.tokens.length,
+      word_profile_token_count: wordCoverage.token_coverage.denominator,
       raw_text_included: false
     },
     pattern_tsv: {
       sha256_utf8: await sha256(patternSource),
       included: false
     },
-    summary: summarizeMweDocument(document, contract),
+    summary: {
+      review: summarizeMweDocument(document, contract),
+      word_coverage: {
+        profile_id: wordCoverage.profile_id,
+        profile_version: wordCoverage.profile_version,
+        tokenizer_unit: wordCoverage.tokenizer_unit,
+        token_coverage: wordCoverage.token_coverage,
+        type_coverage: wordCoverage.type_coverage,
+        unmatched_token_count: wordCoverage.unmatched_token_count,
+        unmatched_type_count: wordCoverage.unmatched_type_count,
+        item_rows_included: false
+      },
+      mwe_form_coverage: summarizeMweFormCoverage(document, contract)
+    },
     occurrences: document.occurrences.map(item => ({
       id: item.id,
       canonical_form: item.canonical_form,
@@ -485,12 +683,15 @@ export async function makeMweReviewRecord({
       member_token_ids: item.member_token_ids,
       gap_token_ids: item.gap_token_ids,
       candidate_source: item.candidate_source,
-      decision: item.decision
+      decision: item.decision,
+      form_lookup: item.form_lookup
     })),
     limitations: [
       'surface patterns generate candidates but do not confirm MWE status',
       'the included starter patterns are not a comprehensive or pedagogically ranked inventory',
-      'reference-corpus word or MWE coverage is not implemented in this increment',
+      'TUBELEX word coverage and OEWN MWE-form membership are separate channels and are never combined into one score',
+      'OEWN form membership is not MWE frequency, occurrence truth, category, contextual sense, or pedagogical importance',
+      'the TUBELEX profile is an audiovisual/spoken-exposure approximation rather than a universal English norm',
       'exact source text and pattern TSV must be preserved separately to reproduce this record'
     ]
   };

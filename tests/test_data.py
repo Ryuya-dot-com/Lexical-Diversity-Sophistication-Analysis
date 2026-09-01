@@ -1,4 +1,5 @@
 import json
+import hashlib
 from pathlib import Path
 import unittest
 
@@ -12,9 +13,51 @@ MWE_CONTRACT = json.loads((ROOT / "mwe_contract.json").read_text(encoding="utf-8
 STREUSLE_PROFILE = json.loads(
     (ROOT / "benchmarks/streusle_v5_vpc_vid.json").read_text(encoding="utf-8")
 )
+TUBELEX_PROFILE = json.loads(
+    (ROOT / "resources/tubelex_en_regex_ascii_2025.json").read_text(encoding="utf-8")
+)
+OEWN_FORM_PROFILE = json.loads(
+    (ROOT / "resources/oewn_2025_multiword_verbs.json").read_text(encoding="utf-8")
+)
 
 
 class SampleManifestTests(unittest.TestCase):
+    def test_admitted_reference_profiles_are_complete_and_separate(self):
+        required = set(REFERENCE_TEMPLATE["required_sections"])
+        for profile, channel, function in (
+            (TUBELEX_PROFILE, "word", "frequency_distribution"),
+            (OEWN_FORM_PROFILE, "mwe_form", "inventory_membership"),
+        ):
+            self.assertTrue(required.issubset(profile))
+            self.assertEqual(profile["identity"]["profile_status"], "admitted")
+            self.assertEqual(profile["construct"]["coverage_channel"], channel)
+            self.assertEqual(profile["construct"]["reference_function"], function)
+            self.assertTrue(profile["rights"]["browser_delivery_permitted"])
+
+        self.assertEqual(TUBELEX_PROFILE["table"]["projected_row_count"], 410400)
+        self.assertEqual(TUBELEX_PROFILE["corpus_design"]["token_count"], 179139158)
+        self.assertEqual(TUBELEX_PROFILE["rows"][0], ["the", 7455441])
+        self.assertEqual(OEWN_FORM_PROFILE["table"]["projected_row_count"], 2847)
+        forms = dict(OEWN_FORM_PROFILE["rows"])
+        self.assertEqual(forms["take in"], 17)
+        self.assertEqual(forms["spill the beans"], 1)
+        self.assertEqual(
+            hashlib.sha256(
+                (ROOT / "resources/tubelex_en_regex_ascii_2025.json").read_bytes()
+            ).hexdigest(),
+            "d177f22f5cd4c86d5d7465197eebccceda84c0e3ab8ca5ecfbcdbc9fbd29d1bc",
+        )
+        self.assertEqual(
+            hashlib.sha256(
+                (ROOT / "resources/oewn_2025_multiword_verbs.json").read_bytes()
+            ).hexdigest(),
+            "513714774f0e087e9ba03c8fa04e969b8314786ccbdaa06dbbeeb35127f6a41e",
+        )
+        self.assertEqual(
+            hashlib.sha256((ROOT / "resources/TUBELEX_LICENSE.txt").read_bytes()).hexdigest(),
+            "51b9e39825bbf19e4bb777bf11a7520a3935ff859c4d0ee724dfe9ddb26a961f",
+        )
+
     def test_streusle_profile_is_external_and_matches_the_mwe_contract(self):
         self.assertEqual(
             set(STREUSLE_PROFILE["projection"]["category_mapping"].values()),

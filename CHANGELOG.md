@@ -7,6 +7,16 @@ probe without assigning it a release version or validation claim.
 
 ### Added
 
+- Admitted, browser-loaded reference profiles for 410,400 TUBELEX English regex
+  ASCII word forms and 2,847 OEWN 2025 ASCII multiword verb forms, with pinned
+  source hashes, full manifests, notices, removal procedures, and a deterministic
+  standard-library builder.
+- Separate TUBELEX word-token/type membership and OEWN confirmed-MWE
+  occurrence/type membership, preserving profile-specific tokenizers,
+  denominators, unmatched items, source counts, frequency-per-million, rank,
+  and explicit non-inferences.
+- Word item CSV and extended occurrence CSV exports; method JSON names both
+  active profiles but omits raw text, pattern TSV, and word item rows.
 - Browser-local VPC/VID candidate review from researcher-supplied four-column
   TSV patterns, including discontinuous member/gap display, manual candidates,
   confirmed/rejected/unresolved decisions with required notes, occurrence CSV,
@@ -71,10 +81,10 @@ probe without assigning it a release version or validation claim.
 ### Integrity boundaries
 
 - No account, server analysis, analytics, cookie, database, external model,
-  third-party runtime code, automatic lexical-resource lookup, or raw-text
-  export. User patterns create review candidates but do not automatically
-  confirm MWE status. The admitted OEWN subset is fixture-only and not loaded
-  by the UI.
+  third-party runtime code, external lexical-service query, or raw-text export.
+  User patterns create review candidates but do not automatically confirm MWE
+  status. Static TUBELEX and OEWN profiles are loaded locally and remain
+  separate rather than forming a composite score.
 - Server-side storage is not treated as licensing permission; open resources
   remain downloadable, and restricted resources require delivery-specific
   permission even when hidden behind an API.

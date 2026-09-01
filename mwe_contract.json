@@ -1,8 +1,24 @@
 {
-  "contract_version": "0.4.0-mwe",
-  "status": "browser-review-increment-with-resource-backed-fixtures-not-validated-analyzer",
+  "contract_version": "0.5.0-mwe",
+  "status": "browser-reference-coverage-and-review-prototype-not-validated-analyzer",
   "project_license": "MIT OR CC-BY-4.0",
   "external_resource_dependencies": [
+    {
+      "id": "tubelex-en-regex-ascii-word-frequency",
+      "version": "2025-04-24.projection-1",
+      "path": "resources/tubelex_en_regex_ascii_2025.json",
+      "path_sha256": "d177f22f5cd4c86d5d7465197eebccceda84c0e3ab8ca5ecfbcdbc9fbd29d1bc",
+      "license": "BSD-3-Clause",
+      "use": "browser-local word-token and word-type frequency-profile coverage"
+    },
+    {
+      "id": "oewn-2025-ascii-multiword-verb-forms",
+      "version": "2025.projection-1",
+      "path": "resources/oewn_2025_multiword_verbs.json",
+      "path_sha256": "513714774f0e087e9ba03c8fa04e969b8314786ccbdaa06dbbeeb35127f6a41e",
+      "license": "CC-BY-4.0 AND WordNet",
+      "use": "browser-local confirmed MWE-form inventory membership"
+    },
     {
       "id": "oewn",
       "version": "2025",
@@ -20,13 +36,29 @@
       "url": "https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2/",
       "projection": ["VPC.full", "VPC.semi", "VID"]
     },
-    "claims": "transparent user-pattern candidate generation and human review with project-authored contract verification and a pinned OEWN candidate-sense projection",
+    "claims": "separate TUBELEX word-frequency coverage, OEWN multiword-verb form membership, transparent user-pattern candidates, and human review",
     "not_implemented": [
       "automatic-occurrence-identification",
       "automatic-sense-assignment",
-      "reference-corpus-word-or-mwe-coverage",
-      "runtime-resource-lookup"
+      "mwe-form-or-sense-frequency",
+      "combined-word-and-mwe-score",
+      "reference-profile-comparison"
     ]
+  },
+  "reference_profiles": {
+    "separation_rule": "word frequency and confirmed-MWE lexicon membership use different resources, token units, denominators, and outputs and are never averaged or substituted",
+    "word": {
+      "profile_id": "tubelex-en-regex-ascii-word-frequency",
+      "input_unit": "NFKC-normalized ASCII alphabetic surface token; apostrophes and hyphens are boundaries",
+      "denominators": ["profile-tokenized input tokens", "distinct profile-tokenized input types"],
+      "boundary": "YouTube subtitle exposure approximation; not general English, written/academic frequency, learner knowledge, CEFR, or MWE frequency"
+    },
+    "mwe_form": {
+      "profile_id": "oewn-2025-ascii-multiword-verb-forms",
+      "input_unit": "researcher-confirmed occurrence with an exact normalized canonical form",
+      "denominators": ["confirmed MWE occurrences", "distinct confirmed canonical forms"],
+      "boundary": "lexicographic membership; not occurrence truth, PARSEME category, corpus frequency, contextual sense, or pedagogical importance"
+    }
   },
   "candidate_generation": {
     "method": "ordered case-insensitive surface-member alternatives supplied as four-column TSV",
@@ -63,6 +95,7 @@
     "decision_rule": "confirmed and rejected occurrences require provenance and a note; unresolved candidates have no terminal decision",
     "form_lookup_statuses": ["matched", "out_of_inventory", "not_attempted"],
     "inventory_identity_rule": "matched or out_of_inventory requires both inventory ID and version; not_attempted requires both to be null",
+    "form_sense_count_rule": "an optional matched-profile sense_count describes inventory entries only and never assigns a contextual sense",
     "idiomaticity_statuses": ["idiomatic", "literal", "ambiguous", "not_assessed"],
     "idiomaticity_rules": [
       "idiomaticity is separate from structural category, occurrence status, and fine-grained sense",
@@ -91,10 +124,13 @@
     ]
   },
   "measurement": {
+    "word_token_coverage": "TUBELEX-profile-tokenized input tokens with a matched surface form divided by all tokens from that profile-specific tokenizer",
+    "word_type_coverage": "distinct TUBELEX-profile-tokenized input forms with a match divided by all distinct forms from that profile-specific tokenizer",
     "confirmed_member_density": "union of confirmed member token IDs divided by all word tokens; gap tokens are excluded",
     "occurrence_annotation_coverage": "confirmed plus rejected occurrences divided by all candidate occurrences",
     "idiomaticity_annotation_coverage": "idiomatic, literal, or ambiguous decisions divided by all candidate occurrences",
     "form_inventory_coverage": "confirmed occurrences with a matched form divided by confirmed occurrences",
+    "form_inventory_type_coverage": "distinct confirmed canonical forms with a matched form divided by all distinct confirmed canonical forms",
     "sense_inventory_coverage": "confirmed occurrences with matched sense candidates divided by confirmed occurrences",
     "sense_assignment_coverage": "assigned occurrences divided by confirmed occurrences with matched sense candidates",
     "zero_denominator": "ratio value is null and numerator and denominator remain visible"

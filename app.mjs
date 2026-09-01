@@ -1,6 +1,8 @@
 import {
-  analyze, findMweCandidates, makeExportRecord, makeMweReviewRecord, mweOccurrencesCsv,
-  parseBatchJson, parseMwePatternTsv, summarizeMweDocument
+  analyze, analyzeWordCoverage, findMweCandidates, lookupMweForm, makeExportRecord,
+  makeMweReviewRecord, mweOccurrencesCsv, parseBatchJson, parseMwePatternTsv,
+  prepareMweFormReferenceProfile, prepareWordReferenceProfile, summarizeMweDocument,
+  summarizeMweFormCoverage, wordCoverageCsv
 } from './metrics.mjs';
 
 const labels = {
@@ -25,7 +27,10 @@ const mweResults = document.getElementById('mwe-results');
 let comparisonSets;
 let contract;
 let mweContract;
+let wordProfile;
+let mweFormProfile;
 let currentExport;
+let currentWordCoverage;
 let mweDocument;
 let mwePatternSource;
 let nextMweId = 1;
@@ -53,8 +58,7 @@ function reviewedOccurrence(occurrence, status, note) {
     ? null : {source: 'researcher-browser-review', note: note.trim()};
   reviewed.idiomaticity = {status: 'not_assessed', decision: null};
   reviewed.form_lookup = status === 'confirmed'
-    ? {inventory_id: null, inventory_version: null, status: 'not_attempted', entry_id: null}
-    : null;
+    ? lookupMweForm(reviewed.canonical_form, mweFormProfile) : null;
   reviewed.sense = status === 'confirmed'
     ? {
         inventory_id: null, inventory_version: null, lookup_status: 'not_attempted',
@@ -116,6 +120,7 @@ function occurrenceCard(occurrence) {
   const article = document.createElement('article');
   const heading = document.createElement('h4');
   const source = document.createElement('p');
+  const formLookup = document.createElement('p');
   const controls = document.createElement('div');
   const noteField = document.createElement('div');
   const noteLabel = document.createElement('label');
@@ -127,6 +132,12 @@ function occurrenceCard(occurrence) {
   source.textContent = occurrence.candidate_source?.kind === 'manual'
     ? 'Candidate source: manually selected members.'
     : `Candidate source: ${occurrence.candidate_source?.pattern_id || 'declared pattern'}.`;
+  formLookup.className = 'meta';
+  formLookup.textContent = occurrence.status === 'confirmed'
+    ? occurrence.form_lookup.status === 'matched'
+      ? `OEWN form inventory: matched (${occurrence.form_lookup.sense_count} inventory senses; not contextually assigned).`
+      : 'OEWN form inventory: out of inventory; this does not reject the occurrence.'
+    : 'OEWN form inventory: lookup begins only after confirmation.';
   noteField.className = 'field';
   noteLabel.htmlFor = `decision-${occurrence.id}`;
   noteLabel.textContent = '判断根拠';
@@ -156,19 +167,32 @@ function occurrenceCard(occurrence) {
   actions.append(remove);
   controls.className = 'occurrence-controls';
   controls.append(noteField, actions);
-  article.append(heading, renderOccurrenceContext(occurrence), source, controls);
+  article.append(heading, renderOccurrenceContext(occurrence), source, formLookup, controls);
   return article;
 }
 
 function renderMweReview() {
   const summary = summarizeMweDocument(mweDocument, mweContract);
+  const formCoverage = summarizeMweFormCoverage(mweDocument, mweContract);
   fillDefinitionList(document.getElementById('mwe-summary'), [
-    ['Word tokens', String(summary.token_count)],
+    ['MWE-review tokens', String(summary.token_count)],
+    ['TUBELEX-profile tokens', String(currentWordCoverage.token_coverage.denominator)],
+    ['TUBELEX word-token coverage', ratioText(currentWordCoverage.token_coverage)],
+    ['TUBELEX word-type coverage', ratioText(currentWordCoverage.type_coverage)],
     ['Candidates', String(summary.candidate_occurrence_count)],
     ['Confirmed / rejected / unresolved', `${summary.confirmed_occurrence_count} / ${summary.rejected_occurrence_count} / ${summary.unresolved_occurrence_count}`],
     ['Annotation coverage', ratioText(summary.occurrence_annotation_coverage)],
-    ['Confirmed member density', ratioText(summary.confirmed_member_density)]
+    ['Confirmed member density', ratioText(summary.confirmed_member_density)],
+    ['OEWN MWE-form occurrence coverage', ratioText(formCoverage.occurrence_coverage)],
+    ['OEWN MWE-form type coverage', ratioText(formCoverage.type_coverage)]
   ]);
+  document.getElementById('word-coverage-items').value = [
+    'word\ttext_count\tstatus\tsource_count\tfrequency_per_million\tfrequency_rank',
+    ...currentWordCoverage.items.map(item => [
+      item.word, item.text_count, item.status, item.source_count ?? '',
+      item.frequency_per_million ?? '', item.frequency_rank ?? ''
+    ].join('\t'))
+  ].join('\n');
   renderMweTokenPicker();
   document.getElementById('mwe-occurrences').replaceChildren(
     ...mweDocument.occurrences.map(occurrenceCard)
@@ -182,6 +206,7 @@ function renderMweReview() {
 function invalidateMweReview() {
   if (!mweDocument) return;
   mweDocument = null;
+  currentWordCoverage = null;
   mwePatternSource = null;
   mweResults.hidden = true;
   mweStatus.textContent = '入力を変更しました。候補を再抽出してください。';
@@ -199,11 +224,13 @@ mweForm.addEventListener('submit', event => {
       mwePatternSource, mweContract.occurrence_record.categories
     );
     mweDocument = {text, ...findMweCandidates(text, patterns)};
+    currentWordCoverage = analyzeWordCoverage(text, wordProfile);
     if (!mweDocument.tokens.length) throw new Error('ASCII英語tokenが見つかりません。');
     nextMweId = mweDocument.occurrences.length + 1;
     renderMweReview();
   } catch (error) {
     mweDocument = null;
+    currentWordCoverage = null;
     mweResults.hidden = true;
     mweStatus.textContent = error.message;
   }
@@ -211,6 +238,7 @@ mweForm.addEventListener('submit', event => {
 
 mweForm.addEventListener('reset', () => {
   mweDocument = null;
+  currentWordCoverage = null;
   mwePatternSource = null;
   mweResults.hidden = true;
   mweStatus.textContent = 'MWE入力と結果を消去しました。';
@@ -267,6 +295,13 @@ document.getElementById('export-mwe-csv').addEventListener('click', () => {
   );
 });
 
+document.getElementById('export-word-coverage-csv').addEventListener('click', () => {
+  if (!currentWordCoverage) return;
+  downloadText(
+    'ldfreq-word-coverage.csv', wordCoverageCsv(currentWordCoverage), 'text/csv;charset=utf-8'
+  );
+});
+
 document.getElementById('export-mwe-json').addEventListener('click', async () => {
   if (!mweDocument) return;
   const record = await makeMweReviewRecord({
@@ -275,7 +310,9 @@ document.getElementById('export-mwe-json').addEventListener('click', async () =>
     patternSource: mwePatternSource,
     tokenizer: contract.tokenizer,
     authorizationAttested: document.getElementById('mwe-authorization').checked,
-    generatedAt: new Date().toISOString()
+    generatedAt: new Date().toISOString(),
+    wordProfile,
+    mweFormProfile
   });
   downloadText('ldfreq-mwe-review.json', JSON.stringify(record, null, 2) + '\n', 'application/json');
 });
@@ -588,15 +625,23 @@ exportButton.addEventListener('click', () => {
 
 async function initialize() {
   try {
-    const [samplesResponse, contractResponse, mweContractResponse] = await Promise.all([
-      fetch('samples.json'), fetch('metric_contract.json'), fetch('mwe_contract.json')
+    const [
+      samplesResponse, contractResponse, mweContractResponse, wordProfileResponse,
+      mweFormProfileResponse
+    ] = await Promise.all([
+      fetch('samples.json'), fetch('metric_contract.json'), fetch('mwe_contract.json'),
+      fetch('resources/tubelex_en_regex_ascii_2025.json'),
+      fetch('resources/oewn_2025_multiword_verbs.json')
     ]);
-    if (!samplesResponse.ok || !contractResponse.ok || !mweContractResponse.ok) {
+    if (!samplesResponse.ok || !contractResponse.ok || !mweContractResponse.ok ||
+        !wordProfileResponse.ok || !mweFormProfileResponse.ok) {
       throw new Error('比較データを読み込めませんでした。');
     }
     const sampleDocument = await samplesResponse.json();
     contract = await contractResponse.json();
     mweContract = await mweContractResponse.json();
+    wordProfile = prepareWordReferenceProfile(await wordProfileResponse.json());
+    mweFormProfile = prepareMweFormReferenceProfile(await mweFormProfileResponse.json());
     comparisonSets = sampleDocument.comparison_sets;
     scenario.replaceChildren(...comparisonSets.map((set, index) => {
       const option = document.createElement('option');

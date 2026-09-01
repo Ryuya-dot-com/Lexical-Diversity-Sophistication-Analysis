@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1.0-provided-candidate-predictions",
-  "contract_version": "0.4.0-mwe",
+  "contract_version": "0.5.0-mwe",
   "system": {
     "id": "surface-list-all-confirmed",
     "version": "0.1.0",

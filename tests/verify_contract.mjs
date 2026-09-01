@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {
-  analyze, analyzeDeclaredSegments, findMweCandidates, makeExportRecord, makeMweReviewRecord,
-  mweOccurrencesCsv, parseBatchJson, parseMwePatternTsv, roundedRatio, sha256,
-  summarizeMweDocument, tokenize, tokenRecords
+  analyze, analyzeDeclaredSegments, analyzeWordCoverage, findMweCandidates, lookupMweForm,
+  makeExportRecord, makeMweReviewRecord, mweOccurrencesCsv, parseBatchJson,
+  parseMwePatternTsv, prepareMweFormReferenceProfile, prepareWordReferenceProfile,
+  roundedRatio, sha256, summarizeMweDocument, summarizeMweFormCoverage, tokenize,
+  tokenizeForTubelex, tokenRecords, wordCoverageCsv
 } from '../metrics.mjs';
 
 const fixtureUrl = new URL('./fixtures/metric_cases.json', import.meta.url);
@@ -13,6 +15,8 @@ const mweContractUrl = new URL('../mwe_contract.json', import.meta.url);
 const mweFixtureUrl = new URL('./fixtures/mwe_cases.json', import.meta.url);
 const oewnSubsetUrl = new URL('../resources/oewn_take_in_2025.json', import.meta.url);
 const oewnNoticeUrl = new URL('../resources/OEWN_WORDNET_NOTICE.txt', import.meta.url);
+const wordProfileUrl = new URL('../resources/tubelex_en_regex_ascii_2025.json', import.meta.url);
+const mweFormProfileUrl = new URL('../resources/oewn_2025_multiword_verbs.json', import.meta.url);
 const fixture = JSON.parse(readFileSync(fixtureUrl, 'utf8'));
 const sampleDocument = JSON.parse(readFileSync(sampleUrl, 'utf8'));
 const contract = JSON.parse(readFileSync(contractUrl, 'utf8'));
@@ -20,6 +24,10 @@ const mweContract = JSON.parse(readFileSync(mweContractUrl, 'utf8'));
 const mweFixture = JSON.parse(readFileSync(mweFixtureUrl, 'utf8'));
 const oewnSubset = JSON.parse(readFileSync(oewnSubsetUrl, 'utf8'));
 const oewnNotice = readFileSync(oewnNoticeUrl, 'utf8');
+const wordProfile = prepareWordReferenceProfile(JSON.parse(readFileSync(wordProfileUrl, 'utf8')));
+const mweFormProfile = prepareMweFormReferenceProfile(
+  JSON.parse(readFileSync(mweFormProfileUrl, 'utf8'))
+);
 
 assert.equal(contract.contract_version, '0.1.0-probe');
 assert.equal(fixture.contract_version, contract.contract_version);
@@ -27,6 +35,20 @@ for (const testCase of fixture.cases) {
   assert.deepEqual(analyze(testCase.text), testCase.expected, testCase.id);
 }
 assert.equal(roundedRatio(1, 128), 0.007813);
+assert.deepEqual(tokenizeForTubelex("Don't re-use café."), ['don', 't', 're', 'use']);
+const wordCoverage = analyzeWordCoverage(
+  'They took it in, then spilled the beans and played qqqqqq.', wordProfile
+);
+assert.deepEqual(wordCoverage.token_coverage, {numerator: 10, denominator: 11, value: 0.909091});
+assert.deepEqual(wordCoverage.type_coverage, {numerator: 10, denominator: 11, value: 0.909091});
+assert.equal(wordCoverage.items[0].word, 'qqqqqq');
+assert.equal(wordCoverage.items[0].status, 'unmatched');
+assert.match(wordCoverageCsv(wordCoverage), /"qqqqqq","1","unmatched"/);
+assert.deepEqual(lookupMweForm('Take   In', mweFormProfile), {
+  inventory_id: 'oewn-2025-ascii-multiword-verb-forms',
+  inventory_version: '2025.projection-1', status: 'matched',
+  entry_id: 'take in#v', sense_count: 17
+});
 
 const patternTsv = [
   'VPC.full\ttake in\ttake/takes/took/taken/taking in\t4',
@@ -62,35 +84,71 @@ assert.throws(
   () => findMweCandidates('x'.repeat(100_001), patterns),
   /exceeds 100,000/
 );
+const reviewedDocument = structuredClone(candidateDocument);
+reviewedDocument.occurrences = reviewedDocument.occurrences.map(item => ({
+  ...item,
+  status: 'confirmed',
+  decision: {source: 'test-review', note: 'synthetic fixture decision'},
+  form_lookup: lookupMweForm(item.canonical_form, mweFormProfile),
+  sense: {
+    inventory_id: null, inventory_version: null, lookup_status: 'not_attempted',
+    candidate_sense_ids: [], assignment_status: 'unassigned', selected_sense_ids: [],
+    decision: null
+  }
+}));
+assert.deepEqual(summarizeMweFormCoverage(reviewedDocument, mweContract), {
+  occurrence_coverage: {numerator: 2, denominator: 2, value: 1},
+  type_coverage: {numerator: 2, denominator: 2, value: 1},
+  unmatched_forms: []
+});
 const mweReviewRecord = await makeMweReviewRecord({
-  document: candidateDocument,
+  document: reviewedDocument,
   contract: mweContract,
   patternSource: patternTsv,
   tokenizer: contract.tokenizer,
   authorizationAttested: true,
+  wordProfile,
+  mweFormProfile,
   generatedAt: '2026-09-01T00:00:00.000Z'
 });
 assert.equal(mweReviewRecord.text.raw_text_included, false);
 assert.equal(mweReviewRecord.input_authorization.attested, true);
-assert.deepEqual(mweReviewRecord.active_runtime_resources, []);
-assert.ok(!JSON.stringify(mweReviewRecord).includes(candidateDocument.text));
+assert.equal(mweReviewRecord.active_runtime_resources.length, 2);
+assert.equal(mweReviewRecord.summary.word_coverage.token_coverage.denominator, 8);
+assert.ok(!JSON.stringify(mweReviewRecord).includes(reviewedDocument.text));
 assert.match(mweReviewRecord.text.sha256_utf8, /^[0-9a-f]{64}$/);
-assert.match(mweOccurrencesCsv(candidateDocument, mweContract), /"take in"/);
+assert.match(mweOccurrencesCsv(reviewedDocument, mweContract), /"take in"/);
+assert.match(mweOccurrencesCsv(reviewedDocument, mweContract), /"matched","take in#v","17"/);
+const mismatchedLookupDocument = structuredClone(reviewedDocument);
+mismatchedLookupDocument.occurrences[0].form_lookup.entry_id = 'wrong#v';
 await assert.rejects(
   makeMweReviewRecord({
-    document: candidateDocument, contract: mweContract, patternSource: patternTsv,
+    document: mismatchedLookupDocument, contract: mweContract, patternSource: patternTsv,
+    tokenizer: contract.tokenizer, authorizationAttested: true, wordProfile, mweFormProfile,
+    generatedAt: '2026-09-01T00:00:00.000Z'
+  }),
+  /does not match the active profile/
+);
+await assert.rejects(
+  makeMweReviewRecord({
+    document: reviewedDocument, contract: mweContract, patternSource: patternTsv,
     tokenizer: contract.tokenizer, authorizationAttested: false,
+    wordProfile, mweFormProfile,
     generatedAt: '2026-09-01T00:00:00.000Z'
   }),
   /authorization attestation/
 );
 
 assert.equal(mweFixture.contract_version, mweContract.contract_version);
-assert.deepEqual(mweContract.external_resource_dependencies, [{
-  id: 'oewn', version: '2025', subset_id: oewnSubset.subset_id,
-  path: 'resources/oewn_take_in_2025.json', license: 'CC-BY-4.0 AND WordNet',
-  use: 'complete take in#v candidate-sense projection for reviewed fixtures'
-}]);
+assert.deepEqual(
+  mweContract.external_resource_dependencies.map(item => item.id),
+  [
+    'tubelex-en-regex-ascii-word-frequency',
+    'oewn-2025-ascii-multiword-verb-forms',
+    'oewn'
+  ]
+);
+assert.equal(mweContract.external_resource_dependencies[2].subset_id, oewnSubset.subset_id);
 const oewnTakeInSenseIds = [
   'take_in%2:42:00::', 'take_in%2:32:00::', 'take_in%2:43:00::',
   'take_in%2:41:00::', 'take_in%2:40:09::', 'take_in%2:39:06::',

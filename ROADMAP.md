@@ -198,8 +198,8 @@ file-level method, provenance, rights, and numerical review.
 | Phase | Required outcome | Evidence | Current state |
 |---|---|---|---|
 | 0. Claim freeze | One method problem, intended users, operational definitions, exclusions, and planned comparisons | Versioned protocol and analysis plan | In progress in this roadmap |
-| 1. Useful vertical slice | The minimum useful product can analyze one text from input through reviewed occurrence export | Task-level browser checks and example release | Partial: user-pattern candidates, manual review, decisions, CSV, and method JSON implemented; reference coverage absent |
-| 2. Resource/data admission | At least one word-reference profile, one MWE inventory, and one applied-L2 evaluation sample have lawful, pinned, documented use | Manifests, hashes, notices, sampling/ethics record | OEWN partial; STREUSLE benchmark only; word and L2 profiles absent |
+| 1. Useful vertical slice | The minimum useful product can analyze one text from input through reviewed occurrence export | Task-level browser checks and example release | Implemented with separate word/MWE-form coverage and exports; real-browser and intended-user checks absent |
+| 2. Resource/data admission | At least one word-reference profile, one MWE inventory, and one applied-L2 evaluation sample have lawful, pinned, documented use | Manifests, hashes, notices, sampling/ethics record | TUBELEX word and OEWN MWE-form profiles admitted; applied-L2 evaluation sample absent |
 | 3. Technical validation | Candidate identification and category decisions are evaluated on fixed held-out data, with contiguous/discontinuous and seen/unseen errors separated | Exact-span/category results, baselines, prediction files, error taxonomy | Transparent STREUSLE floor only; not an adequate detector |
 | 4. Measurement validation | Word-only and MWE-aware coverage are compared on relevant L2 texts and the consequences of unit decisions are quantified | Predeclared estimands, sensitivity analyses, annotated examples, uncertainty | Not started |
 | 5. Human evaluation | Intended users can complete the workflow and correctly interpret outputs; expert annotation reliability and adjudication are documented where human gold is created | Justified sample, task completion, interpretation errors, agreement, qualitative feedback | Not started |
@@ -249,17 +249,20 @@ MWE form or fine-grained sense coverage.
 
 No single corpus is a theory-free default. The initial resource portfolio is:
 
-1. **TUBELEX English regex candidate** for a word-form frequency and dispersion
-   profile approximating contemporary audiovisual/spoken exposure. It is not a
-   general English, academic, written, or learner-knowledge norm. Its published
-   aggregate is rights-cleared for preparation, but its tokenizer projection,
-   band boundaries, ties, and browser payload still block admission.
+1. **TUBELEX English regex ASCII profile** for word-form frequency approximating
+   audiovisual/spoken exposure. Its 410,400 forms, profile-specific tokenizer,
+   source denominator, per-million formula, competition ties, unmatched policy,
+   payload ceiling, rights, and removal path are admitted and exposed. It is not
+   a general English, academic, written, or learner-knowledge norm and does not
+   expose dispersion or MWE frequency.
 2. **One exact Leipzig written-register package**, to be selected and pinned as
    a contrast rather than pooled silently with TUBELEX. News, Web, Wikipedia,
    country, year, and corpus size are construct choices; no package is admitted
    yet.
 3. **OEWN 2025** for MWE-form and sense inventory membership, not corpus
-   frequency. Only the `take in#v` projection is currently admitted.
+   frequency. A 2,847-form multiword-verb projection is active after human
+   confirmation; the separate `take in#v` projection retains all 17 candidate
+   senses for fixture validation only.
 4. **STREUSLE 5.0** as the pinned external English occurrence/category
    benchmark, not a general frequency baseline. The PARSEME 2.0 production
    training release has no English directory; its English trial data remains a
@@ -538,15 +541,16 @@ STREUSLE 5.0 projection checks 40 English VPC/VID test occurrences, including
 surface baseline obtains exact-span F1 0.404762 and zero recall in both hard
 strata. This is a transparent floor, not a detector claim or a coverage result.
 
-The public single-text candidate-review half is now implemented: researcher-
-supplied patterns produce reviewable member/gap candidates, manual candidates
-and confirm/reject/unresolved decisions are supported, and occurrence CSV plus
-metadata-only method JSON are exported. The next increment is the coverage
-half, not another detector or model: admit and expose one pinned word-reference
-profile and one lawful MWE-form inventory, then report separate word and MWE
-numerators, denominators, and unmatched items. Only after that vertical slice is
-usable should one dependency or contextual baseline be evaluated against the
-same fixed STREUSLE projection. A contextual
+The minimum single-text path is now implemented: researcher-supplied patterns
+produce reviewable member/gap candidates; manual candidates and
+confirm/reject/unresolved decisions are supported; TUBELEX word-token/type and
+OEWN confirmed-MWE occurrence/type coverage retain separate denominators;
+unmatched items, CSV, and metadata-only method JSON are exposed. The next
+increment is not another resource or model. Freeze an applied-L2 evaluation
+protocol and lawful sample, run real-browser/accessibility checks, and observe
+whether representative researchers can complete and correctly interpret this
+workflow. Only then should one dependency or contextual candidate baseline be
+evaluated against the same fixed STREUSLE projection. A contextual
 transformer may rerank candidates and fastText may supply a cheap static-
 semantic comparator, but neither embedding is itself an MWE definition. Add a
 runtime model only if it improves predeclared exact-span, category,
@@ -631,10 +635,10 @@ issue should be framed as evidence of improper conduct by another project.
 
 ## Open-science release gate
 
-- [ ] Complete the minimum useful single-text MWE-aware coverage path; do not
+- [x] Complete the minimum useful single-text MWE-aware coverage path; do not
   release the TTR method-audit probe as the research tool described in the
   manuscript.
-- [ ] Admit and expose at least one word-reference profile and one MWE inventory
+- [x] Admit and expose at least one word-reference profile and one MWE inventory
   with visible versions, denominators, unmatched items, and removal paths.
 - [x] Export reviewed occurrence/member/gap/category/status rows as tidy CSV and
   the full method/resource/decision record as JSON.
@@ -644,7 +648,7 @@ issue should be framed as evidence of improper conduct by another project.
   the app as legal advice.
 - [x] Dual-license original code, documentation, contracts, and fixtures under
   MIT or CC BY 4.0 at the recipient's choice.
-- [ ] Keep future third-party notices and any license-incompatible resource
+- [x] Keep future third-party notices and any license-incompatible resource
   packages distinct from the original project grant.
 - [x] Admit the OEWN 2025 `take in#v` projection only with an exact release
   hash, deterministic extractor, complete 17-sense candidate set, both required

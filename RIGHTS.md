@@ -15,12 +15,14 @@ record. The decisions below are conservative project gates, not legal advice.
 | Scenarios in `samples.json` and MWE cases in `tests/fixtures/mwe_cases.json` | Project-authored synthetic transformations and reviewed `take in`/`spill the beans` contract cases | Browser comparisons and dependency-free contract verification | Dual-licensed MIT or CC BY 4.0. M3 refers to OEWN sense IDs, but its contextual assignments are project decisions rather than OEWN gold labels; no person or learner corpus is included. |
 | `scripts/evaluate_mwe_predictions.py` and the surface-list prediction fixture | Original project code and synthetic negative-control predictions | Offline evaluation of occurrence, idiomaticity, and sense decisions for already supplied candidates | Dual-licensed MIT or CC BY 4.0; no model, weights, training corpus, or third-party Python package is included. |
 | `benchmarks/streusle_v5_vpc_vid.json`, `scripts/check_streusle_v5.py`, and `resources/STREUSLE_NOTICE.md` | Project-authored external benchmark profile, checker, and attribution/rights notice based on pinned STREUSLE 5.0 metadata | Offline artifact verification and transparent VPC/VID baseline only; no corpus or upstream code is bundled or loaded by the Web app | Original checker and notice are dual-licensed MIT or CC BY 4.0. The profile preserves STREUSLE CC BY-SA 4.0 and source-text permission boundaries; researchers obtain the exact release separately. |
-| `mwe_contract.json`, candidate matcher, and MWE summarizer | Original project schema and deterministic validation/review logic | Exposed through the public UI for researcher-supplied pattern matching, member/gap review, decisions, and export; not a validated automatic MWE analyzer or reference-corpus coverage engine | Dual-licensed MIT or CC BY 4.0; the schema declares the separately licensed OEWN projection below. |
+| `mwe_contract.json`, matchers, and coverage summarizers | Original project schema and deterministic validation/review/coverage logic | Exposed through the public UI for candidate review and separate TUBELEX word/OEWN MWE-form coverage; not a validated automatic MWE analyzer or combined lexical score | Dual-licensed MIT or CC BY 4.0; the schema declares the separately licensed profiles below. |
 | `reference_profile_template.json` | Original project manifest template | Defines the evidence required for one resource projection and one word/MWE-form/MWE-sense coverage channel; not a resource, uploader, or runtime profile | Dual-licensed MIT or CC BY 4.0; null fields prevent the template from masquerading as an admitted resource. |
-| `resources/oewn_take_in_2025.json` and `resources/OEWN_WORDNET_NOTICE.txt` | Project-derived projection of the Open English WordNet 2025 `take in#v` entry and retained upstream notice | Complete 17-sense candidate inventory for M3 fixture validation; not loaded by the public UI and not a contextual WSD model | OEWN CC BY 4.0 plus the underlying WordNet License. Attribution, source identity, modifications, citation, license text, and no-endorsement notice travel with the subset. |
+| `resources/tubelex_en_regex_ascii_2025.json` and `resources/TUBELEX_LICENSE.txt` | Project-derived 410,400-form projection of the pinned TUBELEX English regex frequency table and retained upstream license | Browser-local word-token/type coverage, source count, per-million frequency, rank, and unmatched-item output | TUBELEX BSD-3-Clause, including copyright notice, conditions, disclaimer, source identity, method citation, projection rules, and no-endorsement restriction. Not covered by the project's dual-license grant. |
+| `resources/oewn_2025_multiword_verbs.json`, `resources/oewn_take_in_2025.json`, and `resources/OEWN_WORDNET_NOTICE.txt` | Project-derived projections of the pinned Open English WordNet 2025 JSON release and retained upstream notice | Browser-local exact membership for 2,847 multiword verb forms; separate complete 17-sense candidate inventory for M3 fixture validation | OEWN CC BY 4.0 plus the underlying WordNet License. Attribution, source identity, modifications, citation, license text, and no-endorsement notice travel with both projections. Not covered by the project's dual-license grant. |
+| `scripts/build_reference_profiles.py` | Original project code | Deterministically reproduces both browser profiles from separately downloaded, hash-verified source assets | Dual-licensed MIT or CC BY 4.0; standard library only and no upstream code copied. |
 | Researcher-entered text and MWE patterns | Researcher-authorized synthetic, published, teaching, or appropriately governed research material | Browser-memory calculation and candidate review only | Not bundled, transmitted, retained, or copied into method JSON; the checkbox records authorization/ethics attestation but is not a legal or ethics determination by the app. |
-| Exported analysis record | Project schema plus researcher labels, provenance, hashes, client-clock time, and results, including document-batch and reviewed MWE rows | Explicit local CSV or JSON download | Raw text and pattern TSV are omitted, but canonical forms and decision notes remain and may be sensitive. The researcher must review output before sharing; editable files, hashes, and timestamps are not signatures or proof of authorship/time. |
-| Other lexical lists, corpora, models, dictionaries | None bundled | None | Not admitted. |
+| Exported analysis record | Project schema plus researcher labels, provenance, hashes, client-clock time, word types, and reviewed MWE rows | Explicit local CSV or JSON download | Raw text and pattern TSV are omitted from JSON, but CSV word types, canonical forms, and decision notes may be sensitive or partially reconstructive. The researcher must review output before sharing; editable files, hashes, and timestamps are not signatures or proof of authorship/time. |
+| Other lexical lists, corpora, models, dictionaries | None additionally bundled | None | Not admitted. |
 | Browser platform | User agent | Rendering and local calculation | No installed package or third-party script. |
 | Python and Node.js | Local/CI environment | Tests, offline resource/benchmark verification, and optional static serving only | Not shipped as application dependencies. |
 | Method citations | Bibliographic metadata and DOI links | Interpretation evidence only | Attributed in the metric contract and export; no third-party code, data, or article text is copied. |
@@ -37,7 +39,7 @@ records are not part of this repository.
 | Multi-Word Units Profiler 2.0.1 | The live site labels the profiler CC BY-NC-SA 4.0 and offers four research-based lists. Eguchi's 2021 presentation documents Python/spaCy lemmatization and parsing, n-gram/dependency candidate extraction, list matching, highlighted text, and item tables. Project-authored probes confirmed both contiguous and dependency-separated matches while the M1-M4 `take in` strings remained unmarked. | The site-level license does not establish reusable licenses for each incorporated list, example, frequency, or corpus-derived field; no corresponding source/data release was located in this review. The hosted POST sends raw input to PythonAnywhere, and no retention guarantee is presented on the input page. Its list-driven matches are not contextual VPC or fine-sense gold labels. | Primary behavioral comparator and methodological/UI prior art only. Do not copy code, lists, examples, or frequency fields, automate the hosted service, or send protected research text without permission and a documented privacy basis. |
 | Lextutor Phrase Profiler 1.2 | The official page describes matching up to 30,000 words against selectable phrase/collocation lists; its Multiwords page distinguishes this from n-gram and MI-based extractors. | No explicit open redistribution license for the profiler payloads was found on the reviewed pages, and each incorporated list has separate rights and construct assumptions. Hosted input leaves the researcher's browser. | Secondary behavioral comparator only; do not copy its lists or make it a required reproducibility dependency. |
 | COCA | The official download page sells word-frequency and 2–5-gram data and describes more than 40 million downloadable n-grams. | Purchase/offline processing does not state permission to expose the data through this public service. Hiding it in a database would not establish server-use, public-query, or derived-output rights. | Exclude unless written permission covers the exact artifact and delivery/output mode. |
-| Open English WordNet | The official repository releases OEWN under CC BY 4.0. Its 2025 entry for `take in` has 17 verb senses, demonstrating that the MWE needs an inventory entry distinct from `take` and `in`. | Attribution and incorporated-material notices must travel with the exact pinned release. Inventory membership and sense count do not perform contextual WSD, and automatic use must preserve ambiguity/abstention. | B-MWE1 admitted only as the pinned, attributed `take in#v` field projection used by M3; no full dictionary, automatic lookup, or WSD claim. |
+| Open English WordNet | The official repository releases OEWN under CC BY 4.0. Its 2025 entry for `take in` has 17 verb senses, demonstrating that the MWE needs an inventory entry distinct from `take` and `in`. | Attribution and incorporated-material notices must travel with the exact pinned release. Inventory membership and sense count do not perform occurrence identification or contextual WSD, and automatic use must preserve ambiguity/abstention. | B-MWE1 admitted as a 2,847-form multiword-verb membership projection and a separate complete `take in#v` fixture-sense projection; no full dictionary, frequency, automatic occurrence, or WSD claim. |
 | PHaVE List | Garnier and Schmitt's article defines 150 frequent phrasal verbs and key meaning senses covering at least 75% of their COCA occurrences. | This is the closest L2-pedagogical target, but the publisher labels the article restricted access and routes reuse of its non-OA supplemental lists to the copyright holder. COCA-derived percentages add a separate provenance question. | Candidate C-MWE2 for method/citation or written permission; do not copy the lists, glosses, examples, or percentages into the app. |
 | STREUSLE | The official repository's 5.0 release (2025-11-15) provides more than 55,000 Web-review words, more than 3,000 MWE instances, supersenses across noun/verb/preposition expressions, recoverable gaps, and PARSEME-derived verbal categories; annotations are CC BY-SA 4.0. | It is a genre-specific lexical-semantic gold corpus, not a general English frequency distribution, literal-negative corpus, universal taxonomy, or OEWN-compatible fine-sense inventory. Its README distinguishes CC BY-SA annotations from source sentences/PTB annotations redistributed with Google/LDC permission. | B-MWE2 admitted as an external, non-bundled STREUSLE 5.0 VPC/VID offline benchmark profile. No corpus text, annotation rows, upstream code, or model enters the Web app or permissive core. |
 | PARSEME guidelines | The official guidelines distinguish verbal idioms, light-verb constructions, inherently reflexive/adpositional verbs, multi-verb constructions, VPCs, and language-specific categories under CC BY 4.0. | The scheme is deliberately verbal and excludes many non-verbal idioms. Guidelines establish annotation decisions, not an English production detector, contextual idiomaticity scale, or fine-grained sense inventory. Corpus licenses must be checked per language/release. | Methodological source for VPC and future verbal-idiom contracts; do not use `VID` as a catch-all for non-verbal idioms. |
@@ -50,7 +52,7 @@ records are not part of this repository.
 | FLAT / PARSEME FLAT | PARSEME identifies FLAT as its online annotation platform. FLAT is GPL-3.0 Web software with multi-user storage, permissions, provenance, confidence, token/span annotation, and document history; the reviewed PARSEME deployment reports FLAT 0.11.6 and requires login. | A software license does not grant access to the hosted PARSEME project or its documents. Forking its Django/CherryPy/FoLiA stack would add infrastructure without providing this project's coverage or sense estimands. | External annotation workflow and interoperability target only; no code, service, or data import. |
 | INCEpTION | The official project releases the Web annotation platform under Apache-2.0; version 41.4 was released 2026-08-18. It supports configurable spans/relations and recommenders. | It is not MWE-specific, and its guide says discontinuous spans require relation/link emulation. Hosted services have their own access and privacy conditions. | Optional external annotation/adjudication workflow; no runtime dependency or embedding. |
 | PyMUSAS | The official Apache-2.0 Python project provides rule-based, neural, and hybrid semantic taggers and reports MWE support for English. | It is a library rather than the target Web app; USAS semantic tagging is not OEWN fine-sense assignment, and code, models, rules, and upstream data require artifact-level review. | Candidate detector baseline only; benchmark before any component admission. |
-| TUBELEX | The official repository publishes aggregate word-frequency and dispersion lists alongside a BSD-3-Clause license and states that full corpus text is not published. In a 2026-08-10 repository issue, the maintainer expressly confirmed that the published frequency lists are covered by BSD-3-Clause and may be redistributed, incorporated commercially, or reformatted under its conditions. The pinned English regex artifact was independently streamed and checked below. | YouTube-subtitle sampling, normalization, denominator, and upstream-content constraints remain part of the construct record even though the frequency-list redistribution question is resolved. It supplies word-frequency evidence, not MWE occurrence or sense truth. | Candidate B1 for the first word coverage profile; rights-cleared for preparation, but not bundled until projection, band/tie policy, notice, performance, and fixture checks pass. |
+| TUBELEX | The official repository publishes aggregate word-frequency and dispersion lists alongside a BSD-3-Clause license and states that full corpus text is not published. In a 2026-08-10 repository issue, the maintainer expressly confirmed that the published frequency lists are covered by BSD-3-Clause and may be redistributed, incorporated commercially, or reformatted under its conditions. The pinned English regex artifact was independently streamed and checked below. | YouTube-subtitle sampling, normalization, denominator, and upstream-content constraints remain part of the construct record even though the frequency-list redistribution question is resolved. It supplies word-frequency evidence, not MWE occurrence or sense truth. | B1 admitted as the reproducible 410,400-form ASCII frequency profile with visible profile-specific tokenizer, source denominator, ties, unmatched items, notice, fixtures, and removal path. Dispersion is not included. |
 | Leipzig Corpora Collection | Official terms state that downloadable text corpora are CC BY, while other data/applications are offered for private and scientific use under CC BY-NC. Download packages include a frequency-ordered `*_words.txt`. | The exact English corpus, date, genre, package, and boundary between the CC BY download and CC BY-NC services must be fixed before deriving a browser table. Web/news/Wikipedia samples are not interchangeable baselines. | Candidate B2 for a contrasting written register; no artifact selected yet. |
 | Lancaster Sensorimotor Norms | The official OSF project and article license the data under CC BY 4.0. The aggregated 39,707-concept CSV has a public artifact identifier and SHA-256 recorded below. | Sensorimotor strength is a semantic/experiential norm, not a synonym for lexical sophistication. The 17 MB CSV needs an attributed, reproducible browser subset or researcher-supplied loading path. | Candidate B3 for a later semantic profile; not a frequency baseline. |
 | `wordfreq` | The official project says its code is Apache-licensed and redistributable data are CC BY-SA 4.0; it combines multiple domains and upstream sources and explicitly advises against conversion to CSV because attribution would be lost. | ShareAlike/attribution packaging, Python-specific normalization, mixed-domain weighting, large size, and a data snapshot through about 2021 make a silent browser extraction inappropriate. | Candidate C; evaluate only as a separately attributed add-on or external validation source. |
@@ -92,10 +94,10 @@ Primary evidence links:
 
 ## Pinned resource evidence
 
-B-MWE1 is the only bundled external lexical resource. B-MWE2 admits only an
-external offline benchmark profile: its corpus remains in the upstream
-checkout. The other checks establish reviewable candidate identities but do
-not admit those artifacts.
+B-MWE1 and B1 are bundled as attributed projections of pinned open resources.
+B-MWE2 admits only an external offline benchmark profile: its corpus remains in
+the upstream checkout. The other checks establish reviewable candidate
+identities but do not admit those artifacts.
 
 ### B-MWE1 — OEWN 2025 `take in#v` projection
 
@@ -110,6 +112,12 @@ not admit those artifacts.
   linked synset ID, ILI, definition, synonyms, and source examples needed for
   human review. Lexical/synset relations and subcategorization frames are
   omitted; source wording is unchanged.
+- Browser form projection: 2,847 normalized verb entries containing two or more
+  ASCII word members, stored only as canonical form plus source sense count.
+  Exact lookup occurs after human confirmation. `take in` has 17 source senses
+  and `spill the beans` has one; those counts do not assign a contextual sense.
+  The 52,420-byte checked-in profile has SHA-256
+  `513714774f0e087e9ba03c8fa04e969b8314786ccbdaa06dbbeeb35127f6a41e`.
 - Reproduction: download the exact asset and run
   `python3 scripts/extract_oewn_take_in.py PATH --check resources/oewn_take_in_2025.json`.
   The standard-library script rejects any source with a different SHA-256 or a
@@ -154,7 +162,7 @@ not admit those artifacts.
   corpus artifact requires deletion from this repository because none is
   bundled.
 
-### B1 — TUBELEX English regex frequency and dispersion
+### B1 — TUBELEX English regex ASCII word frequency
 
 - Repository commit: `7cb5fb36add76b83a266d1967536e1a1d3faa513`
   (2025-04-24).
@@ -167,15 +175,30 @@ not admit those artifacts.
 - The `[TOTAL]` row reports 179,139,158 tokens, 105,733 videos, and 68,405
   channels. It occurs at line 2,615, not at the final line as the README states;
   an importer must locate and validate the label rather than assume row order.
-- The table contains punctuation and non-ASCII entries. Any English-ASCII
-  projection would be a documented derived artifact, not the original list;
-  coverage must use an explicit denominator and report unmatched input.
+- The admitted projection retains 410,400 lowercase ASCII alphabetic surface
+  forms and their counts, representing 170,705,938 source tokens. It uses an
+  explicit profile tokenizer (NFKC, ASCII letters, apostrophe/hyphen boundaries),
+  the 179,139,158-token source total for per-million values, competition ranks,
+  and unmatched rather than invented zero values. It does not include or infer
+  dispersion because the selected projection exposes frequency only.
+- The 6,157,414-byte checked-in profile has SHA-256
+  `d177f22f5cd4c86d5d7465197eebccceda84c0e3ab8ca5ecfbcdbc9fbd29d1bc`.
 - Rights evidence: the repository maintainer's 2026-08-10 response confirms
   that published frequency lists and reformatted copies are covered by the
   repository's BSD-3-Clause conditions.
-- Before admission: define the projection, preserve the upstream identity, add
-  attribution and notice files, test browser transfer/memory cost, and create
-  independent numerical fixtures.
+- Reproduction: download both pinned source assets and run
+  `python3 scripts/build_reference_profiles.py TUBELEX_XZ OEWN_ZIP --check`.
+  The standard-library builder rejects changed hashes, schemas, totals, row
+  counts, and fixed `the`/`take`/`xylophone` and OEWN checks.
+- Browser preparation smoke check on Node 24.9.0 arm64: 6,157,414-byte initial
+  payload, 71.0 ms JSON parse, 43.0 ms Map construction, about 72.5 MB heap after
+  load. This is a machine-specific ceiling check, not real-browser usability
+  evidence.
+- Rights: retain [`resources/TUBELEX_LICENSE.txt`](resources/TUBELEX_LICENSE.txt),
+  whose exact checked-in text has SHA-256
+  `51b9e39825bbf19e4bb777bf11a7520a3935ff859c4d0ee724dfe9ddb26a961f`.
+- Removal: delete the profile, notice, runtime fetch/use/tests, and related
+  claims. Never substitute a newer TUBELEX table under this profile version.
 
 ### B2 — Leipzig written-register candidate
 

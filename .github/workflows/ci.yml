@@ -24,6 +24,8 @@ jobs:
           python3 -m json.tool metric_contract.json >/dev/null
           python3 -m json.tool samples.json >/dev/null
           python3 -m json.tool tests/fixtures/metric_cases.json >/dev/null
+          python3 -m json.tool resources/tubelex_en_regex_ascii_2025.json >/dev/null
+          python3 -m json.tool resources/oewn_2025_multiword_verbs.json >/dev/null
           python3 scripts/evaluate_mwe_predictions.py tests/fixtures/mwe_predictions_surface_baseline.json --check >/dev/null
           python3 scripts/check_streusle_v5.py --self-check >/dev/null
           node --check app.mjs
@@ -38,7 +40,7 @@ jobs:
           test ! -e Dockerfile
           test ! -e requirements.txt
           test ! -e ldfreq_webapp_master_roadmap_20260831.html
-          for file in .gitattributes CHANGELOG.md LICENSE.md README.md RIGHTS.md ROADMAP.md metric_contract.json mwe_contract.json reference_profile_template.json samples.json benchmarks/streusle_v5_vpc_vid.json; do
+          for file in .gitattributes CHANGELOG.md LICENSE.md README.md RIGHTS.md ROADMAP.md metric_contract.json mwe_contract.json reference_profile_template.json samples.json benchmarks/streusle_v5_vpc_vid.json resources/tubelex_en_regex_ascii_2025.json resources/oewn_2025_multiword_verbs.json resources/TUBELEX_LICENSE.txt; do
             test -f "$file"
           done
 

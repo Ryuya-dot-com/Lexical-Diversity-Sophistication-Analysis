@@ -94,7 +94,11 @@ class HtmlContractTests(unittest.TestCase):
                 self.assertNotIn(forbidden, app_source)
         network_calls_removed = app_source.replace(
             "fetch('samples.json')", ""
-        ).replace("fetch('metric_contract.json')", "").replace("fetch('mwe_contract.json')", "")
+        ).replace("fetch('metric_contract.json')", "").replace(
+            "fetch('mwe_contract.json')", ""
+        ).replace(
+            "fetch('resources/tubelex_en_regex_ascii_2025.json')", ""
+        ).replace("fetch('resources/oewn_2025_multiword_verbs.json')", "")
         self.assertNotIn("fetch(", network_calls_removed)
         self.assertIn('<script type="module" src="app.mjs"></script>', source)
         self.assertIn("Content-Security-Policy", source)
@@ -109,6 +113,8 @@ class HtmlContractTests(unittest.TestCase):
         self.assertIn('id="mwe-form"', source)
         self.assertIn('id="mwe-occurrences"', source)
         self.assertIn('id="export-mwe-csv"', source)
+        self.assertIn('id="export-word-coverage-csv"', source)
+        self.assertIn('id="word-coverage-items"', source)
         self.assertIn('id="method-references"', source)
         self.assertIn('id="rights-attestation"', source)
         self.assertIn('<option value="declared-segments">', source)

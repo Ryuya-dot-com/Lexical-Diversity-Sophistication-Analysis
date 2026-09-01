@@ -39,6 +39,7 @@
     input[type="text"], textarea, form select { box-sizing: border-box; width: 100%; padding: .65rem; border: 1px solid #61736d; border-radius: .35rem; background: white; color: inherit; font: inherit; }
     textarea { min-height: 10rem; resize: vertical; line-height: 1.5; }
     textarea.design-note { min-height: 6rem; }
+    textarea[readonly] { min-height: 14rem; background: #f7f8f5; font-family: ui-monospace, monospace; font-size: .8rem; }
     .attestation { display: flex; gap: .55rem; align-items: flex-start; font-weight: 400; }
     .attestation input { margin-top: .25rem; }
     .actions { display: flex; flex-wrap: wrap; gap: .7rem; }
@@ -66,18 +67,18 @@
 </head>
 <body>
   <main>
-    <p class="eyebrow">Browser-local MWE review · open methods</p>
+    <p class="eyebrow">Browser-local word/MWE coverage · open methods</p>
     <h1>MWEを単語に分解しない語彙分析へ</h1>
-    <p>L2語彙研究者が、英文中のmultiword-expression候補を確認し、通常語とMWEを区別したカバー率へ進むためのオープンな方法実験室です。現在は、利用者指定パターンによるVPC/VID候補の端末内レビューと、基本集計の方法監査を提供します。候補は自動的な正解ではありません。</p>
+    <p>L2語彙研究者が、英文中のmultiword-expression候補を確認し、通常語とMWEを別々の参照資源で点検するオープンな方法実験室です。TUBELEX語形頻度とOEWN multiword verb語形membershipを分離し、利用者指定パターンによるVPC/VID候補を端末内でレビューします。候補は自動的な正解ではありません。</p>
 
     <section class="notice" aria-labelledby="scope-title">
       <h2 id="scope-title">先に読む制約</h2>
-      <p>パターン一致はMWE候補であり、文脈内でのMWE成立を保証しません。confirm、reject、未解決を分け、gap tokenをmemberとして数えないでください。現在のレビュー集計は参照コーパスカバー率、習得、難易度、CEFR、教育的重要度を表しません。</p>
+      <p>パターン一致はMWE候補であり、文脈内でのMWE成立を保証しません。TUBELEXのword coverageはYouTube字幕由来の語形頻度、OEWNのMWE-form coverageは辞書membershipであり、同じ構成概念でも合成可能な一つのscoreでもありません。どちらも習得、難易度、CEFR、教育的重要度を表しません。</p>
     </section>
 
     <section class="panel" aria-labelledby="mwe-workspace-title">
       <h2 id="mwe-workspace-title">MWE候補レビュー</h2>
-      <p>英文と利用者指定パターンから、連続・非連続のVPC/VID候補を端末内で抽出します。候補のmemberとgapを確認し、confirm、reject、または未解決として記録できます。これは形式候補のcoding支援であり、自動的なMWE判定、意味判定、参照コーパスカバー率ではありません。</p>
+      <p>英文と利用者指定パターンから、連続・非連続のVPC/VID候補を端末内で抽出します。候補のmemberとgapを確認し、confirm、reject、または未解決として記録できます。同時にTUBELEXのword-token/type membershipと、confirmed MWEのOEWN form membershipを別々の分母で示します。OEWN lookupは形式候補の正解・意味・頻度を決めません。</p>
       <form id="mwe-form" autocomplete="off">
         <div class="field">
           <label for="mwe-text">分析する英文</label>
@@ -97,9 +98,15 @@ VID&#9;spill the beans&#9;spill/spills/spilled/spilling bean/beans&#9;2</textare
         <p id="mwe-status" role="status" aria-live="polite">MWE候補はまだ抽出されていません。</p>
         <div id="mwe-results" hidden>
           <section class="panel" aria-labelledby="mwe-summary-title">
-            <h3 id="mwe-summary-title">レビュー集計</h3>
+            <h3 id="mwe-summary-title">レビューと参照別カバー率</h3>
             <dl id="mwe-summary"></dl>
+            <p class="meta">TUBELEXはNFKC正規化後のASCII文字列を単位とし、アポストロフィとhyphenを境界にします。MWEレビューtokenizerとは分母が異なり、差は意図的に表示されます。word component frequencyをMWE frequencyとして扱いません。</p>
           </section>
+          <div class="field">
+            <label for="word-coverage-items">TUBELEX word item rows</label>
+            <textarea id="word-coverage-items" readonly aria-describedby="word-coverage-help"></textarea>
+            <span id="word-coverage-help" class="meta">全typeをunmatched優先、本文内頻度順で表示します。source_count、frequency per million、competition rankはTUBELEX profileにmatchedした場合だけ示します。</span>
+          </div>
           <fieldset>
             <legend>候補を手動追加</legend>
             <p class="meta">memberにするtokenを2個以上選択してください。間の未選択tokenはgapとして記録されます。</p>
@@ -112,10 +119,11 @@ VID&#9;spill the beans&#9;spill/spills/spilled/spilling bean/beans&#9;2</textare
           <p class="meta">confirm／rejectには判断根拠を入力します。未解決へ戻すと判断根拠は削除されます。</p>
           <div id="mwe-occurrences"></div>
           <div class="actions">
+            <button id="export-word-coverage-csv" type="button">Word coverage CSVを保存</button>
             <button id="export-mwe-csv" type="button">Occurrence CSVを保存</button>
             <button id="export-mwe-json" type="button">方法JSONを保存</button>
           </div>
-          <p class="meta">出力は本文を含みませんが、canonical formと研究者の判断根拠を含みます。共有前に機密性と再識別リスクを確認してください。</p>
+          <p class="meta">方法JSONは本文とword itemを含みません。CSVはword type、canonical form、研究者の判断根拠を含むため、共有前に機密性と再識別リスクを確認してください。参照資源：<a href="resources/tubelex_en_regex_ascii_2025.json">TUBELEX word profile</a> · <a href="resources/oewn_2025_multiword_verbs.json">OEWN MWE-form profile</a> · <a href="RIGHTS.md">rights/provenance</a></p>
         </div>
       </form>
     </section>
@@ -128,6 +136,8 @@ VID&#9;spill the beans&#9;spill/spills/spilled/spilling bean/beans&#9;2</textare
           <ul>
             <li>利用者指定パターンから、連続・非連続のVPC/VID候補を抽出し、memberとgapを確認する。</li>
             <li>候補をconfirm、reject、未解決として記録し、item-level CSVと方法JSONへ保存する。</li>
+            <li>TUBELEX English regex profileに対するword-token/type coverage、頻度、rank、unmatched itemを表示・保存する。</li>
+            <li>confirmed MWEをOEWN 2025の2,847 multiword verb formに照合し、occurrence/type coverageを分ける。</li>
             <li>合成した1文／7文、同じ長さ、異なる長さの比較から、指標の反応と交絡を確認する。</li>
             <li>1テキスト、研究者が改行で宣言した単位、2テキスト、2–100文書を端末内で記述する。</li>
             <li>英語ASCII語を一定の規則で数え、Tokens、Types、TTR、Hapax typesを表示する。</li>
@@ -139,7 +149,8 @@ VID&#9;spill the beans&#9;spill/spills/spilled/spilling bean/beans&#9;2</textare
           <h3 id="cannot-do-title">できないこと</h3>
           <ul>
             <li>MWE候補を自動的に正解と判定し、文脈的意味や教育的重要度を決定する。</li>
-            <li>通常語とMWEを分離した参照コーパスカバー率を計算する。</li>
+            <li>wordとMWEを一つのscoreへ合成し、OEWN membershipをMWE頻度・文脈的意味・正解判定として扱う。</li>
+            <li>TUBELEXを一般英語、書き言葉、学術語、学習者知識の普遍的な基準として扱う。</li>
             <li>能力、CEFR、文章品質、著者、因果効果、母集団差を評価・推定する。</li>
             <li>文を自動分割し、群検定、順位付け、pool、統計推測を行う。</li>
             <li>語彙洗練性、頻度、語彙範囲、意味、TAALESとの数値互換性を測る。</li>
