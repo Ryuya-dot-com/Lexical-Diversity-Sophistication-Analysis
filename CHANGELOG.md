@@ -23,6 +23,10 @@ probe without assigning it a release version or validation claim.
   product target, with English VPCs as the first automatic scope.
 - Primary-source comparison of TAALES n-gram/polysemy behavior and screening of
   OEWN, PHaVE, STREUSLE, and PARSEME for MWE occurrence and sense work.
+- Existing-tool boundary covering PARSEME FLAT, INCEpTION, corpus search
+  portals, the STREUSLE recognizer, and PyMUSAS: reuse conventions,
+  interchange, and measured baselines instead of rebuilding an annotation
+  platform.
 
 ### Integrity boundaries
 

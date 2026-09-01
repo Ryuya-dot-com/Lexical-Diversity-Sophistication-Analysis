@@ -17,6 +17,15 @@ The first automatic linguistic scope is English verb-particle constructions
 assignment are different operations. An unresolved or ambiguous sense must not
 silently fall back to the most frequent sense or to the form-level result.
 
+The closest existing MWE-specific Web application found in the current review
+is FLAT, the annotation platform used by PARSEME. INCEpTION is a broader Web
+annotation alternative, and corpus portals such as KonText/ANNIS expose
+already-annotated data. This project will not rebuild their multi-user project
+management. It will reuse PARSEME-compatible occurrence conventions, preserve
+an interchange path, and benchmark existing candidate taggers; its distinct
+job is the auditable word/MWE-form/MWE-sense coverage layer for researchers'
+own texts.
+
 These fixed scenarios are the method-audit surface. The initial research
 workspace now analyzes one passage, a paired transformation, or two independent
 texts entirely inside the browser. It can also describe researcher-declared

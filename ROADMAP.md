@@ -107,10 +107,12 @@ file-level method, provenance, rights, and numerical review.
    confirmation, inventory lookup, and contextual sense assignment are separate
    stages. `ambiguous`, `abstained`, `unassigned`, and `out_of_inventory` remain
    observable states.
-3. **Reuse before invention.** PARSEME/STREUSLE supply annotation conventions
-   and validation data; Open English WordNet supplies an open sense inventory;
-   TAALES supplies unigram and contiguous n-gram comparators. A new detector or
-   sense inventory needs evidence that these cannot meet the admitted need.
+3. **Reuse before invention.** FLAT/PARSEME supply an established MWE
+   annotation workflow and conventions; STREUSLE supplies validation data;
+   Open English WordNet supplies an open sense inventory; TAALES supplies
+   unigram and contiguous n-gram comparators. A new annotation platform,
+   detector, or sense inventory needs evidence that these cannot meet the
+   admitted need.
 4. **Rights before implementation.** A tool license, an algorithm description,
    a corpus license, and permission to redistribute derived tables are four
    separate questions.
@@ -137,6 +139,34 @@ a corpus bigram. The parent OEWN 2025 derivative contains a separate `take in`
 verb entry with 17 listed senses, but the parent's ordinary raw-text profile
 does not detect that MWE entry. Rebuilding another unigram profile would repeat
 existing work without solving the stated construct problem.
+
+## Existing-tool boundary
+
+MWE-related Web tools exist, but they solve different stages. In the tools
+reviewed here, none supplies the complete path from researcher-provided text to
+reviewed English VPC occurrences and separate word-, form-, and contextual
+sense-coverage outputs.
+
+| Existing tool | What it already covers | Boundary for this project | Decision |
+|---|---|---|---|
+| PARSEME-configured FLAT | Web-based, multi-user MWE annotation with token/span structures, provenance, confidence, permissions, and versioned documents | Annotation/review platform, not an L2 lexical-coverage or fine-sense analysis; the public PARSEME instance requires an account | Treat as the closest external annotation workflow; preserve PARSEME-compatible occurrence interchange instead of forking or embedding FLAT |
+| INCEpTION | Actively maintained, open-source Web annotation, curation, configurable layers, and assisted recommendations | General-purpose rather than MWE-specific; discontinuous spans are represented through relations or links rather than native discontinuous spans | Optional external multi-annotator workflow if FLAT interchange is insufficient; no runtime dependency |
+| PARSEME KonText and STREUSLE ANNIS | Browser search over already annotated corpora, including MWE member identifiers and discontinuous examples | Corpus exploration, not annotation or analysis of a researcher's new text | Link as audit/teaching evidence; do not mistake corpus search for a detector |
+| STREUSLE lexical-semantic recognizer and PyMUSAS | Existing automatic candidate/tagging baselines; PyMUSAS explicitly supports English MWE tagging | Predictions are not gold decisions; label inventories and target constructs differ, and neither is the target coverage Web app | Benchmark after the contract is fixed; adopt only a measured component that improves the admitted VPC task |
+
+The missing layer is therefore a **measurement bridge**, not another generic
+annotation suite. This app needs a small candidate-confirm/reject surface only
+to keep analysis decisions attached to its coverage denominators. Large-team
+assignment, user management, adjudication, and document versioning belong in
+FLAT or INCEpTION unless a demonstrated research workflow cannot round-trip.
+
+Interoperability is narrower than code integration. The occurrence contract
+must map stable token IDs, shared occurrence IDs, member tokens, gaps, overlap,
+and PARSEME category labels without loss. App-specific provenance and
+fine-grained sense-assignment states may require a documented sidecar because
+PARSEME occurrence formats do not by themselves encode this study's full sense
+contract. No `.cupt`, FoLiA, or INCEpTION import/export claim is admitted until
+a round-trip fixture proves it.
 
 ## Resource-delivery decision
 
@@ -207,7 +237,8 @@ detector, database, or new frequency table.
 1. Extend the existing canonical token records with stable token IDs.
 2. Represent one MWE occurrence with member token IDs, separate gap token IDs,
    canonical form, PARSEME-compatible category, candidate/confirmed/rejected
-   status, and provenance.
+   status, and provenance. Keep the occurrence layer mappable to PARSEME rather
+   than inventing a competing generic annotation model.
 3. Represent sense lookup and sense assignment separately, including inventory
    ID/version and `assigned`, `ambiguous`, `abstained`, `unassigned`, and
    `out_of_inventory` states.
@@ -215,8 +246,10 @@ detector, database, or new frequency table.
    density uses the union of member-token positions and excludes gap tokens;
    word, form, annotation, and sense-assignment denominators remain separate.
 5. Only after the contract passes dependency-free checks, derive the minimum
-   attributed OEWN form/sense subset needed by the fixtures. Evaluate an
-   existing parser/tagger against STREUSLE before writing any new detector.
+   attributed OEWN form/sense subset needed by the fixtures. Evaluate the
+   STREUSLE recognizer and PyMUSAS against pinned STREUSLE data before writing
+   any new detector; separately prove a minimal PARSEME occurrence round trip
+   before promising FLAT interoperability.
 
 ## What dimensions 3 and 4 must keep separate
 
