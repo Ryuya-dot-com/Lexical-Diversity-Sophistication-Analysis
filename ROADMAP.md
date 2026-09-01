@@ -109,7 +109,8 @@ file-level method, provenance, rights, and numerical review.
    observable states.
 3. **Reuse before invention.** Eguchi's Multi-Word Units Profiler supplies the
    closest user-text profiling prior art; FLAT/PARSEME supply an established
-   MWE annotation workflow and conventions; STREUSLE supplies validation data;
+   MWE annotation workflow and conventions; PARSEME 2.0, CoAM, STREUSLE,
+   MAGPIE, and SemEval idiomaticity data supply different validation targets;
    Open English WordNet supplies an open sense inventory; TAALES supplies
    unigram and contiguous n-gram comparators. A new profiler, annotation
    platform, detector, or sense inventory needs evidence that these cannot meet
@@ -190,6 +191,44 @@ n-gram and MI-based phrase extraction. It is therefore a second list-profile
 comparator, especially for checking list-conditioned coverage and interface
 expectations, but not evidence of contextual VPC or sense identification.
 
+## Prior-art search protocol
+
+Searching only for *MWE profilers* is too narrow. Constant et al.'s survey
+distinguishes corpus-level MWE discovery from occurrence identification, while
+this project's sense and coverage questions add further stages. Prior art is
+therefore searched and compared in separate lanes:
+
+| Lane | Question | Representative evidence reviewed | Relevance |
+|---|---|---|---|
+| Discovery and extraction | Which recurrent or associated word combinations should become candidates? | `mwetoolkit`, Lextutor n-gram/MI extractors, corpus platforms | Candidate generation only; recurrence or association does not confirm MWE status |
+| List-conditioned profiling | Which entries from a selected pedagogical or corpus list occur in a text? | Multi-Word Units Profiler, Lextutor Phrase Profiler | Closest Web workflow, but list membership and contextual confirmation remain separate |
+| Occurrence identification | Which token spans are MWEs here, including gaps and overlap? | PARSEME 1.2/2.0, STREUSLE, DiMSUM, CoAM, rule/model baselines | Core M1/M2 benchmark lane; evaluate exact spans, categories, seen/unseen items, and errors |
+| Human annotation and adjudication | How are candidate, rejection, overlap, provenance, and disagreement recorded? | FLAT, INCEpTION, CAIGen | Reuse formats and external workflows; do not rebuild team management in this app |
+| Idiomaticity | Is this occurrence literal, idiomatic, or unresolved in context? | MAGPIE, SemEval-2022 Task 2 | Relevant to M4, but binary idiomaticity is not a fine-grained VPC sense |
+| Fine-grained form sense | Which inventory sense applies, if any? | Open English WordNet, PHaVE methodology, the English VMWE annotations, MWEasWSD | Core M3 lane; inventory lookup, WSD, and abstention must remain separate |
+| L2 pedagogical priority | Which forms and senses merit teaching or testing attention? | PHaVE and academic MWU-list research | A pedagogical importance layer, not occurrence truth or learner knowledge |
+| Coverage reporting | What denominator and unresolved mass does each layer expose? | TAALES, existing profilers, this project's measurement contract | Product gap: keep word, confirmed form, annotation, and sense coverage separate |
+
+The 2026 PARSEME 2.0 shared task materially updates the earlier search frame:
+its corpus covers verbal, nominal, adjectival, adverbial, and functional MWEs
+in 17 languages, and its identification subtask received ten systems including
+the baseline. The first product scope remains English VPCs, but evaluation must
+use the newest applicable English release and an explicit VPC projection rather
+than treating PARSEME 1.2 or two hand-picked taggers as the whole field.
+
+Every shortlisted artifact gets one record for task, target unit/categories,
+language/domain, discontinuity/overlap behavior, input/output and hosted-text
+boundary, data split and seen/unseen policy, evaluation/error analysis, current
+release, and separate code/data/model/list licenses. Its disposition is one of
+`adopt`, `benchmark`, `interoperate`, `cite`, `quarantine`, or `exclude`.
+
+The search stops being implementation-blocking after at least one systematic
+survey, the latest relevant shared task, one L2-facing Web profiler, one open
+contextual validation corpus, and one open sense inventory have been reviewed.
+Thereafter, add a source only when it changes a construct, benchmark, rights, or
+architecture decision. This avoids both a narrow convenience sample and an
+unbounded literature hunt.
+
 ## Existing-tool boundary
 
 MWE-related Web tools exist, but they solve different stages. In the tools
@@ -203,8 +242,9 @@ sense-coverage outputs.
 | Lextutor Phrase Profiler 1.2 | User-text matching against selectable academic, idiomatic, and transition phrase/collocation lists | List lookup rather than contextual MWE confirmation or sense assignment; resource and hosted-service rights remain separate | Secondary list-profile comparator; reuse its workflow distinction, not its payloads |
 | PARSEME-configured FLAT | Web-based, multi-user MWE annotation with token/span structures, provenance, confidence, permissions, and versioned documents | Annotation/review platform, not an L2 lexical-coverage or fine-sense analysis; the public PARSEME instance requires an account | Treat as the closest external annotation workflow; preserve PARSEME-compatible occurrence interchange instead of forking or embedding FLAT |
 | INCEpTION | Actively maintained, open-source Web annotation, curation, configurable layers, and assisted recommendations | General-purpose rather than MWE-specific; discontinuous spans are represented through relations or links rather than native discontinuous spans | Optional external multi-annotator workflow if FLAT interchange is insufficient; no runtime dependency |
+| CAIGen | Free Google Sheets/Apps Script annotation generator supporting discontinuous and overlapping spans | Depends on Google accounts/services and is an annotation collection workflow, not coverage or sense analysis | Interface and annotation-quality comparator only; no runtime or hosted-data dependency |
 | PARSEME KonText and STREUSLE ANNIS | Browser search over already annotated corpora, including MWE member identifiers and discontinuous examples | Corpus exploration, not annotation or analysis of a researcher's new text | Link as audit/teaching evidence; do not mistake corpus search for a detector |
-| STREUSLE lexical-semantic recognizer and PyMUSAS | Existing automatic candidate/tagging baselines; PyMUSAS explicitly supports English MWE tagging | Predictions are not gold decisions; label inventories and target constructs differ, and neither is the target coverage Web app | Benchmark after the contract is fixed; adopt only a measured component that improves the admitted VPC task |
+| STREUSLE recognizer, PyMUSAS, MWEasWSD, and PARSEME 2.0 baseline | Rule, neural, hybrid, gloss/context, and LLM-based identification alternatives | Predictions are not gold decisions; inventories, compute, upstream data, and licenses differ, and the LLM baseline is too slow/heavy for the static core | Benchmark a small declared set after the contract is fixed; adopt only a measured component that improves the admitted VPC task |
 
 The missing layer is therefore a **measurement bridge**, not another generic
 annotation suite. This app needs a small candidate-confirm/reject surface only
@@ -299,10 +339,13 @@ detector, database, or new frequency table.
    word, form, annotation, and sense-assignment denominators remain separate.
 5. Only after the contract passes dependency-free checks, derive the minimum
    attributed OEWN form/sense subset needed by the fixtures. Evaluate the
-   Multi-Word Units Profiler and Phrase Profiler's observable behavior, the
-   STREUSLE recognizer, and PyMUSAS against the project-authored cases or pinned
-   STREUSLE data before writing any new detector; separately prove a minimal
-   PARSEME occurrence round trip before promising FLAT interoperability.
+   Multi-Word Units Profiler and Phrase Profiler's observable behavior, then
+   benchmark transparent list/dependency matching and at least one published
+   identification baseline against project-authored cases and a pinned English
+   VPC projection. Use STREUSLE and current PARSEME data for occurrence errors,
+   MAGPIE only for literal/idiomatic transfer checks, and OEWN-backed fixtures
+   for fine-sense assignment. Separately prove a minimal PARSEME occurrence
+   round trip before promising FLAT interoperability.
 
 ## What dimensions 3 and 4 must keep separate
 

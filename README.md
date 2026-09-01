@@ -26,6 +26,12 @@ annotation workflow. This project will reuse those precedents instead of
 rebuilding them. Its distinct job is to attach reviewable VPC decisions to
 separate, auditable word/MWE-form/MWE-sense coverage channels.
 
+Prior art is reviewed by task rather than by product name: discovery,
+list-conditioned profiling, occurrence identification, annotation, contextual
+idiomaticity, fine-grained sense assignment, L2 pedagogical priority, and
+coverage reporting. The latest PARSEME shared task and open contextual corpora
+are benchmark candidates, not automatic runtime dependencies.
+
 These fixed scenarios are the method-audit surface. The initial research
 workspace now analyzes one passage, a paired transformation, or two independent
 texts entirely inside the browser. It can also describe researcher-declared

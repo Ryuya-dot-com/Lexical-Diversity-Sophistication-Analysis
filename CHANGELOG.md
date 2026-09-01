@@ -31,6 +31,9 @@ probe without assigning it a release version or validation claim.
   list matching, the former's n-gram/dependency pipeline, hosted-input and
   resource-rights boundaries, and a project-authored `take in`/known-item
   black-box comparison.
+- Systematic eight-lane prior-art search protocol with a decision-based stopping
+  rule, plus screening of PARSEME 2.0, MAGPIE, SemEval idiomaticity data,
+  MWEasWSD, English VMWE annotations, CoAM, and CAIGen.
 
 ### Integrity boundaries
 
