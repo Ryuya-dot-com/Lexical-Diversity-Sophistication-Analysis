@@ -4,6 +4,8 @@ Status: static scenario probe; not an MVP or validated measurement release.
 
 Canonical source: <https://github.com/Ryuya-dot-com/Lexical-Diversity-Sophistication-Analysis>
 
+Public technical deployment: <https://ryuya-dot-com.github.io/Lexical-Diversity-Sophistication-Analysis/>
+
 The repository name allows for a broader future direction. The current probe
 does not implement a lexical-sophistication score, frequency norm, reference
 resource, or TAALES-compatible analysis.
@@ -116,6 +118,7 @@ values are in [`samples.json`](samples.json).
 
 ## Release status
 
-Do not present this probe as a research-validated product. Before publication,
+Do not present this public technical deployment as a research-validated product
+or formal release. Before assigning a version or recommending research use,
 verify the static app in real browsers and assistive technology, and archive a
 citable release containing contracts, fixtures, tests, notices, and checksums.

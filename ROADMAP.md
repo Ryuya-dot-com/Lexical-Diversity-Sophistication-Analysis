@@ -294,9 +294,11 @@ The initial tracking audit on 2026-09-01 found this directory to be the Git root
 with no symlinks, file over 1 MB, or high-confidence credential signature in the
 candidate source files. The local snapshot was merged with the one-line GitHub
 placeholder history and pushed to the canonical repository's `main` branch;
-the repository CI passed. The ignored legacy MWE/VPC roadmap and Python caches
-are not tracked release inputs, and LF is normalized by `.gitattributes`.
-Public source availability is not a tag, citable archive, security
+the repository CI passed. The same `main` root is the source of the
+[public technical deployment](https://ryuya-dot-com.github.io/Lexical-Diversity-Sophistication-Analysis/).
+The ignored legacy MWE/VPC roadmap and Python caches are not tracked release
+inputs, and LF is normalized by `.gitattributes`. Public deployment is not a
+tag, citable archive, security
 certification, browser acceptance, research validation, or formal release.
 
 The canonical repository name includes “Sophistication” as a possible future

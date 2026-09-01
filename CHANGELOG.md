@@ -15,6 +15,7 @@ probe without assigning it a release version or validation claim.
   contracts with primary-method citations.
 - Per-input SHA-256 identifiers, metadata-only export, explicit rights
   attestation, dual licensing, and an artifact-level resource admission gate.
+- Public technical deployment from the canonical repository's `main` root.
 
 ### Integrity boundaries
 
