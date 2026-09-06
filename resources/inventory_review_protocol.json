@@ -1,0 +1,164 @@
+{
+  "protocol_version": "1.2.0",
+  "protocol_id": "ldfreq-inventory-independent-review-v1",
+  "date": "2026-09-05",
+  "status": "usage_pilot_manifest_complete_judgments_and_review_not_started",
+  "task": "IR-136",
+  "purpose": "Test project sense granularity from contextual usage before independent expert review, while keeping source multiplicity, construction scope, joint applicability, unresolved ambiguity, and source-bounded coverage separate.",
+  "scope": {
+    "inventory_path": "resources/hybrid_sense_inventory_v1.json",
+    "inventory_sha256": "a6a60349522899d9feca59d641ed879b722ed6e569e3d2340d4043abbe326ad9",
+    "inventory_id": "ldfreq-en-vmwe-hybrid-sense-inventory-v1",
+    "inventory_schema_version": "1.0.0-candidate.3",
+    "source_inventory_id": "oewn",
+    "source_version": "2025-edition",
+    "source_artifact_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+    "expected_forms": 9,
+    "expected_candidates": 67,
+    "source_boundary": "For source-candidate reconstruction and coverage, use only the candidate inventory and its pinned OEWN 2025 snapshot. Contextual evidence enters only through the hash-bound train/dev usage pilot; it cannot add a source candidate or authorize use of STREUSLE test, baseline predictions, frequency, or an unpinned Web source."
+  },
+  "usage_pilot": {
+    "path": "resources/polysemy_usage_pilot.json",
+    "sha256": "c2588ca981087d31b70ffa0809365ad86ef90a719938a16e78b4a0d0b92c597e",
+    "status": "manifest_built_no_semantic_judgments",
+    "scope": "54 exposed STREUSLE train/dev occurrences across the same nine forms and 51 deterministic within-form round-1 pairs; STREUSLE test is excluded.",
+    "ordering_rule": "Complete blind usage-pair judgments and provisional usage clusters before commissioning final dictionary-to-project mapping review.",
+    "cluster_artifact": {
+      "path": null,
+      "sha256": null,
+      "status": "not_created",
+      "release_boundary": "Publish only the frozen method, aggregate agreement, cluster membership by opaque occurrence ID, instability flags, and underdetermined forms; keep rater identities and raw work records outside the repository."
+    }
+  },
+  "polysemy_pre_review_audit": {
+    "source_reconstruction": {
+      "status": "verified_against_pinned_oewn_artifact",
+      "command": "python3 scripts/build_hybrid_sense_inventory.py OEWN_ZIP --prior resources/hybrid_sense_inventory_v1.json --check resources/hybrid_sense_inventory_v1.json",
+      "result": "The 9 selected source entries and all 67 projected candidate records reproduce byte-for-byte; this is bounded source-route completeness, not completeness of English meanings or contextual adequacy."
+    },
+    "quantitative": {
+      "forms": 9,
+      "candidates": 67,
+      "candidate_pairs_if_exhaustive": 387,
+      "candidate_count": {"minimum": 1, "median": 4, "maximum": 17, "mean": 7.444444},
+      "by_family": {
+        "VPC": {"forms": 4, "candidates": 56, "candidate_pairs": 377},
+        "VID": {"forms": 5, "candidates": 11, "candidate_pairs": 10}
+      },
+      "source_routes": {
+        "exact_oewn": {"forms": 8, "candidates": 66},
+        "unique_slot_oewn": {"forms": 1, "candidates": 1}
+      },
+      "source_evidence": {
+        "unique_definitions": 67,
+        "unique_synsets": 67,
+        "unique_ili": 67,
+        "candidates_without_examples": 5,
+        "forms_with_any_candidate_without_examples": 3,
+        "candidates_with_usage_labels": 0,
+        "source_relation_rows": 249,
+        "candidates_with_related_not_merged_member": 57
+      },
+      "design_state": {
+        "forms_with_multiple_observed_vmwe_categories": 1,
+        "admitted_project_senses": 0,
+        "contextual_occurrences_in_inventory": 0
+      },
+      "per_form": [
+        {"type_id": "ldfreq-en-vmwe-t000147", "canonical_lemma": "take in", "family": "VPC", "observed_categories": ["V.VPC.full"], "route": "exact_oewn", "candidates": 17, "candidate_pairs": 136, "candidates_without_examples": 2},
+        {"type_id": "ldfreq-en-vmwe-t000148", "canonical_lemma": "pick up", "family": "VPC", "observed_categories": ["V.VPC.full"], "route": "exact_oewn", "candidates": 16, "candidate_pairs": 120, "candidates_without_examples": 2},
+        {"type_id": "ldfreq-en-vmwe-t000149", "canonical_lemma": "give up", "family": "VPC", "observed_categories": ["V.VPC.full"], "route": "exact_oewn", "candidates": 12, "candidate_pairs": 66, "candidates_without_examples": 0},
+        {"type_id": "ldfreq-en-vmwe-t000150", "canonical_lemma": "come out", "family": "VPC", "observed_categories": ["V.VPC.full", "V.VPC.semi"], "route": "exact_oewn", "candidates": 11, "candidate_pairs": 55, "candidates_without_examples": 0},
+        {"type_id": "ldfreq-en-vmwe-t000151", "canonical_lemma": "make sure", "family": "VID", "observed_categories": ["V.VID"], "route": "exact_oewn", "candidates": 1, "candidate_pairs": 0, "candidates_without_examples": 1},
+        {"type_id": "ldfreq-en-vmwe-t000152", "canonical_lemma": "make it", "family": "VID", "observed_categories": ["V.VID"], "route": "exact_oewn", "candidates": 3, "candidate_pairs": 3, "candidates_without_examples": 0},
+        {"type_id": "ldfreq-en-vmwe-t000153", "canonical_lemma": "get it", "family": "VID", "observed_categories": ["V.VID"], "route": "exact_oewn", "candidates": 2, "candidate_pairs": 1, "candidates_without_examples": 0},
+        {"type_id": "ldfreq-en-vmwe-t000154", "canonical_lemma": "cut short", "family": "VID", "observed_categories": ["V.VID"], "route": "exact_oewn", "candidates": 4, "candidate_pairs": 6, "candidates_without_examples": 0},
+        {"type_id": "ldfreq-en-vmwe-t000155", "canonical_lemma": "waste time", "family": "VID", "observed_categories": ["V.VID"], "route": "unique_slot_oewn", "candidates": 1, "candidate_pairs": 0, "candidates_without_examples": 0}
+      ]
+    },
+    "interpretation": [
+      "Sixty-seven unique source sense, synset, ILI, and definition identities establish source multiplicity, not 67 independently usable project meanings.",
+      "The VPC/VID candidate imbalance and purposive nine-form scope prohibit category-wide or population-wide claims about polysemy.",
+      "No context occurs in the inventory, so actual sense frequency, contextual ambiguity, joint applicability, abstention, and out-of-inventory rates are unobservable here.",
+      "Five definition-only candidates and zero usage labels require an evidence-sufficiency field; absence of a source example is not a rejection rule.",
+      "Exhaustive pairwise comparison would create 387 judgments per reviewer, so retained candidates are partitioned into proposed project-sense clusters instead.",
+      "Gloss similarity, shared words, source order, synset relations, or a model score may flag a question but cannot automatically merge, rank, admit, or reject a sense."
+    ],
+    "analysis_axes": [
+      {"axis": "source_candidate_coverage", "unit": "form", "question": "Were any senses in the pinned source snapshot omitted?", "not_a_claim_about": "completeness of English"},
+      {"axis": "form_relation", "unit": "candidate", "question": "Is the source sense equivalent, broader, narrower, overlapping, unrelated, or uncertain relative to the canonical form?", "not_a_claim_about": "contextual truth"},
+      {"axis": "construction_scope", "unit": "candidate", "question": "Does this meaning instantiate an in-scope lexicalized VPC/VID rather than a literal/free combination?", "not_a_claim_about": "idiomaticity degree or occurrence membership"},
+      {"axis": "project_granularity", "unit": "retained-candidate partition", "question": "Which source senses should remain distinct or share one project sense?", "not_a_claim_about": "source identity"},
+      {"axis": "contextual_assignment", "unit": "later occurrence", "question": "Does one sense apply, do several jointly apply, or do alternatives remain unresolved?", "not_a_claim_about": "inventory design"},
+      {"axis": "evaluation", "unit": "type and occurrence reported separately", "question": "How do exact-set, multi-label, ambiguity, abstention, and OOI results behave under one frozen inventory?", "not_a_claim_about": "a universal taxonomy"}
+    ],
+    "literature_basis": [
+      {"source": "https://aclanthology.org/L10-1630/", "implication": "Test sense granularity directly; reducing the number displayed is not a substitute for broader, usable distinctions."},
+      {"source": "https://aclanthology.org/D09-1046/", "implication": "Permit graded and jointly applicable meanings instead of assuming one categorical sense per occurrence."},
+      {"source": "https://aclanthology.org/J13-3003/", "implication": "Do not assume one crisp best sense or that one static clustering captures graded contextual applicability."},
+      {"source": "https://aclanthology.org/L14-1692/", "implication": "Keep contextual underspecification and simultaneous applicability distinct from annotator disagreement."},
+      {"source": "https://aclanthology.org/2021.eacl-main.286/", "implication": "Preserve multi-label reference sets rather than forcing single-label WSD."},
+      {"source": "https://aclanthology.org/2021.emnlp-main.567/", "implication": "Use incremental usage-pair graphs to propose clusters without defining every sense in advance or exhausting all pairs."},
+      {"source": "https://aclanthology.org/2023.findings-emnlp.14/", "implication": "Keep rule-based candidate generation, gloss/context filtering, occurrence identification, and inventory truth as separate stages."},
+      {"source": "https://aclanthology.org/S07-1006/", "implication": "Any coarse grouping must be an explicit, reviewable mapping, not silent deletion of fine-grained source senses."}
+    ]
+  },
+  "roles": {
+    "reviewers_required": 2,
+    "usage_rater_rule": "Two trained raters judge the same frozen within-form usage pairs independently without dictionary glosses, source sense IDs, candidate counts, model scores, or each other's ratings.",
+    "reviewer_rule": "After the usage-pilot summary is frozen, two lexicographers who did not generate the candidate set review the same source inventory and provisional usage-cluster evidence independently and cannot see each other's decisions before both files are final.",
+    "adjudicator_rule": "A separately named adjudicator resolves disagreements only after both immutable pre-adjudication files and hashes are retained.",
+    "developer_rule": "System developers may prepare and validate files but cannot supply either independent lexical judgment."
+  },
+  "decision_fields": {
+    "source_candidate_coverage": ["complete_for_pinned_source", "omitted_pinned_source_sense", "uncertain"],
+    "form_relation": ["equivalent", "broader", "narrower", "overlapping", "unrelated", "uncertain"],
+    "construction_scope": ["in_scope_lexicalized_vmwe", "literal_or_free_combination", "uncertain"],
+    "candidate_action": ["retain", "reject", "uncertain"],
+    "rationale_code": ["fits_form_and_scope", "partial_form_fit", "outside_vmwe_scope", "source_evidence_insufficient", "granularity_merge_proposed"]
+  },
+  "derived_fields": {
+    "source_evidence": ["gloss_and_example", "gloss_only", "insufficient_source_evidence"],
+    "rule": "The template derives source_evidence from the frozen candidate record. Reviewers do not re-enter or override it."
+  },
+  "cluster_rule": {
+    "field": "project_sense_clusters",
+    "definition": "A partition of every candidate marked retain. Singleton clusters preserve a distinct source sense; multi-candidate clusters propose one broader project sense.",
+    "constraints": "Each retained candidate appears exactly once; rejected or uncertain candidates never appear; members and clusters use canonical ID order.",
+    "boundary": "A proposed cluster is pre-adjudication evidence only and never rewrites, deletes, or admits a source or project sense. The public checker refuses to issue review templates until a later protocol version binds a frozen usage-cluster artifact."
+  },
+  "missing_candidate_fields": [
+    "source_inventory_id",
+    "source_version",
+    "source_artifact_sha256",
+    "source_entry_id",
+    "source_sense_id",
+    "source_record_sha256"
+  ],
+  "workflow": [
+    "Rebuild resources/polysemy_usage_pilot.json and verify the 54 exposed train/dev occurrences, 51 initial pairs, source hashes, and zero semantic judgments; do not use candidate count as project polysemy.",
+    "Collect two independent 1-4/cannot_decide ratings for the frozen round-1 usage pairs without exposing dictionary evidence. Add only prospectively frozen uncertainty or cluster-boundary edges within the per-form ceiling.",
+    "Create provisional usage clusters and a stability/under-determination report. The one-occurrence cut short slice remains insufficient for contextual separability and cannot be repaired by dictionary inference.",
+    "Only then run scripts/check_inventory_reviews.py --template separately for each lexicographer, set a pseudonymous reviewer_code and completion date, decide form relation and construction scope for every candidate, and propose a retained-candidate partition in light of the empirical clusters.",
+    "Store completed review files, reviewer-code keys, work agreements, and access logs in the approved managed location, not Git, GitHub Pages, an API response, or this Dropbox workspace.",
+    "After both reviews are final, run the checker on local paths. Retain the raw file hashes and the aggregate report before adjudication.",
+    "Adjudicate source coverage, candidate action, and clustering disagreements without rewriting either pre-adjudication file. Report actual inventory revisions only after adjudication.",
+    "After the inventory is provisionally coherent, run the separate occurrence-to-inventory pilot for assigned, multiple_assigned, ambiguous, abstained, out_of_inventory, and inventory_ineligible states; usage relatedness is not a substitute for this task."
+  ],
+  "privacy_and_release": {
+    "analyzed_as_human_research": false,
+    "prohibited_analyses": ["reviewer speed", "individual accuracy", "background effects", "person-level performance"],
+    "raw_review_release": "prohibited_without_an_explicit_work_product_or_consent_basis_and_disclosure_review",
+    "public_fields": ["protocol and inventory hashes", "pre-adjudication file hashes without identity keys", "coverage counts", "aggregate agreement counts", "adjudicated revision counts"],
+    "free_text": "No free-text field is collected by this protocol; rationales use fixed codes. Administrative identities remain separate."
+  },
+  "acceptance": {
+    "usage_manifest": "The public manifest reproduces all 54 in-scope STREUSLE train/dev occurrences, 51 connected round-1 pairs, eight pairable forms, one insufficient-context form, and no source text or semantic judgment.",
+    "usage_evidence": "Every released pair has two independent judgments; added edges were frozen before rating; per-form disagreement, cannot_decide, cluster stability, and insufficient evidence are reported without forcing a partition.",
+    "review_coverage": "Both reviewers decide all 9 forms and all 67 candidates.",
+    "independence": "Both files affirm that the other review was not seen and prohibited signals were not used.",
+    "agreement_report": "Candidate relation, construction-scope, action, form source-coverage, and retained-candidate clustering agreement counts are produced without reviewer identifiers or raw decisions.",
+    "context_boundary": "No inventory review result is reported as contextual sense frequency, ambiguity, joint applicability, OOI, or WSD accuracy.",
+    "completion_boundary": "IR-136 remains incomplete until usage judgments and cluster diagnostics are frozen, two valid expert reviews and pre-adjudication hashes are preserved, adjudication is complete, and the actual inventory revision count exists."
+  }
+}

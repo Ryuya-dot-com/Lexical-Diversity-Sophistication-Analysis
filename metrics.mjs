@@ -10,17 +10,21 @@ function requireWellFormed(value, label) {
   }
 }
 
-export function parseBatchJson(source, maximum) {
-  if (typeof source !== 'string') throw new Error('Batch JSON must be text.');
+export function parseJsonInput(source, maximum, label = 'JSON input') {
+  if (typeof source !== 'string') throw new Error(`${label} must be text.`);
   if (source.length > maximum) {
-    throw new Error('Batch JSON exceeds the reviewed browser limit.');
+    throw new Error(`${label} exceeds the reviewed browser limit.`);
   }
-  requireWellFormed(source, 'Batch JSON');
+  requireWellFormed(source, label);
   try {
     return JSON.parse(source);
   } catch {
-    throw new Error('Batch JSON is not valid JSON.');
+    throw new Error(`${label} is not valid JSON.`);
   }
+}
+
+export function parseBatchJson(source, maximum) {
+  return parseJsonInput(source, maximum, 'Batch JSON');
 }
 
 export function tokenRecords(text) {
@@ -36,21 +40,69 @@ export function tokenize(text) {
   return tokenRecords(text).map(token => token.normalized);
 }
 
-export function tokenizeForTubelex(text) {
-  if (typeof text !== 'string') throw new Error('TUBELEX tokenization requires text.');
-  requireWellFormed(text, 'TUBELEX input');
+export function tokenizeForAsciiWordProfile(text) {
+  if (typeof text !== 'string') throw new Error('ASCII word-profile tokenization requires text.');
+  requireWellFormed(text, 'ASCII word-profile input');
   return [...text.normalize('NFKC').matchAll(tubelexTokenPattern)]
     .map(match => match[1].toLowerCase());
 }
 
 export function prepareWordReferenceProfile(profile) {
-  if (profile?.identity?.profile_status !== 'admitted' ||
+  const referenceFunction = profile?.construct?.reference_function;
+  const bundled = profile?.identity?.profile_status === 'admitted' &&
+    profile?.rights?.browser_delivery_permitted === true;
+  const local = profile?.identity?.profile_status === 'local_only' &&
+    profile?.source?.delivery_mode === 'researcher_supplied_local_file' &&
+    profile?.rights?.browser_delivery_permitted === false &&
+    profile?.rights?.local_user_import_permitted === true;
+  if ((!bundled && !local) ||
       profile?.construct?.coverage_channel !== 'word' ||
-      profile?.construct?.reference_function !== 'frequency_distribution' ||
-      !Array.isArray(profile.rows) || !Number.isInteger(profile.corpus_design?.token_count)) {
-    throw new Error('Word reference profile is not an admitted frequency profile.');
+      !['frequency_distribution', 'ranked_inventory'].includes(referenceFunction) ||
+      !Array.isArray(profile.rows)) {
+    throw new Error('Word reference profile is not admitted for bundled or local delivery.');
   }
   const lookup = new Map();
+  if (referenceFunction === 'ranked_inventory') {
+    const boundaries = profile.measurement?.band_boundaries;
+    if (!Array.isArray(boundaries) || !boundaries.length || boundaries.some(
+      (value, index) => !Number.isInteger(value) || value < 1 || (index && value <= boundaries[index - 1])
+    )) {
+      throw new Error('Ranked word reference boundaries are invalid.');
+    }
+    const lemmas = new Set();
+    let ambiguousRows = 0;
+    let previousWord = '';
+    for (const [word, mappings] of profile.rows) {
+      if (!/^[a-z]+$/.test(word) || word <= previousWord || !Array.isArray(mappings) ||
+          !mappings.length || lookup.has(word)) {
+        throw new Error('Invalid ranked word reference row.');
+      }
+      let previousRank = 0;
+      let previousLemma = '';
+      for (const [lemma, rank] of mappings) {
+        if (!/^[a-z]+$/.test(lemma) || !Number.isInteger(rank) || rank < 1 ||
+            rank > boundaries.at(-1) || rank < previousRank ||
+            (rank === previousRank && lemma <= previousLemma)) {
+          throw new Error('Invalid ranked word reference mapping.');
+        }
+        lemmas.add(lemma);
+        previousRank = rank;
+        previousLemma = lemma;
+      }
+      if (mappings.length > 1) ambiguousRows += 1;
+      lookup.set(word, {mappings, rank: mappings[0][1]});
+      previousWord = word;
+    }
+    if (lookup.size !== profile.table.projected_row_count ||
+        lemmas.size !== profile.table.source_headword_count ||
+        ambiguousRows !== profile.table.ambiguous_surface_form_count) {
+      throw new Error('Ranked word reference manifest does not match its rows.');
+    }
+    return {profile, lookup};
+  }
+  if (!Number.isInteger(profile.corpus_design?.token_count)) {
+    throw new Error('Frequency word reference token count is invalid.');
+  }
   let previousCount = Infinity;
   let previousWord = '';
   let rank = 0;
@@ -72,22 +124,34 @@ export function prepareWordReferenceProfile(profile) {
   return {profile, lookup};
 }
 
-export function analyzeWordCoverage(text, prepared) {
+export function analyzeWordCoverage(text, prepared, maximumRank = null) {
   if (!(prepared?.lookup instanceof Map)) throw new Error('Prepared word profile is required.');
-  const tokens = tokenizeForTubelex(text);
+  const referenceFunction = prepared.profile.construct.reference_function;
+  const ranked = referenceFunction === 'ranked_inventory';
+  if (ranked !== Number.isInteger(maximumRank) ||
+      (ranked && !prepared.profile.measurement.band_boundaries.includes(maximumRank))) {
+    throw new Error('Word-profile rank cutoff is inconsistent with the selected profile.');
+  }
+  const tokens = tokenizeForAsciiWordProfile(text);
   const textCounts = new Map();
   for (const token of tokens) textCounts.set(token, (textCounts.get(token) || 0) + 1);
   const corpusTokens = prepared.profile.corpus_design.token_count;
   const items = [...textCounts].map(([word, textCount]) => {
     const reference = prepared.lookup.get(word);
+    const status = !reference ? 'unmatched'
+      : ranked && reference.rank > maximumRank ? 'beyond_cutoff' : 'matched';
     return {
       word,
       text_count: textCount,
-      status: reference ? 'matched' : 'unmatched',
-      source_count: reference?.count ?? null,
-      frequency_per_million: reference
+      status,
+      source_count: ranked ? null : reference?.count ?? null,
+      frequency_per_million: !ranked && reference
         ? Number((reference.count / corpusTokens * 1_000_000).toFixed(6)) : null,
-      frequency_rank: reference?.rank ?? null
+      frequency_rank: !ranked ? reference?.rank ?? null : null,
+      head_mappings: ranked && reference
+        ? reference.mappings.map(([lemma, rank]) => ({lemma, rank})) : [],
+      minimum_head_rank: ranked ? reference?.rank ?? null : null,
+      ambiguous_head_mapping: ranked ? Boolean(reference?.mappings.length > 1) : false
     };
   }).sort((first, second) =>
     Number(first.status === 'matched') - Number(second.status === 'matched') ||
@@ -95,14 +159,23 @@ export function analyzeWordCoverage(text, prepared) {
   );
   const matchedTypes = items.filter(item => item.status === 'matched');
   const matchedTokens = matchedTypes.reduce((sum, item) => sum + item.text_count, 0);
+  const unmatchedTypes = items.filter(item => item.status === 'unmatched');
+  const beyondTypes = items.filter(item => item.status === 'beyond_cutoff');
   return {
     profile_id: prepared.profile.identity.profile_id,
     profile_version: prepared.profile.identity.profile_version,
+    profile_title: prepared.profile.identity.title,
+    reference_function: referenceFunction,
+    selected_rank_cutoff: maximumRank,
     tokenizer_unit: prepared.profile.construct.unit,
     token_coverage: coverage(matchedTokens, tokens.length),
     type_coverage: coverage(matchedTypes.length, items.length),
-    unmatched_token_count: tokens.length - matchedTokens,
-    unmatched_type_count: items.length - matchedTypes.length,
+    uncovered_token_count: tokens.length - matchedTokens,
+    uncovered_type_count: items.length - matchedTypes.length,
+    unmatched_token_count: unmatchedTypes.reduce((sum, item) => sum + item.text_count, 0),
+    unmatched_type_count: unmatchedTypes.length,
+    beyond_cutoff_token_count: beyondTypes.reduce((sum, item) => sum + item.text_count, 0),
+    beyond_cutoff_type_count: beyondTypes.length,
     items
   };
 }
@@ -113,11 +186,16 @@ export function wordCoverageCsv(result) {
   }
   const header = [
     'word', 'text_count', 'status', 'source_count', 'frequency_per_million',
-    'frequency_rank', 'profile_id', 'profile_version'
+    'frequency_rank', 'head_mappings', 'minimum_head_rank', 'ambiguous_head_mapping',
+    'profile_id', 'profile_version', 'reference_function', 'selected_rank_cutoff'
   ];
   const rows = result.items.map(item => [
     item.word, item.text_count, item.status, item.source_count,
-    item.frequency_per_million, item.frequency_rank, result.profile_id, result.profile_version
+    item.frequency_per_million, item.frequency_rank,
+    item.head_mappings.map(mapping => `${mapping.lemma}:${mapping.rank}`).join(' '),
+    item.minimum_head_rank, item.ambiguous_head_mapping,
+    result.profile_id, result.profile_version, result.reference_function,
+    result.selected_rank_cutoff
   ]);
   return [header, ...rows].map(row => row.map(csvCell).join(',')).join('\n') + '\n';
 }
@@ -163,6 +241,90 @@ export function lookupMweForm(canonicalForm, prepared) {
     status: matched ? 'matched' : 'out_of_inventory',
     entry_id: matched ? `${normalized}#v` : null,
     sense_count: matched ? prepared.lookup.get(normalized) : null
+  };
+}
+
+export function prepareMweSenseReferenceProfile(subset) {
+  const projection = subset?.projection;
+  const resource = subset?.resource;
+  if (subset?.subset_schema_version !== '1.0.0' || !subset?.subset_id ||
+      resource?.id !== 'oewn' || typeof resource.version !== 'string' ||
+      !resource.artifact_sha256 || !subset?.license?.oewn ||
+      projection?.part_of_speech !== 'v' || !Array.isArray(projection.senses) ||
+      projection.sense_count !== projection.senses.length ||
+      projection.entry_id !== `${projection.lemma}#v`) {
+    throw new Error('MWE sense reference subset is invalid.');
+  }
+  const lemma = normalizedCanonicalForm(projection.lemma);
+  if (!lemma.includes(' ') || projection.senses.length < 1) {
+    throw new Error('MWE sense reference entry is invalid.');
+  }
+  const senseIds = new Set();
+  for (const sense of projection.senses) {
+    if (typeof sense?.sense_id !== 'string' || !sense.sense_id || senseIds.has(sense.sense_id) ||
+        !Array.isArray(sense.definitions) || !sense.definitions.length ||
+        sense.definitions.some(value => typeof value !== 'string' || !value) ||
+        !Array.isArray(sense.synonyms) || !Array.isArray(sense.synset_examples) ||
+        !Array.isArray(sense.entry_examples)) {
+      throw new Error('MWE sense reference row is invalid.');
+    }
+    senseIds.add(sense.sense_id);
+  }
+  return {
+    profile: {
+      identity: {
+        profile_id: subset.subset_id,
+        profile_version: resource.version,
+        title: `${resource.title} ${projection.entry_id} sense projection`
+      },
+      construct: {
+        coverage_channel: 'mwe_sense',
+        reference_function: 'inventory_membership',
+        excluded_inferences: [
+          'contextual sense truth', 'sense frequency', 'learner knowledge',
+          'pedagogical importance', 'automatic word-sense disambiguation'
+        ]
+      },
+      source: {
+        artifact_sha256: resource.artifact_sha256,
+        release_or_edition: resource.release_tag
+      },
+      rights: {
+        license_identifier: `${subset.license.oewn} AND ${subset.license.underlying_wordnet}`
+      }
+    },
+    lookup: new Map([[lemma, {entry_id: projection.entry_id, senses: projection.senses}]])
+  };
+}
+
+export function lookupMweSenses(canonicalForm, prepared) {
+  if (typeof canonicalForm !== 'string' || !(prepared?.lookup instanceof Map)) {
+    throw new Error('MWE sense lookup requires a canonical form and prepared profile.');
+  }
+  const entry = prepared.lookup.get(normalizedCanonicalForm(canonicalForm));
+  if (!entry) {
+    return {
+      state: {
+        inventory_id: null, inventory_version: null, lookup_status: 'inventory_ineligible',
+        candidate_sense_ids: [], assignment_status: 'inventory_ineligible',
+        selected_sense_ids: [],
+        decision: {
+          source: 'runtime-sense-profile-scope',
+          note: `The current bounded sense projection does not cover ${normalizedCanonicalForm(canonicalForm)}.`
+        }
+      },
+      senses: []
+    };
+  }
+  return {
+    state: {
+      inventory_id: prepared.profile.identity.profile_id,
+      inventory_version: prepared.profile.identity.profile_version,
+      lookup_status: 'matched',
+      candidate_sense_ids: entry.senses.map(sense => sense.sense_id),
+      assignment_status: 'unassigned', selected_sense_ids: [], decision: null
+    },
+    senses: entry.senses
   };
 }
 
@@ -312,6 +474,9 @@ export function summarizeMweDocument(document, contract) {
       !Array.isArray(document.occurrences)) {
     throw new Error('MWE document requires token and occurrence arrays.');
   }
+  if (document.occurrences.length > contract.candidate_generation.limits.candidates_per_text) {
+    throw new Error('MWE occurrence count exceeds the reviewed browser limit.');
+  }
   const normalized = tokenize(document.text);
   const tokenIds = new Set();
   document.tokens.forEach((token, index) => {
@@ -371,14 +536,14 @@ export function summarizeMweDocument(document, contract) {
       throw new Error(`MWE gap tokens do not match the member span: ${occurrence.id}.`);
     }
     if (occurrence.status === 'candidate') {
-      if (occurrence.decision || occurrence.form_lookup || occurrence.sense ||
+      if (occurrence.decision !== null || occurrence.form_lookup || occurrence.sense ||
           occurrence.idiomaticity.status !== 'not_assessed') {
         throw new Error(`Unresolved candidate carries a terminal result: ${occurrence.id}.`);
       }
       unresolved.push(occurrence);
       continue;
     }
-    if (!occurrence.decision?.source || !occurrence.decision?.note) {
+    if (!validMweDecision(occurrence.decision, true)) {
       throw new Error(`MWE decision provenance is missing: ${occurrence.id}.`);
     }
     if (occurrence.status === 'rejected') {
@@ -395,7 +560,9 @@ export function summarizeMweDocument(document, contract) {
   const memberIds = new Set(confirmed.flatMap(occurrence => occurrence.member_token_ids));
   const formMatched = confirmed.filter(item => item.form_lookup.status === 'matched').length;
   const senseMatched = confirmed.filter(item => item.sense.lookup_status === 'matched').length;
-  const senseAssigned = confirmed.filter(item => item.sense.assignment_status === 'assigned').length;
+  const senseAssigned = confirmed.filter(item =>
+    ['assigned', 'multiple_assigned'].includes(item.sense.assignment_status)
+  ).length;
   const senseStatuses = Object.fromEntries(
     contract.occurrence_record.sense_assignment_statuses.map(status => [
       status, confirmed.filter(item => item.sense.assignment_status === status).length
@@ -453,6 +620,13 @@ export function summarizeMweFormCoverage(document, contract) {
   };
 }
 
+function validMweDecision(decision, required) {
+  if (!required) return decision === null;
+  return ['source', 'note'].every(field =>
+    typeof decision?.[field] === 'string' && decision[field].trim().length > 0
+  );
+}
+
 function validateIdiomaticity(occurrence, contract) {
   const idiomaticity = occurrence.idiomaticity;
   if (!idiomaticity ||
@@ -461,7 +635,7 @@ function validateIdiomaticity(occurrence, contract) {
     throw new Error(`MWE occurrence lacks idiomaticity state: ${occurrence.id}.`);
   }
   const assessed = idiomaticity.status !== 'not_assessed';
-  if (assessed !== Boolean(idiomaticity.decision?.source && idiomaticity.decision?.note)) {
+  if (!validMweDecision(idiomaticity.decision, assessed)) {
     throw new Error(`Idiomaticity decision provenance is inconsistent: ${occurrence.id}.`);
   }
 }
@@ -486,7 +660,7 @@ function validateConfirmedOccurrence(occurrence, contract) {
   if (!Object.hasOwn(sense, 'decision')) {
     throw new Error(`Sense decision field is missing: ${occurrence.id}.`);
   }
-  const senseLookupAttempted = sense.lookup_status !== 'not_attempted';
+  const senseLookupAttempted = ['matched', 'out_of_inventory'].includes(sense.lookup_status);
   if (senseLookupAttempted !== Boolean(sense.inventory_id && sense.inventory_version)) {
     throw new Error(`Sense inventory identity is inconsistent: ${occurrence.id}.`);
   }
@@ -500,20 +674,25 @@ function validateConfirmedOccurrence(occurrence, contract) {
   if ((sense.lookup_status === 'matched') !== (candidates.length > 0)) {
     throw new Error(`Sense lookup result is inconsistent: ${occurrence.id}.`);
   }
-  if (['assigned', 'ambiguous', 'abstained'].includes(sense.assignment_status) &&
+  if (['assigned', 'multiple_assigned', 'ambiguous', 'abstained'].includes(sense.assignment_status) &&
       sense.lookup_status !== 'matched') {
     throw new Error(`Sense assignment lacks matched candidates: ${occurrence.id}.`);
   }
-  const decided = ['assigned', 'ambiguous', 'abstained'].includes(sense.assignment_status);
-  if (decided !== Boolean(sense.decision?.source && sense.decision?.note)) {
+  const decided = sense.assignment_status !== 'unassigned';
+  if (!validMweDecision(sense.decision, decided)) {
     throw new Error(`Sense decision provenance is inconsistent: ${occurrence.id}.`);
   }
-  const selectedCount = sense.assignment_status === 'assigned'
-    ? 1 : sense.assignment_status === 'ambiguous' ? 2 : 0;
-  if ((sense.assignment_status === 'ambiguous' && selected.length < selectedCount) ||
-      (sense.assignment_status !== 'ambiguous' && selected.length !== selectedCount) ||
-      (sense.assignment_status === 'out_of_inventory') !==
-        (sense.lookup_status === 'out_of_inventory')) {
+  const multiple = ['multiple_assigned', 'ambiguous'].includes(sense.assignment_status);
+  const selectedCount = sense.assignment_status === 'assigned' ? 1 : multiple ? 2 : 0;
+  const lookupAssignmentMismatch =
+    (sense.lookup_status === 'not_attempted' && sense.assignment_status !== 'unassigned') ||
+    (sense.lookup_status === 'inventory_ineligible' && sense.assignment_status !== 'inventory_ineligible') ||
+    (sense.lookup_status === 'out_of_inventory' && sense.assignment_status !== 'out_of_inventory') ||
+    (sense.assignment_status === 'inventory_ineligible' && sense.lookup_status !== 'inventory_ineligible') ||
+    (sense.assignment_status === 'out_of_inventory' &&
+      !['matched', 'out_of_inventory'].includes(sense.lookup_status));
+  if ((multiple && selected.length < selectedCount) ||
+      (!multiple && selected.length !== selectedCount) || lookupAssignmentMismatch) {
     throw new Error(`Sense assignment is inconsistent: ${occurrence.id}.`);
   }
 }
@@ -587,14 +766,21 @@ export function mweOccurrencesCsv(document, contract) {
   const header = [
     'occurrence_id', 'canonical_form', 'category', 'status', 'member_token_ids',
     'gap_token_ids', 'candidate_source', 'decision_note', 'form_inventory_id',
-    'form_inventory_version', 'form_lookup_status', 'form_entry_id', 'form_sense_count'
+    'form_inventory_version', 'form_lookup_status', 'form_entry_id', 'form_sense_count',
+    'idiomaticity_status', 'idiomaticity_note', 'sense_inventory_id',
+    'sense_inventory_version', 'sense_lookup_status', 'candidate_sense_ids',
+    'sense_assignment_status', 'selected_sense_ids', 'sense_decision_note'
   ];
   const rows = document.occurrences.map(item => [
     item.id, item.canonical_form, item.category, item.status,
     item.member_token_ids.join(' '), item.gap_token_ids.join(' '),
     item.candidate_source?.kind, item.decision?.note, item.form_lookup?.inventory_id,
     item.form_lookup?.inventory_version, item.form_lookup?.status,
-    item.form_lookup?.entry_id, item.form_lookup?.sense_count
+    item.form_lookup?.entry_id, item.form_lookup?.sense_count,
+    item.idiomaticity.status, item.idiomaticity.decision?.note,
+    item.sense?.inventory_id, item.sense?.inventory_version, item.sense?.lookup_status,
+    item.sense?.candidate_sense_ids?.join(' '), item.sense?.assignment_status,
+    item.sense?.selected_sense_ids?.join(' '), item.sense?.decision?.note
   ]);
   return [header, ...rows].map(row => row.map(csvCell).join(',')).join('\n') + '\n';
 }
@@ -604,12 +790,20 @@ function activeProfileRecord(prepared) {
   if (!profile?.identity || !profile?.source || !profile?.rights) {
     throw new Error('Prepared reference profile metadata is missing.');
   }
+  const localHash = prepared.runtimeProfileSha256 ?? null;
+  if (profile.identity.profile_status === 'local_only' &&
+      !/^[0-9a-f]{64}$/.test(localHash ?? '')) {
+    throw new Error('Local reference profile runtime hash is missing.');
+  }
   return {
     profile_id: profile.identity.profile_id,
     profile_version: profile.identity.profile_version,
+    profile_status: profile.identity.profile_status,
     title: profile.identity.title,
     coverage_channel: profile.construct.coverage_channel,
     reference_function: profile.construct.reference_function,
+    delivery_mode: profile.source.delivery_mode ?? 'bundled_browser_resource',
+    runtime_profile_sha256: localHash,
     source_artifact_sha256: profile.source.artifact_sha256,
     source_release: profile.source.release_or_edition,
     license_identifier: profile.rights.license_identifier,
@@ -617,9 +811,234 @@ function activeProfileRecord(prepared) {
   };
 }
 
+function requireExactIsoTimestamp(value, label) {
+  const date = new Date(value);
+  if (typeof value !== 'string' || !Number.isFinite(date.getTime()) ||
+      date.toISOString() !== value) {
+    throw new Error(`${label} must be an exact UTC ISO string.`);
+  }
+}
+
+function validateMweRuntime({
+  document, contract, wordProfile, wordRankCutoff, mweFormProfile, mweSenseProfile
+}) {
+  summarizeMweDocument(document, contract);
+  const wordCoverage = analyzeWordCoverage(document.text, wordProfile, wordRankCutoff);
+  for (const occurrence of document.occurrences.filter(item => item.status === 'confirmed')) {
+    const expected = lookupMweForm(occurrence.canonical_form, mweFormProfile);
+    if (['inventory_id', 'inventory_version', 'status', 'entry_id', 'sense_count']
+      .some(key => occurrence.form_lookup[key] !== expected[key])) {
+      throw new Error(`MWE form lookup does not match the active profile: ${occurrence.id}.`);
+    }
+    const expectedSense = lookupMweSenses(occurrence.canonical_form, mweSenseProfile).state;
+    if (['inventory_id', 'inventory_version', 'lookup_status']
+      .some(key => occurrence.sense[key] !== expectedSense[key]) ||
+      JSON.stringify(occurrence.sense.candidate_sense_ids) !==
+        JSON.stringify(expectedSense.candidate_sense_ids)) {
+      throw new Error(`MWE sense lookup does not match the active profile: ${occurrence.id}.`);
+    }
+  }
+  return wordCoverage;
+}
+
+export async function makeMweWorkspaceRecord({
+  document, contract, patternSource, authorizationAttested, savedAt, wordProfileKey,
+  wordProfile, wordRankCutoff, mweFormProfile, mweSenseProfile
+}) {
+  if (authorizationAttested !== true) {
+    throw new Error('MWE workspace save requires input authorization attestation.');
+  }
+  document = structuredClone(document);
+  if (typeof patternSource !== 'string' || typeof wordProfileKey !== 'string' ||
+      !wordProfileKey) {
+    throw new Error('MWE workspace metadata is missing.');
+  }
+  requireExactIsoTimestamp(savedAt, 'MWE workspace timestamp');
+  parseMwePatternTsv(patternSource, contract.occurrence_record.categories);
+  validateMweRuntime({
+    document, contract, wordProfile, wordRankCutoff, mweFormProfile, mweSenseProfile
+  });
+  return {
+    schema_version: contract.workspace_file.schema_version,
+    contract_version: contract.contract_version,
+    saved_at: savedAt,
+    raw_content_included: true,
+    input_authorization: {attested: true, independently_verified_by_app: false},
+    word_profile_selection: {key: wordProfileKey, selected_rank_cutoff: wordRankCutoff},
+    active_runtime_resources: [
+      activeProfileRecord(wordProfile), activeProfileRecord(mweFormProfile),
+      activeProfileRecord(mweSenseProfile)
+    ],
+    pattern_tsv: patternSource,
+    document: {
+      text: document.text,
+      sha256_utf8: await sha256(document.text),
+      occurrences: structuredClone(document.occurrences)
+    }
+  };
+}
+
+export async function restoreMweWorkspaceRecord({
+  record, contract, authorizationAttested, wordProfileKey, wordProfile, wordRankCutoff,
+  mweFormProfile, mweSenseProfile
+}) {
+  if (authorizationAttested !== true) {
+    throw new Error('MWE workspace restore requires current input authorization attestation.');
+  }
+  record = structuredClone(record);
+  if (record?.schema_version !== contract.workspace_file.schema_version ||
+      record.contract_version !== contract.contract_version ||
+      record.raw_content_included !== true || record.input_authorization?.attested !== true) {
+    throw new Error('MWE workspace schema or contract does not match this app.');
+  }
+  requireExactIsoTimestamp(record.saved_at, 'MWE workspace timestamp');
+  if (record.word_profile_selection?.key !== wordProfileKey ||
+      record.word_profile_selection.selected_rank_cutoff !== wordRankCutoff) {
+    throw new Error('MWE workspace word-profile selection does not match the active profile.');
+  }
+  const expectedResources = [
+    activeProfileRecord(wordProfile), activeProfileRecord(mweFormProfile),
+    activeProfileRecord(mweSenseProfile)
+  ];
+  const identity = resource => [
+    resource?.profile_id, resource?.profile_version, resource?.profile_status,
+    resource?.source_artifact_sha256, resource?.runtime_profile_sha256
+  ];
+  if (!Array.isArray(record.active_runtime_resources) ||
+      JSON.stringify(record.active_runtime_resources.map(identity)) !==
+        JSON.stringify(expectedResources.map(identity))) {
+    throw new Error('MWE workspace runtime resources do not match this app.');
+  }
+  parseMwePatternTsv(record.pattern_tsv, contract.occurrence_record.categories);
+  if (typeof record.document?.text !== 'string' ||
+      record.document.text.length > contract.candidate_generation.limits.text_utf16_code_units) {
+    throw new Error('MWE workspace text exceeds the reviewed browser limit.');
+  }
+  if (!/^[0-9a-f]{64}$/.test(record.document.sha256_utf8 || '') ||
+      await sha256(record.document.text) !== record.document.sha256_utf8) {
+    throw new Error('MWE workspace text SHA-256 does not match its saved review.');
+  }
+  const document = {
+    text: record.document?.text,
+    tokens: tokenRecords(record.document.text),
+    occurrences: structuredClone(record.document?.occurrences)
+  };
+  validateMweRuntime({
+    document, contract, wordProfile, wordRankCutoff,
+    mweFormProfile, mweSenseProfile
+  });
+  return {document, patternSource: record.pattern_tsv};
+}
+
+function documentSetField(value, label, maximum, identifier = false) {
+  if (typeof value !== 'string') throw new Error(`${label} must be text.`);
+  requireWellFormed(value, label);
+  const normalized = value.trim();
+  if (!normalized || normalized.length > maximum ||
+      (identifier && !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(normalized))) {
+    throw new Error(`${label} is invalid.`);
+  }
+  return normalized;
+}
+
+function validateMweDocumentSetEnvelope(record, contract) {
+  const specification = contract.document_set_file;
+  if (record?.schema_version !== specification.schema_version ||
+      record.contract_version !== contract.contract_version ||
+      record.raw_content_included !== true || record.input_authorization?.attested !== true) {
+    throw new Error('MWE document-set schema or contract does not match this app.');
+  }
+  requireExactIsoTimestamp(record.saved_at, 'MWE document-set timestamp');
+  const setId = documentSetField(
+    record.set?.id, 'MWE document-set ID', specification.maximum_id_characters, true
+  );
+  const setLabel = documentSetField(
+    record.set?.label, 'MWE document-set label', specification.maximum_label_characters
+  );
+  if (!Array.isArray(record.documents) || record.documents.length < 1 ||
+      record.documents.length > specification.maximum_documents) {
+    throw new Error('MWE document-set count exceeds the reviewed browser limits.');
+  }
+  const ids = new Set();
+  let combinedTextLength = 0;
+  const documents = record.documents.map((item, index) => {
+    const id = documentSetField(
+      item?.id, `MWE document ${index + 1} ID`, specification.maximum_id_characters, true
+    );
+    const label = documentSetField(
+      item?.label, `MWE document ${index + 1} label`, specification.maximum_label_characters
+    );
+    if (ids.has(id)) throw new Error(`Duplicate MWE document ID: ${id}.`);
+    ids.add(id);
+    const workspace = item?.workspace;
+    if (workspace?.schema_version !== contract.workspace_file.schema_version ||
+        workspace.contract_version !== contract.contract_version) {
+      throw new Error(`MWE document workspace contract does not match: ${id}.`);
+    }
+    combinedTextLength += typeof workspace.document?.text === 'string'
+      ? workspace.document.text.length : specification.maximum_combined_text_characters + 1;
+    return {id, label, workspace};
+  });
+  if (combinedTextLength > specification.maximum_combined_text_characters) {
+    throw new Error('MWE document-set text exceeds the reviewed browser limit.');
+  }
+  return {setId, setLabel, documents};
+}
+
+export function makeMweDocumentSetRecord({
+  contract, setId, setLabel, documents, savedAt, authorizationAttested
+}) {
+  if (authorizationAttested !== true) {
+    throw new Error('MWE document-set save requires input authorization attestation.');
+  }
+  const record = {
+    schema_version: contract.document_set_file.schema_version,
+    contract_version: contract.contract_version,
+    saved_at: savedAt,
+    raw_content_included: true,
+    input_authorization: {attested: true, independently_verified_by_app: false},
+    set: {id: setId, label: setLabel},
+    documents: structuredClone(documents)
+  };
+  const validated = validateMweDocumentSetEnvelope(record, contract);
+  record.set = {id: validated.setId, label: validated.setLabel};
+  record.documents = validated.documents.map(item => ({
+    id: item.id, label: item.label, workspace: structuredClone(item.workspace)
+  }));
+  return record;
+}
+
+export async function restoreMweDocumentSetRecord({
+  record, contract, authorizationAttested, wordProfiles, mweFormProfile, mweSenseProfile
+}) {
+  if (authorizationAttested !== true) {
+    throw new Error('MWE document-set restore requires current input authorization attestation.');
+  }
+  if (!(wordProfiles instanceof Map)) throw new Error('MWE document-set profiles are unavailable.');
+  record = structuredClone(record);
+  const validated = validateMweDocumentSetEnvelope(record, contract);
+  await Promise.all(validated.documents.map(async item => {
+    const key = item.workspace.word_profile_selection?.key;
+    const selection = wordProfiles.get(key);
+    if (!selection) throw new Error(`MWE document profile is unavailable: ${item.id}.`);
+    await restoreMweWorkspaceRecord({
+      record: item.workspace, contract, authorizationAttested: true, wordProfileKey: key,
+      wordProfile: selection.profile, wordRankCutoff: selection.maximumRank,
+      mweFormProfile, mweSenseProfile
+    });
+  }));
+  return {
+    setId: validated.setId,
+    setLabel: validated.setLabel,
+    documents: validated.documents.map(item => ({
+      id: item.id, label: item.label, workspace: structuredClone(item.workspace)
+    }))
+  };
+}
+
 export async function makeMweReviewRecord({
   document, contract, patternSource, tokenizer, authorizationAttested, generatedAt,
-  wordProfile, mweFormProfile
+  wordProfile, wordRankCutoff, mweFormProfile, mweSenseProfile
 }) {
   if (typeof patternSource !== 'string' || typeof generatedAt !== 'string') {
     throw new Error('MWE review export metadata is missing.');
@@ -627,20 +1046,13 @@ export async function makeMweReviewRecord({
   if (authorizationAttested !== true) {
     throw new Error('MWE review export requires input authorization attestation.');
   }
-  const wordCoverage = analyzeWordCoverage(document.text, wordProfile);
-  for (const occurrence of document.occurrences.filter(item => item.status === 'confirmed')) {
-    const expected = lookupMweForm(occurrence.canonical_form, mweFormProfile);
-    if (['inventory_id', 'inventory_version', 'status', 'entry_id', 'sense_count']
-      .some(key => occurrence.form_lookup[key] !== expected[key])) {
-      throw new Error(`MWE form lookup does not match the active profile: ${occurrence.id}.`);
-    }
-  }
-  const generatedDate = new Date(generatedAt);
-  if (!Number.isFinite(generatedDate.getTime()) || generatedDate.toISOString() !== generatedAt) {
-    throw new Error('MWE review timestamp must be an exact UTC ISO string.');
-  }
+  document = structuredClone(document);
+  const wordCoverage = validateMweRuntime({
+    document, contract, wordProfile, wordRankCutoff, mweFormProfile, mweSenseProfile
+  });
+  requireExactIsoTimestamp(generatedAt, 'MWE review timestamp');
   return {
-    schema_version: '0.1.0-mwe-review',
+    schema_version: '0.4.0-mwe-review',
     generated_at: generatedAt,
     contract_version: contract.contract_version,
     method: {
@@ -649,7 +1061,10 @@ export async function makeMweReviewRecord({
       tokenizer,
       categories: contract.occurrence_record.categories
     },
-    active_runtime_resources: [activeProfileRecord(wordProfile), activeProfileRecord(mweFormProfile)],
+    active_runtime_resources: [
+      activeProfileRecord(wordProfile), activeProfileRecord(mweFormProfile),
+      activeProfileRecord(mweSenseProfile)
+    ],
     input_authorization: {attested: true, independently_verified_by_app: false},
     text: {
       sha256_utf8: await sha256(document.text),
@@ -666,11 +1081,17 @@ export async function makeMweReviewRecord({
       word_coverage: {
         profile_id: wordCoverage.profile_id,
         profile_version: wordCoverage.profile_version,
+        reference_function: wordCoverage.reference_function,
+        selected_rank_cutoff: wordCoverage.selected_rank_cutoff,
         tokenizer_unit: wordCoverage.tokenizer_unit,
         token_coverage: wordCoverage.token_coverage,
         type_coverage: wordCoverage.type_coverage,
+        uncovered_token_count: wordCoverage.uncovered_token_count,
+        uncovered_type_count: wordCoverage.uncovered_type_count,
         unmatched_token_count: wordCoverage.unmatched_token_count,
         unmatched_type_count: wordCoverage.unmatched_type_count,
+        beyond_cutoff_token_count: wordCoverage.beyond_cutoff_token_count,
+        beyond_cutoff_type_count: wordCoverage.beyond_cutoff_type_count,
         item_rows_included: false
       },
       mwe_form_coverage: summarizeMweFormCoverage(document, contract)
@@ -684,14 +1105,18 @@ export async function makeMweReviewRecord({
       gap_token_ids: item.gap_token_ids,
       candidate_source: item.candidate_source,
       decision: item.decision,
-      form_lookup: item.form_lookup
+      idiomaticity: item.idiomaticity,
+      form_lookup: item.form_lookup,
+      sense: item.sense
     })),
     limitations: [
       'surface patterns generate candidates but do not confirm MWE status',
       'the included starter patterns are not a comprehensive or pedagogically ranked inventory',
-      'TUBELEX word coverage and OEWN MWE-form membership are separate channels and are never combined into one score',
+      'the selected word-profile result and OEWN MWE-form membership are separate channels and are never combined into one score',
       'OEWN form membership is not MWE frequency, occurrence truth, category, contextual sense, or pedagogical importance',
-      'the TUBELEX profile is an audiovisual/spoken-exposure approximation rather than a universal English norm',
+      'OEWN sense candidates are lexicographic options; only the recorded human decision concerns this context',
+      'the runtime sense projection is deliberately limited to its named target entries',
+      'word-profile membership or rank does not establish contextual meaning, learner knowledge, or a universal coverage threshold',
       'exact source text and pattern TSV must be preserved separately to reproduce this record'
     ]
   };

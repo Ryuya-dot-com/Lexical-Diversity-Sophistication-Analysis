@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "frame_id": "ENWIKI-SAMPLING-FRAME-2026-09-04",
+  "frozen_on": "2026-09-04",
+  "status": "contract_frozen_no_source_rows_no_target_search",
+  "task": "IR-121",
+  "dependencies": {
+    "source_manifest": {
+      "path": "resources/source_manifest.json",
+      "sha256": "a5f7e6d9a3fd64907bdc2e3d8741b1641412f06c2696c1b555db92ea96efe8af"
+    },
+    "preprocessing_contract": {
+      "path": "resources/preprocessing_contract.json",
+      "sha256": "9cd08ac2b98f88bf4f2f9197070f094045d203f22a402c3e194ad9dac4cd2d4d"
+    },
+    "target_population_contract": {
+      "path": "resources/target_population_contract.json",
+      "sha256": "8f281562aa6f398b9d3b817cf90cf1da36d744059f7708a1f0f3749028ab6c22"
+    }
+  },
+  "population": {
+    "source": "English Wikipedia",
+    "source_snapshot": "ENWIKI-SOURCE-SNAPSHOT-2026-09-01",
+    "period": "Current revisions contained in the completed 2026-09-01 dated dump",
+    "genre": "Encyclopedic prose",
+    "language": "English",
+    "variety": "Collaboratively edited international English; no national-variety inference",
+    "document_unit": "One namespace-0 non-redirect page revision",
+    "analysis_hierarchy": [
+      "document",
+      "retained paragraph segment",
+      "context-indexed VPC/VID occurrence"
+    ],
+    "structural_eligibility": [
+      "namespace is exactly 0",
+      "redirect marker is absent",
+      "revision model is wikitext",
+      "retained prose contains 500 through 3999 project tokens",
+      "at least five prose paragraphs remain after the frozen extractor"
+    ],
+    "exclusion_order": [
+      "namespace_not_zero",
+      "redirect",
+      "model_not_wikitext",
+      "below_500_tokens",
+      "above_3999_tokens",
+      "fewer_than_5_paragraphs"
+    ],
+    "rights_rule": "Assign target-blind priority before page-level rights review. Only rights_status=pass may later enter a sample; hold/fail rows remain visible and replacement follows the next rank in the same length stratum.",
+    "target_exposure_rule": "Every input row must remain unexposed to MWE search, dictionary lookup, model prediction, annotation yield, and downstream outcomes. Any other state fails closed rather than becoming an exclusion reason."
+  },
+  "candidate_input": {
+    "format": "UTF-8 JSON Lines, one metadata object per page revision",
+    "required_fields": [
+      "page_id",
+      "revision_id",
+      "revision_timestamp",
+      "title",
+      "namespace",
+      "redirect",
+      "model",
+      "dump_wikitext_sha256",
+      "api_response_sha256",
+      "rendered_html_sha256",
+      "extracted_text_sha256",
+      "prose_token_count",
+      "retained_paragraph_count",
+      "rights_status",
+      "rights_reason_codes",
+      "target_exposure_status"
+    ],
+    "rights_statuses": [
+      "not_reviewed",
+      "pass",
+      "hold",
+      "fail"
+    ],
+    "forbidden_content": [
+      "source prose or surface-token sequences",
+      "MWE forms, matches, labels, or counts",
+      "dictionary or model output",
+      "participant, comprehension, gaze, or other downstream outcomes"
+    ],
+    "exact_schema_rule": "Extra or missing fields fail closed so target-derived variables cannot silently enter selection."
+  },
+  "length_strata": [
+    {
+      "id": "short",
+      "minimum_tokens": 500,
+      "maximum_tokens": 999
+    },
+    {
+      "id": "medium",
+      "minimum_tokens": 1000,
+      "maximum_tokens": 1999
+    },
+    {
+      "id": "long",
+      "minimum_tokens": 2000,
+      "maximum_tokens": 3999
+    }
+  ],
+  "selection": {
+    "design": "Stratified simple random sampling without replacement, implemented as a deterministic pseudorandom permutation within each length stratum",
+    "seed": "enwiki-20260901-vpc-vid-frame-v1",
+    "hash": "SHA-256 of compact UTF-8 JSON [frame_id, seed, page_id, revision_id]",
+    "order": "Ascending selection hash, then page ID and revision ID, independently within each frozen length stratum",
+    "inclusion_probability": "For a frozen allocation n_h and N_h rights-pass rows in stratum h, each rights-pass row has first-order inclusion probability n_h/N_h; structural or rights fail/hold rows have probability 0. Values remain unresolved until source materialization and IR-127.",
+    "allocation_status": "pending_IR-127_precision_plan",
+    "allocation_by_stratum": {
+      "short": null,
+      "medium": null,
+      "long": null
+    },
+    "prefix_rule": "After IR-127 freezes allocation, take the first rights-pass, still-unexposed rows in each stratum; a non-pass row is replaced only by the next queue rank in that stratum.",
+    "no_post_target_replacement": "After any target exposure, a failed selected document remains an exposed exclusion and cannot be silently replaced in the same sealed sample version."
+  },
+  "current_boundary": {
+    "source_content_acquired": false,
+    "candidate_input_exists": false,
+    "source_row_count": 0,
+    "selected_document_count": 0,
+    "target_search_count": 0,
+    "human_annotation_count": 0,
+    "claim_ceiling": "population, eligibility, strata, seed, ranking, and replacement procedure frozen; no sampled document or benchmark exists"
+  },
+  "next_actions": [
+    "Acquire and hash-verify the frozen content and index files outside Git.",
+    "Produce the exact-schema metadata input without target or MWE fields.",
+    "Run scripts/sample_benchmark_documents.py to create deterministic per-stratum priority queues.",
+    "Complete page-level rights review in queue order without target search.",
+    "Freeze per-stratum prefix sizes under IR-127 before selecting or annotating documents."
+  ]
+}

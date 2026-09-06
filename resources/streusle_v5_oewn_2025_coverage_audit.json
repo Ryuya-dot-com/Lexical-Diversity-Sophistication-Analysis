@@ -1,0 +1,236 @@
+{
+  "audit_version": "1.2.0",
+  "audit_id": "streusle-v5-oewn-2025-exact-coverage",
+  "purpose": "Measure the maximum exact inventory-lookup pool before designing a new contextual-sense annotation benchmark.",
+  "source_identity": {
+    "streusle_tag": "v5.0",
+    "streusle_commit": "8ba61fe4f216e7967500a862554a4fff79d25f5d",
+    "streusle_profile": "benchmarks/streusle_v5_vpc_vid.json",
+    "streusle_artifacts": {
+      "train": {
+        "path": "train/streusle.ud_train.json",
+        "size_bytes": 16845570,
+        "sha256": "36aef0205a6e2e154b681d7520858693a264d3c40ba7d97c089345bbd1149a22"
+      },
+      "dev": {
+        "path": "dev/streusle.ud_dev.json",
+        "size_bytes": 2050638,
+        "sha256": "56cc1783962ce8c9f06b7649ffdccb48cea14ee7e4a8be2e35214ffc71303e9a"
+      },
+      "test": {
+        "path": "test/streusle.ud_test.json",
+        "size_bytes": 2051895,
+        "sha256": "f8144e6227db2e845cda4aa832f8d5644cb40b9e743d1dbe05663dd687d2c70c"
+      }
+    },
+    "oewn_release": "2025-edition",
+    "oewn_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51"
+  },
+  "summary": {
+    "matching_rule": "Unicode-casefolded exact STREUSLE lexlemma to OEWN lemma with part of speech v; no slot, article, or lexical normalization",
+    "construct_warning": "An exact entry and sense count establish inventory candidates only, not occurrence truth, contextual adequacy, or observed polysemy.",
+    "occurrence_counts": {
+      "total": 624,
+      "exact_oewn_match": 317,
+      "polysemous_oewn_entry": 228,
+      "monosemous_oewn_entry": 89,
+      "no_exact_oewn_entry": 307
+    },
+    "type_counts": {
+      "total": 389,
+      "exact_oewn_match": 156,
+      "polysemous_oewn_entry": 100,
+      "monosemous_oewn_entry": 56,
+      "no_exact_oewn_entry": 233
+    },
+    "occurrence_counts_by_split": {
+      "train": {
+        "total": 544,
+        "exact_oewn_match": 282,
+        "polysemous_oewn_entry": 203,
+        "monosemous_oewn_entry": 79,
+        "no_exact_oewn_entry": 262
+      },
+      "dev": {
+        "total": 40,
+        "exact_oewn_match": 18,
+        "polysemous_oewn_entry": 14,
+        "monosemous_oewn_entry": 4,
+        "no_exact_oewn_entry": 22
+      },
+      "test": {
+        "total": 40,
+        "exact_oewn_match": 17,
+        "polysemous_oewn_entry": 11,
+        "monosemous_oewn_entry": 6,
+        "no_exact_oewn_entry": 23
+      }
+    },
+    "occurrence_counts_by_category": {
+      "V.VID": {
+        "total": 319,
+        "exact_oewn_match": 45,
+        "polysemous_oewn_entry": 10,
+        "monosemous_oewn_entry": 35,
+        "no_exact_oewn_entry": 274
+      },
+      "V.VPC.full": {
+        "total": 207,
+        "exact_oewn_match": 189,
+        "polysemous_oewn_entry": 155,
+        "monosemous_oewn_entry": 34,
+        "no_exact_oewn_entry": 18
+      },
+      "V.VPC.semi": {
+        "total": 98,
+        "exact_oewn_match": 83,
+        "polysemous_oewn_entry": 63,
+        "monosemous_oewn_entry": 20,
+        "no_exact_oewn_entry": 15
+      }
+    },
+    "type_counts_by_category": {
+      "V.VID": {
+        "total": 239,
+        "exact_oewn_match": 31,
+        "polysemous_oewn_entry": 6,
+        "monosemous_oewn_entry": 25,
+        "no_exact_oewn_entry": 208
+      },
+      "V.VPC.full": {
+        "total": 101,
+        "exact_oewn_match": 89,
+        "polysemous_oewn_entry": 70,
+        "monosemous_oewn_entry": 19,
+        "no_exact_oewn_entry": 12
+      },
+      "V.VPC.semi": {
+        "total": 55,
+        "exact_oewn_match": 42,
+        "polysemous_oewn_entry": 30,
+        "monosemous_oewn_entry": 12,
+        "no_exact_oewn_entry": 13
+      }
+    },
+    "category_type_count_warning": "A canonical type with conflicting STREUSLE categories is counted once in each represented category, so category type totals need not equal the global type total.",
+    "polysemous_discontinuous_occurrences": 57,
+    "matched_type_sense_count_distribution": {
+      "1": 56,
+      "2": 25,
+      "3": 21,
+      "4": 10,
+      "5": 14,
+      "6": 4,
+      "7": 6,
+      "8": 6,
+      "9": 4,
+      "10": 1,
+      "11": 2,
+      "12": 3,
+      "14": 1,
+      "15": 1,
+      "16": 1,
+      "17": 1
+    },
+    "types_with_conflicting_categories": [
+      "call in",
+      "come out",
+      "come through",
+      "go out",
+      "make up",
+      "take out"
+    ],
+    "named_type_checks": {
+      "take_in": {
+        "occurrences": 8,
+        "exact_oewn_sense_count": 17
+      },
+      "spill_the_beans": {
+        "occurrences": 0,
+        "exact_oewn_sense_count": 1
+      }
+    },
+    "slot_skeleton_candidate_audit": {
+      "rule": "Remove only the declared article/possessive-slot tokens from unmatched STREUSLE and OEWN multiword verb lemmas, then require exact remaining token order.",
+      "removed_tokens": [
+        "a",
+        "an",
+        "her",
+        "his",
+        "its",
+        "my",
+        "one's",
+        "our",
+        "somebody's",
+        "someone's",
+        "the",
+        "their",
+        "your"
+      ],
+      "warning": "A skeleton match is an unreviewed mapping candidate, not an accepted lemma equivalence or contextual sense.",
+      "unmatched_occurrence_counts": {
+        "none": 298,
+        "unique": 9,
+        "multiple": 0
+      },
+      "unmatched_occurrence_counts_by_category": {
+        "V.VID": {
+          "none": 265,
+          "unique": 9,
+          "multiple": 0
+        },
+        "V.VPC.full": {
+          "none": 18,
+          "unique": 0,
+          "multiple": 0
+        },
+        "V.VPC.semi": {
+          "none": 15,
+          "unique": 0,
+          "multiple": 0
+        }
+      },
+      "unmatched_type_counts": {
+        "none": 231,
+        "unique": 2,
+        "multiple": 0
+      },
+      "unmatched_type_counts_by_category": {
+        "V.VID": {
+          "none": 206,
+          "unique": 2,
+          "multiple": 0
+        },
+        "V.VPC.full": {
+          "none": 12,
+          "unique": 0,
+          "multiple": 0
+        },
+        "V.VPC.semi": {
+          "none": 13,
+          "unique": 0,
+          "multiple": 0
+        }
+      },
+      "unique_candidate_pairs": [
+        {
+          "streusle_lemma": "get picture",
+          "oewn_candidate": "get the picture",
+          "occurrences": 1,
+          "categories": [
+            "V.VID"
+          ]
+        },
+        {
+          "streusle_lemma": "waste time",
+          "oewn_candidate": "waste one's time",
+          "occurrences": 8,
+          "categories": [
+            "V.VID"
+          ]
+        }
+      ]
+    }
+  },
+  "decision": "Use this as a target-population and normalization audit only. Do not select only exact matches as benchmark gold, because that would hide inventory gaps and bias against non-canonical VID forms."
+}

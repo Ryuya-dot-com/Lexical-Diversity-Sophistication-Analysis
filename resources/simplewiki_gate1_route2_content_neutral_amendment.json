@@ -1,0 +1,78 @@
+{
+  "amendment_id": "gate1-simplewiki-route2-content-neutral-amendment-v1",
+  "adopted_on": "2026-09-02",
+  "status": "adopted_post_screening_for_exploratory_development_only",
+  "trigger": "Project-author review after the give up rank-15 screen identified a construct error: objective occurrence and sense evidence had been conflated with optional participant-material sensitivity management.",
+  "inputs": {
+    "frozen_design_id": "gate1-simplewiki-route2-v1",
+    "frozen_design_sha256": "c4bb1a03b4a63c6e83f23f2589452070a9e5b9b4f3a879d10184d98c16e07cbb",
+    "pick_up_review_sha256": "025286cb27f4a64e2810eb8824271ba4da487bb8e47daa0bb63f8867f217d3c5",
+    "give_up_review_sha256": "5a2f33818cf24f5b243d2ba1d4373da6ded544351fd77e8932a0d98bf654c4b3"
+  },
+  "correction": {
+    "occurrence_and_sense_evidence": "A lawful source occurrence is not rejected because it objectively describes death, self-harm, violence, coercion, persecution, or another negative topic. Topic and sensitivity do not change whether an MWE occurs or which contextual meaning is expressed.",
+    "web_app": "The research app remains content-neutral: it analyzes researcher-authorized text and does not suppress lexical evidence under a dignity, tone, or low-risk filter.",
+    "participant_materials": "Sensitivity is recorded separately as metadata. Any warning, population restriction, optional filter, or study-specific exclusion requires an explicit participant-protection rationale; it cannot silently alter the lexical sample.",
+    "structural_admission": "Rights, intact extraction, propositional coherence, answerability, target presence, category, idiomaticity, contextual meaning, and target centrality remain separate gates for experimental passage use.",
+    "policy_boundary": "A content or moderation category is not treated as proof that scholarly classification or analysis violates an AI-use policy. Facilitation, endorsement, unlawful use, privacy, and participant risk are assessed separately."
+  },
+  "frozen_record_treatment": {
+    "design_v1": "Preserved byte-for-byte as the protocol that generated the existing queue and decisions; its low-risk rules are not presented as construct-valid content-neutral criteria.",
+    "existing_desk_reviews": "Preserved as audit evidence of what was inspected and decided under v1. Their MWE occurrence and contextual-meaning decisions remain preliminary evidence; content-based passage rejections do not carry forward.",
+    "route2_state": "stopped_before_come_out_pending_content_neutral_redesign",
+    "reason_not_silently_relabelled": "The correction was adopted after pick up ranks 1-4 and give up ranks 1-15 had been read. Rewriting those outcomes as prospectively prespecified would hide analyst exposure."
+  },
+  "affected_decisions": {
+    "target_derivation": {
+      "withdrawn_rule": "Exclude a target type because its conventional meaning necessarily centers death, self-harm, sexual violence, or acute violence.",
+      "material_consequence": "pass away was excluded by this rule. Under the frozen ranking inputs it has two OEWN senses and three STREUSLE train occurrences, so it would outrank get it, which has two senses and two occurrences, for the second VID position.",
+      "content_neutral_pool_reproduction": {
+        "streusle_release_commit": "8ba61fe4f216e7967500a862554a4fff79d25f5d",
+        "streusle_train_sha256": "36aef0205a6e2e154b681d7520858693a264d3c40ba7d97c089345bbd1149a22",
+        "eligible_vpc_type_count": 19,
+        "eligible_vid_type_count": 3,
+        "top_four_vpc_forms": ["take in", "pick up", "give up", "come out"],
+        "ranked_vid_forms": ["make it", "pass away", "get it"],
+        "result": "Removing only the content filter leaves the four VPC targets unchanged but replaces get it with pass away in the two-VID panel."
+      },
+      "required_action": "Rederive and freeze the complete target pool in a new content-neutral design version before any further target-page review. Do not patch pass away into the v1 queue."
+    },
+    "pick_up": {
+      "v1_selected_desk_ranks": [1, 2, 4],
+      "content_neutral_counterfactual_ranks": [1, 2, 3],
+      "changed_row": {
+        "desk_screen_rank": 3,
+        "title": "Liverpool Women's Hospital bombing",
+        "mwe_evidence_state": "confirmed_preliminary_occurrence_retained",
+        "content_state": "sensitivity_annotation_not_lexical_exclusion"
+      },
+      "interpretation": "Rank 3 would be the earliest remaining structurally eligible page after ranks 1 and 2; rank 4 remains occurrence evidence but would not be the third selection.",
+      "use_state": "counterfactual_only; rights and item records were not completed for rank 3"
+    },
+    "give_up": {
+      "v1_selected_desk_ranks": [3, 5, 15],
+      "content_neutral_counterfactual_ranks": [1, 3, 5],
+      "changed_selected_row": {
+        "desk_screen_rank": 1,
+        "title": "Assassination of Yitzhak Rabin",
+        "mwe_evidence_state": "confirmed_preliminary_occurrence_retained",
+        "content_state": "sensitivity_annotation_not_lexical_exclusion"
+      },
+      "other_content_based_rows": [6, 8, 10, 11, 12, 13],
+      "other_content_based_row_state": "preliminary occurrence evidence retained; outside the counterfactual rank-5 early stop and therefore not selectable under this amendment",
+      "structural_rejections_unchanged": {
+        "broken_propositional_coherence": [2, 9],
+        "target_absent": [4, 7, 14]
+      },
+      "interpretation": "Rank 1 would be the earliest structurally eligible page, rank 3 supplies a different operational meaning, and rank 5 is the earliest remaining eligible page.",
+      "use_state": "counterfactual_only; rights and item records were not completed for rank 1"
+    }
+  },
+  "claim_limits": [
+    "The counterfactual selections do not rescue or complete Route 2 v1.",
+    "The amendment supplies no gold occurrence, category, or sense labels.",
+    "It supplies no participant-safety, comprehension, lexical-coverage, or representativeness evidence.",
+    "A new content-neutral design remains exploratory because prior v1 titles and passages have already been viewed."
+  ],
+  "next_action": "Freeze a content-neutral Route 2 successor that separates lexical evidence, experimental-passage eligibility, and optional sensitivity metadata; only then regenerate its target list and deterministic queues."
+}

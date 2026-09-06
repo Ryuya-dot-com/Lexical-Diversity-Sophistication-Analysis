@@ -1,0 +1,204 @@
+{
+  "review_schema_version": "1.0.0",
+  "review_id": "gate1-voa-priority-education-desk-review-v1",
+  "reviewed_on": "2026-09-02",
+  "inputs": {
+    "automated_profile_id": "gate1-voa-automated-screen-v1",
+    "automated_profile_sha256": "efe61f49a81e59274d532a650da4a362dab4067eeaa0f0fe79bdebf4b8b77603",
+    "recurrence_triage_id": "gate1-voa-recurrence-triage-v1",
+    "recurrence_triage_sha256": "884c087db0821131e5b76168f3640fcbd5f7f2e08171226ba0430eef030a88a0",
+    "oewn_release": "2025-edition; commit dc343f2683279ecbb13fab4e2fd778d7b162d287",
+    "oewn_artifact_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+    "taxonomy_standard": "PARSEME shared-task annotation guidelines 1.2",
+    "taxonomy_url": "https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2/?page=030_Categories_of_VMWEs",
+    "streusle_profile_id": "streusle-v5-vpc-vid-offline"
+  },
+  "construct": {
+    "purpose": "full project-internal desk review of the three articles forming the two priority passage pairs",
+    "target_scope": "plausible English VPC or VID; transparent complements and LVCs remain outside the bounded first-paper target",
+    "automatic_decision_columns": ["lead_id", "desk_state", "provisional_category", "candidate_sense_ids", "note"],
+    "manual_addition_columns": ["manual_id", "paragraph", "surface_or_canonical_form", "desk_state", "provisional_category", "note"],
+    "review_status": "preliminary single project review; author confirmation and independent annotation are absent",
+    "excluded_inferences": [
+      "gold MWE label",
+      "validated contextual sense",
+      "learner knowledge",
+      "comprehension validity",
+      "passage admission",
+      "automatic-system accuracy"
+    ],
+    "article_text_bundled": false
+  },
+  "articles": [
+    {
+      "article_id": "education-07",
+      "title": "US College Leaders Worry About the Future",
+      "text_sha256": "58d5b5fe3b8c0448fc97d830c0434d11ac46dd8d357010e1f223fbd4d78c7d8e",
+      "paragraph_count": 23,
+      "word_token_count": 932,
+      "ngsl_2k_token_coverage": 0.922747,
+      "automatic_contiguous_decisions": [
+        ["education-07-lead-001", "unresolved_in_scope", "VID_or_compositional_formula", [], "context means perform successfully; OEWN's only do well sense does not fit"],
+        ["education-07-lead-002", "literal_or_grammatical", null, [], "literal arrival in the United States"],
+        ["education-07-lead-003", "false_span", null, [], "member of the longer frame when it comes to"],
+        ["education-07-lead-004", "outside_bounded_scope_pending_independent_taxonomy", "finite_clause_stance_construction", [], "epistemic felt like before a finite clause; the selected STREUSLE VID evidence covers inclination plus gerund and does not establish this occurrence as VID"],
+        ["education-07-lead-005", "literal_or_grammatical", null, [], "literal college destination"],
+        ["education-07-lead-006", "outside_bounded_scope", null, [], "aspectual come to plus infinitive"],
+        ["education-07-lead-007", "outside_bounded_scope", null, ["think_of%2:31:01::"], "think of X as construal frame"],
+        ["education-07-lead-008", "outside_bounded_scope", "IAV", ["look_to%2:31:01::"], "turn expectations or interest toward U.S. schools; STREUSLE labels the matching strong expression IAV, which this VPC/VID projection excludes"],
+        ["education-07-lead-009", "outside_bounded_scope", "weak_or_prepositional_verb", ["work_on%2:41:00::"], "exert effort on public-trust issues; STREUSLE records work on only in the weak-MWE layer, outside this strong VPC/VID projection"],
+        ["education-07-lead-010", "plausible_in_scope", "VPC.full", ["go_on%2:30:00::"], "what happens at an institution; central to the closing claim"],
+        ["education-07-lead-011", "outside_bounded_scope", null, [], "aspectual come to plus infinitive"],
+        ["education-07-lead-012", "outside_bounded_scope", null, ["think_of%2:31:01::"], "think of X as construal frame"],
+        ["education-07-lead-013", "plausible_in_scope", "VPC.full", ["go_on%2:38:00::"], "progress to become leaders; central closing evidence"],
+        ["education-07-lead-014", "plausible_in_scope", "VPC.semi", ["start_out%2:30:00::"], "begin or originate in a laboratory"],
+        ["education-07-lead-015", "false_span", null, [], "overlap inside start out in"],
+        ["education-07-lead-016", "nonverbal_or_adjectival", null, [], "noun step followed by an in-phrase"]
+      ],
+      "automatic_gap_decisions": [
+        ["education-07-gap-lead-001", "false_span", null, [], "comes to changes in is not gapped come in"],
+        ["education-07-gap-lead-002", "false_span", null, [], "have to continue on is not gapped have on"],
+        ["education-07-gap-lead-003", "false_span", null, [], "have already started down is not gapped have down"],
+        ["education-07-gap-lead-004", "false_span", null, [], "well is part of well-paying"],
+        ["education-07-gap-lead-005", "false_span", null, [], "be surprising given is not passive be given"],
+        ["education-07-gap-lead-006", "false_span", null, [], "is working on is not gapped be on"],
+        ["education-07-gap-lead-007", "false_span", null, [], "go on to is the contiguous go on plus infinitive"],
+        ["education-07-gap-lead-008", "false_span", null, [], "living conditions in is not gapped live in"]
+      ],
+      "manual_additions": [
+        ["education-07-manual-001", 2, "deal with", "outside_bounded_scope", "IAV", "issues; first of three same-article occurrences; STREUSLE labels deal with IAV, not VPC or VID"],
+        ["education-07-manual-002", 4, "deal with", "outside_bounded_scope", "IAV", "challenges; STREUSLE labels deal with IAV, not VPC or VID"],
+        ["education-07-manual-003", 8, "dealing with", "outside_bounded_scope", "IAV", "change; STREUSLE labels deal with IAV, not VPC or VID"],
+        ["education-07-manual-004", 7, "when it comes to", "unresolved_in_scope", "VID", "complete discourse frame; peripheral to the proposition"],
+        ["education-07-manual-005", 11, "started down", "unresolved_in_scope_out_of_oewn", "VPC.semi", "metaphorical path with a relativized object"],
+        ["education-07-manual-006", 18, "tends to", "source_cued_not_hidden", null, "bolded and explicitly defined in the source glossary"]
+      ],
+      "assessment": {
+        "global_question_feasibility": "plausible for the article's threats and proposed institutional responses",
+        "target_criticality": "go on is locally meaningful; work on and deal with are outside the bounded strong VPC/VID projection, while most other candidates are peripheral, paraphrased, or ordinary discourse frames",
+        "source_marking": "no priority shared form is exactly bolded or glossary-defined; tends to is explicitly taught and excluded",
+        "content_threats": ["U.S. higher-education institutions", "named organizations", "dated demographic and policy context", "multiple reported percentages"]
+      }
+    },
+    {
+      "article_id": "education-12",
+      "title": "Study: STEM Students in US Most Likely to Change Majors",
+      "text_sha256": "e9ebae16e6bb929631a4ce7a8c8b0295f6e06bb20f60f4266a0d2b13d406d306",
+      "paragraph_count": 26,
+      "word_token_count": 994,
+      "ngsl_2k_token_coverage": 0.918511,
+      "automatic_contiguous_decisions": [
+        ["education-12-lead-001", "plausible_in_scope", "VPC.full", ["grow_up%2:41:00::"], "genuine maturation sense but biographical background"],
+        ["education-12-lead-002", "literal_or_grammatical", null, [], "occupational location in a laboratory"],
+        ["education-12-lead-003", "outside_bounded_scope", null, ["look_at%2:39:01::"], "transparent study or examination use"],
+        ["education-12-lead-004", "outside_bounded_scope", "weak_or_prepositional_verb", ["work_on%2:41:00::"], "researcher attribution; STREUSLE records work on only in the weak-MWE layer, outside this strong VPC/VID projection"],
+        ["education-12-lead-005", "plausible_in_scope", "VPC.full", ["point_out%2:32:01::", "point_out%2:32:03::"], "genuine reporting VPC; OEWN distinctions overlap in context"],
+        ["education-12-lead-006", "outside_bounded_scope", null, ["think_of%2:31:01::"], "think of X as construal frame"],
+        ["education-12-lead-007", "plausible_in_scope", "VPC.full", ["find_out%2:32:00::", "find_out%2:32:01::"], "screening determines which students pass; two OEWN senses remain plausible"],
+        ["education-12-lead-008", "plausible_in_scope", "VPC.full", ["get_through%2:38:00::"], "succeed after difficulty; central to the criticism of screening courses"],
+        ["education-12-lead-009", "literal_or_grammatical", null, [], "grammatical going-to future"],
+        ["education-12-lead-010", "unresolved_in_scope", "VID", ["make_sure%2:41:00::"], "ensure that students remain; the only OEWN sense is close but not an exact contextual paraphrase"],
+        ["education-12-lead-011", "source_cued_outside_bounded_scope", "prepositional_verb", ["allow_for%2:42:00::"], "bolded and explicitly defined as a phrasal verb in the source glossary, but the source's pedagogical label does not establish a PARSEME VPC or VID"],
+        ["education-12-lead-012", "plausible_in_scope", "VPC.full", ["go_on%2:38:00::"], "progress to employment; central conclusion"],
+        ["education-12-lead-013", "literal_or_grammatical", null, [], "occupational field complement"]
+      ],
+      "automatic_gap_decisions": [
+        ["education-12-gap-lead-001", "false_span", null, [], "adding extra time to is not gapped add to"],
+        ["education-12-gap-lead-002", "false_span", null, [], "taking the time to is not gapped take to"],
+        ["education-12-gap-lead-003", "false_span", null, [], "do so began in crosses clause roles"],
+        ["education-12-gap-lead-004", "false_span", null, [], "do the best is not do good"],
+        ["education-12-gap-lead-005", "false_span", null, [], "be spent on is not gapped be on"],
+        ["education-12-gap-lead-006", "false_span", null, [], "goes on to is the contiguous go on plus infinitive"]
+      ],
+      "manual_additions": [
+        ["education-12-manual-001", 26, "bring ... along", "unresolved_in_scope_out_of_oewn", "VPC.semi", "four intervening profile tokens; carries STEM knowledge metaphorically"],
+        ["education-12-manual-002", 25, "make a difference", "outside_bounded_scope", "LVC", "light-verb construction excluded from the first-paper target"]
+      ],
+      "assessment": {
+        "global_question_feasibility": "plausible for reasons behind STEM-major change and the proposed teaching response",
+        "target_criticality": "go on and get through support the conclusion or mechanism; work on is outside the bounded projection and point out mainly signals reported evidence",
+        "source_marking": "allow for is exactly bolded and glossary-defined; no priority shared form is exactly taught",
+        "content_threats": ["U.S. degree-system knowledge", "STEM terminology", "named agencies and associations", "statistics and a long personal chronology"]
+      }
+    },
+    {
+      "article_id": "education-16",
+      "title": "Study Suggests Many College Graduates are ‘Underemployed’",
+      "text_sha256": "dd47de811e2f7f917f70d5013f81e1169d588a64502b745a0f39c796ec20e092",
+      "paragraph_count": 30,
+      "word_token_count": 1193,
+      "ngsl_2k_token_coverage": 0.919531,
+      "automatic_contiguous_decisions": [
+        ["education-16-lead-001", "outside_bounded_scope", null, ["look_at%2:39:01::"], "transparent study or examination use"],
+        ["education-16-lead-002", "outside_bounded_scope", "prepositional_verb", ["date_from%2:42:00::"], "belong to the stated earlier period; peripheral metadata and not an independently supported VPC or VID"],
+        ["education-16-lead-003", "plausible_in_scope", "VPC.full", ["point_out%2:32:01::", "point_out%2:32:03::"], "calls attention to the lasting effects; OEWN distinction unresolved"],
+        ["education-16-lead-004", "nonverbal_or_adjectival", null, [], "be stuck in state; OEWN stick in insertion senses do not fit"],
+        ["education-16-lead-005", "false_span", null, [], "ordinary take followed by an infinitival to"],
+        ["education-16-lead-006", "plausible_in_scope", "VPC.full", ["seek_out%2:35:00::"], "look specifically for internships; part of the recommendation"],
+        ["education-16-lead-007", "false_span", null, [], "NGSL better-to-good projection created do good; surface formula is do better"],
+        ["education-16-lead-008", "outside_bounded_scope", "productive_prepositional_construction", ["go_on%2:38:00::"], "in go on the market, on heads a noun-phrase complement rather than the retained intransitive go on VPC"],
+        ["education-16-lead-009", "plausible_in_scope", "VPC.full", ["point_out%2:32:01::", "point_out%2:32:03::"], "introduces an expert explanation; OEWN distinction unresolved"],
+        ["education-16-lead-010", "outside_bounded_scope", null, [], "aspectual come to plus infinitive"],
+        ["education-16-lead-011", "outside_bounded_scope", "weak_or_prepositional_verb", ["ask_for%2:32:00::"], "employers request years of experience; STREUSLE records ask for only in the weak-MWE layer, outside this strong VPC/VID projection"],
+        ["education-16-lead-012", "false_span", null, [], "Center is part of an organization name"],
+        ["education-16-lead-013", "outside_bounded_scope", null, ["think_of%2:31:03::"], "consider an opportunity"],
+        ["education-16-lead-014", "outside_bounded_scope", null, ["look_at%2:39:01::"], "transparent critical examination"],
+        ["education-16-lead-015", "false_span", null, [], "ordinary do followed by an in other words phrase"]
+      ],
+      "automatic_gap_decisions": [
+        ["education-16-gap-lead-001", "outside_bounded_scope", null, [], "valid adverb-separated think about, but outside the bounded VPC or VID target"],
+        ["education-16-gap-lead-002", "false_span", null, [], "points out that in crosses two clause relations"],
+        ["education-16-gap-lead-003", "false_span", null, [], "possessive government data on is not gapped be on"],
+        ["education-16-gap-lead-004", "outside_bounded_scope", "weak_or_prepositional_verb", ["ask_for%2:32:00::"], "ask professors for advice with an intervening recipient; STREUSLE records ask for only in the weak-MWE layer"],
+        ["education-16-gap-lead-005", "false_span", null, [], "taking classes in is not take in"],
+        ["education-16-gap-lead-006", "outside_bounded_scope", null, [], "valid adverb-separated think about, but outside the bounded target"],
+        ["education-16-gap-lead-007", "false_span", null, [], "do not want in crosses a clause-object boundary"]
+      ],
+      "manual_additions": [
+        ["education-16-manual-001", 2, "find themselves in", "outside_bounded_scope", "IRV", "central result-state construction; PARSEME 1.2 gives find oneself in a difficult situation as an inherently reflexive verb, outside this VPC/VID projection"],
+        ["education-16-manual-002", 6, "come as surprise", "unresolved_in_scope_out_of_oewn", "VID", "fixed frame with a missing article in the source; peripheral"],
+        ["education-16-manual-003", 9, "be stuck in", "unresolved_in_scope_out_of_oewn", "VID", "central persistent-state expression; OEWN stick in senses do not fit"],
+        ["education-16-manual-004", 16, "do better", "unresolved_in_scope_out_of_oewn", "VID_or_compositional_formula", "perform better; generated do good lead was invalid"],
+        ["education-16-manual-005", 20, "out of luck", "unresolved_in_scope_out_of_oewn", "VID", "copular idiom in a central warning"],
+        ["education-16-manual-006", 20, "applying to", "source_cued_not_hidden", null, "bolded and explicitly defined as a phrasal verb in the source glossary"],
+        ["education-16-manual-007", 28, "stepping foot through the door", "unresolved_in_scope_out_of_oewn", "VID", "unusual metaphorical variant; rhetorical and not independently validated"]
+      ],
+      "assessment": {
+        "global_question_feasibility": "plausible for the consequences of first-job underemployment and proposed responses",
+        "target_criticality": "go on the market is central but outside the bounded VPC/VID projection; point out is mainly an attribution device",
+        "source_marking": "applying to is exactly bolded and glossary-defined; no priority shared form is exactly taught",
+        "content_threats": ["U.S. labor-market and degree-system knowledge", "contested underemployment construct", "named organizations", "many statistics", "longest of the three texts"]
+      }
+    }
+  ],
+  "pair_decisions": [
+    {
+      "article_ids": ["education-07", "education-12"],
+      "shared_forms": ["go on", "work on"],
+      "state": "reject_from_primary_material_set_pending_author_confirmation",
+      "reasons": [
+        "go on is locally relevant in both texts but the selected occurrences share a progression sense rather than testing polysemy",
+        "work on is outside the bounded strong VPC/VID projection in both passages",
+        "only go on remains an independently defensible repeated VPC across the pair",
+        "the close lengths and fixed-list profiles do not repair the target-criticality failure"
+      ]
+    },
+    {
+      "article_ids": ["education-12", "education-16"],
+      "shared_forms": ["go on", "point out"],
+      "state": "reject_from_primary_material_set_pending_author_confirmation",
+      "reasons": [
+        "education-16 go on the market is a productive prepositional construction outside the retained intransitive go on VPC",
+        "point out repeats a reporting sense and is unlikely to support a non-tautological target-critical comprehension item",
+        "only point out remains an independently defensible repeated VPC across the pair",
+        "education-16 is 199 tokens longer and carries a more contested construct and labor-market background burden"
+      ]
+    }
+  ],
+  "overall_decision": {
+    "state": "no_priority_passage_admitted_pending_author_confirmation",
+    "reason": "both pairs fail the prespecified requirement for more than one decision-relevant repeated target even though their provenance, source marking, and fixed-list balance are comparatively favorable",
+    "app_change": "none; no target-form sense projection is admitted",
+    "next_desk_step": "see the completed deferred-pair review and bounded out-of-inventory audit; freeze a material-redesign route before further acquisition"
+  }
+}

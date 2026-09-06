@@ -1,0 +1,231 @@
+{
+  "schema_version": "1.0.0",
+  "manifest_id": "RELEASE-LAYERS-2026-09-05",
+  "date": "2026-09-05",
+  "status": "current_tree_covered_future_benchmark_layers_gated",
+  "task": "IR-111",
+  "coverage": {
+    "scope": "Files returned by git ls-files --cached --others --exclude-standard",
+    "public_file_count_at_freeze": 154,
+    "public_paths_sha256_at_freeze": "976cd633e7c7976cec3ddfe0d4bb964d74116fe4cdc2487e956d93a2d6cf1145",
+    "public_paths_hash_format": "SHA-256 of sorted unique UTF-8 repository-relative paths, each terminated by NUL. Path-set identity only, not content integrity or rights clearance; changes require release-scope review.",
+    "resolution": "first matching path rule wins",
+    "default_rule_limit": "The default applies only to original project material. New third-party or source-derived files require a more-specific rule before commit.",
+    "rights_unknown_public_files": 0
+  },
+  "site_delivery": {
+    "provider": "GitHub Pages",
+    "observed_source": "main:/",
+    "observed_build_type": "legacy",
+    "config_path": "_config.yml",
+    "excluded_paths": ["internal", "research_data"],
+    "boundary": "Repository visibility and website delivery are separate. Internal working material is gitignored and excluded from the Pages build; absence of a UI link or a robots directive is not treated as access control."
+  },
+  "path_rules": [
+    {
+      "id": "tubelex_projection",
+      "patterns": [
+        "resources/tubelex_en_regex_ascii_2025.json",
+        "resources/TUBELEX_LICENSE.txt"
+      ],
+      "source": "TUBELEX English regex frequency projection; Adam Nohejl and contributors",
+      "license": "BSD-3-Clause",
+      "notice": [
+        "resources/TUBELEX_LICENSE.txt",
+        "RIGHTS.md"
+      ],
+      "redistribution_state": "public_with_notice_and_no_endorsement"
+    },
+    {
+      "id": "ngsl_projection",
+      "patterns": [
+        "resources/ngsl_1_2_ascii_forms.json",
+        "resources/NGSL_NOTICE.md"
+      ],
+      "source": "New General Service List 1.2 projection; Browne, Culligan, and Phillips",
+      "license": "CC-BY-SA-4.0",
+      "notice": [
+        "resources/NGSL_NOTICE.md",
+        "RIGHTS.md"
+      ],
+      "redistribution_state": "public_with_attribution_sharealike_and_change_notice"
+    },
+    {
+      "id": "oewn_projections",
+      "patterns": [
+        "resources/oewn_2025_multiword_verbs.json",
+        "resources/oewn_take_in_2025.json",
+        "resources/hybrid_sense_inventory_v1.json",
+        "resources/OEWN_WORDNET_NOTICE.txt"
+      ],
+      "source": "Open English WordNet 2025 and incorporated Princeton WordNet",
+      "license": "CC-BY-4.0 AND LicenseRef-WordNet",
+      "notice": [
+        "resources/OEWN_WORDNET_NOTICE.txt",
+        "RIGHTS.md"
+      ],
+      "redistribution_state": "public_with_attribution_incorporated_license_and_no_endorsement"
+    },
+    {
+      "id": "ir130_mapping_projection",
+      "patterns": [
+        "resources/sense_mapping_queue.json",
+        "resources/sense_mapping_guide.md",
+        "resources/inventory_population_log.json",
+        "resources/hybrid_inventory_coverage_v2.json"
+      ],
+      "source": "Modified STREUSLE 5.0 VPC/VID aggregate counts and V.VID label subsets with bounded OEWN 2025 and English Wiktionary/Kaikki candidate identifiers plus original project route, pilot-selection, count, coverage, and eligibility metadata",
+      "license": "CC-BY-SA-4.0 AND LicenseRef-WordNet",
+      "notice": [
+        "resources/STREUSLE_NOTICE.md",
+        "resources/WIKTIONARY_KAIKKI_NOTICE.md",
+        "resources/OEWN_WORDNET_NOTICE.txt",
+        "RIGHTS.md"
+      ],
+      "redistribution_state": "public_candidate_evidence_population_log_and_aggregate_coverage_audit_with_attribution_sharealike_and_no_formal_inventory_admission"
+    },
+    {
+      "id": "streusle_derived_baseline",
+      "patterns": [
+        "resources/streusle_gap_dependency_baseline.json"
+      ],
+      "source": "Aggregate scores and dependency-relation inventory derived from the pinned STREUSLE 5.0 VPC/VID annotations, with project-authored rules and metadata",
+      "license": "CC-BY-SA-4.0",
+      "notice": [
+        "resources/STREUSLE_NOTICE.md",
+        "RIGHTS.md"
+      ],
+      "redistribution_state": "public_aggregate_development_evidence_with_attribution_sharealike"
+    },
+    {
+      "id": "cc_by_only_protocols",
+      "patterns": [
+        "ANNOTATION_PLATFORM_DECISION.md",
+        "ANNOTATOR_TRAINING.md",
+        "BENCHMARK_CARD.md",
+        "DATA_STATEMENT.md",
+        "resources/benchmark_card_draft.md",
+        "resources/benchmark_source_decision_2026_09_04.json",
+        "resources/evaluation_strata.json",
+        "resources/hybrid_sense_inventory_contract_2026_09_03.json",
+        "resources/hybrid_sense_inventory.schema.json",
+        "resources/inventory_review_protocol.json",
+        "resources/inventory_governance.md",
+        "resources/leakage_ledger.json",
+        "resources/planning_pilot_addendum.json",
+        "resources/polysemy_usage_pilot.json",
+        "resources/preprocessing_contract.json",
+        "resources/precision_plan.json",
+        "resources/release_layer_manifest.json",
+        "resources/sampling_frame.json",
+        "resources/split_protocol.json",
+        "resources/source_manifest.json",
+        "resources/WIKTIONARY_KAIKKI_NOTICE.md"
+      ],
+      "source": "Original Lexical Diversity web app project protocol material",
+      "license": "CC-BY-4.0",
+      "notice": [
+        "LICENSE.md",
+        "RIGHTS.md"
+      ],
+      "redistribution_state": "public_with_project_attribution"
+    },
+    {
+      "id": "project_default",
+      "patterns": [
+        "**"
+      ],
+      "source": "Original Lexical Diversity web app project material; any named external identifiers remain subject to notices in RIGHTS.md",
+      "license": "MIT OR CC-BY-4.0",
+      "notice": [
+        "LICENSE.md",
+        "RIGHTS.md"
+      ],
+      "redistribution_state": "public_under_recipient_license_choice"
+    }
+  ],
+  "benchmark_release_layers": [
+    {
+      "layer": "source_text",
+      "current_state": "planned_not_present",
+      "source": "Sampled English Wikipedia namespace-0 article revisions",
+      "license": "CC-BY-SA-4.0",
+      "notice": [
+        "planned resources/WIKIPEDIA_BENCHMARK_NOTICE.md",
+        "per-document revision/history attribution manifest",
+        "change notice"
+      ],
+      "redistribution_state": "exclude_until_page_review_and_release_bundle_pass"
+    },
+    {
+      "layer": "annotation",
+      "current_state": "planned_not_present",
+      "source": "Project annotation applied to the selected Wikipedia text",
+      "license": "CC-BY-SA-4.0",
+      "notice": [
+        "planned resources/WIKIPEDIA_BENCHMARK_NOTICE.md",
+        "annotation protocol and modification notice"
+      ],
+      "redistribution_state": "exclude_until_source_text_and_annotation_protocol_pass"
+    },
+    {
+      "layer": "sense_inventory",
+      "current_state": "contract_schema_synthetic_lifecycle_exercise_full_denominator_coverage_audit_nonexact_queue_fourteen_type_vid_population_pilot_and_nine_form_oewn_candidate_seed_no_admitted_senses",
+      "source": "Project-stable IDs and project labels with separately attributed bounded source-candidate evidence",
+      "license": "CC-BY-4.0 for project-authored fields; source-linked wording retains its controlling source terms",
+      "notice": [
+        "resources/hybrid_sense_inventory_contract_2026_09_03.json",
+        "resources/hybrid_sense_inventory.schema.json",
+        "resources/inventory_governance.md",
+        "resources/hybrid_inventory_coverage_v2.json",
+        "resources/sense_mapping_guide.md",
+        "resources/STREUSLE_NOTICE.md",
+        "resources/WIKTIONARY_KAIKKI_NOTICE.md",
+        "resources/OEWN_WORDNET_NOTICE.txt",
+        "RIGHTS.md"
+      ],
+      "redistribution_state": "candidate_queue_vid_population_log_and_oewn_seed_public_with_notices; admitted_senses_excluded_until_independent_review"
+    },
+    {
+      "layer": "code",
+      "current_state": "public",
+      "source": "Original project code",
+      "license": "MIT OR CC-BY-4.0",
+      "notice": [
+        "LICENSE.md"
+      ],
+      "redistribution_state": "public"
+    },
+    {
+      "layer": "model",
+      "current_state": "none",
+      "source": "No model or weights are included",
+      "license": "not_applicable",
+      "notice": [
+        "RIGHTS.md"
+      ],
+      "redistribution_state": "external_only_until_a_model_specific_review_passes"
+    },
+    {
+      "layer": "documentation",
+      "current_state": "public",
+      "source": "Original project documentation except separately identified notices",
+      "license": "MIT OR CC-BY-4.0",
+      "notice": [
+        "LICENSE.md",
+        "RIGHTS.md"
+      ],
+      "redistribution_state": "public_subject_to_more_specific_path_rules"
+    }
+  ],
+  "removal_policy": [
+    "A file with unresolved rights does not enter a release archive.",
+    "If terms or provenance change, remove the affected file from the next archive, retain a versioned decision record, and fail any manifest check that still expects it.",
+    "Never replace a removed benchmark document after observing target yield; use only the next presampled document under the frozen frame."
+  ],
+  "prohibited": [
+    "Applying the project MIT or CC BY 4.0 grant to TUBELEX, NGSL, OEWN, WordNet, future Wikipedia text, or another third-party artifact.",
+    "Treating local availability, server storage, a URL, or a standoff format as a redistribution license.",
+    "Publishing a file with rights_unknown."
+  ]
+}

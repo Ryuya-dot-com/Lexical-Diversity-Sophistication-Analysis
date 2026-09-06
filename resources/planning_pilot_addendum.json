@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0.0",
+  "addendum_id": "ENWIKI-VPC-VID-PLANNING-PILOT-2026-09-04",
+  "accepted_on": "2026-09-04",
+  "status": "accepted_protocol_no_pilot_rows_no_human_work_authorized",
+  "tasks": [
+    "IR-121",
+    "IR-127",
+    "IR-147",
+    "IR-149"
+  ],
+  "dependencies": {
+    "sampling_frame": {
+      "path": "resources/sampling_frame.json",
+      "sha256": "55ac5a99d2c83500ba85dbda9e9ee5ab5b8db2438a61a57da1fc56fc85c02184"
+    },
+    "split_protocol": {
+      "path": "resources/split_protocol.json",
+      "sha256": "010c3f6ada293fcfc81d17be0c23b82cf3e71532df70d6bd05763be5b4246700"
+    },
+    "target_population": {
+      "path": "resources/target_population_contract.json",
+      "sha256": "8f281562aa6f398b9d3b817cf90cf1da36d744059f7708a1f0f3749028ab6c22"
+    }
+  },
+  "relationship_to_base_contracts": {
+    "scope": "This addendum creates one exposed planning prefix before final IR-127 allocation. The frozen sampling frame remains controlling for eligibility, strata, rank, rights review, target blindness, and replacements; the split protocol remains controlling for the later final sample.",
+    "limited_override": "Only the sampling-frame rule that no document is selected before final IR-127 allocation is superseded, and only for the planning prefix defined here.",
+    "no_retroactivity": "This addendum is accepted before source acquisition, target search, annotation, model prediction, or outcome inspection."
+  },
+  "two_pilot_separation": {
+    "training_only_pilot": {
+      "task": "IR-147",
+      "purpose": "Find guide, inventory, task-order, agreement-procedure, and burden defects before the guide is frozen.",
+      "material_rule": "Use lawful project-authored or already exposed development material. Purposeful category/discontinuity coverage is allowed because this material is not a population sample.",
+      "prohibited_use": "Do not use its target prevalence, document clustering, canonical-type richness, or category mix as an estimate of the frozen Wikipedia sampling population."
+    },
+    "representative_planning_pilot": {
+      "purpose": "After IR-149 freezes the guide, estimate prevalence, document clustering, canonical-type richness, task-specific agreement, and burden for IR-127.",
+      "material_rule": "Use only the target-blind probability-sampled prefix below. Every row is exposed development evidence and is permanently excluded from the sealed test.",
+      "prohibited_use": "Do not tune a system on a planning-pilot result and then report that same result as held-out performance."
+    }
+  },
+  "planning_prefix": {
+    "unit": "One immutable English Wikipedia page/revision document.",
+    "eligible_pool": "Rights-pass, structurally eligible, target-unexposed rows in each frozen short, medium, and long sampling queue.",
+    "prerequisites": [
+      "The institutional human-work determination or approval covers the exact annotation workflow.",
+      "The IR-147 training-only pilot is complete and its raw labels, agreement, and task-time evidence are frozen.",
+      "IR-149 has frozen the annotation guide and adjudication rules.",
+      "Realized rights-pass N_h is recorded for short, medium, and long without target search.",
+      "A feasible total planning-pilot document ceiling M is calculated from the observed IR-147 task time, double annotation, QA, adjudication, retraining, and reserve budget.",
+      "A new decision-log record freezes M, m_h, document identities, input hashes, annotator roles, and guide version before any planning-prefix target exposure."
+    ],
+    "minimum_documents_per_length": 6,
+    "allocation_rule": [
+      "Fail if any realized N_h is below 6, M is below 18, or M exceeds the total realized N_h.",
+      "Assign six planning documents to each length stratum.",
+      "Let remaining capacity c_h equal N_h minus six and remaining allocation R equal M minus 18.",
+      "Allocate floor(R*c_h/sum(c_h)) additional documents to each stratum, then assign any remainder by descending fractional remainder; ties use short, medium, long order.",
+      "If sum(c_h) is zero, M must equal 18."
+    ],
+    "selection_rule": "For each stratum, freeze the first m_h rights-pass, target-unexposed documents in the existing deterministic queue. Rights hold/fail rows are skipped before target exposure and remain recorded; no observed MWE, category, continuity, sense, agreement, burden, model, or downstream value may select, replace, or reorder a document.",
+    "stopping_rule": "Annotate the entire frozen prefix. Do not stop early, extend it, or replace a document because a target category, discontinuous occurrence, canonical form, agreement value, or burden result is absent or unfavorable.",
+    "analysis_rule": "Use inclusion-probability weights and the frozen document/canonical-type cluster contracts. If the prefix is sparse or yields undefined inputs, IR-127 withholds the affected claim; it does not add target-selected documents.",
+    "post_pilot_rule": "Remove every planning-prefix identity from the eligible final-sample queue before applying the final IR-127 allocation and IR-123 split. Preserve the exclusion and exposure records publicly without publishing protected working files."
+  },
+  "required_allocation_record": {
+    "status": "not_created",
+    "path": null,
+    "sha256": null,
+    "total_document_ceiling_M": null,
+    "allocation_by_length": {
+      "short": null,
+      "medium": null,
+      "long": null
+    },
+    "selected_document_count": 0,
+    "target_search_count": 0,
+    "human_annotation_count": 0
+  },
+  "exposure_and_release": {
+    "classification": "exposed development material",
+    "ledger_rule": "Before annotation, append one planning-prefix exposure group; after materialization, create one item-level exposure record per document.",
+    "release_rule": "Release only layers that pass the existing page-level rights, attribution, privacy, and institutional gates. This addendum itself contains no source text or human-derived data.",
+    "claim_ceiling": "The protocol resolves the pilot-design route only. It supplies no N_h, M, m_h, document, label, prevalence, agreement, burden, precision, or benchmark-performance result."
+  },
+  "change_rule": "Any change to pilot separation, eligibility, minimums, allocation, queue order, stopping, exposure, or sealed-test exclusion requires a new prospective addendum before affected target exposure."
+}

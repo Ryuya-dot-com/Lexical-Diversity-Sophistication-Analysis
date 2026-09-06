@@ -1,0 +1,2337 @@
+{
+  "queue_schema_version": "1.0.0",
+  "queue_id": "streusle-v5-vid-nonexact-mapping-2026-09-04",
+  "generated_on": "2026-09-04",
+  "status": "machine_candidates_complete_human_review_and_source_admission_pending",
+  "task": "IR-130",
+  "dependencies": {
+    "contract": {
+      "path": "resources/hybrid_sense_inventory_contract_2026_09_03.json",
+      "sha256": "e389eafd39b68a9f93058a1ad4c34f899547405f02df7c4d2f669b279310d596",
+      "version": "2.0.0"
+    },
+    "exact_audit": {
+      "path": "resources/streusle_v5_kaikki_vid_audit_2026_09_03.json",
+      "sha256": "280ef654b51f47866c6fe607550817885cc4d0c3c548983ae7d798c81d94762f"
+    },
+    "generator": {
+      "path": "scripts/build_sense_mapping_queue.py",
+      "sha256": "7dbe6a13c5c8b5fe68456c2f8f8803ada44b2365e2bd6373c2801583e073185e"
+    }
+  },
+  "source_snapshots": {
+    "oewn": {
+      "version": "2025-edition",
+      "artifact_size_bytes": 9986555,
+      "artifact_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+      "url": "https://github.com/globalwordnet/english-wordnet/releases/download/2025-edition/english-wordnet-2025-json.zip",
+      "public_notice": "resources/OEWN_WORDNET_NOTICE.txt"
+    },
+    "enwiktionary_kaikki": {
+      "reported_dump_date": "2026-08-05",
+      "extraction_date": "2026-08-28",
+      "artifact_last_modified": "Fri, 28 Aug 2026 15:00:38 GMT",
+      "artifact_size_bytes": 424557919,
+      "artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+      "url": "https://kaikki.org/dictionary/English/pos-verb/kaikki.org-dictionary-English-by-pos-verb.jsonl",
+      "public_notice": "resources/WIKTIONARY_KAIKKI_NOTICE.md",
+      "admission_gap": "underlying_enwiktionary_dump_sha256_and_imported_content_review_missing"
+    },
+    "streusle": {
+      "version": "5.0",
+      "commit": "8ba61fe4f216e7967500a862554a4fff79d25f5d",
+      "cache_manifest_sha256": "a1499e616b7ebc75de8b52e3e4d7e01c764108bc0d739946f740a0a0379479c6",
+      "public_notice": "resources/STREUSLE_NOTICE.md"
+    }
+  },
+  "procedure": {
+    "ordered_stages": [
+      "1 exact OEWN verb entry (completed prefilter)",
+      "2 fixed closed-class slot skeleton (completed prefilter)",
+      "3 exact English Wiktionary verb entry (completed prefilter)",
+      "4 source-declared forms and alt_of/form_of/OEWN also fields",
+      "5 NFKC, casefold, whitespace, hyphen, and apostrophe equivalence",
+      "6 independent review of the closed candidate set (pending)"
+    ],
+    "stage_5_normalization": "NFKC; Unicode casefold; listed dash variants become hyphen; spaces around hyphens and hyphens become one space; listed apostrophe variants become ASCII apostrophe; whitespace collapses",
+    "candidate_generation_uses_glosses_or_examples": false,
+    "free_search_allowed": false,
+    "open_class_deletion_substitution_or_reordering_allowed": false
+  },
+  "summary": {
+    "fixed_residual_types": 146,
+    "fixed_residual_occurrences": 169,
+    "queue_items": 146,
+    "state_counts": {
+      "candidate_set": 3,
+      "unresolved": 143
+    },
+    "candidate_records_by_source": {
+      "enwiktionary-kaikki": 10,
+      "oewn": 1
+    },
+    "types_with_cross_resource_support": 1,
+    "exact_misses_retained_in_denominator": true,
+    "mapped": 0,
+    "ooi_pending": 0,
+    "warning": "unresolved means no route in the bounded sources; it is not proof of a true lexical or semantic inventory gap"
+  },
+  "release_boundary": {
+    "queue_license": "CC-BY-SA-4.0 AND LicenseRef-WordNet",
+    "raw_oewn_or_kaikki_artifacts_bundled": false,
+    "glosses_examples_translations_or_source_text_bundled": false,
+    "runtime_integration": "none",
+    "human_annotation_authorized": false
+  },
+  "items": [
+    {
+      "type_id": "ldfreq-en-vmwe-t000001",
+      "input_canonical_lemma": "answer phone",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000002",
+      "input_canonical_lemma": "be a big baby",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000003",
+      "input_canonical_lemma": "be a joke",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000004",
+      "input_canonical_lemma": "be a no brainer",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000005",
+      "input_canonical_lemma": "be a pain",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000006",
+      "input_canonical_lemma": "be a plus",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000007",
+      "input_canonical_lemma": "be first call",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000008",
+      "input_canonical_lemma": "be happy camper",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000009",
+      "input_canonical_lemma": "be home to",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000010",
+      "input_canonical_lemma": "be in for a treat",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000011",
+      "input_canonical_lemma": "be in hand",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000012",
+      "input_canonical_lemma": "be inclined",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000013",
+      "input_canonical_lemma": "be make to",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000014",
+      "input_canonical_lemma": "be no more",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000015",
+      "input_canonical_lemma": "be out of this world",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000016",
+      "input_canonical_lemma": "be rude",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000017",
+      "input_canonical_lemma": "be say and do",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000018",
+      "input_canonical_lemma": "be sure",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000019",
+      "input_canonical_lemma": "be sure to",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000020",
+      "input_canonical_lemma": "be up",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000021",
+      "input_canonical_lemma": "believe i",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000022",
+      "input_canonical_lemma": "believe it or not",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000023",
+      "input_canonical_lemma": "bruise ego",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000024",
+      "input_canonical_lemma": "can be assure",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000025",
+      "input_canonical_lemma": "can not get enough",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000026",
+      "input_canonical_lemma": "can not go wrong",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000027",
+      "input_canonical_lemma": "catch my eye",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000028",
+      "input_canonical_lemma": "change lightbulb",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000029",
+      "input_canonical_lemma": "change mind",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000030",
+      "input_canonical_lemma": "charge a dime",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000031",
+      "input_canonical_lemma": "come over budget",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000032",
+      "input_canonical_lemma": "come time",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000033",
+      "input_canonical_lemma": "could not recommend enough",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000034",
+      "input_canonical_lemma": "cut nail",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000035",
+      "input_canonical_lemma": "deep condition",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000036",
+      "input_canonical_lemma": "do hair",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000037",
+      "input_canonical_lemma": "do one on",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000038",
+      "input_canonical_lemma": "do re-wiring",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000039",
+      "input_canonical_lemma": "do yourself a favor",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000040",
+      "input_canonical_lemma": "drop the issue",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000041",
+      "input_canonical_lemma": "face with",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000042",
+      "input_canonical_lemma": "feel good",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000043",
+      "input_canonical_lemma": "feel like a number",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000044",
+      "input_canonical_lemma": "feel like it",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000045",
+      "input_canonical_lemma": "fill role",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000046",
+      "input_canonical_lemma": "forget that",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000047",
+      "input_canonical_lemma": "get a flat",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000048",
+      "input_canonical_lemma": "get act together",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000049",
+      "input_canonical_lemma": "get confused",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000050",
+      "input_canonical_lemma": "get correct",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000051",
+      "input_canonical_lemma": "get do",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000052",
+      "input_canonical_lemma": "get healthy",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000053",
+      "input_canonical_lemma": "get in car accident",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000054",
+      "input_canonical_lemma": "get into a accident",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000055",
+      "input_canonical_lemma": "get nail do",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000056",
+      "input_canonical_lemma": "get nail fill",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000057",
+      "input_canonical_lemma": "get old",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000058",
+      "input_canonical_lemma": "get on the phone",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000059",
+      "input_canonical_lemma": "get replace",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000060",
+      "input_canonical_lemma": "get the hell",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000061",
+      "input_canonical_lemma": "get unlock",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000062",
+      "input_canonical_lemma": "give alternative",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000063",
+      "input_canonical_lemma": "give it shot",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000064",
+      "input_canonical_lemma": "give the go ahead",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000065",
+      "input_canonical_lemma": "give the run around",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000066",
+      "input_canonical_lemma": "go above and beyond",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000067",
+      "input_canonical_lemma": "go cry",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000068",
+      "input_canonical_lemma": "go on and on",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000069",
+      "input_canonical_lemma": "go out of business",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000070",
+      "input_canonical_lemma": "go out of way",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000071",
+      "input_canonical_lemma": "go out the door",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000072",
+      "input_canonical_lemma": "go so far as to",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000073",
+      "input_canonical_lemma": "go to school",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000074",
+      "input_canonical_lemma": "happen on to",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000075",
+      "input_canonical_lemma": "have a gift",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000076",
+      "input_canonical_lemma": "have do",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000077",
+      "input_canonical_lemma": "have the audacity",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000078",
+      "input_canonical_lemma": "have to offer",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000079",
+      "input_canonical_lemma": "have to say",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000080",
+      "input_canonical_lemma": "hit the ground",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000081",
+      "input_canonical_lemma": "home - cook",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "candidate_set",
+      "stage_reached": 5,
+      "candidates": [
+        {
+          "source_inventory_id": "enwiktionary-kaikki",
+          "source_version": "dump-2026-08-05_extract-2026-08-28",
+          "source_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+          "source_entry_id": "home-cook#verb",
+          "source_entry_lemma": "home-cook",
+          "source_record_sha256": "c12b0f4dc21deb2fa111189056a3d0557be734b9b799f81a507f24f06bda35a5",
+          "stage": 5,
+          "mapping_route": "orthographic_equivalence",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "entry_lemma",
+              "declared_value": "home-cook"
+            }
+          ]
+        },
+        {
+          "source_inventory_id": "enwiktionary-kaikki",
+          "source_version": "dump-2026-08-05_extract-2026-08-28",
+          "source_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+          "source_entry_id": "home-cooked#verb",
+          "source_entry_lemma": "home-cooked",
+          "source_record_sha256": "13e729e71ebea7760af8f95a2069c7b9f2875d2acf5c62defe7b54032ea45168",
+          "stage": 5,
+          "mapping_route": "orthographic_equivalence",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "senses.form_of.word",
+              "declared_value": "home-cook"
+            }
+          ]
+        },
+        {
+          "source_inventory_id": "enwiktionary-kaikki",
+          "source_version": "dump-2026-08-05_extract-2026-08-28",
+          "source_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+          "source_entry_id": "home-cooking#verb",
+          "source_entry_lemma": "home-cooking",
+          "source_record_sha256": "43bbcf470a30823d53bec1c67d47239e209649d971aea09d37c96996e30fb226",
+          "stage": 5,
+          "mapping_route": "orthographic_equivalence",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "senses.form_of.word",
+              "declared_value": "home-cook"
+            }
+          ]
+        },
+        {
+          "source_inventory_id": "enwiktionary-kaikki",
+          "source_version": "dump-2026-08-05_extract-2026-08-28",
+          "source_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+          "source_entry_id": "home-cooks#verb",
+          "source_entry_lemma": "home-cooks",
+          "source_record_sha256": "9a29b92e5407887304c2deadd842b18d2f8434c72d34aae8337c956f36b670b4",
+          "stage": 5,
+          "mapping_route": "orthographic_equivalence",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "senses.form_of.word",
+              "declared_value": "home-cook"
+            }
+          ]
+        }
+      ],
+      "review_state": "pending_independent_review",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_candidate_set_complete_review_pending",
+      "rights_state": "withheld_pending_enwiktionary_dump_hash_and_imported_content_review"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000082",
+      "input_canonical_lemma": "i figure",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000083",
+      "input_canonical_lemma": "jaw drop",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000084",
+      "input_canonical_lemma": "jimmy rig",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000085",
+      "input_canonical_lemma": "jump - start",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "candidate_set",
+      "stage_reached": 5,
+      "candidates": [
+        {
+          "source_inventory_id": "enwiktionary-kaikki",
+          "source_version": "dump-2026-08-05_extract-2026-08-28",
+          "source_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+          "source_entry_id": "jump-start#verb",
+          "source_entry_lemma": "jump-start",
+          "source_record_sha256": "fdef6d956ee659973b7a92358ad336eb4245c4a735e8711a80193cf89b199aec",
+          "stage": 5,
+          "mapping_route": "orthographic_equivalence",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "entry_lemma",
+              "declared_value": "jump-start"
+            },
+            {
+              "field": "forms.form",
+              "declared_value": "jump start"
+            }
+          ]
+        },
+        {
+          "source_inventory_id": "enwiktionary-kaikki",
+          "source_version": "dump-2026-08-05_extract-2026-08-28",
+          "source_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+          "source_entry_id": "jump-started#verb",
+          "source_entry_lemma": "jump-started",
+          "source_record_sha256": "bae66cd93fd9440a88994f2a37f9f3cf7792553af8514f916c1cd5588f15bb5a",
+          "stage": 5,
+          "mapping_route": "orthographic_equivalence",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "senses.form_of.word",
+              "declared_value": "jump-start"
+            }
+          ]
+        },
+        {
+          "source_inventory_id": "enwiktionary-kaikki",
+          "source_version": "dump-2026-08-05_extract-2026-08-28",
+          "source_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+          "source_entry_id": "jump-starting#verb",
+          "source_entry_lemma": "jump-starting",
+          "source_record_sha256": "050e5f590c0163a41c42c223d9324b854e60cfb9c43d018134f3ce9acbe9cbd5",
+          "stage": 5,
+          "mapping_route": "orthographic_equivalence",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "senses.form_of.word",
+              "declared_value": "jump-start"
+            }
+          ]
+        },
+        {
+          "source_inventory_id": "enwiktionary-kaikki",
+          "source_version": "dump-2026-08-05_extract-2026-08-28",
+          "source_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+          "source_entry_id": "jump-starts#verb",
+          "source_entry_lemma": "jump-starts",
+          "source_record_sha256": "8b4a33a1a67ad58daa3da663c188624b293302d393ded937df3e0f7d352fd212",
+          "stage": 5,
+          "mapping_route": "orthographic_equivalence",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "senses.form_of.word",
+              "declared_value": "jump-start"
+            }
+          ]
+        },
+        {
+          "source_inventory_id": "enwiktionary-kaikki",
+          "source_version": "dump-2026-08-05_extract-2026-08-28",
+          "source_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+          "source_entry_id": "jumpstart#verb",
+          "source_entry_lemma": "jumpstart",
+          "source_record_sha256": "cad7e3d7052e89bdf15ec97699df61467c4727741d01f4243cc092648edf721c",
+          "stage": 5,
+          "mapping_route": "orthographic_equivalence",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "senses.alt_of.word",
+              "declared_value": "jump-start"
+            }
+          ]
+        },
+        {
+          "source_inventory_id": "oewn",
+          "source_version": "2025-edition",
+          "source_artifact_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+          "source_entry_id": "jump-start#v",
+          "source_entry_lemma": "jump-start",
+          "source_record_sha256": "9a07727078057834ae53b74bbcaec89ebb580ce8d8a8c711b0245c89086645db",
+          "stage": 5,
+          "mapping_route": "orthographic_equivalence",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "entry_lemma",
+              "declared_value": "jump-start"
+            }
+          ]
+        }
+      ],
+      "review_state": "pending_independent_review",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_candidate_set_complete_review_pending",
+      "rights_state": "withheld_pending_enwiktionary_dump_hash_and_imported_content_review"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000086",
+      "input_canonical_lemma": "keep come",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000087",
+      "input_canonical_lemma": "keep safe",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000088",
+      "input_canonical_lemma": "keep your eye open",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000089",
+      "input_canonical_lemma": "know job",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000090",
+      "input_canonical_lemma": "know stuff",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000091",
+      "input_canonical_lemma": "know well",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000092",
+      "input_canonical_lemma": "know what do",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000093",
+      "input_canonical_lemma": "know what they be do",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000094",
+      "input_canonical_lemma": "lead to believe",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000095",
+      "input_canonical_lemma": "leave a lot to be desire",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000096",
+      "input_canonical_lemma": "leave number",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000097",
+      "input_canonical_lemma": "leave to be desire",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000098",
+      "input_canonical_lemma": "like it",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000099",
+      "input_canonical_lemma": "look no far",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000100",
+      "input_canonical_lemma": "make a buck",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000101",
+      "input_canonical_lemma": "make a point of",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000102",
+      "input_canonical_lemma": "make cash",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000103",
+      "input_canonical_lemma": "make feel",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000104",
+      "input_canonical_lemma": "make friend",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000105",
+      "input_canonical_lemma": "master key",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000106",
+      "input_canonical_lemma": "not budge",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000107",
+      "input_canonical_lemma": "not to mention",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000108",
+      "input_canonical_lemma": "overcome issue",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000109",
+      "input_canonical_lemma": "own and operate",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000110",
+      "input_canonical_lemma": "pat test",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000111",
+      "input_canonical_lemma": "price out of",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000112",
+      "input_canonical_lemma": "pull tooth out",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000113",
+      "input_canonical_lemma": "put hair on chest",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000114",
+      "input_canonical_lemma": "put in charge",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000115",
+      "input_canonical_lemma": "put on hold",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000116",
+      "input_canonical_lemma": "quit smoking",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000117",
+      "input_canonical_lemma": "return favor",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000118",
+      "input_canonical_lemma": "ride on rail",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000119",
+      "input_canonical_lemma": "run for the hill",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000120",
+      "input_canonical_lemma": "run rough",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000121",
+      "input_canonical_lemma": "save trip",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000122",
+      "input_canonical_lemma": "say sorry",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000123",
+      "input_canonical_lemma": "search high and low",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000124",
+      "input_canonical_lemma": "see the sun",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000125",
+      "input_canonical_lemma": "step it up notch",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000126",
+      "input_canonical_lemma": "step take",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000127",
+      "input_canonical_lemma": "take as far as can",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000128",
+      "input_canonical_lemma": "take forever",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000129",
+      "input_canonical_lemma": "take name",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000130",
+      "input_canonical_lemma": "take walk in",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000131",
+      "input_canonical_lemma": "tell to face",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000132",
+      "input_canonical_lemma": "the extra mile go",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000133",
+      "input_canonical_lemma": "the world revolve around",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000134",
+      "input_canonical_lemma": "think so",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "candidate_set",
+      "stage_reached": 4,
+      "candidates": [
+        {
+          "source_inventory_id": "enwiktionary-kaikki",
+          "source_version": "dump-2026-08-05_extract-2026-08-28",
+          "source_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462",
+          "source_entry_id": "think#verb",
+          "source_entry_lemma": "think",
+          "source_record_sha256": "6f1d4a081d5e4dd558b76822fd994abfe93ce550f2caad78fa1a82eec7e5c34e",
+          "stage": 4,
+          "mapping_route": "source_declared_variant_index",
+          "mapping_relation": "candidate_only",
+          "verification_status": "unreviewed",
+          "evidence": [
+            {
+              "field": "senses.alt_of.word",
+              "declared_value": "think so"
+            }
+          ]
+        }
+      ],
+      "review_state": "pending_independent_review",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_candidate_set_complete_review_pending",
+      "rights_state": "withheld_pending_enwiktionary_dump_hash_and_imported_content_review"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000135",
+      "input_canonical_lemma": "trust gut",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000136",
+      "input_canonical_lemma": "trust i",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000137",
+      "input_canonical_lemma": "try to tell",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000138",
+      "input_canonical_lemma": "wash and fold",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000139",
+      "input_canonical_lemma": "well believe",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000140",
+      "input_canonical_lemma": "well feed",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000141",
+      "input_canonical_lemma": "when it come to",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000142",
+      "input_canonical_lemma": "who - know - what",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000143",
+      "input_canonical_lemma": "work every angle",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000144",
+      "input_canonical_lemma": "work for i",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000145",
+      "input_canonical_lemma": "write in stone",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "type_id": "ldfreq-en-vmwe-t000146",
+      "input_canonical_lemma": "you can not beat this",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "mapping_state": "unresolved",
+      "stage_reached": 5,
+      "candidates": [],
+      "review_state": "not_applicable",
+      "adjudication_state": "not_started",
+      "stop_reason": "bounded_sources_exhausted_no_candidate",
+      "rights_state": "no_source_candidate_content"
+    }
+  ]
+}

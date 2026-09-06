@@ -1,0 +1,6 @@
+{
+  "exclude": [
+    "internal",
+    "research_data"
+  ]
+}

@@ -1,0 +1,381 @@
+{
+  "schema_version": "1.0.0",
+  "ledger_id": "VPC-VID-EXPOSURE-LEDGER-2026-09-04",
+  "updated_on": "2026-09-05",
+  "status": "current_repository_exposure_audit_complete_ongoing_append_required_no_project_test",
+  "task": "IR-124",
+  "policy": {
+    "scope": "Record source text, candidate, label, prediction, metric, dictionary/inventory, and outcome exposure that could affect development or an independence claim.",
+    "unknown_rule": "Unknown exposure is classified as exposed.",
+    "append_only_rule": "Do not delete an exposure. Correct it with a superseding record linked by supersedes_id.",
+    "minimum_fields": [
+      "id",
+      "date_or_before",
+      "actor_scope",
+      "material",
+      "exposure_class",
+      "extent",
+      "evidence",
+      "claim_effect",
+      "disposition",
+      "supersedes_id"
+    ],
+    "prohibited_contents": "Do not place sealed source text, labels, participant data, credentials, or decryption material in this public ledger.",
+    "public_actor_rule": "Use role scopes rather than personal names in this public file. A custodian keeps any person-level access register outside the public repository under GOVERNANCE.md.",
+    "final_item_rule": "Every materialized project sealed-test item must have an item exposure record. A missing field, missing record, null state, or unverifiable access history is exposed_unknown and disqualifies that item from a new blinded-test claim."
+  },
+  "records": [
+    {
+      "id": "EXP-2026-09-01-001",
+      "date_or_before": "2026-09-01",
+      "actor_scope": "project developers and readers of the committed profile/results",
+      "material": "STREUSLE 5.0 projected VPC/VID splits, labels, counts, and transparent surface-baseline results",
+      "exposure_class": "external_gold_and_results_exposed",
+      "extent": {
+        "train_target_occurrences": 544,
+        "development_target_occurrences": 40,
+        "source_test_target_occurrences": 40
+      },
+      "evidence": [
+        "benchmarks/streusle_v5_vpc_vid.json",
+        "resources/streusle_v5_oewn_2025_coverage_audit.json"
+      ],
+      "claim_effect": "The projected test is external exposed evidence, not an untouched or project-sealed test; its Web-review domain is not the Wikipedia sampling population.",
+      "disposition": "training, development, error analysis, and labeled smoke testing only",
+      "supersedes_id": null
+    },
+    {
+      "id": "EXP-2026-09-03-002",
+      "date_or_before": "2026-09-03",
+      "actor_scope": "project developers and readers of the committed audit",
+      "material": "Raganato-framework multiword-verb sense slice identities, gold-derived counts, limitations, and results inspected during construction",
+      "exposure_class": "external_gold_exposed",
+      "extent": {
+        "development_rows": 6,
+        "source_test_rows": 17,
+        "total_rows": 23,
+        "canonical_types": 18
+      },
+      "evidence": [
+        "resources/wsd_mwe_sense_slice_audit_2026_09_03.json"
+      ],
+      "claim_effect": "The 17 source-test rows are not blinded project evidence and the slice cannot establish target-wide, VID, take-in, ambiguity, abstention, or unseen-form validity.",
+      "disposition": "external conditional sense-ranking smoke test only",
+      "supersedes_id": null
+    },
+    {
+      "id": "EXP-2026-09-03-003",
+      "date_or_before": "2026-09-03",
+      "actor_scope": "project inventory developers and readers of committed projections/audits",
+      "material": "OEWN 2025 form/sense candidates and bounded Wiktionary-derived VID mapping candidates",
+      "exposure_class": "dictionary_and_inventory_candidate_exposed",
+      "extent": {
+        "oewn_multiword_verb_forms": 2847,
+        "take_in_oewn_candidate_senses": 17,
+        "streusle_vid_types_with_any_unreviewed_dictionary_route": 93,
+        "residual_streusle_vid_types_without_route": 146
+      },
+      "evidence": [
+        "resources/oewn_2025_multiword_verbs.json",
+        "resources/oewn_take_in_2025.json",
+        "resources/streusle_v5_oewn_2025_coverage_audit.json",
+        "resources/streusle_v5_kaikki_vid_audit_2026_09_03.json"
+      ],
+      "claim_effect": "Dictionary exposure is allowed for inventory development but is not contextual gold and does not make future project occurrences label-exposed. It must still be disclosed for form-seen and model-input claims.",
+      "disposition": "inventory-development evidence; never substitute for occurrence/category/sense gold",
+      "supersedes_id": null
+    },
+    {
+      "id": "EXP-2026-09-02-004",
+      "date_or_before": "2026-09-02",
+      "actor_scope": "project material developers and readers of committed screens",
+      "material": "Target-conditioned Simple English Wikipedia candidate queues, rendered boundaries, occurrence decisions, and provisional meaning/material selections",
+      "exposure_class": "target_conditioned_source_and_labels_exposed",
+      "extent": {
+        "main_namespace_pages_scanned": 398768,
+        "target_candidate_rows": 16375,
+        "rendered_revisions": 508,
+        "desk_reviewed_documents": 39,
+        "confirmed_target_occurrences": 20,
+        "passages_admitted": 0
+      },
+      "evidence": [
+        "resources/simplewiki_gate1_route2_candidates.json",
+        "resources/simplewiki_gate1_route2_rendered_screen.json",
+        "resources/simplewiki_gate1_route2_take_in_desk_review.json",
+        "resources/simplewiki_gate1_route2_pick_up_desk_review.json",
+        "resources/simplewiki_gate1_route2_give_up_desk_review.json",
+        "resources/simplewiki_gate1_route2_content_neutral_amendment.json"
+      ],
+      "claim_effect": "These target-conditioned rows and preliminary labels are exposed exploratory development evidence. The stopped SimpleWiki route cannot be relabeled as target-blind, prospectively sampled, or sealed evidence for the new English Wikipedia benchmark.",
+      "disposition": "retain for detector/error analysis only; never enter the project sealed test",
+      "supersedes_id": null
+    },
+    {
+      "id": "EXP-2026-09-02-005",
+      "date_or_before": "2026-09-02",
+      "actor_scope": "project material developers and readers of committed screens",
+      "material": "VOA article metadata, bounded MWE lead profiles, recurrence decisions, and five-article occurrence/meaning desk review",
+      "exposure_class": "source_candidates_and_provisional_labels_exposed",
+      "extent": {
+        "eligible_articles_profiled": 24,
+        "automatic_oewn_leads": 229,
+        "automatic_short_gap_leads": 128,
+        "articles_in_pair_desk_reviews": 5,
+        "other_articles_in_bounded_audit": 19,
+        "passage_pairs_admitted": 0
+      },
+      "evidence": [
+        "resources/voa_gate1_automated_profile.json",
+        "resources/voa_gate1_recurrence_triage.json",
+        "resources/voa_gate1_priority_desk_review.json",
+        "resources/voa_gate1_deferred_pair_desk_review.json",
+        "resources/voa_gate1_out_of_inventory_audit.json"
+      ],
+      "claim_effect": "The exhausted VOA material frame is exposed source-selection and occurrence-review evidence, not independent benchmark data or a population sample of English Wikipedia.",
+      "disposition": "method and error-analysis history only; no passage or label enters the project sealed test",
+      "supersedes_id": null
+    },
+    {
+      "id": "EXP-2026-09-02-006",
+      "date_or_before": "2026-09-02",
+      "actor_scope": "project rights/material reviewers and readers of committed metadata",
+      "material": "TECO passage/token positions, machine MWE candidates, and preliminary single-project occurrence/category desk decisions",
+      "exposure_class": "restricted_source_and_provisional_labels_exposed",
+      "extent": {
+        "passage_texts_read": 30,
+        "machine_candidates_reviewed": 285,
+        "provisional_plausible_occurrences": 43,
+        "provisional_distinct_canonical_forms": 32,
+        "participant_outcome_values_used_for_selection_or_labels": 0
+      },
+      "evidence": [
+        "resources/teco_v1_1_candidate_manifest.json",
+        "resources/teco_v1_1_mwe_candidate_screen.json",
+        "resources/teco_v1_1_mwe_desk_triage.json"
+      ],
+      "claim_effect": "TECO source material and provisional labels are exposed and rights-restricted. They cannot form new project gold, sealed evidence, or a Web/API resource, and no gaze/proficiency/comprehension value validates the labels.",
+      "disposition": "optional downstream rights clarification only; exclude from the first-paper core and runtime",
+      "supersedes_id": null
+    },
+    {
+      "id": "EXP-2026-09-03-007",
+      "date_or_before": "2026-09-03",
+      "actor_scope": "project rights/material reviewers and readers of committed metadata",
+      "material": "Project Gutenberg metadata frame, locally inspected notices/front matter/unit boundaries, and incidental target-string sightings",
+      "exposure_class": "source_boundaries_and_incidental_target_strings_exposed",
+      "extent": {
+        "metadata_candidates": 80,
+        "mechanically_screened_first_units": 44,
+        "mechanical_passes": 10,
+        "known_incidental_target_exposure_text_ids": [
+          15188,
+          23763,
+          63142,
+          36833
+        ],
+        "admitted_units": 0
+      },
+      "evidence": [
+        "resources/gutenberg_2026_08_30_prose_frame.json",
+        "resources/gutenberg_2026_08_30_front_matter_review_batch1.json",
+        "resources/gutenberg_2026_08_30_front_matter_review_batch2.json",
+        "resources/gutenberg_2026_08_30_front_matter_review_batch3.json",
+        "resources/gutenberg_2026_08_30_unit_gate_batch1.json",
+        "resources/gutenberg_2026_08_30_unit_gate_batch2.json",
+        "resources/gutenberg_2026_08_30_unit_gate_batch3.json",
+        "resources/gutenberg_2026_08_30_rights_triage_batch4.json"
+      ],
+      "claim_effect": "The stopped frame is not benchmark evidence. Boundary and rights inspection exposed some source material and four recorded target-string locations even though no target/MWE search or contextual classification was run.",
+      "disposition": "preserve as failed-design and rights-method evidence; never represent it as unexposed or sealed",
+      "supersedes_id": null
+    },
+    {
+      "id": "EXP-2026-09-03-008",
+      "date_or_before": "2026-09-03",
+      "actor_scope": "project evidence reviewers and readers of the committed admission audit",
+      "material": "MAGPIE contexts, target spans, usage/idiomaticity labels, confidence distributions, and random/type-disjoint split metadata",
+      "exposure_class": "external_idiomaticity_gold_exposed",
+      "extent": {
+        "unfiltered_rows": 56622,
+        "artifact_variants_reviewed": 3,
+        "project_rows_committed": 0
+      },
+      "evidence": [
+        "resources/mwe_core_evidence_admission_2026_09_03.json"
+      ],
+      "claim_effect": "MAGPIE is an exposed external secondary idiomaticity benchmark. It does not test open-text candidate recall, PARSEME VPC/VID category, or the new Wikipedia population and cannot become project-sealed gold.",
+      "disposition": "external secondary idiomaticity development/comparison only with its own license and provenance",
+      "supersedes_id": null
+    },
+    {
+      "id": "EXP-2026-09-03-009",
+      "date_or_before": "2026-09-03",
+      "actor_scope": "project evidence reviewers and readers of committed audits",
+      "material": "MWEasWSD manual SemCor-derived rows, sense/not-MWE labels, candidate senses, conflicts, and mapped aggregate results",
+      "exposure_class": "external_manual_labels_and_errors_exposed",
+      "extent": {
+        "raw_manual_rows": 1296,
+        "accepted_rows": 1193,
+        "unique_accepted_sentence_span_keys": 1159,
+        "conflicting_duplicate_keys": 5,
+        "category_confirmed_vpc_vid_rows": 0
+      },
+      "evidence": [
+        "resources/mweaswsd_semcor_reuse_audit_2026_09_03.json",
+        "resources/mwe_core_evidence_admission_2026_09_03.json"
+      ],
+      "claim_effect": "The artifact and its defects are exposed development evidence. Retrospective partitioning cannot create missing VPC/VID categories, independent labels, ambiguity states, document identities, or a sealed test.",
+      "disposition": "external method/error analysis only; rejected as contextual fine-sense validation gold",
+      "supersedes_id": null
+    },
+    {
+      "id": "EXP-2026-09-04-010",
+      "date_or_before": "2026-09-04",
+      "actor_scope": "project developers, repository readers, and automated tests",
+      "material": "Project-authored synthetic scenarios, five MWE gold fixtures, transparent negative-control predictions, metric contributions, precision resamples, and their expected results",
+      "exposure_class": "project_synthetic_gold_and_results_exposed",
+      "extent": {
+        "mwe_gold_cases": 5,
+        "lexical_scenarios": 3,
+        "sealed_or_natural_test_items": 0
+      },
+      "evidence": [
+        "samples.json",
+        "tests/fixtures/mwe_cases.json",
+        "tests/fixtures/mwe_predictions_surface_baseline.json",
+        "tests/verify_contract.mjs",
+        "tests/test_metrics.py",
+        "tests/test_bootstrap.py",
+        "tests/test_precision_simulation.py"
+      ],
+      "claim_effect": "These public fixtures verify software behavior only and can never supply linguistic validity, independent agreement, or held-out performance.",
+      "disposition": "software testing and documentation only",
+      "supersedes_id": null
+    },
+    {
+      "id": "EXP-2026-09-05-011",
+      "date_or_before": "2026-09-05",
+      "actor_scope": "AI-assisted protocol developers and readers of development metadata",
+      "material": "Previously exposed SimpleWiki cached revisions registered before the IR136-SIMPLEWIKI-CONTRAST-1.0.0 target query for bounded contextual-contrast development",
+      "exposure_class": "target_conditioned_source_and_prior_labels_exposed",
+      "extent": {
+        "verified_cached_revisions": 507,
+        "excluded_unavailable_revisions": 1,
+        "source_identity_sha256": "2a914efbd7f9a99174d083ab691e77306a647fb9d3772bfb3e6cf3567236ad0d",
+        "canonical_forms": ["pick up", "come out", "make sure"],
+        "maximum_selected_pages_per_form": 20,
+        "maximum_selected_targets": 60,
+        "maximum_context_profile_tokens": 600,
+        "maximum_total_review_minutes": 120,
+        "new_benchmark_passages_admitted": 0,
+        "independent_labels_created": 0
+      },
+      "evidence": [
+        "resources/decision_log.json",
+        "resources/simplewiki_gate1_route2_rendered_screen.json",
+        "resources/simplewiki_gate1_route2_content_neutral_amendment.json",
+        "scripts/screen_simplewiki_route2_rendered.py"
+      ],
+      "claim_effect": "A verified cache and a newly frozen retrieval order do not erase the target-conditioned construction of this pool or its prior labels. The registered limits are budgets, not observed yields. No prevalence, linguistic gold, independent sense validation or sealed-test claim follows. Page-level rights remain separate and no text is released.",
+      "disposition": "Extend the development purpose for this verified subset only to bounded contextual-contrast preparation under DEC-2026-09-05-020. Preserve the stopped Route 2 and all historical facts; all remaining material keeps its prior disposition and the entire pool stays excluded from the project sealed test.",
+      "supersedes_id": "EXP-2026-09-02-004"
+    },
+    {
+      "id": "EXP-2026-09-05-012",
+      "date_or_before": "2026-09-05",
+      "actor_scope": "AI-assisted protocol developer; not independent annotators",
+      "material": "Prospectively registered fixed-window inspection of the 52-target, 51-document SimpleWiki development prefix under DEC-2026-09-05-020 and EXP-2026-09-05-011",
+      "exposure_class": "exposed_development_context_inspection",
+      "extent": {
+        "registered_before_context_display_utc": "2026-09-05 07:49:38 UTC",
+        "fixed_prefix_sha256": "2ada59657c611e1c357ef236200f2278bf105c470b07bc6bd1299b458374b18e",
+        "selected_targets": 52,
+        "selected_unique_documents": 51,
+        "remaining_inspection_budget_minutes_at_start": 117,
+        "new_benchmark_passages_admitted": 0,
+        "independent_labels_created": 0,
+        "source_text_released": false
+      },
+      "evidence": ["resources/decision_log.json", "resources/simplewiki_gate1_route2_rendered_screen.json", "scripts/prepare_simplewiki_contrasts.py"],
+      "claim_effect": "This registers the whole fixed prefix before window results are opened; selected counts are not completed reviews or accepted examples. Contexts may be inspected only within same-section neighboring paragraphs, the 600-profile-token ceiling and the carried budget. Omitted blocks and other discontinuities cause holds; inline sup.reference citation markers are counted separately. Local desk observations are exposed AI development evidence, not gold, rights clearance or new model experiments.",
+      "disposition": "Retain every first-lead slot, including errors, unreviewed items and holds; do not replace candidates or extend the source pool. Record source/window identities, viewed-paragraph unions, qualitative observations and elapsed inspection time internally without copying source prose. No publication, primary sampling or sealed-test use is authorized.",
+      "supersedes_id": null
+    }
+  ],
+  "audit_coverage": {
+    "method": "Repository-evidence audit of committed benchmark profiles, admission audits, material screens, rights records, fixtures, and reported results through 2026-09-04.",
+    "classified_groups": [
+      "STREUSLE occurrence/category gold and baseline results",
+      "Raganato WSD source-test gold",
+      "OEWN/Wiktionary inventory candidates",
+      "SimpleWiki target-conditioned material work",
+      "VOA material and recurrence work",
+      "TECO source/candidate/provisional-label work",
+      "Project Gutenberg boundary and incidental-string exposure",
+      "MAGPIE idiomaticity gold",
+      "MWEasWSD manual labels",
+      "project-authored synthetic gold and results"
+    ],
+    "unclassified_known_groups": [],
+    "outside_repository_boundary": "Personal or unrecorded copies cannot be proven absent. If their access history later matters and cannot be verified, apply exposed_unknown rather than sealed.",
+    "audit_result": "All presently known project-relevant exposure groups are classified; no project sealed-test item exists."
+  },
+  "final_item_exposure_schema": {
+    "item_unit": "One sealed-test document and all nested fragments/occurrences.",
+    "required_fields": [
+      "document_id",
+      "split_protocol_version",
+      "membership_state",
+      "source_text_state",
+      "candidate_state",
+      "pre_adjudication_label_state",
+      "final_label_state",
+      "prediction_state",
+      "developer_access_state",
+      "first_exposure_at",
+      "evidence_refs"
+    ],
+    "allowed_states": [
+      "sealed_verified",
+      "exposed",
+      "exposed_unknown",
+      "not_created"
+    ],
+    "classification": "An item is eligible for a new blinded-test claim only when every applicable pre-score material/access field is sealed_verified and evidence-backed. Any exposed, exposed_unknown, missing, or null applicable field makes the item exposed.",
+    "records": []
+  },
+  "model_experiment_register": {
+    "contextual_or_probabilistic_model_experiments_run": 0,
+    "records": [],
+    "required_fields_before_execution": [
+      "experiment_id",
+      "registered_at",
+      "actor_role_ids",
+      "input_artifact_ids_and_sha256",
+      "permitted_split_roles",
+      "model_and_weight_identity",
+      "code_and_environment_identity",
+      "complete_hyperparameter_search_space",
+      "selection_metric",
+      "random_seeds",
+      "output_artifact_sha256",
+      "sealed_test_access_state"
+    ],
+    "rule": "Append the inputs and full search range before execution. A missing or retrospectively expanded field makes the experiment exposed development evidence and ineligible as the primary locked system.",
+    "non_model_baseline_boundary": "Existing deterministic surface and fixture baselines are already exposed in the records above; they are not contextual/probabilistic model experiments."
+  },
+  "project_sealed_test": {
+    "exists": false,
+    "custodian": null,
+    "membership_commitment_sha256": null,
+    "label_commitment_sha256": null,
+    "prediction_commitments": [],
+    "exposures": []
+  },
+  "next_actions": [
+    "Before split materialization, appoint the independent custodian required by resources/split_protocol.json.",
+    "Append every new material-access event, development experiment, and sealed artifact commitment before results are opened.",
+    "At materialization, require one final_item_exposure_schema record per sealed-test document and fail closed on any missing or unknown access history."
+  ]
+}

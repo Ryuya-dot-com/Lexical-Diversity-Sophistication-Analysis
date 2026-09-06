@@ -1,0 +1,123 @@
+{
+  "audit_version": "1.0.0",
+  "audit_id": "lre-submission-readiness-2026-09-03",
+  "audited_on": "2026-09-03",
+  "target_journal": "Language Resources and Evaluation",
+  "target_article_type": "full-length paper",
+  "official_requirements": {
+    "scope": "Creation, use, or evaluation of language resources and related technologies, including benchmarking and usability.",
+    "full_length": "Original substantive results or a detailed description of a new and substantial major resource, including creation and evaluation methods and comparison with similar resources where appropriate.",
+    "availability": "Resources described in LRE publications should be publicly available; any exception must be explained.",
+    "data_statement": "Original research requires a Data Availability Statement identifying access routes and reuse conditions.",
+    "sources": [
+      "https://link.springer.com/journal/10579/aims-and-scope",
+      "https://link.springer.com/journal/10579/submission-guidelines"
+    ]
+  },
+  "candidate_inventory_review_sources": {
+    "reviewed_on": "2026-09-03",
+    "wikimedia_terms": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+    "official_enwiktionary_dumps": "https://dumps.wikimedia.org/enwiktionary/",
+    "wiktextract_code_and_format": "https://github.com/tatuylonen/wiktextract",
+    "kaikki_raw_exports": "https://kaikki.org/dictionary/rawdata.html",
+    "observed_kaikki_snapshot": "English Wiktionary dump dated 2026-08-05, extracted 2026-08-28 with identified Wiktextract commits; the raw-download route is marked deprecated and is not admitted as the benchmark artifact.",
+    "aggregate_audit": "resources/streusle_v5_kaikki_vid_audit_2026_09_03.json",
+    "hybrid_contract": "resources/hybrid_sense_inventory_contract_2026_09_03.json",
+    "hybrid_contract_sha256": "e389eafd39b68a9f93058a1ad4c34f899547405f02df7c4d2f669b279310d596",
+    "admission_state": "audit_complete_not_admitted_or_integrated"
+  },
+  "overall_state": "blocked_for_full_length_submission",
+  "dimensions": {
+    "benchmark_scale": {
+      "state": "blocked",
+      "current_evidence": {
+        "occurrence_category": "STREUSLE 5.0 has 544 train, 40 development, and 40 test target occurrences; the test contains 16 discontinuous and 16 train-unseen occurrences.",
+        "contextual_sense": "The admitted standard-WSD slice has 23 occurrences, 18 types, and 10 documents: six development and 17 already exposed source-test rows, zero VID rows, zero take_in evaluation rows, and only find_out contrasts senses across evaluation occurrences.",
+        "inventory_alignment": "Across all 624 STREUSLE target occurrences, exact casefolded lexlemma lookup finds an OEWN verb entry for 317 and at least two candidate senses for 228. For the 239 VID types, OEWN exact and unique simple-slot routes cover 33 types. An exact Kaikki/Wiktionary audit adds 60 unreviewed verb-entry routes, leaving 146 types with no exact route. The combined upper bound is only 93/239 types and 150/319 occurrences; just 28 types have multiple inventory candidates. Kaikki raw data contain 99 senses for the matched types, but only five have a Wiktionary senseid, only one type has IDs for every lexicalized sense, and none has a raw id or Wikidata ID.",
+        "project_authored": "Five M1-M5 fixtures exercise the runtime contract but are not validation data. Hybrid sense-inventory contract 1.0.0 fixes stable IDs and the residual mapping stop rule but contains no inventory entries."
+      },
+      "pass_condition": [
+        "Freeze the target population, sampling frame, primary metrics, critical strata, and clustering units before selecting a new sample.",
+        "Use pilot-based simulation or resampling to choose the test size; target a 95% interval half-width no larger than 0.05 for each primary overall estimate and 0.10 for each inferential stratum, accounting for document and canonical-form clustering.",
+        "Report VPC.full, VPC.semi, VID, continuous, discontinuous, form-seen, and form-unseen evidence separately; do not make an inferential claim for a stratum that misses its frozen precision target.",
+        "For contextual sense, include multiple genuinely observed senses across multiple forms and retain ambiguous, abstained, and out-of-inventory cases rather than filling cells with synthetic examples.",
+        "Do not construct the sense benchmark from OEWN exact matches alone; distinguish canonicalization or slot mismatch from genuine inventory absence so that VID cases are not selected away."
+      ],
+      "note": "The interval targets are project-imposed publication gates, not journal-mandated sample sizes."
+    },
+    "independence": {
+      "state": "blocked",
+      "current_evidence": {
+        "external_origin": "STREUSLE and the standard WSD labels were authored externally.",
+        "exposure": "The project has inspected the STREUSLE 40-item test projection and the 17 source-test sense labels.",
+        "annotation": "No project benchmark has independent pre-adjudication occurrence, span, category, idiomaticity, and contextual-sense labels."
+      },
+      "pass_condition": [
+        "Keep annotation pilot, development, and final test documents disjoint.",
+        "Keep canonical forms disjoint only for an explicitly claimed unseen-form evaluation; otherwise report form-seen and form-unseen strata separately.",
+        "Hash and seal final test labels before system or baseline tuning, with a custodian other than the system developer controlling first access.",
+        "Obtain at least two independent pre-adjudication labels for every final test item, retain both labels, and adjudicate only after task-specific agreement is computed.",
+        "Treat all currently exposed test material as development or external smoke-test evidence, never as the new sealed test."
+      ]
+    },
+    "license_and_availability": {
+      "state": "partially_ready_but_core_release_blocked",
+      "current_evidence": {
+        "project_material": "Original code is MIT and original documentation/data are alternatively CC BY 4.0.",
+        "oewn": "The bundled OEWN projection is CC BY 4.0 with the underlying WordNet notice.",
+        "streusle": "STREUSLE annotations are CC BY-SA 4.0 and source text/PTB layers carry separate upstream permission notices; the corpus is external.",
+        "wsd_framework": "The exact framework archive has no explicit redistribution grant and remains external-analysis-only.",
+        "wiktionary_candidate": "The bounded exact audit retrieved only 206 per-word responses into ignored local storage and committed aggregate results. Wiktionary adds exact verb entries for 60 types, but the URLs are not date-versioned and stable raw sense identifiers cover only 5/99 senses. Wiktionary text remains subject to applicable CC BY-SA 4.0/GFDL terms and imported-content conditions; the MIT Wiktextract software license does not relicense extracted data. No Wiktionary/Kaikki lexical content is admitted or bundled.",
+        "hybrid_contract": "Contract 1.0.0 is original CC BY 4.0 metadata with no lexical entries or source wording. It requires one controlling license, attribution notices, and redistribution state for every future sense/source layer; it does not make the benchmark source or release route lawful by itself."
+      },
+      "pass_condition": [
+        "Choose a benchmark source whose terms permit the intended annotation, evaluation, archiving, and public reuse before annotation starts.",
+        "Release the core benchmark publicly with a persistent identifier; when text cannot be redistributed, release lawful standoff annotations, immutable source identifiers and hashes, and a deterministic reconstruction checker.",
+        "Assign every released file one controlling license and retain all upstream attribution, ShareAlike, and removal obligations without applying the repository-wide license to third-party material.",
+        "Publish an artifact manifest, provenance record, citation metadata, model/data notices, and a Data Availability Statement that distinguishes public, external-only, and restricted layers.",
+        "Do not treat a private database or access control as permission to copy, analyze, or redistribute a resource."
+      ]
+    },
+    "annotation_guide": {
+      "state": "blocked",
+      "current_evidence": "Runtime contract 0.10.0 defines occurrence/sense workflow states and five synthetic fixtures exercise them. Separately, hybrid inventory contract 1.0.0 freezes opaque project IDs, source fingerprints and relations, lifecycle/version rules, layer-specific rights, a 146-type bounded mapping stop, and distinct unresolved/ambiguous/abstained/out-of-inventory states. It contains no lexical entries. No standalone annotator manual, training set, independent pilot, agreement plan, or adjudication log exists.",
+      "pass_condition": [
+        "Publish a versioned decision guide for candidate-independent open-text search, members and gaps, overlap, VPC.full/VPC.semi/VID, idiomaticity, inventory eligibility, one or multiple senses, abstention, and out-of-inventory decisions.",
+        "Populate and independently review the target inventory under frozen hybrid contract 1.0.0; do not expose mutable Kaikki display IDs or gloss hashes as semantic truth.",
+        "Include positive, literal-negative, accidental-sequence, discontinuous, inflected, pronoun-gap, nested/overlapping, tokenization, spelling-error, and genuinely ambiguous examples.",
+        "Pilot only on training material, log every rule change, then freeze the guide before final test annotation.",
+        "Report unitizing/span agreement separately from category, idiomaticity, and sense agreement; report unresolved rates and adjudication changes rather than one pooled coefficient.",
+        "Keep source text, inventory candidates, baseline suggestions, and previous annotator decisions blinded whenever the declared judgment does not require them."
+      ]
+    },
+    "baselines": {
+      "state": "blocked",
+      "current_evidence": {
+        "occurrence": "A reproducible contiguous train-lemma baseline exists for STREUSLE test data, with exact-span F1 0.404762 and zero discontinuous or unseen-form recall.",
+        "contextual_sense": "The planned SemCor-derived most-frequent-sense and gloss/rule baselines have not been scored.",
+        "comparative_system": "No independently reproduced competitive VPC/VID plus contextual-sense system result is frozen."
+      },
+      "pass_condition": [
+        "Predeclare all comparators, training data, hyperparameter access, and metric code before opening final test labels.",
+        "For occurrence identification, retain the contiguous lexical floor, add the smallest transparent gap/dependency comparator justified by development errors, and compare with one reproducible published system when artifact and rights checks permit.",
+        "For contextual sense, compare a training-only most-frequent-sense prior and a deterministic gloss-overlap/rule ranker before considering one contextual encoder.",
+        "Score candidate recall, exact members/gaps, category, inventory coverage, sense ranking/selection, abstention coverage-risk, and reviewer time separately with uncertainty intervals.",
+        "Compare resource coverage, label granularity, uncertainty states, domains, licensing, and evaluation splits against the closest non-interchangeable resources rather than claiming that one baseline replaces STREUSLE, MAGPIE, PARSEME, or MWEasWSD.",
+        "Admit a contextual model only if it improves a named held-out outcome or reduces human correction burden without worsening calibration, reproducibility, or rights."
+      ]
+    }
+  },
+  "article_route": {
+    "full_length": "Retain only if all five dimensions pass and the released benchmark plus evaluation constitute a substantial resource contribution.",
+    "project_note_fallback": "Use only if the contribution remains interim software or a minor resource; do not relabel the present prototype as a validated resource.",
+    "downstream_l2_studies": "Coverage, learner-corpus, and eye-movement analyses may demonstrate reuse but cannot repair missing benchmark validity."
+  },
+  "next_gate": [
+    "Keep direct Kaikki/Wiktionary sense IDs rejected as benchmark gold and apply hybrid contract 1.0.0 without changing its rules after observing yield.",
+    "Freeze the public benchmark source, sampling frame, precision rule, split/blinding protocol, and lawful layer-specific release route.",
+    "Then run the bounded source-declared-variant and orthographic-equivalence pass once over all 146 residual VID types; preserve unresolved cases and do not interpret an exact miss as dictionary absence.",
+    "Write the annotation and adjudication protocol and a pilot-based precision plan before requesting human annotation.",
+    "Implement and score the transparent sense baselines on the existing 23-row smoke-test slice as an engineering check, not as publication validation.",
+    "Only after the source, release, guide, precision, and baseline decisions are frozen, authorize the smallest independent pilot needed to estimate reliability, prevalence, review time, and final sample size."
+  ]
+}

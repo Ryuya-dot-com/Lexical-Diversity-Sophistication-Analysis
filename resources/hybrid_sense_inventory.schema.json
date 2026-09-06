@@ -1,0 +1,496 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ryuya-dot-com.github.io/Lexical-Diversity-Sophistication-Analysis/resources/hybrid_sense_inventory.schema.json",
+  "title": "ldfreq hybrid VPC/VID sense inventory",
+  "description": "Schema for unreviewed candidate reservations and independently admitted project senses. Cross-record rules are enforced by tests because JSON Schema cannot express registry-wide identity constraints.",
+  "type": "object",
+  "required": [
+    "inventory_schema_version",
+    "inventory_id",
+    "generated_on",
+    "status",
+    "task",
+    "dependencies",
+    "id_registry",
+    "source_snapshot",
+    "fingerprint_projection_fields",
+    "summary",
+    "release_boundary",
+    "types"
+  ],
+  "properties": {
+    "inventory_schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-candidate\\.[0-9]+$"
+    },
+    "inventory_id": {
+      "const": "ldfreq-en-vmwe-hybrid-sense-inventory-v1"
+    },
+    "generated_on": {
+      "type": "string",
+      "format": "date"
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dependencies": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"$ref": "#/$defs/sha256"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "id_registry": {
+      "type": "object",
+      "required": [
+        "allocation",
+        "allocated_type_id_range",
+        "reservation_rule",
+        "source_update_rule",
+        "stability_anchor_format",
+        "stability_anchor_sha256"
+      ],
+      "properties": {
+        "allocation": {"type": "string", "minLength": 1},
+        "allocated_type_id_range": {"type": "string", "minLength": 1},
+        "population_log_only_reserved_type_id_range": {"type": "string", "minLength": 1},
+        "reservation_rule": {"type": "string", "minLength": 1},
+        "source_update_rule": {"type": "string", "minLength": 1},
+        "stability_anchor_format": {"type": "string", "minLength": 1},
+        "stability_anchor_sha256": {"$ref": "#/$defs/sha256"}
+      },
+      "additionalProperties": false
+    },
+    "source_snapshot": {
+      "type": "object",
+      "required": [
+        "source_inventory_id",
+        "source_version",
+        "release_date",
+        "repository_commit",
+        "artifact_name",
+        "artifact_size_bytes",
+        "artifact_sha256",
+        "artifact_url",
+        "public_notice"
+      ],
+      "properties": {
+        "source_inventory_id": {"const": "oewn"},
+        "source_version": {"type": "string", "minLength": 1},
+        "release_date": {"type": "string", "format": "date"},
+        "repository_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "artifact_name": {"type": "string", "minLength": 1},
+        "artifact_size_bytes": {"type": "integer", "minimum": 1},
+        "artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "artifact_url": {"type": "string", "format": "uri"},
+        "public_notice": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "fingerprint_projection_fields": {
+      "type": "array",
+      "minItems": 8,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "pilot_forms",
+        "vpc_pilot_forms",
+        "vid_pilot_forms",
+        "candidate_senses",
+        "admitted_senses",
+        "forms_without_candidates",
+        "source_synonyms_merged_into_project_identity"
+      ],
+      "properties": {
+        "pilot_forms": {"type": "integer", "minimum": 0},
+        "vpc_pilot_forms": {"type": "integer", "minimum": 0},
+        "vid_pilot_forms": {"type": "integer", "minimum": 0},
+        "candidate_senses": {"type": "integer", "minimum": 0},
+        "admitted_senses": {"type": "integer", "minimum": 0},
+        "forms_without_candidates": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string"}
+        },
+        "source_synonyms_merged_into_project_identity": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "release_boundary": {
+      "type": "object",
+      "required": [
+        "inventory_layer_license",
+        "source_wording_bundled",
+        "source_examples_bundled",
+        "raw_source_artifact_bundled",
+        "corpus_occurrence_or_context_bundled",
+        "browser_runtime_integration",
+        "human_annotation_authorized",
+        "admission_gate"
+      ],
+      "additionalProperties": true
+    },
+    "types": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/typeRecord"}
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "typeId": {
+      "type": "string",
+      "pattern": "^ldfreq-en-vmwe-t[0-9]{6}$"
+    },
+    "senseId": {
+      "type": "string",
+      "pattern": "^ldfreq-en-vmwe-t[0-9]{6}-s[0-9]{3}$"
+    },
+    "rights": {
+      "type": "object",
+      "required": [
+        "controlling_license_id",
+        "attribution_notice_ids",
+        "redistribution_status"
+      ],
+      "properties": {
+        "controlling_license_id": {"type": "string", "minLength": 1},
+        "attribution_notice_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "redistribution_status": {
+          "enum": ["permitted", "external_only", "withheld_pending_review"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "definition": {
+      "type": "object",
+      "required": [
+        "text",
+        "origin",
+        "controlling_license_id",
+        "attribution_notice_ids",
+        "redistribution_status"
+      ],
+      "properties": {
+        "text": {"type": "string", "minLength": 1},
+        "origin": {"enum": ["project_original", "source_verbatim", "source_adaptation"]},
+        "controlling_license_id": {"type": "string", "minLength": 1},
+        "attribution_notice_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "redistribution_status": {
+          "enum": ["permitted", "external_only", "withheld_pending_review"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "identityRelations": {
+      "type": "object",
+      "required": ["supersedes", "split_from", "merged_from", "related_to"],
+      "properties": {
+        "supersedes": {"$ref": "#/$defs/senseIdArray"},
+        "split_from": {"$ref": "#/$defs/senseIdArray"},
+        "merged_from": {"$ref": "#/$defs/senseIdArray"},
+        "related_to": {"$ref": "#/$defs/senseIdArray"}
+      },
+      "additionalProperties": false
+    },
+    "senseIdArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/senseId"}
+    },
+    "sourceLink": {
+      "type": "object",
+      "required": [
+        "source_inventory_id",
+        "source_version",
+        "source_repository_commit",
+        "source_artifact_sha256",
+        "source_entry_id",
+        "source_sense_id",
+        "source_record_sha256",
+        "mapping_relation",
+        "verification_status",
+        "controlling_license_id",
+        "attribution_notice_ids"
+      ],
+      "properties": {
+        "source_inventory_id": {"type": "string", "minLength": 1},
+        "source_version": {"type": "string", "minLength": 1},
+        "source_repository_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "source_artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "source_entry_id": {"type": "string", "minLength": 1},
+        "source_sense_id": {"type": ["string", "null"]},
+        "source_record_sha256": {"$ref": "#/$defs/sha256"},
+        "mapping_relation": {
+          "enum": ["equivalent", "broader", "narrower", "overlapping", "candidate_only"]
+        },
+        "mapping_route": {"type": "string", "minLength": 1},
+        "verification_status": {
+          "enum": ["independently_verified", "single_review_candidate", "unreviewed"]
+        },
+        "controlling_license_id": {"type": "string", "minLength": 1},
+        "attribution_notice_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "additionalProperties": false
+    },
+    "sourceRelation": {
+      "type": "object",
+      "required": [
+        "relation",
+        "source_member_index",
+        "target_lemma",
+        "project_identity_action"
+      ],
+      "properties": {
+        "relation": {"const": "synset_member"},
+        "source_member_index": {"type": "integer", "minimum": 0},
+        "target_lemma": {"type": "string", "minLength": 1},
+        "project_identity_action": {"enum": ["same_source_entry", "related_not_merged"]}
+      },
+      "additionalProperties": false
+    },
+    "candidateSense": {
+      "type": "object",
+      "required": [
+        "reserved_project_sense_id",
+        "reservation_state",
+        "proposed_source_basis",
+        "source_synset_id",
+        "cili",
+        "definition",
+        "examples",
+        "usage_labels",
+        "identity_relations",
+        "source_links",
+        "source_relations",
+        "rights"
+      ],
+      "properties": {
+        "reserved_project_sense_id": {"$ref": "#/$defs/senseId"},
+        "reservation_state": {"const": "reserved_candidate_not_admitted"},
+        "proposed_source_basis": {
+          "enum": [
+            "oewn_anchored",
+            "project_defined_with_source_evidence",
+            "project_defined_without_source_match"
+          ]
+        },
+        "source_synset_id": {"type": "string", "minLength": 1},
+        "cili": {
+          "type": "object",
+          "required": ["registry", "ili"],
+          "properties": {
+            "registry": {"const": "Collaborative Interlingual Index"},
+            "ili": {"type": "string", "pattern": "^i[0-9]+$"}
+          },
+          "additionalProperties": false
+        },
+        "definition": {"$ref": "#/$defs/definition"},
+        "examples": {
+          "type": "object",
+          "required": [
+            "items",
+            "controlling_license_id",
+            "attribution_notice_ids",
+            "redistribution_status"
+          ],
+          "properties": {
+            "items": {
+              "type": "object",
+              "required": ["synset", "entry"],
+              "properties": {
+                "synset": {"type": "array", "items": {"type": "string"}},
+                "entry": {"type": "array", "items": {"type": "string"}}
+              },
+              "additionalProperties": false
+            },
+            "controlling_license_id": {"type": "string", "minLength": 1},
+            "attribution_notice_ids": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
+            "redistribution_status": {
+              "enum": ["permitted", "external_only", "withheld_pending_review"]
+            }
+          },
+          "additionalProperties": false
+        },
+        "usage_labels": {"type": "array", "items": {"type": "string"}},
+        "identity_relations": {"$ref": "#/$defs/identityRelations"},
+        "source_links": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/sourceLink"}
+        },
+        "source_relations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/sourceRelation"}
+        },
+        "rights": {"$ref": "#/$defs/rights"}
+      },
+      "additionalProperties": false
+    },
+    "formalSense": {
+      "type": "object",
+      "required": [
+        "sense_id",
+        "type_id",
+        "lifecycle_status",
+        "definition",
+        "source_basis",
+        "source_links",
+        "identity_relations",
+        "rights"
+      ],
+      "properties": {
+        "sense_id": {"$ref": "#/$defs/senseId"},
+        "type_id": {"$ref": "#/$defs/typeId"},
+        "lifecycle_status": {"enum": ["active", "deprecated"]},
+        "definition": {"$ref": "#/$defs/definition"},
+        "source_basis": {
+          "enum": [
+            "oewn_anchored",
+            "project_defined_with_source_evidence",
+            "project_defined_without_source_match"
+          ]
+        },
+        "source_links": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/sourceLink"}
+        },
+        "identity_relations": {"$ref": "#/$defs/identityRelations"},
+        "rights": {"$ref": "#/$defs/rights"}
+      },
+      "additionalProperties": false
+    },
+    "memberPattern": {
+      "type": "object",
+      "required": ["ordered_lexical_members", "variable_slots", "realization_note"],
+      "properties": {
+        "ordered_lexical_members": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "variable_slots": {"type": "array"},
+        "realization_note": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "candidateSet": {
+      "type": "object",
+      "required": [
+        "status",
+        "mapping_route",
+        "source_entry_lemma",
+        "review_state",
+        "adjudication_state",
+        "candidates"
+      ],
+      "properties": {
+        "status": {"const": "complete_for_pinned_oewn_entry"},
+        "mapping_route": {"enum": ["exact_oewn", "unique_slot_oewn"]},
+        "source_entry_lemma": {"type": "string", "minLength": 1},
+        "review_state": {"const": "pending_independent_review"},
+        "adjudication_state": {"const": "not_started"},
+        "candidates": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/candidateSense"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "typeRecord": {
+      "type": "object",
+      "required": [
+        "type_id",
+        "language",
+        "canonical_lemma",
+        "part_of_speech",
+        "observed_vmwe_categories",
+        "member_pattern",
+        "inventory_status",
+        "source_route_status",
+        "senses",
+        "candidate_set"
+      ],
+      "properties": {
+        "type_id": {"$ref": "#/$defs/typeId"},
+        "language": {"const": "en"},
+        "canonical_lemma": {"type": "string", "minLength": 1},
+        "part_of_speech": {"const": "v"},
+        "observed_vmwe_categories": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"enum": ["V.VPC.full", "V.VPC.semi", "V.VID"]}
+        },
+        "member_pattern": {"$ref": "#/$defs/memberPattern"},
+        "inventory_status": {"enum": ["source_anchored", "hybrid", "project_defined", "unresolved"]},
+        "source_route_status": {"enum": ["all_active_senses_verified", "partly_verified", "candidate_route_only", "no_bounded_route"]},
+        "senses": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/formalSense"}
+        },
+        "candidate_set": {"$ref": "#/$defs/candidateSet"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"inventory_status": {"const": "unresolved"}}},
+          "then": {"properties": {"senses": {"maxItems": 0}}}
+        },
+        {
+          "if": {"properties": {"source_route_status": {"const": "all_active_senses_verified"}}},
+          "then": {"properties": {"inventory_status": {"const": "source_anchored"}}}
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "x-cross-record-invariants": [
+    "A type ID maps to one canonical lemma across the IR-130 queue, IR-132 population log, and every inventory version.",
+    "Project type IDs and project sense IDs are globally unique and are never reassigned or recycled.",
+    "Every sense ID begins with its owning type ID followed by '-s'.",
+    "The same source inventory/version/artifact/entry/sense/fingerprint tuple cannot occur twice without an explicit identity relation.",
+    "Identity relations never self-reference; every target is present in the version lineage or a declared prior version.",
+    "Regeneration against a new source edition preserves IDs by prior type ID plus source sense key, appends IDs for new senses, and fails before silently deleting a prior source sense.",
+    "The stability anchor and source-record fingerprints use the canonical UTF-8 SHA-256 procedures declared by the frozen contract."
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "schema_version": "1.0.0",
+  "contract_id": "english-vpc-vid-target-population",
+  "frozen_on": "2026-09-04",
+  "status": "frozen_construct_scope_sampling_contract_frozen_no_source_rows",
+  "purpose": "Define which contextual English expressions enter candidate-independent VPC/VID discovery before source sampling, annotation training, or model development.",
+  "project_scope": {
+    "language": "English",
+    "unit": "One context-indexed occurrence in a document admitted by the later benchmark source and sampling protocol.",
+    "categories": [
+      "VPC.full",
+      "VPC.semi",
+      "VID"
+    ],
+    "inference_boundary": "Results apply only to the frozen benchmark source frame and its prespecified strata; this contract alone does not define a register, period, national variety, or population distribution.",
+    "source_frame_dependency": "IR-110 fixes lawful source access and IR-121 fixes the document population and target-blind priority queues. Source rows and final per-stratum counts remain unavailable until the frozen dump is acquired and IR-127 fixes precision-based allocation."
+  },
+  "taxonomy": {
+    "primary_reference": {
+      "id": "parseme-vmwe-guidelines-1.2",
+      "url": "https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2/",
+      "reason": "The executable contract and STREUSLE 5.0 projection use the PARSEME 1.2 VPC.full, VPC.semi, and VID labels."
+    },
+    "current_reference_note": "PARSEME 2.0 renames VPC to IVPC. The project retains the 1.2 labels for compatibility and must state the correspondence rather than silently mixing versions.",
+    "mapping": [
+      {
+        "project_label": "VPC.full",
+        "streusle_label": "V.VPC.full",
+        "parseme_2_label": "IVPC.full",
+        "operational_boundary": "A lexicalized head verb and dependent particle form a fully non-compositional unit; removing the particle cannot refer to the same event or state in context."
+      },
+      {
+        "project_label": "VPC.semi",
+        "streusle_label": "V.VPC.semi",
+        "parseme_2_label": "IVPC.semi",
+        "operational_boundary": "A lexicalized head verb and dependent particle form a partly non-compositional unit in which the particle adds a partly predictable non-spatial meaning and has a spatial literal counterpart."
+      },
+      {
+        "project_label": "VID",
+        "streusle_label": "V.VID",
+        "parseme_2_label": "VID",
+        "operational_boundary": "A lexicalized verb and at least one lexicalized dependent satisfy the PARSEME VID lexical and morphosyntactic fixedness tests and are not better assigned to an excluded category."
+      }
+    ]
+  },
+  "candidate_independent_discovery": {
+    "first_pass": "Read every sentence in each sampled document in source order without consulting a target list, dictionary inventory, model suggestion, or downstream outcome. Mark every plausible lexicalized verb-plus-dependent combination that could instantiate an in-scope category.",
+    "candidate_policy": "Discovery is deliberately broader than the gold population. Literal counterparts, accidental sequences, particle/preposition ambiguities, and uncertain category cases remain visible as candidates until confirmed, rejected, or left unresolved.",
+    "assisted_pass": "A later list, rule, or model pass may add missed candidates only with distinct candidate-source provenance. It cannot erase first-pass decisions or create gold by itself.",
+    "document_completion": "A document is discovery-complete only after every sentence has received the candidate-independent pass, including sentences with no marked candidate."
+  },
+  "eligibility": {
+    "required": [
+      "The lexical head is a verb occurrence in English context.",
+      "The candidate has at least two lexicalized member tokens in document order.",
+      "The occurrence can be evaluated in its complete admitted document context.",
+      "The contextual combination can be assigned VPC.full, VPC.semi, or VID under the frozen taxonomy, or is retained as unresolved pending the guide decision tree."
+    ],
+    "terminal_states": {
+      "confirmed": "The contextual occurrence satisfies one in-scope category.",
+      "rejected": "The surface sequence is compositional, accidental, outside the taxonomy, or otherwise not an in-scope occurrence.",
+      "unresolved": "The evidence or rule is insufficient; do not force a category or convert absence of decision into rejection."
+    }
+  },
+  "form_and_span_rules": {
+    "canonical_form": "Use the lowercase conventional citation form, lemmatizing the verbal head and preserving function words needed to identify the expression. It is a review label, is not derived mechanically from member IDs, and is not a stable sense or type identifier.",
+    "inflection": "Finite, non-finite, tense, aspect, agreement, and ordinary orthographic inflection of the verbal member are eligible. Auxiliaries are not members unless separately lexicalized by the expression.",
+    "particle_separation": "Continuous and separated VPC realizations are eligible. Every non-member token strictly between the first and last member is a gap.",
+    "pronoun_insertion": "An intervening pronoun or full noun-phrase object is a gap, not an MWE member, unless the pronoun is itself lexically fixed by the expression.",
+    "overlap": "Overlapping and nested candidates are recorded independently. A token may belong to more than one occurrence; later density summaries count the member-token union once.",
+    "literal_use": "A literal or accidental use of a known surface form remains a candidate negative and is rejected if it does not instantiate an in-scope VPC/VID. Occurrence category and the separate idiomaticity field must not be collapsed.",
+    "ambiguity": "If particle/preposition status, membership, or category cannot be resolved under the guide, preserve the candidate as unresolved rather than choosing the more familiar form."
+  },
+  "out_of_scope": [
+    {
+      "class": "other_verbal_mwe_categories",
+      "examples": [
+        "LVC.full",
+        "LVC.cause",
+        "IRV",
+        "MVC",
+        "IAV"
+      ],
+      "rule": "Retain only if a separate in-scope VPC/VID analysis also applies; otherwise record the exclusion without broadening the first-paper taxonomy."
+    },
+    {
+      "class": "non_verbal_idioms",
+      "examples": [
+        "nominal idioms",
+        "adjectival idioms",
+        "adverbial idioms"
+      ],
+      "rule": "Exclude from the core population and treat any later inclusion as a new scope version."
+    },
+    {
+      "class": "single_token_lexical_items",
+      "examples": [
+        "single-token idiomatic verbs",
+        "spelled-together or hyphenated forms with no second token"
+      ],
+      "rule": "Exclude because the primary unit requires at least two lexicalized member tokens."
+    },
+    {
+      "class": "misspellings_and_nonstandard_forms",
+      "examples": [
+        "a misspelled verbal member",
+        "a misspelled particle or fixed dependent"
+      ],
+      "rule": "Do not silently correct or include in the core population. Preserve as a separately coded scope-extension candidate if learner-language robustness is later authorized."
+    },
+    {
+      "class": "downstream_selection",
+      "examples": [
+        "forms chosen for coverage",
+        "forms chosen for eye tracking",
+        "forms chosen from learner outcomes"
+      ],
+      "rule": "Downstream relevance cannot determine core population membership or document sampling."
+    }
+  ],
+  "minimum_examples": [
+    {
+      "text": "They gave the proposal up.",
+      "decision": "candidate",
+      "category_candidate": "VPC.full",
+      "members": [
+        "gave",
+        "up"
+      ],
+      "gaps": [
+        "the",
+        "proposal"
+      ],
+      "point": "Inflection and a separated full noun-phrase object remain eligible."
+    },
+    {
+      "text": "She ate the cake up.",
+      "decision": "candidate",
+      "category_candidate": "VPC.semi",
+      "members": [
+        "ate",
+        "up"
+      ],
+      "gaps": [
+        "the",
+        "cake"
+      ],
+      "point": "A partly predictable non-spatial completion particle is not collapsed with VPC.full."
+    },
+    {
+      "text": "After months of secrecy, he spilled the beans.",
+      "decision": "candidate",
+      "category_candidate": "VID",
+      "members": [
+        "spilled",
+        "beans"
+      ],
+      "gaps": [
+        "the"
+      ],
+      "point": "A verb with lexically fixed dependents is considered under the VID tests."
+    },
+    {
+      "text": "He spilled the beans onto the floor.",
+      "decision": "candidate_negative",
+      "category_candidate": "VID",
+      "members": [
+        "spilled",
+        "beans"
+      ],
+      "gaps": [
+        "the"
+      ],
+      "point": "A literal counterpart is surfaced for rejection; surface identity does not create a VID occurrence."
+    },
+    {
+      "text": "She looked up the chimney.",
+      "decision": "candidate_negative",
+      "category_candidate": "VPC.full",
+      "members": [
+        "looked",
+        "up"
+      ],
+      "gaps": [],
+      "point": "A spatial prepositional use is a negative or unresolved candidate, not an automatic VPC."
+    }
+  ],
+  "streusle_correspondence": {
+    "shared": [
+      "Project VPC.full, VPC.semi, and VID map exactly to STREUSLE strong labels V.VPC.full, V.VPC.semi, and V.VID for evaluation.",
+      "Member tokens remain in source order and discontinuity is determined from gaps between members."
+    ],
+    "different": [
+      "The project discovery population includes rejected and unresolved candidates; the committed STREUSLE projection contains only annotated strong target occurrences.",
+      "STREUSLE supersenses are not project fine-grained contextual senses.",
+      "The project records idiomaticity, inventory coverage, assignment, ambiguity, abstention, and out-of-inventory separately; the STREUSLE projection does not supply those gold labels.",
+      "The exposed STREUSLE test projection is development evidence, not the new sealed test or a population sample of all English."
+    ]
+  },
+  "dependencies": {
+    "executable_contract": {
+      "path": "mwe_contract.json",
+      "version": "0.11.0-mwe",
+      "sha256": "6a5d3696f97fb07d17f903fe948f4e028ad2c6e42aef313b11325de9680b99ba"
+    },
+    "external_benchmark_profile": {
+      "path": "benchmarks/streusle_v5_vpc_vid.json",
+      "version": "0.1.0",
+      "sha256": "448a4aeef60bc114cbd2fc6a839ddc168a068247222a708361ab7b32c9d3f6cd"
+    }
+  },
+  "change_rule": "Any change to included categories, minimum member count, literal-use handling, spelling policy, or category mapping is breaking and requires a new contract version plus a decision-log record."
+}

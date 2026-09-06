@@ -1,0 +1,292 @@
+{
+  "audit_version": "1.1.0",
+  "audit_id": "mwe-core-evidence-admission-2026-09-03",
+  "audited_on": "2026-09-03",
+  "primary_scope": "English VPC.full, VPC.semi, and VID occurrence identification followed by uncertainty-bearing contextual fine-sense assignment",
+  "dimensions": [
+    "artifact",
+    "license",
+    "text",
+    "span_category",
+    "idiomaticity",
+    "fine_sense",
+    "ambiguity",
+    "split"
+  ],
+  "resources": [
+    {
+      "id": "streusle_v5",
+      "snapshot": {
+        "repository": "https://github.com/nert-nlp/streusle",
+        "tag": "v5.0",
+        "commit": "8ba61fe4f216e7967500a862554a4fff79d25f5d",
+        "paper_or_documentation": "https://github.com/nert-nlp/streusle/tree/v5.0"
+      },
+      "artifact": {
+        "state": "verified_external",
+        "evidence": "Exact train, dev, and test JSON paths, byte sizes, and SHA-256 values are pinned in benchmarks/streusle_v5_vpc_vid.json; no upstream data are bundled."
+      },
+      "license": {
+        "state": "usable_with_conditions",
+        "evidence": "The release declares CC BY-SA 4.0 for MWE/supersense and redistributed UD annotations."
+      },
+      "text": {
+        "state": "external_only",
+        "evidence": "English Web Treebank review sentences and PTB annotations are redistributed upstream with Google and LDC permission; preserve that notice and do not place the corpus under this project's license."
+      },
+      "span_category": {
+        "state": "yes",
+        "evidence": "Recoverable continuous/discontinuous members and strong PARSEME-derived V.VPC.full, V.VPC.semi, and V.VID categories support exact-span and category evaluation."
+      },
+      "idiomaticity": {
+        "state": "no_separate_label",
+        "evidence": "Strong-MWE occurrence/category annotation is not a separate literal-versus-idiomatic decision."
+      },
+      "fine_sense": {
+        "state": "no",
+        "evidence": "Verb supersenses are broad semantic classes and are not OEWN/WordNet fine-grained contextual sense keys."
+      },
+      "ambiguity": {
+        "state": "no",
+        "evidence": "The release does not encode multiple plausible fine senses, abstention, or out-of-inventory decisions for a target occurrence."
+      },
+      "split": {
+        "state": "fixed_but_previously_exposed",
+        "evidence": "UD train/dev/test splits are fixed. This project has already inspected the 40-item VPC/VID test projection and reported a baseline, so it is not an untouched blinded holdout."
+      },
+      "admission": "admit_external_occurrence_benchmark_only"
+    },
+    {
+      "id": "magpie",
+      "snapshot": {
+        "repository": "https://github.com/hslh/magpie-corpus",
+        "tag": null,
+        "commit": "7fa677b82b9a772dfa54bbdd0fb414412d73db3b",
+        "paper_or_documentation": "https://aclanthology.org/2020.lrec-1.35/"
+      },
+      "artifact": {
+        "state": "verified_external",
+        "evidence": "The untagged snapshot contains a 56,622-row unfiltered JSONL file and filtered random/type-disjoint JSONL files; exact byte sizes and Git blob identities are recorded below."
+      },
+      "artifact_files": [
+        ["MAGPIE_unfiltered.jsonl", 55234513, "24a6ef5cc6b226859956a903395caddb81c09493"],
+        ["MAGPIE_filtered_split_random.jsonl", 46913843, "59c24bffbccb38d912930d761abc0e8d7846e128"],
+        ["MAGPIE_filtered_split_typebased.jsonl", 46913846, "722546a2df509b5f50556445fdabb13179019b85"]
+      ],
+      "license": {
+        "state": "usable_with_attribution",
+        "evidence": "The repository declares CC BY 4.0 at this snapshot."
+      },
+      "text": {
+        "state": "external_preferred",
+        "evidence": "Rows contain BNC- and PMB-derived context. Retain corpus provenance and attribution; no copy is needed in this repository."
+      },
+      "span_category": {
+        "state": "partial",
+        "evidence": "Per-member character offsets and variant types are present for pre-extracted PIE targets, but there is no PARSEME VPC/VID category and the data do not test open-text candidate recall."
+      },
+      "idiomaticity": {
+        "state": "yes",
+        "evidence": "The unfiltered release retains idiomatic, literal, other, unclear, and false-extraction evidence plus label distributions/confidence; filtered files retain at least 75%-confidence binary idiomatic/literal cases."
+      },
+      "fine_sense": {
+        "state": "no",
+        "evidence": "Its 'sense' labels distinguish usage classes rather than assigning occurrences to a reusable OEWN/WordNet fine-sense inventory."
+      },
+      "ambiguity": {
+        "state": "agreement_proxy_only",
+        "evidence": "Confidence, label distributions, unclear, and other preserve annotator difficulty, but do not encode multiple plausible dictionary senses or out-of-inventory judgments."
+      },
+      "split": {
+        "state": "yes",
+        "evidence": "The filtered release provides both random train/dev/test and idiom-type-disjoint train/dev/test variants; the type-disjoint split is the only eligible generalization test here."
+      },
+      "admission": "admit_external_secondary_idiomaticity_benchmark_only"
+    },
+    {
+      "id": "semeval_2022_task2",
+      "snapshot": {
+        "repository": "https://github.com/H-TayyarMadabushi/SemEval_2022_Task2-idiomaticity",
+        "tag": null,
+        "commit": "872625c8f9c5d656b7866ff063a2ab0238ac4c80",
+        "paper_or_documentation": "https://aclanthology.org/2022.semeval-1.13/"
+      },
+      "artifact": {
+        "state": "partial_benchmark",
+        "evidence": "CSV data and evaluators are committed, but final test labels are not released. Subtask A dev text/gold Git blobs are 0e7d1ef24b88f898cf11450b6592b9d030bf861c and f7c42edbb040e724bc8bc9454a36451174648569."
+      },
+      "license": {
+        "state": "usable_with_conditions",
+        "evidence": "The repository applies GPL-3.0; it cannot be silently relicensed into this project's permissive core."
+      },
+      "text": {
+        "state": "external_preferred",
+        "evidence": "Rows contain three-sentence web contexts; the paper separately names Wikipedia and CC-100 for Galician, but row-level source/right metadata are absent."
+      },
+      "span_category": {
+        "state": "no",
+        "evidence": "Each row supplies the target MWE string and context, not open-text member offsets, discontinuous spans, or VPC/VID categories."
+      },
+      "idiomaticity": {
+        "state": "yes_binary",
+        "evidence": "Subtask A collapses idiomatic plus meta usage against literal/non-idiomatic plus proper-noun usage."
+      },
+      "fine_sense": {
+        "state": "indirect_only",
+        "evidence": "Experts assigned occurrence-appropriate paraphrases during construction, but the released Subtask B is sentence/paraphrase similarity with no stable per-occurrence inventory sense ID."
+      },
+      "ambiguity": {
+        "state": "discarded_not_modeled",
+        "evidence": "Construction disagreements were discussed and unresolved cases discarded; the task does not expose ambiguous, abstained, or out-of-inventory outcomes."
+      },
+      "split": {
+        "state": "partial",
+        "evidence": "Zero-shot MWE types are disjoint and one-shot supplies two examples per target type, but public gold is available for development rather than the final test."
+      },
+      "admission": "method_and_secondary_development_evidence_only"
+    },
+    {
+      "id": "mweaswsd",
+      "snapshot": {
+        "repository": "https://github.com/Mindful/MWEasWSD",
+        "tag": null,
+        "commit": "5af800780e17ed860f5893164870bd0bfa1b2598",
+        "paper_or_documentation": "https://aclanthology.org/2023.findings-emnlp.14/"
+      },
+      "artifact": {
+        "state": "reconstructable_with_unpinned_dependencies",
+        "evidence": "Code is present, while processed data are Git LFS objects and get-data.sh fetches separate SemCor, PARSEME 1.1, DiMSUM, spaCy, and model artifacts without checksums or immutable versions."
+      },
+      "artifact_files": [
+        ["data/annotations.jsonl", 3575865, "b3ab0995cb5d9d9b2be2361be2ac094ba36bba18e9f49799e0d006bf4d6edd37"],
+        ["data/augmented/semcor.fixed.annotated.autoneg.jsonl", 117015352, "7b38aac490ff990f3eba014d141497298d2d638d27f8e91c8cec53a28231eb7e"]
+      ],
+      "manual_annotation_observation": {
+        "raw_rows": 1296,
+        "accepted_rows": 1193,
+        "rejected_rows": 103,
+        "deduplication": "First accepted sentence-text plus word-index tuple, matching get_prodigy_annotations_to_apply",
+        "unique_accepted_sentence_span_keys": 1159,
+        "accepted_wordnet_sense_rows": 501,
+        "accepted_not_an_mwe_rows": 658,
+        "accepted_wordnet_sense_rows_with_multiple_candidate_senses": 145,
+        "take_in_candidate_rows": 5,
+        "take_in_wordnet_sense_rows": 1,
+        "split_fields": 0,
+        "category_fields": 0,
+        "multiple_accepted_labels_per_row": 0,
+        "duplicate_accepted_rows_removed_by_first_wins": 34,
+        "conflicting_duplicate_accepted_keys": 5,
+        "verb_form_proxy_rows": 505,
+        "category_confirmed_vpc_vid_rows": 0,
+        "verb_proxy_types_with_multiple_observed_positive_senses": 7,
+        "verb_proxy_rows_with_multiple_observed_positive_senses": 17
+      },
+      "license": {
+        "state": "external_layered_reuse",
+        "evidence": "The official SemCor 3.0 archive grants use, copying, modification, and distribution with the retained Princeton notice. The MWEasWSD snapshot has a root AGPL-3.0 license and no separate data exception; CILI and OEWN mappings are CC BY. These layers must remain attributed and external to the permissive core."
+      },
+      "text": {
+        "state": "semcor_reusable_with_notice_external_only",
+        "evidence": "The hash-pinned official SemCor 3.0 archive includes README and LICENSE files authorizing database reuse with the Princeton copyright, statements, and disclaimer on every copy. No SemCor sentence is bundled here."
+      },
+      "span_category": {
+        "state": "partial",
+        "evidence": "The manual file has token indices and supports gaps, but has no VPC/VID category. Its 505 verb-POS rows are only a WordNet-underscore proxy, leaving zero directly category-confirmed VPC/VID rows."
+      },
+      "idiomaticity": {
+        "state": "not_equivalent",
+        "evidence": "The learned alternative is a WordNet sense versus NOT_AN_MWE decision, not MAGPIE/SemEval literal-versus-idiomatic annotation."
+      },
+      "fine_sense": {
+        "state": "rejected_as_validation_gold",
+        "evidence": "Only 7 verb-proxy forms and 17 positive rows show more than one observed sense. Of 136 positive verb-proxy rows, 125 map losslessly to OEWN 2025 by exact sense ID plus CILI-confirmed ILI; two take_off rows retain the same ID while shifting ILI concept. No independent annotation/adjudication study is reported."
+      },
+      "ambiguity": {
+        "state": "no",
+        "evidence": "Rows force one sense or NOT_AN_MWE; multiple candidate options are shown, but multiple plausible senses, abstention, and out-of-inventory labels are not retained."
+      },
+      "split": {
+        "state": "not_for_manual_sense_artifact",
+        "evidence": "The manual annotation artifact has no split or document field. A retrospective split cannot supply missing categories, independent labels, ambiguity states, or an untouched holdout."
+      },
+      "resolved_audit": "resources/mweaswsd_semcor_reuse_audit_2026_09_03.json",
+      "admission": "reject_as_contextual_fine_sense_validation_benchmark_external_development_only"
+    },
+    {
+      "id": "raganato_wsd_framework_mwe_verb_slice",
+      "snapshot": {
+        "repository": "https://lcl.uniroma1.it/wsdeval/",
+        "tag": null,
+        "commit": null,
+        "paper_or_documentation": "https://aclanthology.org/E17-1010/"
+      },
+      "artifact": {
+        "state": "verified_external",
+        "evidence": "The exact 165,655,083-byte framework zip and its SemCor plus five source evaluation XML/gold pairs are SHA-256 pinned in the resolved audit."
+      },
+      "license": {
+        "state": "external_analysis_only_pending_explicit_redistribution_terms",
+        "evidence": "The project publicly distributes the archive and requests framework/source-task citations, but the exact zip has no LICENSE file or explicit redistribution grant."
+      },
+      "text": {
+        "state": "external_only",
+        "evidence": "The evaluation texts inherit heterogeneous source-task provenance. No sentence or gold row is bundled; the separate official SemCor notice does not automatically license every evaluation set."
+      },
+      "span_category": {
+        "state": "type_proxy_only",
+        "evidence": "Multiword verb lemmas and head instances are present, but complete member spans are not reliably encoded. Target membership is restricted by one-category STREUSLE type overlap, not occurrence-level VPC/VID annotation."
+      },
+      "idiomaticity": {
+        "state": "no_separate_label",
+        "evidence": "WordNet sense keys do not separately answer literal-versus-idiomatic status."
+      },
+      "fine_sense": {
+        "state": "yes_severely_bounded",
+        "evidence": "After unique STREUSLE type-category, exact-ID/same-ILI OEWN mapping, and at-least-two-candidate filtering, 23 occurrences across 18 VPC types remain; six are development and 17 are fixed source-test rows already exposed during audit."
+      },
+      "ambiguity": {
+        "state": "partial_not_calibration_benchmark",
+        "evidence": "One retained row has multiple acceptable gold senses, but the slice does not preserve usable abstention or out-of-inventory outcomes and only find_out contrasts senses across evaluation occurrences."
+      },
+      "split": {
+        "state": "fixed_source_sets_with_frozen_project_roles",
+        "evidence": "SemCor is training, SemEval-2007 contributes six development rows, and Senseval-2, Senseval-3, and SemEval-2015 contribute 17 fixed source-test rows; SemEval-2013 contributes none. The source-test labels were inspected during this audit and are not a blinded project holdout."
+      },
+      "resolved_audit": "resources/wsd_mwe_sense_slice_audit_2026_09_03.json",
+      "admission": "admit_external_conditional_sense_smoke_test_only"
+    }
+  ],
+  "decisions": {
+    "occurrence_evaluation": {
+      "state": "go_with_limits",
+      "admitted_resource_ids": ["streusle_v5"],
+      "claim_ceiling": "Exact English Web-review strong VPC/VID span and category performance, reported separately for continuous/discontinuous and train-seen/unseen types.",
+      "limits": [
+        "Do not tune on the already inspected 40-item test projection or describe it as blinded.",
+        "Do not infer literal-negative, fine-sense, L2, register-general, or automatic-analyzer validity.",
+        "MAGPIE and SemEval test supplied idiom targets; they cannot substitute for open-text candidate-recall evaluation."
+      ]
+    },
+    "contextual_sense_evaluation": {
+      "state": "go_with_severe_limits_smoke_test_only",
+      "admitted_resource_ids": ["raganato_wsd_framework_mwe_verb_slice"],
+      "reason": "The task-separated standard WSD slice supplies a tiny external conditional sense test, but no located resource provides an adequate joint or target-wide VPC/VID benchmark with occurrence spans, fine senses, ambiguity, abstention, and out-of-inventory outcomes.",
+      "salvage_candidate": "raganato_wsd_framework_mwe_verb_slice",
+      "resolved_reuse_lead": "The MWEasWSD/SemCor audit found a lawful external analysis route but rejected the artifact as validation gold because it has zero category-confirmed VPC/VID rows, no independent annotation evidence or uncertainty states, order-dependent conflicting duplicates, sparse observed polysemy, and non-lossless OEWN mappings.",
+      "next_gate": "Score transparent most-frequent-sense and gloss/rule baselines on the frozen 6-row development and 17-row source-test slice. Disclose prior label inspection and treat the result as a smoke-test floor, not blinded or full contextual-sense validation; keep BERT and new gold unauthorized until that check demonstrates a specific need."
+    },
+    "secondary_contextual_idiomaticity": {
+      "state": "go_external_only",
+      "admitted_resource_ids": ["magpie"],
+      "claim_ceiling": "Type-disjoint supplied-target idiomatic/literal classification and error analysis; not candidate generation, PARSEME category, or fine-sense assignment."
+    }
+  },
+  "prohibited_actions_at_this_gate": {
+    "acquire_or_train_contextual_model": true,
+    "create_new_gold": true,
+    "merge_idiomaticity_with_fine_sense": true,
+    "treat_first_wordnet_sense_as_gold": true,
+    "bundle_external_corpus_text": true
+  }
+}

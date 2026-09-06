@@ -1,0 +1,152 @@
+{
+  "fixture_version": "1.0.0",
+  "task": "IR-134",
+  "status": "synthetic_governance_exercise_not_lexical_evidence",
+  "type_id": "ldfreq-en-vmwe-t900001",
+  "hashes": {
+    "old_inventory_sha256": "d1487028ee4efa9e87e0271d4f9759ae3bc3f779c9718aabce4c63f7c42421d0",
+    "new_inventory_sha256": "c0153f229c74ab70d9ab90be28196d376a6f69a28ba68cfddfe85d3c6873922c",
+    "old_annotations_sha256": "c3e3b5b50ffef71d60e5aafa75178e591b1ed4d2b00ff52208c8ee0754131cc9"
+  },
+  "old_inventory": {
+    "version": "1.0.0",
+    "senses": [
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s001",
+        "lifecycle_status": "active",
+        "synthetic_meaning": "broad meaning later split",
+        "identity_relations": {"supersedes": [], "split_from": [], "merged_from": [], "related_to": []},
+        "source_links": []
+      },
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s002",
+        "lifecycle_status": "active",
+        "synthetic_meaning": "first meaning later merged",
+        "identity_relations": {"supersedes": [], "split_from": [], "merged_from": [], "related_to": []},
+        "source_links": []
+      },
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s003",
+        "lifecycle_status": "active",
+        "synthetic_meaning": "second meaning later merged",
+        "identity_relations": {"supersedes": [], "split_from": [], "merged_from": [], "related_to": []},
+        "source_links": []
+      },
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s004",
+        "lifecycle_status": "active",
+        "synthetic_meaning": "meaning retained across source update",
+        "identity_relations": {"supersedes": [], "split_from": [], "merged_from": [], "related_to": []},
+        "source_links": [
+          {
+            "source_key": "fixture-source@1:old-sense",
+            "link_status": "active",
+            "mapping_relation": "equivalent"
+          }
+        ]
+      }
+    ]
+  },
+  "new_inventory": {
+    "version": "2.0.0",
+    "senses": [
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s001",
+        "lifecycle_status": "deprecated",
+        "synthetic_meaning": "broad meaning later split",
+        "identity_relations": {"supersedes": [], "split_from": [], "merged_from": [], "related_to": ["ldfreq-en-vmwe-t900001-s005", "ldfreq-en-vmwe-t900001-s006"]},
+        "source_links": []
+      },
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s002",
+        "lifecycle_status": "deprecated",
+        "synthetic_meaning": "first meaning later merged",
+        "identity_relations": {"supersedes": [], "split_from": [], "merged_from": [], "related_to": ["ldfreq-en-vmwe-t900001-s007"]},
+        "source_links": []
+      },
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s003",
+        "lifecycle_status": "deprecated",
+        "synthetic_meaning": "second meaning later merged",
+        "identity_relations": {"supersedes": [], "split_from": [], "merged_from": [], "related_to": ["ldfreq-en-vmwe-t900001-s007"]},
+        "source_links": []
+      },
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s004",
+        "lifecycle_status": "active",
+        "synthetic_meaning": "meaning retained across source update",
+        "identity_relations": {"supersedes": [], "split_from": [], "merged_from": [], "related_to": []},
+        "source_links": [
+          {
+            "source_key": "fixture-source@1:old-sense",
+            "link_status": "deprecated",
+            "mapping_relation": "equivalent",
+            "deprecation_reason": "synthetic source edition removed the old key"
+          },
+          {
+            "source_key": "fixture-source@2:new-sense",
+            "link_status": "active",
+            "mapping_relation": "equivalent"
+          }
+        ]
+      },
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s005",
+        "lifecycle_status": "active",
+        "synthetic_meaning": "first child of split",
+        "identity_relations": {"supersedes": [], "split_from": ["ldfreq-en-vmwe-t900001-s001"], "merged_from": [], "related_to": []},
+        "source_links": []
+      },
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s006",
+        "lifecycle_status": "active",
+        "synthetic_meaning": "second child of split",
+        "identity_relations": {"supersedes": [], "split_from": ["ldfreq-en-vmwe-t900001-s001"], "merged_from": [], "related_to": []},
+        "source_links": []
+      },
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s007",
+        "lifecycle_status": "active",
+        "synthetic_meaning": "replacement created by merge",
+        "identity_relations": {"supersedes": [], "split_from": [], "merged_from": ["ldfreq-en-vmwe-t900001-s002", "ldfreq-en-vmwe-t900001-s003"], "related_to": []},
+        "source_links": []
+      },
+      {
+        "sense_id": "ldfreq-en-vmwe-t900001-s008",
+        "lifecycle_status": "active",
+        "synthetic_meaning": "new project sense prompted by training-only OOI evidence",
+        "identity_relations": {"supersedes": [], "split_from": [], "merged_from": [], "related_to": []},
+        "source_links": []
+      }
+    ]
+  },
+  "old_annotations": [
+    {"annotation_id": "fixture-a001", "inventory_version": "1.0.0", "decision_status": "assigned", "sense_ids": ["ldfreq-en-vmwe-t900001-s001"]},
+    {"annotation_id": "fixture-a002", "inventory_version": "1.0.0", "decision_status": "assigned", "sense_ids": ["ldfreq-en-vmwe-t900001-s002"]},
+    {"annotation_id": "fixture-a003", "inventory_version": "1.0.0", "decision_status": "assigned", "sense_ids": ["ldfreq-en-vmwe-t900001-s003"]},
+    {"annotation_id": "fixture-a004", "inventory_version": "1.0.0", "decision_status": "out_of_inventory", "sense_ids": []},
+    {"annotation_id": "fixture-a005", "inventory_version": "1.0.0", "decision_status": "assigned", "sense_ids": ["ldfreq-en-vmwe-t900001-s004"]}
+  ],
+  "migration_records": [
+    {"annotation_id": "fixture-a001", "migration_status": "review_required_split", "candidate_new_sense_ids": ["ldfreq-en-vmwe-t900001-s005", "ldfreq-en-vmwe-t900001-s006"], "automatic_rewrite_applied": false},
+    {"annotation_id": "fixture-a002", "migration_status": "review_required_merge", "candidate_new_sense_ids": ["ldfreq-en-vmwe-t900001-s007"], "automatic_rewrite_applied": false},
+    {"annotation_id": "fixture-a003", "migration_status": "review_required_merge", "candidate_new_sense_ids": ["ldfreq-en-vmwe-t900001-s007"], "automatic_rewrite_applied": false},
+    {"annotation_id": "fixture-a004", "migration_status": "review_required_new_inventory_sense", "candidate_new_sense_ids": ["ldfreq-en-vmwe-t900001-s008"], "automatic_rewrite_applied": false},
+    {"annotation_id": "fixture-a005", "migration_status": "compatible_same_project_sense", "candidate_new_sense_ids": ["ldfreq-en-vmwe-t900001-s004"], "automatic_rewrite_applied": false}
+  ],
+  "events": [
+    {"event": "split", "old_sense_ids": ["ldfreq-en-vmwe-t900001-s001"], "new_sense_ids": ["ldfreq-en-vmwe-t900001-s005", "ldfreq-en-vmwe-t900001-s006"]},
+    {"event": "merge", "old_sense_ids": ["ldfreq-en-vmwe-t900001-s002", "ldfreq-en-vmwe-t900001-s003"], "new_sense_ids": ["ldfreq-en-vmwe-t900001-s007"]},
+    {"event": "deprecated_source", "project_sense_ids": ["ldfreq-en-vmwe-t900001-s004"], "old_source_key": "fixture-source@1:old-sense", "replacement_source_key": "fixture-source@2:new-sense", "project_identity_action": "retained"},
+    {"event": "new_ooi_sense", "source_annotation_ids": ["fixture-a004"], "new_sense_ids": ["ldfreq-en-vmwe-t900001-s008"], "old_annotation_action": "preserved_pending_manual_review"}
+  ],
+  "approval_fixture": {
+    "evidence_partition": "training_only_synthetic",
+    "sealed_test_examined": false,
+    "performance_metrics_examined": false,
+    "proposal_recorded_before_change": true,
+    "required_approval_roles": ["lexicographer", "PI"],
+    "approval_state": "accepted_as_protocol_exercise_not_semantic_adjudication",
+    "benchmark_rule": "If a released or exposed test exists, preserve it and issue a new major benchmark version; never backfit the same test."
+  }
+}

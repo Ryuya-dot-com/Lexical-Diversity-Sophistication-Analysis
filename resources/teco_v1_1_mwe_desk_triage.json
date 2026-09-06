@@ -1,0 +1,179 @@
+{
+  "review_schema_version": "0.1.0",
+  "review_id": "teco-v1.1-mwe-desk-triage-v1",
+  "reviewed_on": "2026-09-02",
+  "status": "preliminary_single_project_desk_triage_not_gold_annotation",
+  "inputs": {
+    "candidate_screen_id": "teco-v1.1-oewn-outcome-blind-mwe-leads-v1",
+    "candidate_screen_sha256": "eaf6e871e34874eb7d8bc902922b3362dc0292d9faff4dd9af747142f53ec7fa",
+    "teco_word_info_name": "word info_v2.csv",
+    "teco_word_info_sha256": "25ea5891c269edd8efb1f29c27b233efb2837ded29f620b04a81eea1d5309f4b",
+    "streusle_profile_id": "streusle-v5-vpc-vid-offline",
+    "streusle_profile_sha256": "448a4aeef60bc114cbd2fc6a839ddc168a068247222a708361ab7b32c9d3f6cd",
+    "streusle_release_commit": "8ba61fe4f216e7967500a862554a4fff79d25f5d",
+    "taxonomy_standard": "PARSEME shared-task annotation guidelines 1.2, with the 2.0 take part in open-slot example used only as a boundary check",
+    "taxonomy_urls": [
+      "https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2/fulldoc.php",
+      "https://parsemefr.lis-lab.fr/parseme-st-guidelines/2.0/fulldoc.php?page=home"
+    ],
+    "eye_movement_or_participant_outcome_files_read": []
+  },
+  "construct": {
+    "purpose": "Outcome-blind occurrence and boundary triage before any TECO eye-movement join.",
+    "scope": "English strong VPC.full, VPC.semi, and VID candidates; IAV, LVC, nonverbal idioms, weak collocations, and grammatical constructions are not silently added.",
+    "method": "Read all 30 local passage token sequences, adjudicate all 285 OEWN leads in context, compare type evidence with the pinned STREUSLE release, and run a bounded second pass for missed strong verbal expressions.",
+    "default_decision": "Every automatic candidate not listed under plausible_in_scope or automatic_exceptions is provisionally not retained in the bounded VPC/VID scope.",
+    "boundary_rules": [
+      "A selected preposition that introduces an open slot is not made an MWE member merely because a dictionary form includes it.",
+      "For take part in, take and part are the provisional members and in introduces the open slot.",
+      "Gaps and open-slot material never enter the primary member ROI.",
+      "Type-level OEWN or STREUSLE evidence generates or checks a lead; the local occurrence still controls the decision."
+    ],
+    "limits": [
+      "These are one researcher's development decisions, not independent gold labels.",
+      "The missed-lead pass is bounded and is not an exhaustive inventory of all English MWE categories.",
+      "Contextual OEWN senses and participant MWE knowledge were not assigned.",
+      "No source prose, surface token sequence, participant row, answer, proficiency score, or eye measure is bundled."
+    ]
+  },
+  "summary": {
+    "texts_read": 30,
+    "automatic_candidates_reviewed": 285,
+    "automatic_plausible_in_scope": 39,
+    "automatic_exception_count": 4,
+    "automatic_default_not_retained": 242,
+    "manual_plausible_in_scope": 4,
+    "manual_unresolved": 10,
+    "total_plausible_in_scope_occurrences": 43,
+    "total_plausible_in_scope_distinct_canonical_forms": 32,
+    "plausible_category_counts": {
+      "VPC.full": 33,
+      "VPC.semi": 7,
+      "VID": 3
+    },
+    "plausible_discontinuous_occurrences": 2,
+    "plausible_cross_inferred_line_occurrences": 2,
+    "oewn_take_in_leads": 3,
+    "plausible_take_in_occurrences": 0,
+    "streusle_type_matched_automatic_candidates": 64,
+    "streusle_type_matched_distinct_oewn_forms": 34
+  },
+  "automatic_decision_columns": [
+    "candidate_id",
+    "provisional_category"
+  ],
+  "plausible_in_scope": [
+    ["teco-t01-c005", "VPC.full"],
+    ["teco-t04-c002", "VID"],
+    ["teco-t04-c009", "VPC.full"],
+    ["teco-t04-c013", "VPC.full"],
+    ["teco-t05-c001", "VPC.full"],
+    ["teco-t05-c008", "VPC.full"],
+    ["teco-t05-c011", "VPC.full"],
+    ["teco-t05-c013", "VPC.full"],
+    ["teco-t05-c014", "VPC.full"],
+    ["teco-t05-c018", "VPC.full"],
+    ["teco-t05-c020", "VPC.full"],
+    ["teco-t06-c004", "VPC.full"],
+    ["teco-t07-c001", "VPC.full"],
+    ["teco-t09-c005", "VPC.full"],
+    ["teco-t09-c011", "VPC.full"],
+    ["teco-t09-c016", "VPC.semi"],
+    ["teco-t10-c001", "VPC.full"],
+    ["teco-t11-c003", "VPC.full"],
+    ["teco-t13-c002", "VPC.semi"],
+    ["teco-t13-c007", "VPC.full"],
+    ["teco-t14-c008", "VPC.full"],
+    ["teco-t15-c003", "VPC.full"],
+    ["teco-t15-c010", "VPC.semi"],
+    ["teco-t16-c003", "VPC.full"],
+    ["teco-t17-c003", "VPC.semi"],
+    ["teco-t18-c001", "VPC.full"],
+    ["teco-t18-c007", "VPC.semi"],
+    ["teco-t18-c010", "VPC.full"],
+    ["teco-t19-c003", "VPC.full"],
+    ["teco-t19-c008", "VPC.full"],
+    ["teco-t19-c012", "VPC.semi"],
+    ["teco-t20-c003", "VPC.full"],
+    ["teco-t20-c006", "VPC.full"],
+    ["teco-t21-c003", "VPC.full"],
+    ["teco-t22-c002", "VPC.full"],
+    ["teco-t25-c006", "VPC.full"],
+    ["teco-t28-c003", "VPC.full"],
+    ["teco-t28-c004", "VPC.semi"],
+    ["teco-t30-c009", "VPC.full"]
+  ],
+  "automatic_exception_columns": [
+    "candidate_id",
+    "desk_state",
+    "provisional_category",
+    "reason_code"
+  ],
+  "automatic_exceptions": [
+    ["teco-t15-c004", "not_retained_boundary", null, "selected_preposition_opens_slot_after_nested_catch_up"],
+    ["teco-t16-c005", "unresolved_in_scope", "VPC.semi_or_compositional_motion", "information_entry_use_requires_independent_adjudication"],
+    ["teco-t27-c004", "superseded_by_manual_longer_expression", null, "go_out_is_nested_in_go_out_of_business"],
+    ["teco-t28-c005", "superseded_by_manual_longer_expression", null, "put_under_is_nested_in_put_under_the_spotlight"]
+  ],
+  "manual_lead_columns": [
+    "manual_id",
+    "textid",
+    "canonical_form",
+    "span_positions",
+    "span_endpoint_itemids",
+    "member_positions",
+    "member_itemids",
+    "desk_state",
+    "provisional_category",
+    "crosses_inferred_line",
+    "reason_code"
+  ],
+  "manual_leads": [
+    ["teco-manual-001", 1, "be in trouble", [168, 170], [168, 170], null, null, "unresolved", "VID_or_copular_fixed_expression", false, "category_and_lexicalization_boundary_unresolved"],
+    ["teco-manual-002", 2, "look forward to", [302, 304], [613, 615], null, null, "unresolved", "IAV_or_VID", false, "streusle_type_has_two_iav_and_one_vid_annotations"],
+    ["teco-manual-003", 6, "carry around", [95, 98], [1622, 1625], [95, 98], [1622, 1625], "unresolved", "VPC.semi_or_compositional_motion", true, "object_gap_and_cross_line_recall_case"],
+    ["teco-manual-004", 7, "join in", [145, 146], [1985, 1986], [145, 146], [1985, 1986], "plausible_in_scope", "VPC.full", false, "oewn_projection_recall_miss"],
+    ["teco-manual-005", 8, "get used to", [279, 281], [2386, 2388], null, null, "unresolved", "VID_or_IAV_or_grammatical_construction", false, "category_boundary_unresolved"],
+    ["teco-manual-006", 13, "take turns", [258, 259], [4005, 4006], null, null, "unresolved", "VID_or_LVC", false, "plural_normalization_and_category_boundary_unresolved"],
+    ["teco-manual-007", 22, "think so", [235, 236], [7136, 7137], [235, 236], [7136, 7137], "plausible_in_scope", "VID", false, "matching_streusle_vid_type_and_context"],
+    ["teco-manual-008", 25, "have something to do with", [128, 132], [8159, 8163], null, null, "unresolved", "VID", false, "lexicalized_member_and_open_slot_boundary_unresolved"],
+    ["teco-manual-009", 26, "force one's way into", [333, 336], [8678, 8681], null, null, "unresolved", "VID_or_productive_construction", false, "lexicalization_boundary_unresolved"],
+    ["teco-manual-010", 27, "pass down", [65, 66], [8794, 8795], [65, 66], [8794, 8795], "plausible_in_scope", "VPC.full", false, "oewn_projection_recall_miss"],
+    ["teco-manual-011", 27, "pay a heavy price", [98, 101], [8827, 8830], null, null, "unresolved", "VID_or_LVC", false, "idiomaticity_clearer_than_category_and_member_boundary"],
+    ["teco-manual-012", 27, "go out of business", [203, 206], [8932, 8935], [203, 204, 205, 206], [8932, 8933, 8934, 8935], "plausible_in_scope", "VID", true, "matching_streusle_vid_type_corrects_nested_oewn_boundary"],
+    ["teco-manual-013", 28, "put under the spotlight", [316, 322], [9347, 9353], null, null, "unresolved", "VID", true, "object_gap_determiner_membership_and_cross_line_boundary_unresolved"],
+    ["teco-manual-014", 30, "be under threat", [10, 12], [9760, 9762], null, null, "unresolved", "VID_or_copular_fixed_expression", false, "category_and_lexicalization_boundary_unresolved"]
+  ],
+  "hard_case_controls": [
+    {
+      "case": "take_part_in",
+      "decision": "retain take part as VID; exclude in from members because it introduces the open slot",
+      "automatic_candidate_id": "teco-t04-c002",
+      "rejected_overlapping_take_in_candidate_id": "teco-t04-c003"
+    },
+    {
+      "case": "catch_up_with",
+      "decision": "retain nested catch up; do not make selected with a member",
+      "retained_candidate_id": "teco-t15-c003",
+      "nonretained_candidate_id": "teco-t15-c004"
+    },
+    {
+      "case": "type_evidence_is_not_occurrence_truth",
+      "decision": "do not promote make money, spend time, have to, or base on from isolated or category-conflicted STREUSLE type evidence"
+    }
+  ],
+  "next_gate": {
+    "required_before_outcome_join": [
+      "author confirmation of every plausible and unresolved row",
+      "a second independent annotation of retained and hard-case rows",
+      "adjudication with an explicit disagreement ledger",
+      "freeze contextual-sense and ROI records only after occurrence/member decisions"
+    ],
+    "forbidden_now": [
+      "estimate MWE eye-movement effects",
+      "select hypotheses from TECO outcomes",
+      "treat 43 plausible occurrences as gold or representative prevalence",
+      "infer participant MWE knowledge from gaze"
+    ]
+  }
+}

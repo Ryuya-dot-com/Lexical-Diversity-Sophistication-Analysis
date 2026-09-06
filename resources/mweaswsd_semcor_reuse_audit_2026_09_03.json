@@ -1,0 +1,214 @@
+{
+  "audit_version": "1.0.0",
+  "audit_id": "mweaswsd-semcor-reuse-audit-2026-09-03",
+  "audited_on": "2026-09-03",
+  "question": "Can the exact manual MWEasWSD SemCor-derived annotations serve as independent English VPC/VID contextual fine-sense validation gold for this project?",
+  "source_snapshots": {
+    "mweaswsd": {
+      "repository": "https://github.com/Mindful/MWEasWSD",
+      "commit": "5af800780e17ed860f5893164870bd0bfa1b2598",
+      "paper": "https://aclanthology.org/2023.findings-emnlp.14/",
+      "paper_pdf_size_bytes": 418537,
+      "paper_pdf_sha256": "cf3492ea345064359f62e31ae40d2ffa990d0df02b3fcb6d3eda5bff7ca62546",
+      "repository_license": "AGPL-3.0",
+      "repository_license_path": "LICENSE.MD",
+      "repository_license_git_blob": "4ef32f0833975b98cb4080343c8fd60ab6d0f88c",
+      "manual_path": "data/annotations.jsonl",
+      "augmented_path": "data/augmented/semcor.fixed.annotated.autoneg.jsonl"
+    },
+    "semcor": {
+      "title": "SemCor 3.0",
+      "official_download": "https://web.eecs.umich.edu/~mihalcea/downloads/semcor/semcor3.0.tar.gz",
+      "upstream_page": "https://web.eecs.umich.edu/~mihalcea/downloads.html#semcor",
+      "license": "WordNet 1.6 Semantic Concordance license as retained in SemCor 3.0"
+    },
+    "oewn": {
+      "release": "2025-edition",
+      "commit": "dc343f2683279ecbb13fab4e2fd778d7b162d287",
+      "artifact": "english-wordnet-2025-json.zip",
+      "license": "CC BY 4.0 plus underlying WordNet notice"
+    },
+    "cili": {
+      "repository": "https://github.com/globalwordnet/cili",
+      "commit": "a895d7ecb18019dda3443f98901e59d81ce8722b",
+      "sense_map": "sense-mappings/pwn30.tab",
+      "ili_map": "ili-map-pwn30.tab",
+      "license": "CC BY 4.0 or later"
+    }
+  },
+  "rights": {
+    "semcor_text_and_wordnet_annotations": {
+      "state": "reusable_with_notice",
+      "evidence": "The official SemCor 3.0 archive contains README.semcor3.0 and LICENSE. The README grants permission to use, copy, modify, and distribute the database for any purpose without fee or royalty, subject to retaining Princeton's copyright, statements, and disclaimer on all copies.",
+      "conditions": [
+        "Retain both the SemCor/WordNet notice and disclaimer with every internal or distributed copy or modification.",
+        "Do not use Princeton's name in advertising or publicity."
+      ]
+    },
+    "mweaswsd_added_annotations": {
+      "state": "external_agpl_layer",
+      "evidence": "The fixed repository snapshot has a root AGPL-3.0 license and no separate data-license exception for the added annotation files.",
+      "conditions": [
+        "Treat the MWEasWSD additions as a separate AGPL-governed external layer; do not relicense or bundle them into this project's MIT/CC BY core.",
+        "Retain the SemCor notice independently because the repository license does not erase incorporated-source conditions."
+      ]
+    },
+    "mapping_resources": {
+      "state": "reusable_with_attribution",
+      "evidence": "OEWN and CILI are CC BY resources; the pinned projection and mapping hashes are recorded in computed_observations."
+    },
+    "rights_result": "Rights permit a carefully attributed external analysis route; rights are not the reason for benchmark rejection."
+  },
+  "annotation_provenance": {
+    "reported": [
+      "The paper says the rule-based pipeline was run on SemCor and outputs were manually assigned an appropriate WordNet sense or the not-an-MWE option based on context.",
+      "The appendix names Prodigy as the annotation tool."
+    ],
+    "not_reported_or_not_retained": [
+      "number and identity of annotators",
+      "annotator qualifications or training",
+      "independent pre-adjudication labels",
+      "adjudication protocol",
+      "inter-annotator agreement",
+      "ambiguity, abstention, or out-of-inventory decisions",
+      "document identifiers and a manual-label split"
+    ],
+    "status_field_note": "All 1,296 embedded _annotation.status values are pending, while the Prodigy-level answer field contains accept or reject. This exact inconsistency is reported without treating pending alone as proof that annotation was unfinished."
+  },
+  "duplicate_and_application_audit": {
+    "deduplication_contract": "The upstream loader keeps the first accepted Python hash of sentence text plus word indices; lemma and sense are not part of the key. Rejected rows are ignored.",
+    "observed_problem": "Thirty-four later accepted rows are dropped across 33 duplicate keys. Five duplicate keys contain conflicting accepted labels, so output is order-dependent rather than adjudicated. Seven keys occur with both accept and reject answers.",
+    "application_result": "All 1,159 first-kept accepted keys and labels occur in the pinned augmented artifact, so the published processed artifact shows zero missing manual applications. The earlier hypothesis of three collisions with existing SemCor MWEs is rejected.",
+    "latent_risks": [
+      "The upstream application indexes sentences by full text and would collapse duplicate sentence strings. The processed corpus has 89 duplicated text values, although none of the accepted manual keys uses one of them.",
+      "Python's process-specific integer hash is used as an intermediate annotation ID rather than a persistent corpus/document/span identifier."
+    ],
+    "paper_artifact_mismatch": "The pinned augmented file has 12,910 positive and 15,605 negative groups, whereas paper Table 2 reports 12,907 and 14,688. The +3 and +917 differences are recorded as an unresolved artifact-versus-paper mismatch, not explained as collisions."
+  },
+  "target_scope_audit": {
+    "directly_category_confirmed_vpc_vid_rows": 0,
+    "reason": "The artifact has no VPC.full, VPC.semi, or VID field. Its verb-POS underscore forms are only a 505-row proxy candidate pool; WordNet underscore membership is broader than the target construct.",
+    "verb_proxy_summary": "The proxy has 136 positive and 369 negative rows across 232 forms, including 261 discontinuous rows. Only seven forms and 17 positive rows exhibit more than one observed positive WordNet sense.",
+    "take_in_result": "Five take_in candidates contain one positive WordNet sense and four not-an-MWE labels. They test candidate rejection for this form, not take in polysemy."
+  },
+  "mapping_interpretation": {
+    "lossless_rule": "Count a WordNet 3.0 label as losslessly mapped only when the exact OEWN 2025 sense ID exists and its OEWN ILI equals the CILI mapping of the source WordNet 3.0 synset.",
+    "verb_result": "Only 125 of 136 positive verb-proxy rows meet the lossless rule. Exact sense-ID matching alone would accept 127 and would silently mis-map two take_off rows whose identical-looking sense key now points to a different ILI concept.",
+    "other_losses": "bring_together maps only to a surviving concept whose OEWN lexicalization was removed; six turn_to and two be_well rows map to source concepts absent from OEWN 2025 core.",
+    "satellite_limit": "Twenty-nine adjective-satellite rows have exact OEWN sense IDs but cannot be independently ILI-verified with the pinned CILI sense map, whose README documents incomplete -s support."
+  },
+  "decision": {
+    "state": "reject_as_contextual_fine_sense_validation_benchmark",
+    "rights_blocking": false,
+    "quality_and_construct_blocking": true,
+    "reasons": [
+      "zero category-confirmed VPC/VID rows",
+      "training-oriented unsplit labels with no independent annotation, adjudication, or agreement evidence",
+      "five silently first-wins conflicting duplicate keys",
+      "single forced sense-or-not-MWE labels that collapse ambiguity, abstention, and out-of-inventory states",
+      "only seven verb proxy forms with observed positive sense contrasts and only one positive take_in sense",
+      "non-lossless WordNet 3.0 to OEWN 2025 cases, including an exact-ID concept mismatch",
+      "unresolved disagreement between the pinned processed artifact and the published Table 2 counts"
+    ],
+    "permitted_use": "External development, method comparison, and error analysis with AGPL/SemCor/CILI/OEWN notices; never an independent held-out fine-sense score for this project.",
+    "immutable_split_proposal": null,
+    "why_no_split": "A split is not proposed because the artifact failed admission. Retrospectively partitioning these rows would not create missing VPC/VID categories, independent labels, ambiguity states, document identities, or a credible untouched holdout."
+  },
+  "next_gate": {
+    "action": "Run one bounded, target-specific search for an existing English VPC/VID occurrence corpus with explicit inventory-linked contextual senses and independent annotation evidence.",
+    "stop_rule": "If no resource satisfies category, contextual fine sense, uncertainty, rights, provenance, and split requirements, narrow the first-paper validation claim before any BERT/model work; do not turn dictionary entries or this training artifact into gold.",
+    "still_prohibited": [
+      "model acquisition or training",
+      "new gold creation",
+      "browser sense-inventory expansion",
+      "reporting MWEasWSD performance as validation of this project's contextual sense technology"
+    ]
+  },
+  "reproduction": {
+    "script": "scripts/audit_mweaswsd_semcor.py",
+    "privacy": "The script reads external full text locally but emits aggregate counts and lexical IDs only; no SemCor sentence is stored in this repository."
+  },
+  "computed_observations": {
+    "artifacts": {
+      "manual": {"size_bytes": 3575865, "sha256": "b3ab0995cb5d9d9b2be2361be2ac094ba36bba18e9f49799e0d006bf4d6edd37"},
+      "augmented": {"size_bytes": 117015352, "sha256": "7b38aac490ff990f3eba014d141497298d2d638d27f8e91c8cec53a28231eb7e"},
+      "oewn": {"size_bytes": 9986555, "sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51"},
+      "cili_sense_map": {"size_bytes": 6637176, "sha256": "446a94e3fdf7d5b6b9604797ab99c727e15856a46d57307a23bf2cea1da418f2"},
+      "cili_ili_map": {"size_bytes": 2124416, "sha256": "13b6741395a8bdf20e5a19686ffa49167653696d4f523db17a79dce3211a6627"},
+      "semcor": {"size_bytes": 4074509, "sha256": "a8000014d6fc864f8bd9d83c62be601151cadd617c6554a39a1ad38b4b3f017b"}
+    },
+    "manual": {
+      "raw_rows": 1296,
+      "answer_counts": {"accept": 1193, "reject": 103},
+      "annotation_status_counts": {"pending": 1296},
+      "unique_accepted_sentence_span_keys": 1159,
+      "accepted_wordnet_sense_rows": 501,
+      "accepted_not_an_mwe_rows": 658,
+      "duplicate_accepted_rows_removed_by_first_wins": 34,
+      "duplicate_accepted_keys": 33,
+      "conflicting_duplicate_accepted_keys": 5,
+      "accept_reject_overlap_keys": 7,
+      "accepted_selection_mismatches": 0,
+      "split_fields": [],
+      "category_fields": [],
+      "annotator_identity_fields": [],
+      "verb_form_proxy": {
+        "rows": 505,
+        "positive_rows": 136,
+        "negative_rows": 369,
+        "types": 232,
+        "positive_types": 95,
+        "negative_types": 171,
+        "types_with_positive_and_negative_rows": 34,
+        "positive_rows_with_multiple_wordnet_candidates": 83,
+        "types_with_multiple_observed_positive_senses": 7,
+        "rows_in_multiple_observed_positive_sense_types": 17,
+        "multiple_observed_positive_sense_types": [
+          {"lemma": "bring_down", "rows": 2, "observed_sense_count": 2},
+          {"lemma": "carry_out", "rows": 2, "observed_sense_count": 2},
+          {"lemma": "look_at", "rows": 5, "observed_sense_count": 2},
+          {"lemma": "take_away", "rows": 2, "observed_sense_count": 2},
+          {"lemma": "take_out", "rows": 2, "observed_sense_count": 2},
+          {"lemma": "think_about", "rows": 2, "observed_sense_count": 2},
+          {"lemma": "turn_in", "rows": 2, "observed_sense_count": 2}
+        ],
+        "continuous_rows": 244,
+        "discontinuous_rows": 261
+      },
+      "take_in": {"rows": 5, "positive_rows": 1, "negative_rows": 4, "observed_positive_sense_count": 1}
+    },
+    "augmented": {
+      "sentence_rows": 37176,
+      "duplicate_sentence_text_values": 89,
+      "maximum_sentence_text_multiplicity": 10,
+      "accepted_keys_on_duplicated_sentence_text": 0,
+      "group_counts": {"manual_negative": 658, "manual_positive": 501, "semcor_original_positive": 12409, "synthetic_negative": 14947},
+      "manual_groups": 1159,
+      "accepted_keys_missing_after_application": 0,
+      "applied_manual_label_mismatches": 0,
+      "inferred_application_collisions_in_published_artifact": 0,
+      "paper_table_2_comparison": {"artifact_final_positive": 12910, "paper_final_positive": 12907, "difference": 3, "artifact_final_negative": 15605, "paper_final_negative": 14688, "difference_negative": 917}
+    },
+    "mapping": {
+      "normalization": "case-fold lemma; convert NLTK decimal lexical/head IDs to CILI two-digit hexadecimal IDs",
+      "all_positive_rows": {"concept_absent_from_oewn_2025": 13, "exact_ili_mismatch": 2, "exact_ili_unverified": 29, "exact_same_ili": 440, "synset_only_lexeme_removed": 17},
+      "all_positive_source_senses": {"concept_absent_from_oewn_2025": 6, "exact_ili_mismatch": 1, "exact_ili_unverified": 16, "exact_same_ili": 286, "synset_only_lexeme_removed": 7},
+      "verb_positive_rows": {"concept_absent_from_oewn_2025": 8, "exact_ili_mismatch": 2, "exact_same_ili": 125, "synset_only_lexeme_removed": 1},
+      "verb_lossless_exact_same_ili": {"numerator": 125, "denominator": 136},
+      "verb_exact_sense_id": {"numerator": 127, "denominator": 136},
+      "non_lossless_verb_senses": [
+        {"sense_id": "be_well%2:29:00::", "lemma": "be_well", "occurrences": 2, "status": "concept_absent_from_oewn_2025"},
+        {"sense_id": "bring_together%2:35:01::", "lemma": "bring_together", "occurrences": 1, "status": "synset_only_lexeme_removed"},
+        {"sense_id": "take_off%2:30:00::", "lemma": "take_off", "occurrences": 2, "status": "exact_ili_mismatch"},
+        {"sense_id": "turn_to%2:30:00::", "lemma": "turn_to", "occurrences": 6, "status": "concept_absent_from_oewn_2025"}
+      ]
+    },
+    "semcor_rights_artifact": {
+      "has_readme": true,
+      "has_license": true,
+      "readme_identifies_semcor_1_6_as_princeton_property": true,
+      "readme_grants_use_copy_modify_and_distribute": true,
+      "license_requires_notice_on_all_copies": true
+    }
+  }
+}

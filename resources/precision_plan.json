@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0.0",
+  "plan_id": "ENWIKI-VPC-VID-PRECISION-2026-09-04",
+  "frozen_on": "2026-09-04",
+  "status": "blocked_pending_observed_inputs_and_pilot_activation",
+  "task": "IR-127",
+  "dependencies": {
+    "precision_simulator": {
+      "path": "scripts/simulate_benchmark_precision.py",
+      "sha256": "a72ea1e55c91e37cf00e9926e64fc56f56410ead057d002978fc01aef89d8d8d"
+    },
+    "bootstrap_evaluator": {
+      "path": "scripts/bootstrap_evaluation.py",
+      "sha256": "30f6762c04f378f02ac6b66481ae57c646f6d7352a626f1324e4c4c46f52453f"
+    },
+    "metric_contract": {
+      "path": "metric_contract.json",
+      "sha256": "a293ed4c34b671945623109b4c08f932889ab648ecfd0853b9893cfdd1700c30"
+    },
+    "evaluation_strata": {
+      "path": "resources/evaluation_strata.json",
+      "sha256": "5a7d9cf321c07735498506aaa27658d8d164ed54e9d69598a0466967b505d43e"
+    },
+    "sampling_frame": {
+      "path": "resources/sampling_frame.json",
+      "sha256": "55ac5a99d2c83500ba85dbda9e9ee5ab5b8db2438a61a57da1fc56fc85c02184"
+    },
+    "split_protocol": {
+      "path": "resources/split_protocol.json",
+      "sha256": "010c3f6ada293fcfc81d17be0c23b82cf3e71532df70d6bd05763be5b4246700"
+    },
+    "planning_pilot_addendum": {
+      "path": "resources/planning_pilot_addendum.json",
+      "sha256": "c1a1a2f68927079ebb3dc994a8b1def0a84f7fa0cbda243ba27df39583af64c7"
+    }
+  },
+  "precision_targets": {
+    "overall_primary_estimate": 0.05,
+    "inferential_single_axis_stratum": 0.1
+  },
+  "simulation": {
+    "contract_version": "1.0.0-predata",
+    "seed": "enwiki-20260901-vpc-vid-precision-sim-v1",
+    "simulations": 10000,
+    "confidence_level": 0.95,
+    "interval_method": "percentile_type_7_linear_interpolation",
+    "primary_design": "Resample whole pilot documents with replacement within frozen sampling-length strata at each candidate n_h.",
+    "sensitivity_design": "Resample complete canonical-type contribution clusters globally at the prospectively justified type-count assumption for the same candidate.",
+    "supported_input": "One additive numerator/denominator metric and one planning system per simulation input. Run separate frozen inputs for each primary overall estimate and requested single-axis stratum.",
+    "agreement_role": "Pilot agreement is a separate eligibility and annotation-error input. It may be simulated as its own additive agreement proportion, but it is not silently folded into a performance denominator or a combined score.",
+    "selection_rule": "Among target-blind candidates passing both document-cluster and canonical-type sensitivity targets, choose the fewest total documents; break ties by the lower justified canonical-type count and then allocation id."
+  },
+  "planning_pilot_design_resolution": {
+    "state": "resolved",
+    "resolution_record": "resources/planning_pilot_addendum.json",
+    "conflict": "IR-127 requires observed prevalence and cluster structure from IR-147, but the current IR-121 frame selects no Wikipedia document until IR-127 freezes n_h. A training-only convenience pilot can refine the guide, agreement procedure, and burden but cannot automatically estimate the Wikipedia sampling population.",
+    "adopted_resolution": "The versioned sampling/split addendum creates a target-blind probability-sampled planning prefix after the training-only pilot and guide freeze. It remains exposed development material and is permanently excluded from the sealed test.",
+    "alternative_resolution": "Use a declared external transport prior with conservative sensitivity bounds only if comparability to the frozen Wikipedia population is justified in writing; do not call it observed project prevalence.",
+    "prohibited_resolution": "Do not estimate population prevalence or clustering from target-enriched, target-searched, convenience-selected, or rights-filtered-after-target-exposure texts."
+  },
+  "required_observed_inputs": {
+    "simulation_input_path": null,
+    "simulation_input_sha256": null,
+    "source_population_counts_by_length": null,
+    "pilot_sampling_design_and_inclusion_probabilities": null,
+    "pilot_prevalence_and_cluster_estimates": null,
+    "pilot_agreement_results_path": null,
+    "pilot_agreement_results_sha256": null,
+    "observed_annotation_burden_path": null,
+    "observed_annotation_burden_sha256": null,
+    "feasible_resource_ceiling": null
+  },
+  "simulation_input_contract": {
+    "required_fields": [
+      "simulation_contract_version",
+      "metric_id",
+      "systems",
+      "planning_system",
+      "target_half_width",
+      "seed",
+      "simulations",
+      "rows",
+      "allocations"
+    ],
+    "row_contract": "Use the exact additive contribution-row contract accepted by scripts/bootstrap_evaluation.py, with unique record_id, document_id, length_stratum, canonical_type_id, positive weight, empty strata for an overall run, and nonnegative numerator/denominator contributions.",
+    "canonical_type_count_rule": "Each candidate value must be prospectively derived from the target-blind pilot's type-richness analysis for that document allocation. It is a sensitivity assumption, not a target-conditioned document-selection quota."
+  },
+  "candidate_allocation_contract": {
+    "exact_fields": [
+      "id",
+      "documents_by_length",
+      "canonical_type_count",
+      "uses_target_conditioned_selection"
+    ],
+    "length_strata": [
+      "short",
+      "medium",
+      "long"
+    ],
+    "minimum_documents_per_length": 6,
+    "minimum_derivation": "Six is the smallest n_h that gives every 20/10/20/50 partition at least one document under the frozen floor-plus-largest-remainder rule and its tie order.",
+    "population_limit": "No n_h may exceed the realized rights-pass N_h recorded before target exposure.",
+    "resource_limit": "feasible_resource_ceiling is the maximum final-sample document count supported by observed annotation time, double annotation, QA, adjudication, retraining, and reserve; larger candidates fail before simulation.",
+    "target_conditioned_sensitivity": "A hypothetical target-conditioned candidate may be displayed for sensitivity but is never selection-eligible under IR-121."
+  },
+  "claim_withhold_rule": {
+    "no_feasible_allocation": "If no feasible target-blind allocation meets both the document and canonical-type half-width targets within the frozen resource ceiling, withhold the affected overall or stratum claim.",
+    "sparse_or_undefined": "If a pilot pool has fewer than two clusters in any populated resampling length stratum, fewer than two canonical types, or any simulation is undefined, do not report a precision interval.",
+    "no_posthoc_relaxation": "Do not relax 0.05 or 0.10 after viewing simulated or observed results; narrow scope or keep the result descriptive."
+  },
+  "current_result": {
+    "simulation_run": false,
+    "selected_allocation_id": null,
+    "allocation_by_length": {
+      "short": null,
+      "medium": null,
+      "long": null
+    },
+    "observed_pilot_document_count": null,
+    "observed_pilot_canonical_type_count": null,
+    "overall_precision_gate": null,
+    "inferential_strata_retained": null,
+    "inferential_strata_withheld": null,
+    "claim_ceiling": "Executable pre-data simulation and fail-closed input contract only; no observed estimate, final sample size, selected document, or precision claim exists."
+  },
+  "activation_rule": "Change status to ready_to_simulate only after the accepted planning-pilot addendum is activated through its required allocation record, every required observed input is non-null and hashed where applicable, candidate allocations respect N_h and the frozen split, and the institutional human-work gate permits the pilot."
+}

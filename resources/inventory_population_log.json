@@ -1,0 +1,421 @@
+{
+  "log_schema_version": "1.0.0",
+  "log_id": "ldfreq-ir132-vid-pilot-population-2026-09-05",
+  "generated_on": "2026-09-05",
+  "status": "pilot_population_frozen_candidate_population_partial_human_review_pending",
+  "task": "IR-132",
+  "dependencies": {
+    "contract": {
+      "path": "resources/hybrid_sense_inventory_contract_2026_09_03.json",
+      "sha256": "e389eafd39b68a9f93058a1ad4c34f899547405f02df7c4d2f669b279310d596",
+      "version": "2.0.0"
+    },
+    "streusle_profile": {
+      "path": "benchmarks/streusle_v5_vpc_vid.json",
+      "sha256": "448a4aeef60bc114cbd2fc6a839ddc168a068247222a708361ab7b32c9d3f6cd"
+    },
+    "ir130_queue": {
+      "path": "resources/sense_mapping_queue.json",
+      "sha256": "266df189990477925f5fd16a524da7256ab14ac5ac9491416b649b95623228d8"
+    },
+    "generator": {
+      "path": "scripts/build_inventory_population_log.py",
+      "sha256": "6d23429066bad5b74d773d3f7ee20901351ee3bea6eae69f278494dcc4af5bdf"
+    }
+  },
+  "selection_contract": {
+    "population": "STREUSLE 5.0 train V.VID types only",
+    "method": "purposive fixed stress-test strata, not probability sampling",
+    "uses_dev_or_test_type_statistics": false,
+    "uses_sentence_text_or_context": false,
+    "uses_model_predictions_or_scores": false,
+    "inference_limit": "The batch tests inventory workflow feasibility and cannot estimate type prevalence, mapping coverage, or system performance."
+  },
+  "id_registry": {
+    "preserved_ir130_ids": [
+      "ldfreq-en-vmwe-t000003",
+      "ldfreq-en-vmwe-t000051",
+      "ldfreq-en-vmwe-t000081",
+      "ldfreq-en-vmwe-t000085",
+      "ldfreq-en-vmwe-t000134"
+    ],
+    "new_reserved_range": "ldfreq-en-vmwe-t000151..ldfreq-en-vmwe-t000159",
+    "reservation_rule": "IDs are permanent; rejected or deferred types retain their IDs and IDs are never reassigned."
+  },
+  "source_identity": {
+    "streusle_version": "5.0",
+    "streusle_commit": "8ba61fe4f216e7967500a862554a4fff79d25f5d",
+    "streusle_artifacts": {
+      "train": {
+        "path": "train/streusle.ud_train.json",
+        "size_bytes": 16845570,
+        "sha256": "36aef0205a6e2e154b681d7520858693a264d3c40ba7d97c089345bbd1149a22"
+      },
+      "dev": {
+        "path": "dev/streusle.ud_dev.json",
+        "size_bytes": 2050638,
+        "sha256": "56cc1783962ce8c9f06b7649ffdccb48cea14ee7e4a8be2e35214ffc71303e9a"
+      },
+      "test": {
+        "path": "test/streusle.ud_test.json",
+        "size_bytes": 2051895,
+        "sha256": "f8144e6227db2e845cda4aa832f8d5644cb40b9e743d1dbe05663dd687d2c70c"
+      }
+    },
+    "oewn_version": "2025-edition",
+    "oewn_artifact_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+    "kaikki_version": "dump-2026-08-05_extract-2026-08-28",
+    "kaikki_artifact_sha256": "506ae4786da452d066d58b580e0417aa4eb60c8b181d1a2d2cea82cf68508462"
+  },
+  "summary": {
+    "pilot_types": 14,
+    "train_occurrences": 52,
+    "train_discontinuous_occurrences": 21,
+    "mapping_route_counts": {
+      "exact_kaikki": 4,
+      "exact_oewn": 4,
+      "no_bounded_route": 2,
+      "nonexact_candidate": 3,
+      "unique_slot_oewn": 1
+    },
+    "eligibility_state_counts": {
+      "project_lexicography_required_no_bounded_source_route": 2,
+      "source_candidate_mapping_review_required": 4,
+      "source_candidate_ready_for_independent_review": 4,
+      "source_candidate_rights_and_identity_gate_pending": 4
+    },
+    "types_with_candidate_route": 12,
+    "types_without_bounded_route": 2,
+    "mapping_unresolved_rate": 0.142857,
+    "eligibility_state_recorded_for_every_type": true
+  },
+  "release_boundary": {
+    "source_sentence_or_token_text_bundled": false,
+    "dictionary_gloss_or_example_bundled": false,
+    "person_level_data_bundled": false,
+    "formal_sense_admissions": 0,
+    "runtime_integration": "none",
+    "human_annotation_authorized": false
+  },
+  "pilot_batch": [
+    {
+      "priority": 1,
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "type_id_source": "ir132_append_only_reservation",
+      "canonical_lemma": "make sure",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "highest_train_frequency_exact_oewn",
+      "train_occurrences": 6,
+      "train_discontinuous_occurrences": 0,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "exact_oewn",
+      "source_entry_lemma": "make sure",
+      "candidate_units": 1,
+      "stable_source_sense_ids": 1,
+      "candidate_sources": [
+        "oewn"
+      ],
+      "eligibility_state": "source_candidate_ready_for_independent_review",
+      "rights_state": "public_with_oewn_wordnet_notice"
+    },
+    {
+      "priority": 2,
+      "type_id": "ldfreq-en-vmwe-t000152",
+      "type_id_source": "ir132_append_only_reservation",
+      "canonical_lemma": "make it",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "previously_exposed_vid_pilot_polysemy",
+      "train_occurrences": 2,
+      "train_discontinuous_occurrences": 0,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "exact_oewn",
+      "source_entry_lemma": "make it",
+      "candidate_units": 3,
+      "stable_source_sense_ids": 3,
+      "candidate_sources": [
+        "oewn"
+      ],
+      "eligibility_state": "source_candidate_ready_for_independent_review",
+      "rights_state": "public_with_oewn_wordnet_notice"
+    },
+    {
+      "priority": 3,
+      "type_id": "ldfreq-en-vmwe-t000153",
+      "type_id_source": "ir132_append_only_reservation",
+      "canonical_lemma": "get it",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "previously_exposed_vid_pilot_polysemy",
+      "train_occurrences": 2,
+      "train_discontinuous_occurrences": 0,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "exact_oewn",
+      "source_entry_lemma": "get it",
+      "candidate_units": 2,
+      "stable_source_sense_ids": 2,
+      "candidate_sources": [
+        "oewn"
+      ],
+      "eligibility_state": "source_candidate_ready_for_independent_review",
+      "rights_state": "public_with_oewn_wordnet_notice"
+    },
+    {
+      "priority": 4,
+      "type_id": "ldfreq-en-vmwe-t000154",
+      "type_id_source": "ir132_append_only_reservation",
+      "canonical_lemma": "cut short",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "discontinuous_polysemous_exact_oewn",
+      "train_occurrences": 1,
+      "train_discontinuous_occurrences": 1,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "exact_oewn",
+      "source_entry_lemma": "cut short",
+      "candidate_units": 4,
+      "stable_source_sense_ids": 4,
+      "candidate_sources": [
+        "oewn"
+      ],
+      "eligibility_state": "source_candidate_ready_for_independent_review",
+      "rights_state": "public_with_oewn_wordnet_notice"
+    },
+    {
+      "priority": 5,
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "type_id_source": "ir132_append_only_reservation",
+      "canonical_lemma": "waste time",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "high_frequency_discontinuous_slot_route",
+      "train_occurrences": 8,
+      "train_discontinuous_occurrences": 7,
+      "fixed_slot_state": "source_candidate_differs_by_frozen_closed_class_slot",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "unique_slot_oewn",
+      "source_entry_lemma": "waste one's time",
+      "candidate_units": 1,
+      "stable_source_sense_ids": 1,
+      "candidate_sources": [
+        "oewn"
+      ],
+      "eligibility_state": "source_candidate_mapping_review_required",
+      "rights_state": "public_with_oewn_wordnet_notice"
+    },
+    {
+      "priority": 6,
+      "type_id": "ldfreq-en-vmwe-t000156",
+      "type_id_source": "ir132_append_only_reservation",
+      "canonical_lemma": "take the time",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "highest_train_frequency_exact_kaikki",
+      "train_occurrences": 10,
+      "train_discontinuous_occurrences": 0,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "exact_kaikki",
+      "source_entry_lemma": "take the time",
+      "candidate_units": 1,
+      "stable_source_sense_ids": 0,
+      "candidate_sources": [
+        "enwiktionary-kaikki"
+      ],
+      "eligibility_state": "source_candidate_rights_and_identity_gate_pending",
+      "rights_state": "withheld_pending_underlying_dump_hash_and_imported_content_review"
+    },
+    {
+      "priority": 7,
+      "type_id": "ldfreq-en-vmwe-t000157",
+      "type_id_source": "ir132_append_only_reservation",
+      "canonical_lemma": "let know",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "high_frequency_fully_discontinuous_exact_kaikki",
+      "train_occurrences": 6,
+      "train_discontinuous_occurrences": 6,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "exact_kaikki",
+      "source_entry_lemma": "let know",
+      "candidate_units": 1,
+      "stable_source_sense_ids": 0,
+      "candidate_sources": [
+        "enwiktionary-kaikki"
+      ],
+      "eligibility_state": "source_candidate_rights_and_identity_gate_pending",
+      "rights_state": "withheld_pending_underlying_dump_hash_and_imported_content_review"
+    },
+    {
+      "priority": 8,
+      "type_id": "ldfreq-en-vmwe-t000158",
+      "type_id_source": "ir132_append_only_reservation",
+      "canonical_lemma": "take time",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "polysemous_discontinuous_exact_kaikki",
+      "train_occurrences": 6,
+      "train_discontinuous_occurrences": 3,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "exact_kaikki",
+      "source_entry_lemma": "take time",
+      "candidate_units": 2,
+      "stable_source_sense_ids": 0,
+      "candidate_sources": [
+        "enwiktionary-kaikki"
+      ],
+      "eligibility_state": "source_candidate_rights_and_identity_gate_pending",
+      "rights_state": "withheld_pending_underlying_dump_hash_and_imported_content_review"
+    },
+    {
+      "priority": 9,
+      "type_id": "ldfreq-en-vmwe-t000159",
+      "type_id_source": "ir132_append_only_reservation",
+      "canonical_lemma": "have it",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "complete_source_sense_ids_exact_kaikki",
+      "train_occurrences": 1,
+      "train_discontinuous_occurrences": 0,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "exact_kaikki",
+      "source_entry_lemma": "have it",
+      "candidate_units": 5,
+      "stable_source_sense_ids": 5,
+      "candidate_sources": [
+        "enwiktionary-kaikki"
+      ],
+      "eligibility_state": "source_candidate_rights_and_identity_gate_pending",
+      "rights_state": "withheld_pending_underlying_dump_hash_and_imported_content_review"
+    },
+    {
+      "priority": 10,
+      "type_id": "ldfreq-en-vmwe-t000085",
+      "type_id_source": "ir130_registry",
+      "canonical_lemma": "jump - start",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "cross_resource_nonexact_candidate",
+      "train_occurrences": 1,
+      "train_discontinuous_occurrences": 0,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "nonexact_candidate",
+      "source_entry_lemma": null,
+      "candidate_units": 6,
+      "stable_source_sense_ids": 0,
+      "candidate_sources": [
+        "enwiktionary-kaikki",
+        "oewn"
+      ],
+      "eligibility_state": "source_candidate_mapping_review_required",
+      "rights_state": "withheld_pending_enwiktionary_dump_hash_and_imported_content_review"
+    },
+    {
+      "priority": 11,
+      "type_id": "ldfreq-en-vmwe-t000081",
+      "type_id_source": "ir130_registry",
+      "canonical_lemma": "home - cook",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "kaikki_nonexact_candidate",
+      "train_occurrences": 1,
+      "train_discontinuous_occurrences": 0,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "nonexact_candidate",
+      "source_entry_lemma": null,
+      "candidate_units": 4,
+      "stable_source_sense_ids": 0,
+      "candidate_sources": [
+        "enwiktionary-kaikki"
+      ],
+      "eligibility_state": "source_candidate_mapping_review_required",
+      "rights_state": "withheld_pending_enwiktionary_dump_hash_and_imported_content_review"
+    },
+    {
+      "priority": 12,
+      "type_id": "ldfreq-en-vmwe-t000134",
+      "type_id_source": "ir130_registry",
+      "canonical_lemma": "think so",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "declared_variant_nonexact_candidate",
+      "train_occurrences": 1,
+      "train_discontinuous_occurrences": 0,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "nonexact_candidate",
+      "source_entry_lemma": null,
+      "candidate_units": 1,
+      "stable_source_sense_ids": 0,
+      "candidate_sources": [
+        "enwiktionary-kaikki"
+      ],
+      "eligibility_state": "source_candidate_mapping_review_required",
+      "rights_state": "withheld_pending_enwiktionary_dump_hash_and_imported_content_review"
+    },
+    {
+      "priority": 13,
+      "type_id": "ldfreq-en-vmwe-t000051",
+      "type_id_source": "ir130_registry",
+      "canonical_lemma": "get do",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "highest_train_frequency_discontinuous_no_route",
+      "train_occurrences": 4,
+      "train_discontinuous_occurrences": 4,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "no_bounded_route",
+      "source_entry_lemma": null,
+      "candidate_units": 0,
+      "stable_source_sense_ids": 0,
+      "candidate_sources": [],
+      "eligibility_state": "project_lexicography_required_no_bounded_source_route",
+      "rights_state": "no_source_candidate_content"
+    },
+    {
+      "priority": 14,
+      "type_id": "ldfreq-en-vmwe-t000003",
+      "type_id_source": "ir130_registry",
+      "canonical_lemma": "be a joke",
+      "observed_vmwe_categories": [
+        "V.VID"
+      ],
+      "selection_stratum": "high_frequency_contiguous_no_route",
+      "train_occurrences": 3,
+      "train_discontinuous_occurrences": 0,
+      "fixed_slot_state": "canonical_members_preserved_no_slot_transform",
+      "literal_contrast_state": "future_occurrence_level_negative_required_not_supplied_by_dictionary_route",
+      "mapping_route": "no_bounded_route",
+      "source_entry_lemma": null,
+      "candidate_units": 0,
+      "stable_source_sense_ids": 0,
+      "candidate_sources": [],
+      "eligibility_state": "project_lexicography_required_no_bounded_source_route",
+      "rights_state": "no_source_candidate_content"
+    }
+  ]
+}

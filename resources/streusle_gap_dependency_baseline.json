@@ -1,0 +1,113 @@
+{
+  "record_version": "1.0.0",
+  "record_id": "streusle-v5-gap-dependency-baseline",
+  "status": "frozen-external-development-evidence",
+  "purpose": "Freeze one transparent discontinuous VPC/VID comparator without changing the pinned STREUSLE benchmark profile or claiming blinded test evidence.",
+  "source": {
+    "profile_path": "benchmarks/streusle_v5_vpc_vid.json",
+    "profile_id": "streusle-v5-vpc-vid-offline",
+    "profile_version": "0.1.0",
+    "profile_sha256": "448a4aeef60bc114cbd2fc6a839ddc168a068247222a708361ab7b32c9d3f6cd",
+    "data_bundled_here": false
+  },
+  "rules": {
+    "rules_version": "1.0.0",
+    "status": "frozen_after_train_and_development_only_selection",
+    "maximum_intervening_tokens_per_member_pair": 2,
+    "minimum_train_dependency_arc_count": 5,
+    "member_rule": "Casefolded ordered lemma members must match a train target type; at most two nonmember tokens may intervene between each adjacent member pair.",
+    "dependency_rule": "At least one later member must have a direct basic-dependency arc to or from the first matched member, using a category, direction, and relation observed at least five times among train targets.",
+    "category_rule": "Use the most frequent train category for the lemma pattern with lexical category as the deterministic tie-break.",
+    "selection": {
+      "training_inputs": [
+        "train target lemma patterns",
+        "train target dependency arcs"
+      ],
+      "development_input": "dev exact-span results only",
+      "candidate_grid": {
+        "maximum_intervening_tokens_per_member_pair": [0, 1, 2, 3, 4, 5],
+        "minimum_train_dependency_arc_count": [1, 2, 3, 4, 5]
+      },
+      "tie_break": "Highest development exact-span F1, then fewer admitted dependency relations, then smaller maximum gap.",
+      "test_boundary": "The STREUSLE test split was already exposed by the earlier surface baseline. It was not consulted for this rule selection and remains development evidence, not a blinded holdout."
+    },
+    "prediction_audit": "With --prediction-audit, each prediction emits sentence ID, evidence token numbers, category, rule IDs, matched lemma pattern, and the accepted dependency arc; no sentence text is emitted."
+  },
+  "expected_report": {
+    "algorithm": "ordered train-type lemma matching within a frozen gap, filtered by one direct first-member dependency arc; most frequent train category with lexical tie-break",
+    "rules_version": "1.0.0",
+    "train_target_types": 351,
+    "derived_allowed_dependency_relations": {
+      "V.VPC.full": {
+        "head_to_member": ["advmod", "compound:prt"],
+        "member_to_head": []
+      },
+      "V.VPC.semi": {
+        "head_to_member": ["advmod", "compound:prt"],
+        "member_to_head": []
+      },
+      "V.VID": {
+        "head_to_member": ["advmod", "compound:prt", "iobj", "obj", "obl", "xcomp"],
+        "member_to_head": ["aux", "cop"]
+      }
+    },
+    "development": {
+      "lemma_window_ablation": {
+        "prediction_count": 61,
+        "exact_span": {"correct": 16, "predicted": 61, "gold": 40, "precision": 0.262295, "recall": 0.4, "f1": 0.316832},
+        "exact_span_and_category": {"correct": 15, "predicted": 61, "gold": 40, "precision": 0.245902, "recall": 0.375, "f1": 0.29703},
+        "discontinuous_exact_span": {"correct": 8, "predicted": 32, "gold": 14, "precision": 0.25, "recall": 0.571429, "f1": 0.347826},
+        "seen_exact_span_recall": {"matched": 16, "gold": 18, "value": 0.888889},
+        "unseen_exact_span_recall": {"matched": 0, "gold": 22, "value": 0.0}
+      },
+      "gap_dependency": {
+        "prediction_count": 35,
+        "exact_span": {"correct": 16, "predicted": 35, "gold": 40, "precision": 0.457143, "recall": 0.4, "f1": 0.426667},
+        "exact_span_and_category": {"correct": 15, "predicted": 35, "gold": 40, "precision": 0.428571, "recall": 0.375, "f1": 0.4},
+        "discontinuous_exact_span": {"correct": 8, "predicted": 16, "gold": 14, "precision": 0.5, "recall": 0.571429, "f1": 0.533333},
+        "seen_exact_span_recall": {"matched": 16, "gold": 18, "value": 0.888889},
+        "unseen_exact_span_recall": {"matched": 0, "gold": 22, "value": 0.0}
+      }
+    },
+    "exposed_test": {
+      "lemma_window_ablation": {
+        "prediction_count": 74,
+        "exact_span": {"correct": 23, "predicted": 74, "gold": 40, "precision": 0.310811, "recall": 0.575, "f1": 0.403509},
+        "exact_span_and_category": {"correct": 22, "predicted": 74, "gold": 40, "precision": 0.297297, "recall": 0.55, "f1": 0.385965},
+        "discontinuous_exact_span": {"correct": 6, "predicted": 30, "gold": 16, "precision": 0.2, "recall": 0.375, "f1": 0.26087},
+        "seen_exact_span_recall": {"matched": 23, "gold": 24, "value": 0.958333},
+        "unseen_exact_span_recall": {"matched": 0, "gold": 16, "value": 0.0}
+      },
+      "gap_dependency": {
+        "prediction_count": 42,
+        "exact_span": {"correct": 22, "predicted": 42, "gold": 40, "precision": 0.52381, "recall": 0.55, "f1": 0.536585},
+        "exact_span_and_category": {"correct": 21, "predicted": 42, "gold": 40, "precision": 0.5, "recall": 0.525, "f1": 0.512195},
+        "discontinuous_exact_span": {"correct": 6, "predicted": 16, "gold": 16, "precision": 0.375, "recall": 0.375, "f1": 0.375},
+        "seen_exact_span_recall": {"matched": 22, "gold": 24, "value": 0.916667},
+        "unseen_exact_span_recall": {"matched": 0, "gold": 16, "value": 0.0}
+      }
+    }
+  },
+  "claims": {
+    "permitted": [
+      "Transparent external development comparator",
+      "Exact reproduction of the frozen rule and aggregate scores"
+    ],
+    "prohibited": [
+      "Blinded or sealed holdout evidence",
+      "Validity evidence for the future project benchmark",
+      "Recovery of train-unseen MWE types"
+    ]
+  },
+  "rights": {
+    "contains_source_text": false,
+    "contains_upstream_annotation_rows": false,
+    "license": "CC-BY-SA-4.0",
+    "notice": "resources/STREUSLE_NOTICE.md"
+  },
+  "reproduction": {
+    "command": "python3 scripts/check_streusle_v5.py PATH --check --gap-dependency-baseline",
+    "prediction_audit_command": "python3 scripts/check_streusle_v5.py PATH --gap-dependency-baseline --prediction-audit",
+    "network_during_analysis": false
+  }
+}

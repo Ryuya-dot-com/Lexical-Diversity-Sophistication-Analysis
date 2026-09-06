@@ -157,5 +157,264 @@
     "clear_control": "explicit reset and best-effort pagehide reset; browser or device memory/history erasure is not guaranteed",
     "raw_text_export": false,
     "explicit_metadata_export": true
+  },
+  "benchmark_mwe_evaluation": {
+    "contract_version": "1.1.0-predata",
+    "status": "frozen_formulas_no_source_rows_no_predictions_no_results",
+    "task": "IR-125",
+    "scope": "Open-text English VPC.full, VPC.semi, and VID evaluation under resources/evaluation_strata.json; separate from the browser lexical-diversity probe above.",
+    "input_schemas": {
+      "gold_documents": {
+        "contract": "mwe_contract.json",
+        "required_document_fields": ["id", "tokens", "occurrences"],
+        "required_token_fields": ["id", "position"],
+        "occurrence_rule": "Discovery-complete adjudicated candidate records; confirmed records define the positive occurrence population and assessed rejected records may define literal negatives."
+      },
+      "system_predictions": {
+        "evaluation_mode": "open_text",
+        "required_root_fields": ["contract_version", "metric_contract_version", "evaluation_mode", "system", "cases"],
+        "required_document_fields": ["id", "occurrences"],
+        "required_occurrence_fields": ["id", "head_token_id", "member_token_ids", "gap_token_ids", "category", "status", "idiomaticity_status", "sense_assignment_status", "selected_sense_ids"],
+        "coverage_rule": "Exactly one prediction document per gold document; zero or more unique proposed member spans per document."
+      },
+      "probabilistic_extension": "When system.probabilistic is true, every emitted candidate requires confirmed_probability in [0,1].",
+      "selective_extension": "When system.selective is true, every emitted candidate requires decision_confidence in [0,1].",
+      "bootstrap_contributions": {
+        "scope": "One metric per file for the dependency-free command-line ratio adapter; non-additive metrics reuse the same library resampler with a raw-record estimator callback.",
+        "required_root_fields": ["bootstrap_contract_version", "metric_id", "systems", "prespecified_strata", "rows"],
+        "required_row_fields": ["record_id", "document_id", "length_stratum", "canonical_type_id", "weight", "strata", "systems"],
+        "system_contribution_fields": ["numerator", "denominator"],
+        "weight_rule": "Use the frozen document inverse-inclusion-probability weight; use 1 only for unweighted descriptive checks.",
+        "row_rule": "Every row belongs to exactly one document and canonical type and carries every requested single-axis stratum value; all rows from a resampled cluster travel together."
+      }
+    },
+    "common_rules": {
+      "primary_bootstrap_unit": "document_id",
+      "secondary_sensitivity_unit": "canonical_type_id",
+      "interval_implementation": "scripts/bootstrap_evaluation.py under bootstrap contract 1.0.0-predata",
+      "reporting": "Always retain numerator, denominator, value, document count, canonical-form count, and estimate state; do not silently drop multiple assignment, ambiguity, abstention, out-of-inventory, inventory-ineligible records, or zero denominators.",
+      "combined_score": "forbidden"
+    },
+    "bootstrap": {
+      "contract_version": "1.0.0-predata",
+      "task": "IR-126",
+      "seed": "enwiki-20260901-vpc-vid-bootstrap-v1",
+      "resamples": 10000,
+      "confidence_level": 0.95,
+      "interval": "Percentile interval with type-7 linear interpolation at 0.025 and 0.975; retain the IR-125 point-estimate formula in every resample.",
+      "primary_design": "Resample document_id clusters with replacement independently within each populated sampling length stratum, preserving its realized document count and keeping every row from a selected document together.",
+      "design_weight": "Apply the frozen inverse-inclusion-probability document weight inside every point estimate and resample.",
+      "secondary_sensitivity": "Separately resample canonical_type_id clusters globally with replacement, keeping all rows for a selected type together; this sensitivity does not replace the document-primary interval.",
+      "paired_comparison": "Use the identical cluster draw for all systems and calculate every reported difference as later-listed system minus earlier-listed system.",
+      "prespecified_strata": "Filter to each requested frozen single-axis level, then call the same point-estimate and cluster-resampling functions used for overall results.",
+      "degenerate": "If any populated resampling stratum has fewer than two clusters, report point estimates only and no interval or comparative inference.",
+      "undefined_resample": "If any requested bootstrap replicate has an undefined metric denominator, withhold that interval and report the defined replicate count; do not silently discard replicates.",
+      "claim_state": "All intervals remain descriptive until IR-127 prospectively freezes and passes allocation, cluster-count, and precision gates."
+    },
+    "metrics": {
+      "candidate_recall": {
+        "input": "gold_documents + system_predictions",
+        "formula": "One-to-one recovered confirmed gold occurrences matched by document_id and the gold first member token (the verbal head in this contract); span correctness is not required here.",
+        "denominator": "All confirmed gold occurrences in discovery-complete evaluation documents.",
+        "undefined": "null when there are no confirmed gold occurrences.",
+        "bootstrap_unit": "document_id"
+      },
+      "exact_span_prf": {
+        "input": "confirmed gold member-token sets + confirmed system member-token sets",
+        "formula": "Exact document-and-member-set match; report precision, recall, and F1 separately.",
+        "denominator": "Precision: confirmed system spans; recall: confirmed gold spans; F1: their summed counts.",
+        "undefined": "Each component is null when its denominator is zero.",
+        "bootstrap_unit": "document_id"
+      },
+      "member_token_prf": {
+        "input": "unique (document_id, member_token_id) pairs from confirmed gold and system spans",
+        "formula": "Set intersection precision, recall, and F1; gap tokens never count as members.",
+        "denominator": "Precision: predicted member-token pairs; recall: gold member-token pairs; F1: their summed counts.",
+        "undefined": "Each component is null when its denominator is zero.",
+        "bootstrap_unit": "document_id"
+      },
+      "member_set_accuracy": {
+        "input": "confirmed gold spans + confirmed system spans",
+        "formula": "Confirmed gold occurrences with an exact predicted member set divided by confirmed gold occurrences.",
+        "denominator": "All confirmed gold occurrences.",
+        "undefined": "null when there are no confirmed gold occurrences.",
+        "bootstrap_unit": "document_id"
+      },
+      "gap_set_accuracy": {
+        "input": "gap_token_ids for exact confirmed member-set matches",
+        "formula": "Confirmed gold occurrences whose exact predicted span also has the exhaustive gold gap set divided by confirmed gold occurrences.",
+        "denominator": "All confirmed gold occurrences; missing or inexact system spans are incorrect.",
+        "undefined": "null when there are no confirmed gold occurrences.",
+        "bootstrap_unit": "document_id"
+      },
+      "category_macro_f1": {
+        "input": "exact confirmed spans with gold and predicted category in VPC.full, VPC.semi, or VID",
+        "formula": "Unweighted mean of the three one-vs-rest category F1 values; also report every per-category P/R/F1.",
+        "denominator": "Exactly three frozen categories; each category F1 uses predicted-category count plus gold-category count.",
+        "undefined": "null if any category has zero gold and zero predicted instances; name every undefined category.",
+        "bootstrap_unit": "document_id"
+      },
+      "idiomaticity_prediction_coverage": {
+        "input": "gold candidate records with idiomatic, literal, or ambiguous status + exact-span predictions",
+        "formula": "Records receiving a non-not_assessed system label divided by eligible gold records.",
+        "denominator": "All scheduled and gold-assessed idiomaticity records, including retained literal negatives.",
+        "undefined": "null when no gold record is assessed for idiomaticity.",
+        "bootstrap_unit": "document_id"
+      },
+      "idiomaticity_accuracy_among_predictions": {
+        "input": "covered records from idiomaticity_prediction_coverage",
+        "formula": "Exact status matches divided by non-not_assessed system labels.",
+        "denominator": "Gold-assessed records receiving a system idiomaticity label.",
+        "undefined": "null when the system supplies no eligible idiomaticity label.",
+        "bootstrap_unit": "document_id"
+      },
+      "gold_idiomaticity_ambiguity_rate": {
+        "input": "gold idiomaticity statuses",
+        "formula": "Gold ambiguous records divided by gold-assessed idiomaticity records.",
+        "denominator": "All gold records with idiomatic, literal, or ambiguous status.",
+        "undefined": "null when no gold record is assessed for idiomaticity.",
+        "bootstrap_unit": "document_id"
+      },
+      "occurrence_sense_inventory_coverage": {
+        "input": "sense lookup records for confirmed gold occurrences",
+        "formula": "Matched inventory lookups divided by confirmed gold occurrences.",
+        "denominator": "All confirmed gold occurrences, including not-attempted, out-of-inventory, and inventory-ineligible records.",
+        "undefined": "null when there are no confirmed gold occurrences.",
+        "bootstrap_unit": "document_id"
+      },
+      "canonical_form_sense_inventory_coverage": {
+        "input": "sense lookup records grouped by canonical_form for confirmed gold occurrences",
+        "formula": "Distinct canonical forms with at least one matched lookup divided by represented confirmed-gold forms.",
+        "denominator": "All distinct canonical forms represented by confirmed gold occurrences.",
+        "undefined": "null when no canonical form has a confirmed gold occurrence.",
+        "bootstrap_unit": "document_id; canonical_type_id is the required secondary sensitivity unit"
+      },
+      "occurrence_gold_out_of_inventory_rate": {
+        "input": "sense assignment status for confirmed gold occurrences",
+        "formula": "Gold out_of_inventory assignments divided by confirmed gold occurrences.",
+        "denominator": "All confirmed gold occurrences.",
+        "undefined": "null when there are no confirmed gold occurrences.",
+        "bootstrap_unit": "document_id"
+      },
+      "canonical_form_gold_out_of_inventory_rate": {
+        "input": "sense assignment records grouped by canonical_form for confirmed gold occurrences",
+        "formula": "Distinct canonical forms with at least one out_of_inventory assignment divided by represented confirmed-gold forms.",
+        "denominator": "All distinct canonical forms represented by confirmed gold occurrences.",
+        "undefined": "null when no canonical form has a confirmed gold occurrence.",
+        "bootstrap_unit": "document_id; canonical_type_id is the required secondary sensitivity unit"
+      },
+      "occurrence_gold_inventory_ineligible_rate": {
+        "input": "sense assignment status for confirmed gold occurrences",
+        "formula": "Gold inventory_ineligible assignments divided by confirmed gold occurrences.",
+        "denominator": "All confirmed gold occurrences.",
+        "undefined": "null when there are no confirmed gold occurrences.",
+        "bootstrap_unit": "document_id"
+      },
+      "sense_prediction_coverage": {
+        "input": "gold assigned/multiple_assigned/ambiguous reference sets + exact-span system sense states",
+        "formula": "System assigned/multiple_assigned/ambiguous records divided by eligible reference sets.",
+        "denominator": "Confirmed gold occurrences with a nonempty assigned, multiple_assigned, or ambiguous reference set; gold OOI and inventory-ineligible cases are excluded and reported separately.",
+        "undefined": "null when there is no eligible gold reference set.",
+        "bootstrap_unit": "document_id"
+      },
+      "sense_assignment_state_accuracy": {
+        "input": "gold and exact-span system sense_assignment_status for eligible reference sets",
+        "formula": "Exact assigned/multiple_assigned/ambiguous state matches divided by eligible gold reference sets; missing spans and abstentions are incorrect.",
+        "denominator": "All eligible gold reference sets.",
+        "undefined": "null when there is no eligible gold reference set.",
+        "bootstrap_unit": "document_id"
+      },
+      "sense_exact_set_accuracy": {
+        "input": "gold and system selected_sense_ids for eligible reference sets",
+        "formula": "Exact unordered set matches divided by eligible gold reference sets; missing spans and abstentions are incorrect.",
+        "denominator": "All eligible gold reference sets.",
+        "undefined": "null when there is no eligible gold reference set.",
+        "bootstrap_unit": "document_id"
+      },
+      "sense_micro_f1": {
+        "input": "gold and system selected (occurrence, sense_id) pairs for eligible reference sets",
+        "formula": "Micro precision, recall, and F1 over label-pair intersections.",
+        "denominator": "Precision: predicted label pairs; recall: gold label pairs; F1: their summed counts.",
+        "undefined": "Each component is null when its denominator is zero.",
+        "bootstrap_unit": "document_id"
+      },
+      "sense_macro_f1": {
+        "input": "per-occurrence gold and system sense sets for eligible reference sets",
+        "formula": "Unweighted mean of per-occurrence set F1, with missing spans and abstentions scoring zero.",
+        "denominator": "All eligible gold reference sets.",
+        "undefined": "null when there is no eligible gold reference set.",
+        "bootstrap_unit": "document_id"
+      },
+      "gold_sense_ambiguity_rate": {
+        "input": "gold sense assignment statuses",
+        "formula": "Gold ambiguous assignments divided by confirmed gold occurrences.",
+        "denominator": "All confirmed gold occurrences.",
+        "undefined": "null when there are no confirmed gold occurrences.",
+        "bootstrap_unit": "document_id"
+      },
+      "gold_multiple_assignment_rate": {
+        "input": "gold sense assignment statuses",
+        "formula": "Gold multiple_assigned assignments divided by confirmed gold occurrences.",
+        "denominator": "All confirmed gold occurrences.",
+        "undefined": "null when there are no confirmed gold occurrences.",
+        "bootstrap_unit": "document_id"
+      },
+      "model_abstention_rate": {
+        "input": "exact-span system sense assignment statuses for eligible reference sets",
+        "formula": "System abstained states divided by eligible gold reference sets.",
+        "denominator": "All eligible gold reference sets, whether or not the system emits a sense.",
+        "undefined": "null when there is no eligible gold reference set.",
+        "bootstrap_unit": "document_id"
+      },
+      "model_out_of_inventory_rate": {
+        "input": "exact-span system sense assignment statuses for eligible reference sets",
+        "formula": "System out_of_inventory states divided by eligible gold reference sets.",
+        "denominator": "All eligible gold reference sets.",
+        "undefined": "null when there is no eligible gold reference set.",
+        "bootstrap_unit": "document_id"
+      },
+      "candidates_per_document": {
+        "input": "all emitted system candidates + evaluation documents",
+        "formula": "Emitted candidate count divided by document count.",
+        "denominator": "All evaluation documents, including documents with zero candidates.",
+        "undefined": "null when there are no evaluation documents.",
+        "bootstrap_unit": "document_id"
+      },
+      "brier_score": {
+        "input": "confirmed_probability and exact gold occurrence indicator for every emitted candidate; probabilistic systems only",
+        "formula": "Mean squared probability error.",
+        "denominator": "All emitted candidates.",
+        "undefined": "not_applicable for nonprobabilistic systems; null when a probabilistic system emits no candidate.",
+        "bootstrap_unit": "document_id"
+      },
+      "log_loss": {
+        "input": "same candidate probabilities and binary indicators as brier_score; probabilistic systems only",
+        "formula": "Mean negative natural log likelihood.",
+        "denominator": "All emitted candidates.",
+        "undefined": "not_applicable for nonprobabilistic systems; null with no candidate; state=infinite with a null JSON value when a zero-probability true outcome occurs.",
+        "bootstrap_unit": "document_id"
+      },
+      "expected_calibration_error": {
+        "input": "same candidate probabilities and binary indicators as brier_score; probabilistic systems only",
+        "formula": "Weighted absolute confidence-accuracy gap over ten fixed equal-width bins on [0,1].",
+        "denominator": "All emitted candidates; empty bins contribute zero.",
+        "undefined": "not_applicable for nonprobabilistic systems; null when a probabilistic system emits no candidate.",
+        "bootstrap_unit": "document_id"
+      },
+      "risk_coverage_curve": {
+        "input": "terminal system decisions and decision_confidence; selective systems only",
+        "formula": "Sort terminal decisions by descending confidence with stable item-ID ties; at each rank report errors/rank against rank/all emitted candidates coverage.",
+        "denominator": "Risk: retained terminal decisions; coverage: all emitted candidates.",
+        "undefined": "not_applicable for nonselective systems; empty curve when there is no terminal decision.",
+        "bootstrap_unit": "document_id"
+      },
+      "aurc": {
+        "input": "risk_coverage_curve points; selective systems only",
+        "formula": "Arithmetic mean of observed prefix risks; report maximum decision coverage separately.",
+        "denominator": "Number of ranked terminal decisions.",
+        "undefined": "not_applicable for nonselective systems; null when there is no terminal decision.",
+        "bootstrap_unit": "document_id"
+      }
+    }
   }
 }

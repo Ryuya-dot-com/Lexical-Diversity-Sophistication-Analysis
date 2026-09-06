@@ -1,0 +1,177 @@
+{
+  "schema_version": "1.0.0",
+  "protocol_id": "EN-VPC-VID-EVALUATION-STRATA-2026-09-04",
+  "frozen_on": "2026-09-04",
+  "status": "predata_strata_and_cluster_contract_no_labels_no_estimates",
+  "task": "IR-122",
+  "scope": {
+    "population": "Rights-pass documents selected from the frozen English Wikipedia sampling frame and their candidate-independently annotated VPC.full, VPC.semi, and VID occurrences.",
+    "claim_boundary": "Population estimates apply only to the frozen sampling population. The single source genre does not support cross-genre, national-variety, learner-language, or all-English inference.",
+    "current_evidence": "Protocol only; no source row, sampled document, human label, system prediction, interval, or performance estimate exists."
+  },
+  "dependencies": {
+    "sampling_frame": {
+      "path": "resources/sampling_frame.json",
+      "sha256": "55ac5a99d2c83500ba85dbda9e9ee5ab5b8db2438a61a57da1fc56fc85c02184"
+    },
+    "target_population": {
+      "path": "resources/target_population_contract.json",
+      "sha256": "8f281562aa6f398b9d3b817cf90cf1da36d744059f7708a1f0f3749028ab6c22"
+    },
+    "executable_mwe_contract": {
+      "path": "mwe_contract.json",
+      "sha256": "6a5d3696f97fb07d17f903fe948f4e028ad2c6e42aef313b11325de9680b99ba"
+    },
+    "hybrid_sense_inventory_contract": {
+      "path": "resources/hybrid_sense_inventory_contract_2026_09_03.json",
+      "sha256": "e389eafd39b68a9f93058a1ad4c34f899547405f02df7c4d2f669b279310d596"
+    },
+    "browser_descriptive_metric_contract": {
+      "path": "metric_contract.json",
+      "sha256": "a293ed4c34b671945623109b4c08f932889ab648ecfd0853b9893cfdd1700c30",
+      "boundary": "Its browser lexical-diversity outputs remain descriptive and cannot be substituted for the separately versioned benchmark_mwe_evaluation contract."
+    }
+  },
+  "units_and_dependence": {
+    "sampling_and_split_unit": "One immutable Wikipedia page/revision document.",
+    "annotation_segment": "One retained prose paragraph nested within one document.",
+    "observed_units": [
+      "candidate record",
+      "confirmed context-indexed occurrence",
+      "canonical VPC/VID type"
+    ],
+    "primary_cluster": {
+      "id": "document_id",
+      "reason": "Paragraphs, candidates, and occurrences from one article share topic, wording, editorial history, and preprocessing decisions.",
+      "required_use": "IR-126 intervals and paired system comparisons resample documents within sampling length strata; all records from a sampled document travel together."
+    },
+    "secondary_cluster": {
+      "id": "canonical_type_id",
+      "reason": "Repeated occurrences of one lexical type share form, inventory, and learned lexical evidence across documents.",
+      "required_use": "Report a canonical-form-cluster sensitivity analysis. Any unseen-form claim uses canonical form as the split and analysis unit, not occurrence count."
+    },
+    "prohibitions": [
+      "Do not treat occurrences, candidates, paragraphs, or repeated forms as independent observations.",
+      "Do not let one document fragment or one canonical type cross a split whose claim requires that cluster to be held out.",
+      "Do not increase an effective sample size by counting multiple senses, annotator decisions, or system predictions for one occurrence as new observations."
+    ]
+  },
+  "prespecified_strata": {
+    "category": {
+      "field": "adjudicated_category",
+      "levels": [
+        "VPC.full",
+        "VPC.semi",
+        "VID"
+      ],
+      "assignment": "Use the frozen project-to-PARSEME mapping. Rejected and unresolved candidates are not forced into a positive category and remain in their own candidate-status denominators."
+    },
+    "continuity": {
+      "field": "continuity",
+      "levels": [
+        "continuous",
+        "discontinuous"
+      ],
+      "assignment": "continuous when the adjudicated member span has zero gap_token_ids; discontinuous when it has one or more."
+    },
+    "form_exposure": {
+      "field": "form_exposure",
+      "levels": [
+        "development_seen",
+        "test_unseen",
+        "indeterminate"
+      ],
+      "assignment": "After IR-123 freezes splits, development_seen means the canonical_type_id occurs in any training, pilot, or development gold available to system developers; test_unseen means it does not. Dictionary presence alone does not make a form development-seen. Indeterminate receives no unseen-form claim."
+    },
+    "variant": {
+      "field": "variant_status",
+      "levels": [
+        "canonical_member_lemma_sequence",
+        "verified_variant",
+        "unresolved_variant"
+      ],
+      "assignment": "Ordinary verbal inflection is lemma-normalized and is not a variant. verified_variant requires a source-declared or project-adjudicated same-type link under the hybrid inventory contract; unresolved_variant is descriptive only."
+    },
+    "source_genre": {
+      "field": "source_genre",
+      "levels": [
+        "english_wikipedia_encyclopedic_prose"
+      ],
+      "assignment": "Constant by design. No between-genre estimate or genre-general claim is available in version 1.0.0."
+    },
+    "sampling_length": {
+      "field": "length_stratum",
+      "levels": [
+        "short",
+        "medium",
+        "long"
+      ],
+      "assignment": "Reuse the exact 500-999, 1000-1999, and 2000-3999 project-token boundaries in resources/sampling_frame.json."
+    }
+  },
+  "claim_denominators": [
+    {
+      "claim": "candidate_recall",
+      "denominator": "All adjudicated confirmed target occurrences in discovery-complete evaluation documents, including occurrences missed by every automatic or assisted candidate source.",
+      "primary_cluster": "document_id",
+      "secondary_cluster": "canonical_type_id"
+    },
+    {
+      "claim": "exact_span_and_category_performance",
+      "denominator": "Recall uses all adjudicated confirmed target occurrences; precision uses all system-proposed evaluation candidates. Category scoring uses confirmed occurrences with an adjudicated VPC.full, VPC.semi, or VID label; unresolved candidates are counted and reported separately.",
+      "primary_cluster": "document_id",
+      "secondary_cluster": "canonical_type_id"
+    },
+    {
+      "claim": "idiomaticity_decision",
+      "denominator": "All adjudicated candidate records scheduled for idiomaticity assessment, including retained literal negatives. Ambiguous and not-assessed states remain visible; any determinate-only accuracy uses a separately named subset.",
+      "primary_cluster": "document_id",
+      "secondary_cluster": "canonical_type_id"
+    },
+    {
+      "claim": "sense_inventory_coverage",
+      "denominator": "Report separately over all confirmed target occurrences and over all distinct canonical_type_ids represented by them. Unresolved and out-of-inventory records stay in both applicable denominators.",
+      "primary_cluster": "document_id",
+      "secondary_cluster": "canonical_type_id"
+    },
+    {
+      "claim": "contextual_sense_assignment",
+      "denominator": "Coverage uses all confirmed occurrences requiring a sense decision. Assignment scoring uses the separately reported subset with an adjudicated non-out-of-inventory reference set; ambiguity and system abstention never disappear from coverage.",
+      "primary_cluster": "document_id",
+      "secondary_cluster": "canonical_type_id"
+    },
+    {
+      "claim": "annotation_agreement",
+      "denominator": "All records independently assigned to at least two annotators for the named task before adjudication; occurrence, span, category, idiomaticity, and sense denominators are reported separately.",
+      "primary_cluster": "document_id",
+      "secondary_cluster": "canonical_type_id"
+    },
+    {
+      "claim": "review_burden",
+      "denominator": "All assigned documents reaching the declared completion or stop state. Candidate and confirmed-occurrence counts remain nested workload descriptors rather than independent cases.",
+      "primary_cluster": "document_id",
+      "secondary_cluster": "canonical_type_id"
+    }
+  ],
+  "aggregation_and_weighting": {
+    "overall_population_estimate": "Use the frozen stratum inclusion probability pi_h=n_h/N_h and weight each sampled document by 1/pi_h. An unweighted pooled score describes only the realized benchmark composition.",
+    "within_length_stratum": "Rows have equal first-order inclusion probability after rights filtering; task metrics may be aggregated within the stratum using the IR-125 formula.",
+    "required_reports": "Report overall results and every prespecified single-axis stratum with its numerator, denominator, distinct document count, distinct canonical-form count, estimate state, and interval state.",
+    "crossed_cells": "The full Cartesian product is not a required inferential family. Crossed cells are descriptive unless IR-127 prospectively names and powers one before sealed-test access.",
+    "combined_score": "Forbidden. Candidate, span, category, idiomaticity, inventory, sense, abstention, agreement, and burden remain separate."
+  },
+  "small_stratum_rule": {
+    "current_state": "Every stratum is descriptive-only until IR-127 freezes its required allocation and cluster-count threshold from pre-test pilot simulation.",
+    "inferential_promotion": "Before sealed-test access, IR-127 must name the stratum, show a feasible design targeting a 95% interval half-width no greater than 0.10, and freeze the minimum analyzable document count plus any canonical-form count required by the claim.",
+    "automatic_withhold": "Report counts and point estimates as descriptive only when the frozen minimum cluster count is not met, the denominator is zero, the metric is undefined, or the realized 95% interval exceeds the frozen precision target. Do not pool strata or relax the target after seeing results.",
+    "overall_target": "IR-127 separately targets a 95% interval half-width no greater than 0.05 for each named overall primary estimate.",
+    "degenerate_case": "With fewer than two resampling clusters, report counts only and no bootstrap interval or comparative inference."
+  },
+  "next_gates": [
+    "IR-123 freezes document-disjoint splits and any canonical-form-disjoint unseen-form test.",
+    "IR-125 benchmark metric contract 1.1.0-predata freezes task formulas, undefined cases, and input schemas without changing these strata post hoc.",
+    "IR-126 bootstrap contract 1.0.0-predata and its standard-library implementation provide stratified document-cluster resampling, canonical-form sensitivity, and paired comparisons without supplying any observed interval.",
+    "IR-127 freezes allocation and claim-withhold thresholds before document selection or sealed-test access."
+  ],
+  "change_rule": "Changing a stratum definition, cluster unit, weighting rule, denominator boundary, or small-stratum gate requires a new protocol version and decision-log record. After test exposure, the change applies only to a new sealed evaluation version."
+}

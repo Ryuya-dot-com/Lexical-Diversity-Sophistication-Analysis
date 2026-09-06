@@ -2,4 +2,6 @@ __pycache__/
 *.py[cod]
 .DS_Store
 .venv/
+research_data/
+internal/
 ldfreq_webapp_master_roadmap_20260831.html

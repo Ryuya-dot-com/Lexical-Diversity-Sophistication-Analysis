@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0.0",
+  "protocol_id": "EN-VPC-VID-SPLIT-2026-09-04",
+  "frozen_on": "2026-09-04",
+  "status": "assignment_protocol_frozen_no_rows_no_custodian",
+  "task": "IR-123",
+  "dependencies": {
+    "sampling_frame": {
+      "path": "resources/sampling_frame.json",
+      "sha256": "55ac5a99d2c83500ba85dbda9e9ee5ab5b8db2438a61a57da1fc56fc85c02184"
+    },
+    "evaluation_strata": {
+      "path": "resources/evaluation_strata.json",
+      "sha256": "5a7d9cf321c07735498506aaa27658d8d164ed54e9d69598a0466967b505d43e"
+    },
+    "target_population": {
+      "path": "resources/target_population_contract.json",
+      "sha256": "8f281562aa6f398b9d3b817cf90cf1da36d744059f7708a1f0f3749028ab6c22"
+    }
+  },
+  "scope": {
+    "eligible_rows": "Only selected, rights-pass, still-target-unexposed document rows produced under the frozen sampling frame after IR-127 fixes n_h.",
+    "assignment_time": "After source and sample materialization but before candidate search, annotation, guide piloting, system development on project data, or disclosure of split membership.",
+    "unit": "One immutable page/revision document; every retained paragraph, candidate, occurrence, annotation, and prediction inherits its document split.",
+    "human_work_gate": "This protocol does not authorize annotation. GOVERNANCE.md and resources/ethics_determination.md remain controlling while institutional determination is pending."
+  },
+  "partitions": [
+    {
+      "id": "guide_training",
+      "share": 0.2,
+      "permitted_use": "Create examples, train annotators, and revise the annotation guide; never report as held-out performance."
+    },
+    {
+      "id": "annotation_pilot",
+      "share": 0.1,
+      "permitted_use": "Estimate workload and preliminary agreement and refine procedures; labels and results are exposed development evidence."
+    },
+    {
+      "id": "development",
+      "share": 0.2,
+      "permitted_use": "Debug metrics, select transparent baselines, and tune at most the prospectively authorized system components."
+    },
+    {
+      "id": "sealed_test",
+      "share": 0.5,
+      "permitted_use": "One locked final evaluation after guide, inventory, metrics, systems, and predictions are frozen."
+    }
+  ],
+  "assignment": {
+    "design": "Independent deterministic random partition within each frozen sampling-length stratum.",
+    "seed": "enwiki-20260901-vpc-vid-split-v1",
+    "hash": "SHA-256 of compact UTF-8 JSON [protocol_id, seed, page_id, revision_id]",
+    "order": "Sort ascending by split hash, then page_id and revision_id, separately within short, medium, and long.",
+    "integer_counts": "For each length stratum, floor share*n_h for every partition, then assign remaining rows by descending fractional remainder; ties use sealed_test, development, guide_training, annotation_pilot order.",
+    "slice_order": [
+      "guide_training",
+      "annotation_pilot",
+      "development",
+      "sealed_test"
+    ],
+    "fail_closed_conditions": [
+      "A page_id, revision_id, or immutable_source_id appears more than once.",
+      "Any document or any retained fragment of that document is assigned to more than one partition.",
+      "Any required partition receives zero documents in a sampling-length stratum.",
+      "A target, MWE, dictionary, label, model, outcome, or burden field enters assignment.",
+      "A split is rebalanced after any target or label exposure."
+    ],
+    "realized_counts": {
+      "guide_training": null,
+      "annotation_pilot": null,
+      "development": null,
+      "sealed_test": null
+    }
+  },
+  "information_boundary": {
+    "developer_visible": [
+      "guide_training text, labels, and errors",
+      "annotation_pilot text, labels, agreement, and burden",
+      "development text, labels, predictions, and metrics",
+      "public external resources already marked exposed in resources/leakage_ledger.json"
+    ],
+    "sealed_until_prediction_commitment": [
+      "sealed_test membership and source text",
+      "sealed_test candidates and pre-adjudication labels",
+      "sealed_test adjudication and final labels",
+      "sealed_test predictions, metrics, errors, and strata counts that reveal labels"
+    ],
+    "prediction_commitment": "Before scoring, hash and timestamp each final system identity, code/configuration, dependency/model identity, and complete sealed-test prediction file. No rerun becomes the primary result.",
+    "one_run_rule": "The custodian performs one planned scoring run. A technical failure may be rerun only with the same committed predictions and a logged non-analytic correction; otherwise it is a new exposed evaluation version.",
+    "release_rule": "Reveal test membership, labels, and results only after the frozen run and decision-log entry; release does not permit retrospective tuning or relabeling of the same version."
+  },
+  "custody": {
+    "required": true,
+    "status": "unassigned",
+    "eligible_role": "A named person who did not develop or tune the evaluated systems and can withhold the test material and score it independently.",
+    "conflicts": [
+      "system developer or hyperparameter tuner",
+      "person who selected a result for publication after viewing test scores",
+      "shared credential or storage location accessible to developers before commitment"
+    ],
+    "required_record_before_materialization": [
+      "custodian name or stable role identifier",
+      "appointment date",
+      "conflict declaration",
+      "storage and access boundary",
+      "sealed label artifact SHA-256",
+      "prediction commitment SHA-256 and timestamp",
+      "scoring script and environment identity",
+      "release authorization date"
+    ],
+    "stop_rule": "Without an eligible named custodian, do not create or claim a project sealed test."
+  },
+  "form_disjoint_policy": {
+    "primary_split": "Document-disjoint but not guaranteed canonical-form-disjoint.",
+    "permitted_current_claim": "Report the test_unseen occurrence stratum defined in resources/evaluation_strata.json, with document and canonical-form cluster counts, only at the precision level authorized by IR-127.",
+    "strong_whole_test_unseen_form_claim": "not_authorized",
+    "activation_gate": "A separate versioned addendum must be accepted before developers see candidate or label data. A non-developer custodian must group the document-canonical_type_id bipartite graph into connected components, assign whole components, demonstrate adequate precision, and disclose imbalance without moving rows for better scores.",
+    "failure_rule": "If shared forms create an infeasible giant component or the precision target fails, omit the strong unseen-form claim rather than deleting forms, moving documents post hoc, or calling occurrence-level novelty a form-disjoint test."
+  },
+  "external_evidence_roles": {
+    "STREUSLE_5_0": "Exposed external development/smoke-test evidence only, including its 40 projected test occurrences; never part of the new sealed test.",
+    "Raganato_WSD_slice": "Exposed external sense-ranking smoke test only, including 17 source-test rows; never part of the new sealed test.",
+    "dictionary_and_inventory_candidates": "Permitted inventory-development evidence but not contextual gold, an unseen-form guarantee, or a project sealed-test label."
+  },
+  "current_boundary": {
+    "source_rows": 0,
+    "assigned_documents": 0,
+    "sealed_test_documents": 0,
+    "sealed_test_labels": 0,
+    "custodian_assigned": false,
+    "project_test_exposure_count": 0,
+    "claim_ceiling": "split assignment and custody protocol only; no held-out evidence exists"
+  },
+  "change_rule": "Changing shares, assignment fields, seed, integer allocation, information access, custody, or form-disjoint policy requires a new split-protocol version. After any test exposure, the changed rule applies only to a new sealed test."
+}

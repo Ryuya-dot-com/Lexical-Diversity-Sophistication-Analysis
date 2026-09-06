@@ -1,0 +1,312 @@
+{
+  "review_schema_version": "1.0.0",
+  "review_id": "gate1-simplewiki-route2-pick-up-desk-review-v1",
+  "reviewed_on": "2026-09-02",
+  "inputs": {
+    "rendered_screen_id": "gate1-simplewiki-route2-rendered-screen-v1",
+    "rendered_screen_sha256": "e0cce039a3331fffdc0e8ff914506db5004bf7c782d5cceb2d354a5f1cfac148",
+    "oewn_release": "2025-edition; commit dc343f2683279ecbb13fab4e2fd778d7b162d287",
+    "oewn_artifact_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+    "wikimedia_terms_url": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use"
+  },
+  "construct": {
+    "purpose": "bounded project-internal desk review of the frozen pick up queue until the prespecified three-page, two-meaning early stop",
+    "method": "Read each complete retained article in rank order, adjudicate every automatic contiguous or one-to-eight-token gap lead, and inspect every pick-head token for missed or longer-gap pick up occurrences.",
+    "review_status": "preliminary single project review; author confirmation and independent annotation are absent",
+    "automatic_decision_columns": [
+      "lead_id",
+      "channel",
+      "paragraph",
+      "member_profile_token_positions",
+      "gap_token_count",
+      "surface_span_sha256",
+      "desk_state",
+      "provisional_category",
+      "idiomaticity_status",
+      "operational_meaning_id",
+      "candidate_sense_ids"
+    ],
+    "non_focal_decision_columns": [
+      "lead_id",
+      "canonical_form",
+      "channel",
+      "paragraph",
+      "member_profile_token_positions",
+      "gap_token_count",
+      "surface_span_sha256",
+      "desk_state",
+      "provisional_category",
+      "idiomaticity_status",
+      "operational_meaning_id",
+      "candidate_sense_ids",
+      "note_or_reason"
+    ],
+    "screening_rule": "Select the earliest admissible page, the earliest admissible page with a clearly different operational paraphrase meaning, and the earliest remaining admissible page; stop after that third selection.",
+    "formal_stop_rank": 4,
+    "protocol_deviation": {
+      "state": "post_stop_rows_viewed_not_used",
+      "description": "Desk ranks 5-20 were viewed during an internal double-check before the frozen early-stop clause was re-read. They receive no formal labels and cannot replace or supplement ranks 1, 2, and 4.",
+      "selection_effect": "none; the frozen sense-stratified selection was already determined by ranks 1, 2, and 4, with rank 3 rejected under the prespecified content rule"
+    },
+    "excluded_inferences": [
+      "gold MWE labels",
+      "validated contextual senses",
+      "MWE prevalence",
+      "learner knowledge",
+      "comprehension validity",
+      "final passage admission",
+      "automatic detector accuracy outside the reviewed prefix"
+    ],
+    "article_text_bundled": false,
+    "surface_spans_bundled": false,
+    "rendered_html_bundled": false,
+    "contributor_data_bundled": false
+  },
+  "summary": {
+    "canonical_form": "pick up",
+    "desk_row_count": 4,
+    "distinct_page_count": 4,
+    "pick_head_token_count_reviewed": 5,
+    "automatic_contiguous_lead_count": 3,
+    "automatic_gap_lead_count": 2,
+    "confirmed_target_occurrence_count": 5,
+    "false_span_count": 0,
+    "manual_missed_target_occurrence_count": 0,
+    "provisionally_selected_page_count": 3,
+    "selected_desk_screen_ranks": [1, 2, 4],
+    "selected_operational_meaning_ids": [
+      "raise_or_gather_scattered_objects",
+      "collect_person_for_transport",
+      "acquire_game_item"
+    ],
+    "selected_target_occurrence_count": 4,
+    "selected_discontinuous_target_occurrence_count": 2,
+    "rejected_page_reason_counts": {
+      "acute_violence": 1
+    },
+    "non_focal_confirmed_occurrence_count": 2,
+    "non_focal_false_span_count": 1,
+    "target_state": "provisionally_passed_at_frozen_early_stop_pending_author_confirmation"
+  },
+  "articles": [
+    {
+      "desk_screen_rank": 1,
+      "queue_rank": 3,
+      "page_id": 330106,
+      "revision_id": 10925077,
+      "revision_timestamp": "2026-07-18T02:13:12Z",
+      "title": "The Cat in the Hat",
+      "extracted_text_sha256": "7970c8a06007782971529bd4f64e308414244ff838159ce20c1793408ea04862",
+      "profile_token_count": 451,
+      "pick_head_token_count_reviewed": 2,
+      "automatic_decisions": [
+        ["pick-up-01-contiguous-01", "contiguous", 2, [357, 358], 0, "76d9f8ab3fdca89b77661161c7470fed16e009c9969ccd137b5c6be5502901a6", "confirmed_target_occurrence", "VPC.full", "literal", "raise_or_gather_scattered_objects", ["pick_up%2:38:01::", "pick_up%2:40:01::"]],
+        ["pick-up-01-gap-01", "gap", 2, [368, 370], 1, "a11843a23ace48b1b54ca53af27fc9a5852a689cb29140da29722ed45cc5904c", "confirmed_target_occurrence", "VPC.full", "literal", "raise_or_gather_scattered_objects", ["pick_up%2:38:01::", "pick_up%2:40:01::"]]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass",
+        "source_cueing": "ordinary unmarked prose; the surrounding cleanup sequence supports inference but gives no explicit target gloss",
+        "centrality_state": "pass",
+        "centrality_basis": "gathering the scattered objects is one mechanism in the resolution of the article's main plot problem",
+        "background_state": "pass_from_retained_prose",
+        "content_state": "pass_low_risk_first_pilot",
+        "language_or_source_threats": ["the frozen revision carries an unsourced-page template", "plot-summary prose includes minor repetition"],
+        "global_question": {
+          "item_id": "pick-up-01-global-01",
+          "prompt": "How does the Cat reverse the mess caused by the Things before the children's mother returns?",
+          "expected_propositions": ["the Things are returned to their box", "the scattered objects are gathered with a machine", "the house is restored before the mother arrives"],
+          "target_dependency": "the focal meaning supplies the gathered-objects proposition rather than a phrase definition",
+          "state": "draft_project_internal_uncued"
+        },
+        "target_critical_item": {
+          "item_id": "pick-up-01-target-01",
+          "prompt": "What happens to the objects that fell when the Cat uses the machine?",
+          "expected_proposition": "the machine gathers and removes the scattered objects",
+          "phrase_definition_item": false,
+          "state": "draft_project_internal"
+        }
+      },
+      "rights": {
+        "permanent_revision_url": "https://simple.wikipedia.org/w/index.php?title=The_Cat_in_the_Hat&oldid=10925077",
+        "revision_history_url": "https://simple.wikipedia.org/w/index.php?title=The_Cat_in_the_Hat&action=history",
+        "license_route": "CC BY-SA 4.0",
+        "revision_comments_checked_through_target": 57,
+        "import_or_copy_comment_flags": [],
+        "current_wikitext_notice_flags": ["unsourced"],
+        "additional_attribution": [],
+        "modification_notice": "Project extraction retains rendered headings and main-prose paragraphs while excluding page furniture, tables, lists, media, captions, references, and tail sections.",
+        "release_state": "metadata_only_in_repository; extracted prose remains local"
+      },
+      "screening_selection_role": "earliest_admissible_page",
+      "passage_state": "provisionally_selected_pending_author_confirmation"
+    },
+    {
+      "desk_screen_rank": 2,
+      "queue_rank": 5,
+      "page_id": 56021,
+      "revision_id": 10596436,
+      "revision_timestamp": "2025-10-27T23:36:29Z",
+      "title": "School bus",
+      "extracted_text_sha256": "9646bc239843bbc6ce4fcc70f90a0343e8190b0f69705b523b6a70d7235d7ccf",
+      "profile_token_count": 498,
+      "pick_head_token_count_reviewed": 1,
+      "automatic_decisions": [
+        ["pick-up-02-gap-01", "gap", 1, [17, 19], 1, "ad552d7ecdf447e86826b3239c4879397f6ec3fdc3088cef85bed58deb3d3dc8", "confirmed_target_occurrence", "VPC.full", "idiomatic", "collect_person_for_transport", ["pick_up%2:38:00::", "pick_up%2:40:01::"]]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass_with_language_threats",
+        "source_cueing": "ordinary unmarked prose; the preceding transport purpose and following home-or-stop locations constrain the meaning without explicitly glossing the target",
+        "centrality_state": "pass",
+        "centrality_basis": "where students join the bus contributes to the article's global account of school-bus function and safety",
+        "background_state": "pass_from_retained_prose_with_us_regulatory_load",
+        "content_state": "pass_low_risk_first_pilot",
+        "language_or_source_threats": ["dense GVWR and vehicle-classification terminology", "minor grammatical and editorial errors", "U.S.-specific safety design"],
+        "global_question": {
+          "item_id": "pick-up-02-global-01",
+          "prompt": "How does the article connect the transport purpose of a school bus with its safety design?",
+          "expected_propositions": ["students can join the bus at home or a bus stop", "the bus carries them to school", "rub rails and multiple exits serve safety functions"],
+          "target_dependency": "the focal meaning supplies the students-joining-the-bus proposition rather than a phrase definition",
+          "state": "draft_project_internal_uncued"
+        },
+        "target_critical_item": {
+          "item_id": "pick-up-02-target-01",
+          "prompt": "Where can children join the bus before it takes them to school?",
+          "expected_proposition": "in front of their home or at a dedicated bus stop",
+          "phrase_definition_item": false,
+          "state": "draft_project_internal"
+        }
+      },
+      "rights": {
+        "permanent_revision_url": "https://simple.wikipedia.org/w/index.php?title=School_bus&oldid=10596436",
+        "revision_history_url": "https://simple.wikipedia.org/w/index.php?title=School_bus&action=history",
+        "license_route": "CC BY-SA 4.0",
+        "revision_comments_checked_through_target": 56,
+        "import_or_copy_comment_flags": ["split_from_types_of_buses"],
+        "current_wikitext_notice_flags": [],
+        "additional_attribution": [
+          {
+            "source_page_title": "Types of buses",
+            "source_page_id": 637787,
+            "source_revision_id_before_split": 9000393,
+            "source_revision_url": "https://simple.wikipedia.org/w/index.php?title=Types_of_buses&oldid=9000393",
+            "source_revision_history_url": "https://simple.wikipedia.org/w/index.php?title=Types_of_buses&action=history",
+            "reason": "revision 9000714 created the article with a split from the Types of buses school-bus section; the source history must travel with reuse of the moved prose"
+          }
+        ],
+        "modification_notice": "Project extraction retains rendered headings and main-prose paragraphs while excluding page furniture, tables, lists, media, captions, references, and tail sections.",
+        "release_state": "metadata_only_in_repository; extracted prose remains local"
+      },
+      "screening_selection_role": "earliest_admissible_with_different_operational_meaning",
+      "passage_state": "provisionally_selected_pending_author_confirmation"
+    },
+    {
+      "desk_screen_rank": 3,
+      "queue_rank": 7,
+      "page_id": 1084538,
+      "revision_id": 9397439,
+      "revision_timestamp": "2024-03-06T03:03:27Z",
+      "title": "Liverpool Women's Hospital bombing",
+      "extracted_text_sha256": "bbfbe3aae5d15b0e2a456e6c152734f0b10eecaeaba8f07bb8c869f833648883",
+      "profile_token_count": 821,
+      "pick_head_token_count_reviewed": 1,
+      "automatic_decisions": [
+        ["pick-up-03-contiguous-01", "contiguous", 4, [269, 270], 0, "13d674290121e93cc4d799bfb8b17c57ce1926bb79fa19ef514d0bb22b778175", "confirmed_target_occurrence", "VPC.full", "idiomatic", "collect_person_for_transport", ["pick_up%2:38:00::"]]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass",
+        "source_cueing": "ordinary unmarked incident chronology with no explicit target gloss",
+        "centrality_state": "pass",
+        "centrality_basis": "the passenger's entry into the taxi is part of the causal chronology of the incident",
+        "background_state": "pass_from_retained_prose_with_named_event_load",
+        "content_state": "reject_acute_violence",
+        "language_or_source_threats": ["terrorism", "suicide history", "explosion injuries", "religious and asylum claims"],
+        "global_question": null,
+        "target_critical_item": null
+      },
+      "rights": null,
+      "screening_selection_role": "rejected_before_selection_completion",
+      "passage_state": "reject_prespecified_acute_violence"
+    },
+    {
+      "desk_screen_rank": 4,
+      "queue_rank": 10,
+      "page_id": 190206,
+      "revision_id": 9791031,
+      "revision_timestamp": "2024-09-25T23:45:47Z",
+      "title": "The Guardian Legend",
+      "extracted_text_sha256": "1984313333cbc2139a4cef12aedb255e34bbf187e5ecdb10f89d8b90a3c8395b",
+      "profile_token_count": 727,
+      "pick_head_token_count_reviewed": 1,
+      "automatic_decisions": [
+        ["pick-up-04-contiguous-01", "contiguous", 4, [280, 281], 0, "b771b19589eb64f86b6ed7730c0ac97f59da89be67b7c35695afaf3a06fc8cf2", "confirmed_target_occurrence", "VPC.full", "idiomatic", "acquire_game_item", ["pick_up%2:40:01::"]]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [
+        ["pick-up-04-come-out-contiguous-01", "come out", "contiguous", 8, [605, 606], 0, "06310961e91e82e86d419e45bd85007046ab9742c57d0ca5b5ab8ab916a361d2", "confirmed_non_focal_target_occurrence", "VPC.full", "idiomatic", "be_released", ["come_out%2:30:01::"], "first release statement"],
+        ["pick-up-04-come-out-gap-01", "come out", "gap", 8, [605, 612], 6, "74673bcaec70bb9c5b7c14dcaaf7d2c5fc83063e2e4abcfda6b8f620b8a799bd", "false_span", null, "not_assessed", null, [], "the gap lead crosses two complete come out occurrences"],
+        ["pick-up-04-come-out-contiguous-02", "come out", "contiguous", 8, [611, 612], 0, "06310961e91e82e86d419e45bd85007046ab9742c57d0ca5b5ab8ab916a361d2", "confirmed_non_focal_target_occurrence", "VPC.full", "idiomatic", "be_released", ["come_out%2:30:01::"], "second release statement"]
+      ],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass_with_minor_language_threats",
+        "source_cueing": "ordinary unmarked gameplay prose; the life-meter purpose constrains the item-acquisition meaning without explicitly glossing the target",
+        "centrality_state": "pass",
+        "centrality_basis": "acquiring items to refill the life meter contributes to the global explanation of survival and progress in the game",
+        "background_state": "pass_from_retained_prose_with_video_game_terminology",
+        "content_state": "pass_low_risk_first_pilot",
+        "language_or_source_threats": ["named game mechanics", "minor subject-verb agreement and repetition", "fictional combat and character death"],
+        "global_question": {
+          "item_id": "pick-up-04-global-01",
+          "prompt": "How can the player keep the Guardian alive and make progress toward destroying Naju?",
+          "expected_propositions": ["items refill the life meter", "weapons are used against aliens", "the player reaches and activates the safety devices through the Labyrinth and Dungeon"],
+          "target_dependency": "the focal meaning supplies the item-acquisition proposition rather than a phrase definition",
+          "state": "draft_project_internal_uncued"
+        },
+        "target_critical_item": {
+          "item_id": "pick-up-04-target-01",
+          "prompt": "What can players do to restore the Guardian's life meter?",
+          "expected_proposition": "acquire items that refill it",
+          "phrase_definition_item": false,
+          "state": "draft_project_internal"
+        }
+      },
+      "rights": {
+        "permanent_revision_url": "https://simple.wikipedia.org/w/index.php?title=The_Guardian_Legend&oldid=9791031",
+        "revision_history_url": "https://simple.wikipedia.org/w/index.php?title=The_Guardian_Legend&action=history",
+        "license_route": "CC BY-SA 4.0",
+        "revision_comments_checked_through_target": 21,
+        "import_or_copy_comment_flags": [],
+        "current_wikitext_notice_flags": [],
+        "additional_attribution": [],
+        "modification_notice": "Project extraction retains rendered headings and main-prose paragraphs while excluding page furniture, tables, lists, media, captions, references, and tail sections.",
+        "release_state": "metadata_only_in_repository; extracted prose remains local"
+      },
+      "screening_selection_role": "earliest_remaining_admissible_page",
+      "passage_state": "provisionally_selected_pending_author_confirmation"
+    }
+  ],
+  "target_decision": {
+    "state": "provisionally_passed_at_frozen_early_stop_pending_author_confirmation",
+    "selected_desk_screen_ranks": [1, 2, 4],
+    "rule_match": "three distinct articles span three operational paraphrase meanings, and two selected occurrences are naturally discontinuous",
+    "gate_contribution": "one provisional VPC target plus discontinuity evidence; Route 2 still requires both remaining VPC targets and at least one VID target to pass",
+    "app_change": "none; do not add the pick up sense inventory unless the complete non-human material panel passes",
+    "hard_admission_missing": [
+      "author confirmation",
+      "independent occurrence/category/sense annotation",
+      "final language and content review",
+      "verified sentence segmentation",
+      "final item review and passage release packaging"
+    ],
+    "next_desk_step": "review give up in frozen rank order"
+  }
+}

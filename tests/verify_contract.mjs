@@ -1,11 +1,14 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {runInNewContext} from 'node:vm';
 import {
   analyze, analyzeDeclaredSegments, analyzeWordCoverage, findMweCandidates, lookupMweForm,
-  makeExportRecord, makeMweReviewRecord, mweOccurrencesCsv, parseBatchJson,
-  parseMwePatternTsv, prepareMweFormReferenceProfile, prepareWordReferenceProfile,
-  roundedRatio, sha256, summarizeMweDocument, summarizeMweFormCoverage, tokenize,
-  tokenizeForTubelex, tokenRecords, wordCoverageCsv
+  lookupMweSenses, makeExportRecord, makeMweDocumentSetRecord, makeMweReviewRecord,
+  makeMweWorkspaceRecord, mweOccurrencesCsv,
+  parseBatchJson, parseJsonInput, parseMwePatternTsv, prepareMweFormReferenceProfile,
+  prepareMweSenseReferenceProfile, prepareWordReferenceProfile, restoreMweDocumentSetRecord,
+  restoreMweWorkspaceRecord, roundedRatio, sha256, summarizeMweDocument,
+  summarizeMweFormCoverage, tokenize, tokenizeForAsciiWordProfile, tokenRecords, wordCoverageCsv
 } from '../metrics.mjs';
 
 const fixtureUrl = new URL('./fixtures/metric_cases.json', import.meta.url);
@@ -16,18 +19,23 @@ const mweFixtureUrl = new URL('./fixtures/mwe_cases.json', import.meta.url);
 const oewnSubsetUrl = new URL('../resources/oewn_take_in_2025.json', import.meta.url);
 const oewnNoticeUrl = new URL('../resources/OEWN_WORDNET_NOTICE.txt', import.meta.url);
 const wordProfileUrl = new URL('../resources/tubelex_en_regex_ascii_2025.json', import.meta.url);
+const ngslProfileUrl = new URL('../resources/ngsl_1_2_ascii_forms.json', import.meta.url);
 const mweFormProfileUrl = new URL('../resources/oewn_2025_multiword_verbs.json', import.meta.url);
 const fixture = JSON.parse(readFileSync(fixtureUrl, 'utf8'));
 const sampleDocument = JSON.parse(readFileSync(sampleUrl, 'utf8'));
 const contract = JSON.parse(readFileSync(contractUrl, 'utf8'));
 const mweContract = JSON.parse(readFileSync(mweContractUrl, 'utf8'));
 const mweFixture = JSON.parse(readFileSync(mweFixtureUrl, 'utf8'));
-const oewnSubset = JSON.parse(readFileSync(oewnSubsetUrl, 'utf8'));
+const oewnSubsetText = readFileSync(oewnSubsetUrl, 'utf8');
+const oewnSubset = JSON.parse(oewnSubsetText);
 const oewnNotice = readFileSync(oewnNoticeUrl, 'utf8');
 const wordProfile = prepareWordReferenceProfile(JSON.parse(readFileSync(wordProfileUrl, 'utf8')));
+const ngslProfileText = readFileSync(ngslProfileUrl, 'utf8');
+const ngslProfile = prepareWordReferenceProfile(JSON.parse(ngslProfileText));
 const mweFormProfile = prepareMweFormReferenceProfile(
   JSON.parse(readFileSync(mweFormProfileUrl, 'utf8'))
 );
+const mweSenseProfile = prepareMweSenseReferenceProfile(oewnSubset);
 
 assert.equal(contract.contract_version, '0.1.0-probe');
 assert.equal(fixture.contract_version, contract.contract_version);
@@ -35,7 +43,7 @@ for (const testCase of fixture.cases) {
   assert.deepEqual(analyze(testCase.text), testCase.expected, testCase.id);
 }
 assert.equal(roundedRatio(1, 128), 0.007813);
-assert.deepEqual(tokenizeForTubelex("Don't re-use café."), ['don', 't', 're', 'use']);
+assert.deepEqual(tokenizeForAsciiWordProfile("Don't re-use café."), ['don', 't', 're', 'use']);
 const wordCoverage = analyzeWordCoverage(
   'They took it in, then spilled the beans and played qqqqqq.', wordProfile
 );
@@ -44,6 +52,22 @@ assert.deepEqual(wordCoverage.type_coverage, {numerator: 10, denominator: 11, va
 assert.equal(wordCoverage.items[0].word, 'qqqqqq');
 assert.equal(wordCoverage.items[0].status, 'unmatched');
 assert.match(wordCoverageCsv(wordCoverage), /"qqqqqq","1","unmatched"/);
+const ngsl1000 = analyzeWordCoverage(
+  'The favorite difficulty thick found xylophone.', ngslProfile, 1000
+);
+assert.deepEqual(ngsl1000.token_coverage, {numerator: 3, denominator: 6, value: 0.5});
+assert.equal(ngsl1000.items.find(item => item.word === 'difficulty').status, 'beyond_cutoff');
+assert.equal(ngsl1000.items.find(item => item.word === 'xylophone').status, 'unmatched');
+assert.deepEqual(ngsl1000.items.find(item => item.word === 'found').head_mappings, [
+  {lemma: 'find', rank: 81}, {lemma: 'found', rank: 2807}
+]);
+assert.equal(ngsl1000.items.find(item => item.word === 'found').ambiguous_head_mapping, true);
+assert.deepEqual(
+  analyzeWordCoverage('The favorite difficulty thick found xylophone.', ngslProfile, 2000)
+    .token_coverage,
+  {numerator: 5, denominator: 6, value: 0.833333}
+);
+assert.throws(() => analyzeWordCoverage('the', ngslProfile), /rank cutoff/);
 assert.deepEqual(lookupMweForm('Take   In', mweFormProfile), {
   inventory_id: 'oewn-2025-ascii-multiword-verb-forms',
   inventory_version: '2025.projection-1', status: 'matched',
@@ -90,12 +114,19 @@ reviewedDocument.occurrences = reviewedDocument.occurrences.map(item => ({
   status: 'confirmed',
   decision: {source: 'test-review', note: 'synthetic fixture decision'},
   form_lookup: lookupMweForm(item.canonical_form, mweFormProfile),
-  sense: {
-    inventory_id: null, inventory_version: null, lookup_status: 'not_attempted',
-    candidate_sense_ids: [], assignment_status: 'unassigned', selected_sense_ids: [],
-    decision: null
-  }
+  sense: lookupMweSenses(item.canonical_form, mweSenseProfile).state
 }));
+reviewedDocument.occurrences[0].idiomaticity = {
+  status: 'idiomatic',
+  decision: {source: 'test-review', note: 'contextual idiomaticity decision'}
+};
+reviewedDocument.occurrences[0].sense.assignment_status = 'assigned';
+reviewedDocument.occurrences[0].sense.selected_sense_ids = [
+  reviewedDocument.occurrences[0].sense.candidate_sense_ids[0]
+];
+reviewedDocument.occurrences[0].sense.decision = {
+  source: 'test-review', note: 'contextual sense decision'
+};
 assert.deepEqual(summarizeMweFormCoverage(reviewedDocument, mweContract), {
   occurrence_coverage: {numerator: 2, denominator: 2, value: 1},
   type_coverage: {numerator: 2, denominator: 2, value: 1},
@@ -108,47 +139,340 @@ const mweReviewRecord = await makeMweReviewRecord({
   tokenizer: contract.tokenizer,
   authorizationAttested: true,
   wordProfile,
+  wordRankCutoff: null,
   mweFormProfile,
+  mweSenseProfile,
   generatedAt: '2026-09-01T00:00:00.000Z'
 });
+assert.equal(mweReviewRecord.schema_version, '0.4.0-mwe-review');
 assert.equal(mweReviewRecord.text.raw_text_included, false);
 assert.equal(mweReviewRecord.input_authorization.attested, true);
-assert.equal(mweReviewRecord.active_runtime_resources.length, 2);
+assert.equal(mweReviewRecord.active_runtime_resources.length, 3);
 assert.equal(mweReviewRecord.summary.word_coverage.token_coverage.denominator, 8);
+assert.equal(mweReviewRecord.summary.review.sense_inventory_coverage.numerator, 1);
+assert.equal(mweReviewRecord.summary.review.sense_assignment_coverage.numerator, 1);
+assert.equal(mweReviewRecord.summary.review.idiomaticity_annotation_coverage.numerator, 1);
+assert.equal(mweReviewRecord.occurrences[0].sense.lookup_status, 'matched');
+assert.equal(mweReviewRecord.occurrences[0].sense.candidate_sense_ids.length, 17);
+assert.equal(mweReviewRecord.occurrences[0].sense.assignment_status, 'assigned');
+assert.equal(mweReviewRecord.occurrences[0].idiomaticity.status, 'idiomatic');
 assert.ok(!JSON.stringify(mweReviewRecord).includes(reviewedDocument.text));
 assert.match(mweReviewRecord.text.sha256_utf8, /^[0-9a-f]{64}$/);
 assert.match(mweOccurrencesCsv(reviewedDocument, mweContract), /"take in"/);
 assert.match(mweOccurrencesCsv(reviewedDocument, mweContract), /"matched","take in#v","17"/);
+assert.match(mweOccurrencesCsv(reviewedDocument, mweContract), /"idiomatic","contextual idiomaticity decision"/);
+assert.match(mweOccurrencesCsv(reviewedDocument, mweContract), /"assigned","take_in%2:42:00::","contextual sense decision"/);
+assert.match(mweOccurrencesCsv(reviewedDocument, mweContract), /"take_in%2:42:00::/);
+const mweWorkspaceRecord = await makeMweWorkspaceRecord({
+  document: reviewedDocument, contract: mweContract, patternSource: patternTsv,
+  authorizationAttested: true, savedAt: '2026-09-01T00:00:00.000Z',
+  wordProfileKey: 'tubelex', wordProfile, wordRankCutoff: null,
+  mweFormProfile, mweSenseProfile
+});
+assert.equal(mweWorkspaceRecord.schema_version, mweContract.workspace_file.schema_version);
+assert.equal(mweWorkspaceRecord.raw_content_included, true);
+assert.equal(mweWorkspaceRecord.document.text, reviewedDocument.text);
+assert.match(mweWorkspaceRecord.document.sha256_utf8, /^[0-9a-f]{64}$/);
+assert.equal(Object.hasOwn(mweWorkspaceRecord.document, 'tokens'), false);
+const oversizedOccurrenceDocument = structuredClone(reviewedDocument);
+oversizedOccurrenceDocument.occurrences = Array.from(
+  {length: mweContract.candidate_generation.limits.candidates_per_text + 1},
+  () => structuredClone(reviewedDocument.occurrences[0])
+);
+assert.throws(
+  () => summarizeMweDocument(oversizedOccurrenceDocument, mweContract),
+  /occurrence count exceeds/
+);
+assert.deepEqual(await restoreMweWorkspaceRecord({
+  record: mweWorkspaceRecord, contract: mweContract, authorizationAttested: true,
+  wordProfileKey: 'tubelex', wordProfile, wordRankCutoff: null,
+  mweFormProfile, mweSenseProfile
+}), {document: reviewedDocument, patternSource: patternTsv});
+const tamperedWorkspace = structuredClone(mweWorkspaceRecord);
+tamperedWorkspace.document.occurrences[0].member_token_ids[0] = 't99999';
+await assert.rejects(() => restoreMweWorkspaceRecord({
+  record: tamperedWorkspace, contract: mweContract, authorizationAttested: true,
+  wordProfileKey: 'tubelex', wordProfile, wordRankCutoff: null,
+  mweFormProfile, mweSenseProfile
+}), /Unknown token ID/);
+const tamperedWorkspaceText = structuredClone(mweWorkspaceRecord);
+tamperedWorkspaceText.document.text = tamperedWorkspaceText.document.text.replace('They', 'We');
+await assert.rejects(() => restoreMweWorkspaceRecord({
+  record: tamperedWorkspaceText, contract: mweContract, authorizationAttested: true,
+  wordProfileKey: 'tubelex', wordProfile, wordRankCutoff: null,
+  mweFormProfile, mweSenseProfile
+}), /text SHA-256/);
+const mismatchedWorkspaceResource = structuredClone(mweWorkspaceRecord);
+mismatchedWorkspaceResource.active_runtime_resources[0].profile_version = 'wrong';
+await assert.rejects(() => restoreMweWorkspaceRecord({
+  record: mismatchedWorkspaceResource, contract: mweContract, authorizationAttested: true,
+  wordProfileKey: 'tubelex', wordProfile, wordRankCutoff: null,
+  mweFormProfile, mweSenseProfile
+}), /runtime resources/);
+const documentSetRecord = makeMweDocumentSetRecord({
+  contract: mweContract, setId: 'pilot-set', setLabel: 'Pilot passages',
+  documents: [
+    {id: 'passage-1', label: 'Passage one', workspace: mweWorkspaceRecord},
+    {id: 'passage-2', label: 'Passage two', workspace: mweWorkspaceRecord}
+  ],
+  savedAt: '2026-09-01T00:30:00.000Z', authorizationAttested: true
+});
+assert.equal(documentSetRecord.schema_version, mweContract.document_set_file.schema_version);
+assert.equal(documentSetRecord.documents.length, 2);
+assert.deepEqual((await restoreMweDocumentSetRecord({
+  record: documentSetRecord, contract: mweContract, authorizationAttested: true,
+  wordProfiles: new Map([['tubelex', {profile: wordProfile, maximumRank: null}]]),
+  mweFormProfile, mweSenseProfile
+})).documents.map(item => item.id), ['passage-1', 'passage-2']);
+assert.throws(() => makeMweDocumentSetRecord({
+  contract: mweContract, setId: 'pilot-set', setLabel: 'Pilot passages',
+  documents: [
+    {id: 'duplicate', label: 'One', workspace: mweWorkspaceRecord},
+    {id: 'duplicate', label: 'Two', workspace: mweWorkspaceRecord}
+  ],
+  savedAt: '2026-09-01T00:30:00.000Z', authorizationAttested: true
+}), /Duplicate MWE document ID/);
+const tamperedDocumentSet = structuredClone(documentSetRecord);
+tamperedDocumentSet.documents[1].workspace.document.text = 'Changed text.';
+await assert.rejects(() => restoreMweDocumentSetRecord({
+  record: tamperedDocumentSet, contract: mweContract, authorizationAttested: true,
+  wordProfiles: new Map([['tubelex', {profile: wordProfile, maximumRank: null}]]),
+  mweFormProfile, mweSenseProfile
+}), /text SHA-256/);
+// Sense states survive JSON save/resume without turning uncertainty into assignment.
+{
+  const options = {
+    contract: mweContract, authorizationAttested: true, patternSource: patternTsv,
+    savedAt: '2026-09-01T00:00:00.000Z', wordProfileKey: 'tubelex', wordProfile,
+    wordRankCutoff: null, mweFormProfile, mweSenseProfile,
+    wordProfiles: new Map([['tubelex', {profile: wordProfile, maximumRank: null}]])
+  };
+  const documents = [];
+  for (const [status, count] of [
+    ['assigned', 1], ['multiple_assigned', 2], ['ambiguous', 2],
+    ['abstained', 0], ['unassigned', 0], ['out_of_inventory', 0]
+  ]) {
+    const document = structuredClone(reviewedDocument);
+    const occurrence = document.occurrences[0];
+    occurrence.idiomaticity = {status: 'not_assessed', decision: null};
+    Object.assign(occurrence.sense, {
+      assignment_status: status,
+      selected_sense_ids: occurrence.sense.candidate_sense_ids.slice(0, count),
+      decision: status === 'unassigned' ? null : occurrence.sense.decision
+    });
+    const workspace = JSON.parse(JSON.stringify(await makeMweWorkspaceRecord({
+      ...options, document
+    })));
+    const restored = await restoreMweWorkspaceRecord({...options, record: workspace});
+    assert.deepEqual(restored, {document, patternSource: patternTsv});
+    const summary = summarizeMweDocument(restored.document, mweContract);
+    assert.equal(summary.sense_assignment_status_counts[status], 1);
+    assert.equal(summary.sense_assignment_status_counts.inventory_ineligible, 1);
+    assert.deepEqual(summary.sense_assignment_coverage, {
+      numerator: ['assigned', 'multiple_assigned'].includes(status) ? 1 : 0,
+      denominator: 1, value: ['assigned', 'multiple_assigned'].includes(status) ? 1 : 0
+    });
+    documents.push({id: status, label: status, workspace});
+  }
+  const set = JSON.parse(JSON.stringify(makeMweDocumentSetRecord({
+    ...options, setId: 'sense-states', setLabel: 'Synthetic sense states', documents
+  })));
+  assert.deepEqual((await restoreMweDocumentSetRecord({...options, record: set})).documents,
+    documents);
+
+  // Imported provenance must be nonblank text, never coerced into a displayed note.
+  for (const slot of ['decision', 'idiomaticity', 'sense']) {
+    for (const field of ['source', 'note']) {
+      for (const value of [undefined, null, false, 17, {}, [], '', ' \t ']) {
+        const record = structuredClone(mweWorkspaceRecord);
+        const occurrence = record.document.occurrences[0];
+        const parent = slot === 'decision' ? occurrence : occurrence[slot];
+        parent.decision[field] = value;
+        await assert.rejects(() => restoreMweWorkspaceRecord({
+          ...options, record: JSON.parse(JSON.stringify(record))
+        }), /decision provenance/);
+      }
+    }
+  }
+  for (const slot of ['decision', 'idiomaticity', 'sense']) {
+    for (const value of [undefined, false, 0, '', {}, {source: 'test-review'}]) {
+      const record = structuredClone(mweWorkspaceRecord);
+      if (slot === 'decision') {
+        record.document.occurrences[0] = structuredClone(candidateDocument.occurrences[0]);
+      }
+      const occurrence = record.document.occurrences[0];
+      const parent = slot === 'decision' ? occurrence : occurrence[slot];
+      if (slot === 'idiomaticity') parent.status = 'not_assessed';
+      if (slot === 'sense') {
+        parent.assignment_status = 'unassigned';
+        parent.selected_sense_ids = [];
+      }
+      parent.decision = value;
+      await assert.rejects(() => restoreMweWorkspaceRecord({
+        ...options, record: JSON.parse(JSON.stringify(record))
+      }), /decision|idiomaticity state|terminal result/);
+    }
+  }
+  const invalidSet = structuredClone(set);
+  invalidSet.documents.at(-1).workspace.document.occurrences[0].sense.decision.note = {};
+  await assert.rejects(() => restoreMweDocumentSetRecord({...options, record: invalidSet}),
+    /Sense decision provenance/);
+  const invalidDocument = structuredClone(reviewedDocument);
+  invalidDocument.occurrences[0].sense.decision.note = {};
+  await assert.rejects(() => makeMweWorkspaceRecord({...options, document: invalidDocument}),
+    /Sense decision provenance/);
+  assert.throws(() => mweOccurrencesCsv(invalidDocument, mweContract), /Sense decision provenance/);
+}
+const ngslReviewRecord = await makeMweReviewRecord({
+  document: reviewedDocument, contract: mweContract, patternSource: patternTsv,
+  tokenizer: contract.tokenizer, authorizationAttested: true,
+  wordProfile: ngslProfile, wordRankCutoff: 1000, mweFormProfile, mweSenseProfile,
+  generatedAt: '2026-09-01T00:00:00.000Z'
+});
+// Async records must describe the validated input at call time, not later edits.
+{
+  const options = {
+    contract: mweContract, patternSource: patternTsv, authorizationAttested: true,
+    savedAt: '2026-09-01T00:00:00.000Z', generatedAt: '2026-09-01T00:00:00.000Z',
+    tokenizer: contract.tokenizer, wordProfileKey: 'tubelex', wordProfile,
+    wordRankCutoff: null, mweFormProfile, mweSenseProfile,
+    wordProfiles: new Map([['tubelex', {profile: wordProfile, maximumRank: null}]])
+  };
+  for (const [build, expected] of [
+    [makeMweWorkspaceRecord, mweWorkspaceRecord], [makeMweReviewRecord, mweReviewRecord]
+  ]) {
+    const document = structuredClone(reviewedDocument);
+    const pending = build({...options, document});
+    document.occurrences[0].decision.note = 'Changed while hashing.';
+    const saved = await pending;
+    assert.deepEqual(saved, expected, `${build.name} must snapshot before awaiting`);
+    document.occurrences[0].sense.selected_sense_ids.length = 0;
+    assert.deepEqual(saved, expected, 'Returned decisions must not alias the caller');
+  }
+  for (const [restore, original] of [
+    [restoreMweWorkspaceRecord, mweWorkspaceRecord], [restoreMweDocumentSetRecord, documentSetRecord]
+  ]) {
+    const expected = await restore({...options, record: original});
+    const record = structuredClone(original);
+    const pending = restore({...options, record});
+    const workspace = record.document ? record : record.documents[0].workspace;
+    workspace.document.text = workspace.document.text.replace('They', 'We');
+    workspace.document.occurrences[0].decision.note = 'Changed while validating.';
+    assert.deepEqual(await pending, expected, `${restore.name} must restore the validated snapshot`);
+  }
+}
+assert.equal(ngslReviewRecord.summary.word_coverage.selected_rank_cutoff, 1000);
+assert.equal(
+  ngslReviewRecord.active_runtime_resources[0].profile_id,
+  'ngsl-1.2-ascii-research-forms'
+);
+const localWordProfile = prepareWordReferenceProfile({
+  identity: {
+    profile_id: 'bnc-coca-level6-v1.0.0-first-2k-local',
+    profile_version: '1.0.0.local-projection-1',
+    profile_status: 'local_only', title: 'Synthetic local-profile contract fixture'
+  },
+  construct: {
+    coverage_channel: 'word', reference_function: 'ranked_inventory',
+    excluded_inferences: ['learner knowledge']
+  },
+  source: {
+    delivery_mode: 'researcher_supplied_local_file', artifact_sha256: 'a'.repeat(64),
+    release_or_edition: 'synthetic fixture'
+  },
+  rights: {
+    browser_delivery_permitted: false, local_user_import_permitted: true,
+    license_identifier: 'project-authored-test-fixture'
+  },
+  corpus_design: {token_count: null},
+  table: {projected_row_count: 3, source_headword_count: 3, ambiguous_surface_form_count: 0},
+  measurement: {band_boundaries: [1, 2]},
+  rows: [
+    ['abilities', [['able', 1]]], ['taken', [['take', 1]]],
+    ['unaccented', [['accent', 2]]]
+  ]
+});
+assert.deepEqual(analyzeWordCoverage(
+  'Abilities were taken unaccented.', localWordProfile, 1
+).items.filter(item => ['abilities', 'taken', 'unaccented'].includes(item.word))
+  .map(item => [item.word, item.status]), [
+  ['unaccented', 'beyond_cutoff'], ['abilities', 'matched'], ['taken', 'matched']
+]);
+await assert.rejects(makeMweReviewRecord({
+  document: reviewedDocument, contract: mweContract, patternSource: patternTsv,
+  tokenizer: contract.tokenizer, authorizationAttested: true,
+  wordProfile: localWordProfile, wordRankCutoff: 1, mweFormProfile, mweSenseProfile,
+  generatedAt: '2026-09-01T00:00:00.000Z'
+}), /runtime hash/);
+localWordProfile.runtimeProfileSha256 = 'b'.repeat(64);
+const localReviewRecord = await makeMweReviewRecord({
+  document: reviewedDocument, contract: mweContract, patternSource: patternTsv,
+  tokenizer: contract.tokenizer, authorizationAttested: true,
+  wordProfile: localWordProfile, wordRankCutoff: 1, mweFormProfile, mweSenseProfile,
+  generatedAt: '2026-09-01T00:00:00.000Z'
+});
+assert.equal(localReviewRecord.active_runtime_resources[0].profile_status, 'local_only');
+assert.equal(localReviewRecord.active_runtime_resources[0].runtime_profile_sha256, 'b'.repeat(64));
 const mismatchedLookupDocument = structuredClone(reviewedDocument);
 mismatchedLookupDocument.occurrences[0].form_lookup.entry_id = 'wrong#v';
 await assert.rejects(
   makeMweReviewRecord({
     document: mismatchedLookupDocument, contract: mweContract, patternSource: patternTsv,
     tokenizer: contract.tokenizer, authorizationAttested: true, wordProfile, mweFormProfile,
+    wordRankCutoff: null, mweSenseProfile,
     generatedAt: '2026-09-01T00:00:00.000Z'
   }),
   /does not match the active profile/
+);
+const mismatchedSenseDocument = structuredClone(reviewedDocument);
+mismatchedSenseDocument.occurrences[0].sense.candidate_sense_ids.pop();
+await assert.rejects(
+  makeMweReviewRecord({
+    document: mismatchedSenseDocument, contract: mweContract, patternSource: patternTsv,
+    tokenizer: contract.tokenizer, authorizationAttested: true, wordProfile, mweFormProfile,
+    wordRankCutoff: null, mweSenseProfile, generatedAt: '2026-09-01T00:00:00.000Z'
+  }),
+  /sense lookup does not match/
 );
 await assert.rejects(
   makeMweReviewRecord({
     document: reviewedDocument, contract: mweContract, patternSource: patternTsv,
     tokenizer: contract.tokenizer, authorizationAttested: false,
-    wordProfile, mweFormProfile,
+    wordProfile, wordRankCutoff: null, mweFormProfile, mweSenseProfile,
     generatedAt: '2026-09-01T00:00:00.000Z'
   }),
   /authorization attestation/
 );
 
 assert.equal(mweFixture.contract_version, mweContract.contract_version);
+assert(!mweContract.scope.not_implemented.includes('document-set-mwe-review'));
 assert.deepEqual(
   mweContract.external_resource_dependencies.map(item => item.id),
   [
     'tubelex-en-regex-ascii-word-frequency',
+    'ngsl-1.2-ascii-research-forms',
     'oewn-2025-ascii-multiword-verb-forms',
     'oewn'
   ]
 );
-assert.equal(mweContract.external_resource_dependencies[2].subset_id, oewnSubset.subset_id);
+const senseDependency = mweContract.external_resource_dependencies.find(item => item.subset_id);
+assert.equal(senseDependency.subset_id, oewnSubset.subset_id);
+assert.equal(
+  senseDependency.path_sha256,
+  await sha256(oewnSubsetText)
+);
+assert.equal(
+  mweContract.external_resource_dependencies.find(item => item.id.startsWith('ngsl')).path_sha256,
+  await sha256(ngslProfileText)
+);
+assert.deepEqual(mweContract.reference_profiles.word.local_import, {
+  profile_id: 'bnc-coca-level6-v1.0.0-first-2k-local',
+  source_artifact_sha256: 'ac81c7a60e5c76cd2bbf0c59b0501808f0d4fa026b2936919dd54329a9bb6a69',
+  generated_profile_size_bytes: 366120,
+  generated_profile_sha256: 'ebd06548187988eb1a61ab967cc39c01461023043ee7aef427606e5bf508f138',
+  delivery_rule: 'researcher generates and imports the exact profile locally; neither source nor generated profile is bundled, transmitted, or retained by the app',
+  special_list_rule: 'basewrd31 proper nouns, basewrd32 marginal words, basewrd33 transparent compounds, and basewrd34 acronyms are excluded'
+});
 const oewnTakeInSenseIds = [
   'take_in%2:42:00::', 'take_in%2:32:00::', 'take_in%2:43:00::',
   'take_in%2:41:00::', 'take_in%2:40:09::', 'take_in%2:39:06::',
@@ -164,6 +488,19 @@ assert.equal(
 );
 assert.equal(oewnSubset.projection.entry_id, 'take in#v');
 assert.equal(oewnSubset.projection.sense_count, 17);
+assert.equal(mweSenseProfile.profile.identity.profile_id, 'oewn-2025-take-in-v');
+assert.equal(
+  lookupMweSenses('Take   In', mweSenseProfile).state.candidate_sense_ids.length,
+  17
+);
+assert.deepEqual(lookupMweSenses('spill the beans', mweSenseProfile).state, {
+  inventory_id: null, inventory_version: null, lookup_status: 'inventory_ineligible',
+  candidate_sense_ids: [], assignment_status: 'inventory_ineligible',
+  selected_sense_ids: [], decision: {
+    source: 'runtime-sense-profile-scope',
+    note: 'The current bounded sense projection does not cover spill the beans.'
+  }
+});
 assert.equal(oewnSubset.license.local_notice, 'resources/OEWN_WORDNET_NOTICE.txt');
 assert.match(oewnNotice, /WordNet 3\.1 Copyright 2011 by Princeton University/);
 assert.deepEqual(oewnSubset.projection.senses.map(sense => sense.sense_id), oewnTakeInSenseIds);
@@ -177,12 +514,22 @@ assert.equal(
     .definitions[0],
   'fool or hoax'
 );
+const duplicateSenseSubset = structuredClone(oewnSubset);
+duplicateSenseSubset.projection.senses[1].sense_id =
+  duplicateSenseSubset.projection.senses[0].sense_id;
+assert.throws(
+  () => prepareMweSenseReferenceProfile(duplicateSenseSubset),
+  /sense reference row/
+);
 assert.deepEqual(
   mweContract.occurrence_record.categories, mweContract.scope.category_scheme.projection
 );
 assert.deepEqual(
   mweContract.occurrence_record.sense_assignment_statuses,
-  ['assigned', 'ambiguous', 'abstained', 'unassigned', 'out_of_inventory']
+  [
+    'assigned', 'multiple_assigned', 'ambiguous', 'abstained', 'unassigned',
+    'out_of_inventory', 'inventory_ineligible'
+  ]
 );
 for (const testCase of mweFixture.cases) {
   assert.deepEqual(summarizeMweDocument(testCase, mweContract), testCase.expected, testCase.id);
@@ -224,6 +571,7 @@ assert.throws(
   /lacks matched candidates/
 );
 for (const [status, selected] of [
+  ['multiple_assigned', ['fixture:sense:one', 'fixture:sense:two']],
   ['ambiguous', ['fixture:sense:one', 'fixture:sense:two']],
   ['abstained', []]
 ]) {
@@ -239,16 +587,42 @@ for (const [status, selected] of [
   });
   const result = summarizeMweDocument(stateCase, mweContract);
   assert.equal(result.sense_assignment_status_counts[status], 1);
-  assert.deepEqual(result.sense_assignment_coverage, {numerator: 0, denominator: 1, value: 0});
+  assert.deepEqual(
+    result.sense_assignment_coverage,
+    {numerator: status === 'multiple_assigned' ? 1 : 0, denominator: 1,
+      value: status === 'multiple_assigned' ? 1 : 0}
+  );
 }
 const outOfInventoryCase = structuredClone(mweFixture.cases[0]);
 Object.assign(outOfInventoryCase.occurrences[0].sense, {
   inventory_id: 'fixture-inventory', inventory_version: '1',
-  lookup_status: 'out_of_inventory', assignment_status: 'out_of_inventory'
+  lookup_status: 'out_of_inventory', assignment_status: 'out_of_inventory',
+  decision: {source: 'project-authored-state-test', note: 'Complete inventory has no candidate.'}
 });
 assert.equal(
   summarizeMweDocument(outOfInventoryCase, mweContract)
     .sense_assignment_status_counts.out_of_inventory,
+  1
+);
+const matchedOutOfInventoryCase = structuredClone(mweFixture.cases[0]);
+Object.assign(matchedOutOfInventoryCase.occurrences[0].sense, {
+  inventory_id: 'fixture-inventory', inventory_version: '1', lookup_status: 'matched',
+  candidate_sense_ids: ['fixture:sense:one'], assignment_status: 'out_of_inventory',
+  selected_sense_ids: [],
+  decision: {source: 'project-authored-state-test', note: 'Shown candidate is inadequate.'}
+});
+assert.equal(
+  summarizeMweDocument(matchedOutOfInventoryCase, mweContract)
+    .sense_assignment_status_counts.out_of_inventory,
+  1
+);
+const ineligibleCase = structuredClone(mweFixture.cases[0]);
+ineligibleCase.occurrences[0].sense = lookupMweSenses(
+  'spill the beans', mweSenseProfile
+).state;
+assert.equal(
+  summarizeMweDocument(ineligibleCase, mweContract)
+    .sense_assignment_status_counts.inventory_ineligible,
   1
 );
 const missingSenseDecisionCase = structuredClone(mweFixture.cases[2]);
@@ -316,6 +690,7 @@ assert.equal(
   'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'
 );
 assert.deepEqual(parseBatchJson('[{"id":"one"}]', 100), [{id: 'one'}]);
+assert.deepEqual(parseJsonInput('{"local":true}', 100, 'Local profile'), {local: true});
 assert.throws(() => parseBatchJson('[]', 1), /Batch JSON exceeds/);
 assert.throws(() => parseBatchJson('{', 100), /not valid JSON/);
 assert.throws(() => parseBatchJson('\uD800', 100), /unpaired Unicode surrogate/);
@@ -581,9 +956,729 @@ await assert.rejects(
   /Unsupported comparison relationship/
 );
 
+// Page-exit protection shares one warning across raw drafts, reviews and sets.
+{
+  const source = readFileSync(new URL('../app.mjs', import.meta.url), 'utf8');
+  const start = source.indexOf('function warnOnPageExit(');
+  assert.ok(start >= 0, 'Page exit must protect in-memory work');
+  const events = new Map(), queued = [], timers = [];
+  const form = () => ({
+    fields: [{value: '', defaultValue: ''}], handlers: new Map(),
+    querySelectorAll(selector) {
+      assert.equal(selector, 'input[type="text"], textarea:not([readonly])');
+      return this.fields;
+    },
+    addEventListener(type, callback) { this.handlers.set(type, callback); }
+  });
+  const forms = [form(), form(), form()];
+  const context = {
+    mweForm: forms[0], mweDocumentSetForm: forms[1], workspaceForm: forms[2],
+    mweDocument: null, currentExport: null, mweDocumentSet: new Map(),
+    queueMicrotask: callback => queued.push(callback),
+    setTimeout: callback => timers.push(callback),
+    window: {
+      addEventListener: (type, callback) => events.set(type, callback),
+      removeEventListener: (type, callback) => {
+        if (events.get(type) === callback) events.delete(type);
+      }
+    }
+  };
+  runInNewContext(source.slice(start, source.indexOf('function downloadText(')) +
+    source.slice(source.indexOf('// Refresh after form handlers and native reset defaults.'),
+      source.lastIndexOf('initialize();')), context);
+  const microtasks = () => { while (queued.length) queued.shift()(); };
+  const refresh = () => { microtasks(); while (timers.length) { timers.shift()(); microtasks(); } };
+  const warns = () => events.has('beforeunload');
+  context.updatePageExitWarning();
+  assert.equal(warns(), false, 'An empty page must not install a warning');
+  forms[0].fields.push({value: 'Default pattern', defaultValue: 'Default pattern'});
+  for (const f of forms) {
+    for (const type of ['input', 'change', 'submit']) {
+      f.fields[0].value = 'Synthetic draft';
+      f.handlers.get(type)(); refresh();
+      assert.equal(warns(), true);
+      const event = {preventDefault() { this.prevented = true; }};
+      events.get('beforeunload')(event);
+      assert.equal(event.prevented, true);
+      assert.equal(event.returnValue, true);
+      assert.equal(f.fields[0].value, 'Synthetic draft', 'Asking to leave cannot clear work');
+      f.handlers.get('reset')();
+      microtasks(); // A listener checkpoint can precede the native reset defaults.
+      f.fields[0].value = ''; // Native reset happens after the event handlers.
+      refresh();
+      assert.equal(warns(), false, 'Remove the listener after work is cleared');
+    }
+  }
+  for (const key of ['mweDocument', 'currentExport']) {
+    context[key] = {synthetic: true};
+    context.updatePageExitWarning();
+    assert.equal(warns(), true, 'Programmatically restored work must also be protected');
+    context[key] = null;
+    context.updatePageExitWarning();
+    assert.equal(warns(), false);
+  }
+  context.mweDocumentSet.set('synthetic', {});
+  context.updatePageExitWarning();
+  assert.equal(warns(), true, 'A set is at risk even without an open review');
+  context.mweDocumentSet.clear();
+  context.updatePageExitWarning();
+  assert.equal(warns(), false);
+  assert.match(source, /function updateMwePendingEdits\(\) \{\s+updatePageExitWarning\(\);/,
+    'Async review/set rendering must refresh the warning too');
+}
+
+// Exercise the actual app's synchronous submit/reset guards without a DOM library.
+// This is an event-handler regression check, not a browser rendering test.
+{
+  const appSource = readFileSync(new URL('../app.mjs', import.meta.url), 'utf8');
+  const controls = new Map();
+  const control = id => {
+    if (!controls.has(id)) controls.set(id, {value: '', disabled: false});
+    return controls.get(id);
+  };
+  const handlers = new Map();
+  let renderCount = 0;
+  let allowReset = false;
+  let resetPrompts = 0;
+  const context = {
+    document: {getElementById: control},
+    mweForm: {addEventListener: (event, handler) => handlers.set(event, handler)},
+    mweStatus: {textContent: ''}, mweResults: {hidden: true},
+    mweDocument: null, mweContract, mweDocumentDirty: false,
+    clearingOnPageExit: false, mweRevision: 0,
+    window: {confirm() { resetPrompts += 1; return allowReset; }},
+    updateMwePendingEdits() {},
+    pendingMweEdits: () => [],
+    wordProfiles: new Map([['tubelex', {profile: wordProfile, maximumRank: null}]]),
+    parseMwePatternTsv, findMweCandidates, analyzeWordCoverage,
+    renderMweReview() { renderCount += 1; context.lockMweSourceInputs(true); }
+  };
+  runInNewContext(
+    appSource.slice(appSource.indexOf('function lockMweSourceInputs('),
+      appSource.indexOf('function reviewedOccurrence(')) +
+    appSource.slice(appSource.indexOf("mweForm.addEventListener('submit'"),
+      appSource.indexOf("for (const id of ['mwe-text', 'mwe-patterns', 'mwe-authorization']")),
+    context
+  );
+  control('mwe-text').value = 'She took it in.';
+  control('mwe-patterns').value = 'VPC.full\ttake in\ttake/takes/took/taken/taking in\t4';
+  control('word-reference').value = 'tubelex';
+  control('mwe-authorization').checked = true;
+  let prevented = 0;
+  const submit = () => handlers.get('submit')({preventDefault() { prevented += 1; }});
+  submit();
+  assert.equal(renderCount, 1);
+  assert.equal(context.mweDocument.occurrences.length, 1);
+  assert.equal(control('mwe-analyze-button').disabled, true);
+  context.mweDocument.occurrences[0].decision = {note: 'Preserve this synthetic judgment.'};
+  for (const existing of [context.mweDocument, structuredClone(context.mweDocument)]) {
+    context.mweDocument = existing; // Existing and restored review states.
+    const before = JSON.stringify(existing);
+    control('word-reference').value = 'unavailable'; // Must not reach the error-reset path.
+    submit();
+    assert.equal(context.mweDocument, existing);
+    assert.equal(JSON.stringify(context.mweDocument), before);
+    assert.match(context.mweStatus.textContent, /再抽出しませんでした/);
+  }
+  assert.equal(renderCount, 1);
+  assert.equal(prevented, 3);
+  const beforeCancelledReset = JSON.stringify(context.mweDocument);
+  const revisionBeforeReset = context.mweRevision;
+  let resetCancelled = false;
+  handlers.get('reset')({preventDefault() { resetCancelled = true; }});
+  assert.equal(resetCancelled, true);
+  assert.equal(context.mweRevision, revisionBeforeReset, 'Cancelled reset must not cancel pending work');
+  assert.equal(JSON.stringify(context.mweDocument), beforeCancelledReset);
+  assert.equal(control('mwe-analyze-button').disabled, true);
+  allowReset = true;
+  handlers.get('reset')();
+  assert.equal(context.mweDocument, null);
+  assert.ok(context.mweRevision > revisionBeforeReset);
+  assert.equal(context.mweResults.hidden, true);
+  assert.equal(control('mwe-analyze-button').disabled, false);
+  control('word-reference').value = 'tubelex';
+  submit();
+  assert.equal(renderCount, 2);
+  assert.equal(control('mwe-analyze-button').disabled, true);
+
+  // Review commits may update their own card, never rebuild sibling controls.
+  // Any full render here fails because this harness has no DOM creation API.
+  let cardReplacements = 0;
+  let senseReplacements = 0;
+  let focused = false;
+  const card = {
+    contains: element => element.card === card,
+    replaceWith() { cardReplacements += 1; },
+    querySelector() { return {replaceWith() { senseReplacements += 1; }}; }
+  };
+  const note = {
+    value: '  Synthetic review note.  ', setCustomValidity() {}, reportValidity() {},
+    closest() { return card; }
+  };
+  Object.assign(context, {
+    structuredClone, lookupMweForm, lookupMweSenses, mweFormProfile, mweSenseProfile,
+    summarizeMweDocument, summarizeMweFormCoverage,
+    fillDefinitionList() {}, ratioText: item => JSON.stringify(item),
+    occurrenceCard: item => item, senseReview: item => item
+  });
+  runInNewContext(
+    appSource.slice(appSource.indexOf('function reviewedOccurrence('),
+      appSource.indexOf('function idiomaticityReview(')) +
+    appSource.slice(appSource.indexOf('function renderMweReview('),
+      appSource.indexOf('function invalidateMweReview(')),
+    context
+  );
+  const occurrenceId = context.mweDocument.occurrences[0].id;
+  control(`decision-${occurrenceId}-confirmed`).focus = () => { focused = true; };
+  context.setMweDecision(occurrenceId, 'confirmed', note);
+  assert.equal(cardReplacements, 1);
+  assert.equal(focused, true);
+  note.value = '  Synthetic idiomaticity note.  ';
+  context.setIdiomaticity(occurrenceId, {value: 'idiomatic'}, note);
+  assert.equal(senseReplacements, 0);
+  assert.equal(note.value, 'Synthetic idiomaticity note.');
+  note.value = 'Synthetic abstention note.';
+  context.setSenseDecision(
+    occurrenceId, {value: 'abstained', setCustomValidity() {}},
+    {querySelectorAll: () => []}, note
+  );
+  assert.equal(context.mweDocument.occurrences[0].sense.assignment_status, 'abstained');
+  const beforeClearingIdiomaticity = JSON.stringify(context.mweDocument);
+  allowReset = false;
+  context.setIdiomaticity(occurrenceId, {value: 'not_assessed'}, note);
+  assert.equal(JSON.stringify(context.mweDocument), beforeClearingIdiomaticity,
+    'Canceling a destructive idiomaticity change must preserve recorded decisions');
+  allowReset = true;
+  note.value = 'Updated occurrence note.';
+  context.setMweDecision(occurrenceId, 'confirmed', note);
+  note.value = 'Updated idiomaticity note.';
+  context.setIdiomaticity(occurrenceId, {value: 'literal'}, note);
+  assert.equal(cardReplacements, 1, 'Same-status edits must preserve existing controls');
+  assert.equal(senseReplacements, 0, 'Idiomaticity edits must never rebuild independent sense controls');
+  note.value = 'Discard when returning to unassigned.';
+  context.setSenseDecision(
+    occurrenceId, {value: 'unassigned', setCustomValidity() {}},
+    {querySelectorAll: () => []}, note
+  );
+  assert.equal(note.value, '');
+  assert.equal(context.mweDocument.occurrences[0].sense.decision, null);
+
+  // Destructive changes must be cancellable before touching the model or controls.
+  const baseline = structuredClone(context.mweDocument);
+  baseline.occurrences[0].sense.assignment_status = 'assigned';
+  baseline.occurrences[0].sense.selected_sense_ids = [baseline.occurrences[0].sense.candidate_sense_ids[0]];
+  baseline.occurrences[0].sense.decision = {source: 'synthetic-review', note: 'Recorded sense rationale.'};
+  const snapshot = () => JSON.stringify({document: context.mweDocument,
+    revision: context.mweRevision, dirty: context.mweDocumentDirty,
+    note: note.value, cardReplacements, senseReplacements});
+  for (const status of ['candidate', 'rejected']) control(`decision-${occurrenceId}-${status}`).focus = () => {};
+  for (const change of [
+    () => context.setMweDecision(occurrenceId, 'candidate', note),
+    () => context.setMweDecision(occurrenceId, 'rejected', note),
+    () => context.setIdiomaticity(occurrenceId, {value: 'not_assessed'}, note),
+    () => context.setSenseDecision(occurrenceId, {value: 'unassigned', setCustomValidity() {}},
+      {querySelectorAll: () => []}, note)
+  ]) {
+    context.mweDocument = structuredClone(baseline);
+    context.mweDocumentDirty = false;
+    note.value = 'Pending rationale.';
+    allowReset = false;
+    const before = snapshot();
+    const prompts = resetPrompts;
+    change();
+    assert.equal(resetPrompts, prompts + 1);
+    assert.equal(snapshot(), before, 'Cancel must preserve the recorded model, draft, revision and render state');
+  }
+  allowReset = true;
+  context.mweDocument = structuredClone(baseline);
+  context.setIdiomaticity(occurrenceId, {value: 'not_assessed'}, note);
+  assert.equal(context.mweDocument.occurrences[0].idiomaticity.status, 'not_assessed');
+  assert.deepEqual(context.mweDocument.occurrences[0].sense, baseline.occurrences[0].sense);
+  assert.equal(senseReplacements, 0, 'Clearing idiomaticity must not hide or rebuild sense controls');
+  const independentRecord = await makeMweWorkspaceRecord({
+    document: context.mweDocument, contract: mweContract, patternSource: control('mwe-patterns').value,
+    authorizationAttested: true, savedAt: '2026-09-01T00:00:00.000Z', wordProfileKey: 'tubelex',
+    wordProfile, wordRankCutoff: null, mweFormProfile, mweSenseProfile
+  });
+  assert.deepEqual((await restoreMweWorkspaceRecord({
+    record: independentRecord, contract: mweContract, authorizationAttested: true,
+    wordProfileKey: 'tubelex', wordProfile, wordRankCutoff: null, mweFormProfile, mweSenseProfile
+  })).document, structuredClone(context.mweDocument), 'An independent saved sense must survive resume');
+  context.mweDocument = structuredClone(baseline);
+  context.setSenseDecision(occurrenceId, {value: 'unassigned', setCustomValidity() {}},
+    {querySelectorAll: () => []}, note);
+  assert.equal(context.mweDocument.occurrences[0].sense.decision, null);
+  assert.deepEqual(context.mweDocument.occurrences[0].idiomaticity, baseline.occurrences[0].idiomaticity);
+  context.mweDocument = structuredClone(baseline);
+  note.value = 'Revised occurrence rationale.';
+  context.setMweDecision(occurrenceId, 'rejected', note);
+  assert.equal(context.mweDocument.occurrences[0].sense, null);
+  assert.deepEqual(context.mweDocument.occurrences[0].idiomaticity, baseline.occurrences[0].idiomaticity);
+  // A sibling draft must not prompt; a draft in the rebuilt card must prompt.
+  const localDraft = {card};
+  context.pendingMweEdits = () => [{control: localDraft}];
+  allowReset = false;
+  const beforeLocalDraft = snapshot();
+  context.setMweDecision(occurrenceId, 'confirmed', note);
+  assert.equal(snapshot(), beforeLocalDraft);
+  const promptsWithLocalDraft = resetPrompts;
+  context.pendingMweEdits = () => [{control: {card: {}}}];
+  context.setMweDecision(occurrenceId, 'confirmed', note);
+  assert.equal(resetPrompts, promptsWithLocalDraft, 'Do not prompt for unaffected sibling drafts');
+  assert.equal(context.mweDocument.occurrences[0].status, 'confirmed');
+  context.pendingMweEdits = () => [];
+  allowReset = true;
+  context.setMweDecision(occurrenceId, 'candidate', note);
+  assert.equal(context.mweDocument.occurrences[0].decision, null);
+  assert.equal(context.mweDocument.occurrences[0].sense, null);
+  assert.equal(context.mweDocument.occurrences[0].idiomaticity.status, 'not_assessed');
+  note.value = 'Draft on an unresolved candidate.';
+  allowReset = false;
+  const beforeUnresolvedDraft = snapshot();
+  context.setMweDecision(occurrenceId, 'candidate', note);
+  assert.equal(snapshot(), beforeUnresolvedDraft);
+
+  // Exercise the real delete callback, including cancellation and sibling retention.
+  let deleteCandidate;
+  let removed = false;
+  let focusedAfterDelete = false;
+  context.mweDocument = structuredClone(reviewedDocument);
+  context.currentWordCoverage = analyzeWordCoverage(reviewedDocument.text, wordProfile, null);
+  Object.assign(context, {
+    occurrence: context.mweDocument.occurrences[0],
+    remove: {addEventListener: (_, handler) => { deleteCandidate = handler; }},
+    article: {remove() { removed = true; },
+      nextElementSibling: {querySelector: () => ({focus() { focusedAfterDelete = true; }})}}
+  });
+  runInNewContext(appSource.slice(appSource.indexOf("  remove.addEventListener('click'"),
+    appSource.indexOf('  actions.append(remove)')), context);
+  const beforeDelete = snapshot();
+  deleteCandidate();
+  assert.equal(snapshot(), beforeDelete);
+  assert.equal(removed, false);
+  assert.equal(focusedAfterDelete, false);
+  allowReset = true;
+  deleteCandidate();
+  assert.equal(removed, true);
+  assert.equal(focusedAfterDelete, true);
+  assert.deepEqual(structuredClone(context.mweDocument.occurrences), [reviewedDocument.occurrences[1]]);
+
+  const workspaceHandlers = new Map();
+  const pageEvents = new Map();
+  const basicInput = {value: 'Unsaved basic text.', defaultValue: ''};
+  Object.assign(context, {
+    currentExport: {synthetic: true}, analysisRevision: 0,
+    exportButton: {disabled: false}, workspaceResults: {hidden: false}, workspaceStatus: {},
+    workspaceForm: {
+      querySelectorAll: () => [basicInput],
+      addEventListener: (event, handler) => workspaceHandlers.set(event, handler),
+      reset: () => workspaceHandlers.get('reset')()
+    },
+    setTimeout() {}, updateWorkspaceMode() {}
+  });
+  context.window.addEventListener = (event, handler) => pageEvents.set(event, handler);
+  context.mweForm.reset = () => handlers.get('reset')();
+  runInNewContext(appSource.slice(appSource.indexOf("workspaceForm.addEventListener('reset'"),
+    appSource.indexOf("relationship.addEventListener('change'")), context);
+  allowReset = false;
+  workspaceHandlers.get('reset')({preventDefault() {}});
+  assert.equal(context.currentExport.synthetic, true);
+  assert.equal(context.analysisRevision, 0);
+  assert.equal(basicInput.value, 'Unsaved basic text.');
+  const promptsBeforeExit = resetPrompts;
+  pageEvents.get('pagehide')();
+  assert.equal(resetPrompts, promptsBeforeExit, 'Page-exit cleanup must not prompt');
+  assert.equal(context.currentExport, null);
+  assert.equal(context.mweDocument, null);
+  assert.equal(context.clearingOnPageExit, false);
+}
+
+// Draft detection compares live controls to recorded values, not to completion status.
+{
+  const appSource = readFileSync(new URL('../app.mjs', import.meta.url), 'utf8');
+  const fields = new Map();
+  const tokens = [{type: 'checkbox', value: 't1', checked: false}];
+  const senses = [
+    {type: 'checkbox', value: 's1', checked: true},
+    {type: 'checkbox', value: 's2', checked: false}
+  ];
+  const details = {open: false, querySelectorAll: () => senses};
+  let focused;
+  const field = (id, value) => {
+    const control = {id, value, type: 'text', closest: () => details,
+      focus() { focused = id; }, scrollIntoView() {}};
+    fields.set(id, control);
+    return control;
+  };
+  const occurrence = {
+    id: 'mwe-1', canonical_form: 'take in', status: 'candidate', decision: null,
+    idiomaticity: {status: 'not_assessed', decision: null}, sense: null
+  };
+  const context = {
+    mweDocument: {occurrences: [occurrence]}, mweStatus: {},
+    document: {getElementById: id => fields.get(id), querySelectorAll: () => tokens},
+    updateMwePendingEdits() { return context.pendingMweEdits(); }
+  };
+  runInNewContext(
+    appSource.slice(appSource.indexOf('function pendingMweEdits('),
+      appSource.indexOf('function updateMwePendingEdits(')) +
+    appSource.slice(appSource.indexOf('function ensureMweEditsRecorded('),
+      appSource.indexOf('function lockMweSourceInputs(')), context
+  );
+  const note = field('decision-mwe-1', '');
+  const manual = field('manual-canonical-form', '');
+  assert.equal(context.ensureMweEditsRecorded(), true, 'Unresolved is a valid saved state');
+  note.value = 'An unrecorded draft.';
+  const before = JSON.stringify(occurrence);
+  assert.equal(context.ensureMweEditsRecorded(), false);
+  assert.equal(focused, 'decision-mwe-1');
+  assert.equal(JSON.stringify(occurrence), before, 'Detection must not record a decision');
+  note.value = '   ';
+  assert.equal(context.ensureMweEditsRecorded(), true);
+  occurrence.status = 'confirmed';
+  occurrence.decision = {note: ' Recorded note. '};
+  note.value = 'Recorded note.';
+  occurrence.idiomaticity = {status: 'idiomatic', decision: {note: 'Idiom note.'}};
+  const idiom = field('idiomaticity-mwe-1', 'idiomatic');
+  field('idiomaticity-note-mwe-1', 'Idiom note.');
+  occurrence.sense = {assignment_status: 'assigned', selected_sense_ids: ['s1'], decision: {note: 'Sense note.'}};
+  const senseStatus = field('sense-status-mwe-1', 'assigned');
+  const senseNote = field('sense-note-mwe-1', 'Sense note.');
+  assert.equal(context.pendingMweEdits().length, 0);
+  idiom.value = 'literal';
+  senses[1].checked = true;
+  senseNote.value = 'Changed note.';
+  assert.equal(context.pendingMweEdits().length, 2, 'Group related sense fields together');
+  idiom.value = 'idiomatic';
+  assert.equal(context.ensureMweEditsRecorded(), false);
+  assert.equal(details.open, true, 'Open the containing sense panel before returning');
+  assert.equal(focused, 'sense-note-mwe-1');
+  senseNote.value = 'Sense note.';
+  assert.equal(context.pendingMweEdits()[0].control, senses[1], 'Detect checkbox-only edits');
+  senses[0].checked = senses[1].checked = false;
+  occurrence.sense = {assignment_status: 'abstained', selected_sense_ids: [], decision: {note: 'Abstention.'}};
+  senseStatus.value = 'abstained';
+  senseNote.value = 'Abstention.';
+  assert.equal(context.ensureMweEditsRecorded(), true, 'Recorded abstention must not block export');
+  tokens[0].checked = true;
+  assert.equal(context.pendingMweEdits()[0].label, '手動候補の追加');
+  tokens[0].checked = false;
+  manual.value = 'An unfinished manual candidate';
+  assert.equal(context.ensureMweEditsRecorded(), false);
+  manual.value = '';
+  assert.equal(context.ensureMweEditsRecorded(), true, 'Reverting edits removes the warning');
+
+  const handlers = new Map();
+  let downloads = 0;
+  const guardContext = {
+    document: {getElementById: id => ({addEventListener: (_, fn) => handlers.set(id, fn)})},
+    mweDocument: {}, mweRevision: 0, ensureMweEditsRecorded: () => false,
+    downloadText() { downloads += 1; }
+  };
+  for (const [start, end] of [
+    ["document.getElementById('export-mwe-csv').addEventListener", 'function renderMweDocumentSet('],
+    ["document.getElementById('save-mwe-document').addEventListener", "document.getElementById('mwe-document-set-documents').addEventListener"],
+    ["document.getElementById('export-mwe-document-set').addEventListener", "document.getElementById('clear-mwe-document-set').addEventListener"]
+  ]) runInNewContext(appSource.slice(appSource.indexOf(start), appSource.indexOf(end)), guardContext);
+  for (const id of ['export-mwe-csv', 'export-mwe-json', 'export-mwe-workspace',
+    'save-mwe-document', 'export-mwe-document-set']) await handlers.get(id)();
+  assert.equal(downloads, 0, 'Every judgment-bearing save path must stop on a pending edit');
+}
+
+// Delay real event-handler dependencies deterministically; no timing sleeps or DOM library.
+{
+  const source = readFileSync(new URL('../app.mjs', import.meta.url), 'utf8');
+  const controls = new Map();
+  const handlers = new Map();
+  const control = id => {
+    if (!controls.has(id)) controls.set(id, {
+      value: '', defaultValue: '', textContent: '', checked: true, disabled: false, dataset: {},
+      replaceChildren(...options) { this.options = options; },
+      addEventListener: (type, fn, capture) => handlers.set(`${id}:${type}:${!!capture}`, fn)
+    });
+    return controls.get(id);
+  };
+  const fire = (id, type, capture = false) => handlers.get(`${id}:${type}:${capture}`)({
+    target: control(id), preventDefault() {}
+  });
+  const downloads = [];
+  const context = {
+    document: {getElementById: control, querySelectorAll: () => [], createElement: () => ({})},
+    mweForm: control('mwe-form'), mweDocumentSetForm: control('mwe-document-set-form'),
+    mweStatus: control('mwe-status'), mweResults: {hidden: true},
+    mweRevision: 0, mweDocument: null, mweDocumentSet: new Map(), mweDocumentDirty: true,
+    currentSetDocumentId: null,
+    currentWordProfile: wordProfile, currentWordRankCutoff: null, mweFormProfile, mweSenseProfile,
+    mwePatternSource: patternTsv, contract, mweContract, clearingOnPageExit: false,
+    wordProfiles: new Map([['tubelex', {profile: wordProfile, maximumRank: null}]]),
+    localBncCocaProfile: {size: 1, sha256: 'synthetic', id: 'synthetic'},
+    window: {confirm: () => true}, parseJsonInput, parseMwePatternTsv, findMweCandidates,
+    analyzeWordCoverage, makeMweDocumentSetRecord,
+    ensureMweEditsRecorded: () => true, pendingMweEdits: () => [],
+    updatePageExitWarning() {}, // Tested with live state and form events above.
+    renderMweReview() { context.mweDocumentDirty = true; context.updateMwePendingEdits(); },
+    downloadText(name) { downloads.push(name); }
+  };
+  for (const [start, end] of [
+    ['function updateMwePendingEdits(', 'function ensureMweEditsRecorded('],
+    ['function lockMweSourceInputs(', 'function reviewedOccurrence('],
+    ['function invalidateMweReview(', "document.getElementById('add-manual-mwe').addEventListener"],
+    ["document.getElementById('export-mwe-json').addEventListener", 'function renderMweDocumentSet('],
+    ['function renderMweDocumentSet(', 'function documentSetDocuments('],
+    ['function documentSetDocuments(', 'function fillList(']
+  ]) runInNewContext(source.slice(source.indexOf(start), source.indexOf(end)), context);
+
+  control('word-reference').value = 'tubelex';
+  control('mwe-document-set-id').value = ' synthetic-set ';
+  control('mwe-document-set-label').value = ' Synthetic set ';
+  control('mwe-document-id').value = ' synthetic-document ';
+  control('mwe-document-label').value = ' Synthetic document ';
+  context.mweDocument = structuredClone(reviewedDocument);
+  // A draft edit in either form must cancel each in-flight judgment save.
+  for (const id of ['export-mwe-json', 'export-mwe-workspace', 'save-mwe-document']) {
+    for (const form of ['mwe-form', 'mwe-document-set-form']) {
+      const gate = Promise.withResolvers();
+      context.makeMweReviewRecord = context.makeMweWorkspaceRecord = () => gate.promise;
+      const pending = fire(id, 'click');
+      fire(form, 'input', true);
+      gate.resolve(mweWorkspaceRecord);
+      await pending;
+      assert.equal(downloads.length, 0, `${id} must not save after an edit`);
+      assert.equal(context.mweDocumentSet.size, 0);
+      assert.equal(context.mweDocumentDirty, true);
+    }
+  }
+  // Independent downloads must not cancel each other; errors are handled, not unhandled.
+  context.makeMweReviewRecord = async () => mweReviewRecord;
+  context.makeMweWorkspaceRecord = async () => mweWorkspaceRecord;
+  await Promise.all(['export-mwe-json', 'export-mwe-workspace'].map(id => fire(id, 'click')));
+  assert.equal(downloads.length, 2);
+  context.makeMweReviewRecord = async () => { throw new Error('Synthetic save failure.'); };
+  await fire('export-mwe-json', 'click');
+  assert.equal(context.mweStatus.textContent, 'Synthetic save failure.');
+  await fire('save-mwe-document', 'click');
+  assert.equal(context.mweDocumentSet.size, 1);
+  assert.equal(context.mweDocumentDirty, false);
+  assert.equal(control('mwe-document-set-id').value, 'synthetic-set');
+  assert.equal(control('mwe-document-set-label').value, 'Synthetic set');
+  assert.equal(control('mwe-document-id').value, 'synthetic-document');
+  assert.equal(control('mwe-document-label').value, 'Synthetic document');
+  const saveGate = Promise.withResolvers();
+  context.makeMweWorkspaceRecord = () => saveGate.promise;
+  const staleSave = fire('save-mwe-document', 'click');
+  fire('clear-mwe-document-set', 'click');
+  const clearedStatus = control('mwe-document-set-status').textContent;
+  saveGate.resolve(mweWorkspaceRecord);
+  await staleSave;
+  assert.equal(context.mweDocumentSet.size, 0, 'A late save must not resurrect a cleared set');
+  assert.equal(context.mweDocumentDirty, true);
+  assert.equal(control('mwe-document-set-status').textContent, clearedStatus);
+
+  // Two file selections may finish out of order, including a stale read error.
+  for (const failOlder of [false, true]) {
+    fire('mwe-form', 'reset');
+    const gate = Promise.withResolvers();
+    control('mwe-workspace-file').files = [{size: 1, text: () => gate.promise}];
+    control('mwe-workspace-file').value = 'same-file.json';
+    const older = fire('mwe-workspace-file', 'change');
+    assert.equal(control('mwe-workspace-file').value, '', 'The same file must remain selectable after cancellation');
+    context.restoreMweWorkspaceRecord = async ({record}) => ({
+      document: {...record.document, tokens: reviewedDocument.tokens}, patternSource: record.pattern_tsv
+    });
+    control('mwe-workspace-file').files = [{size: 1, text: async () => JSON.stringify(mweWorkspaceRecord)}];
+    await fire('mwe-workspace-file', 'change');
+    const current = context.mweDocument;
+    const status = control('mwe-workspace-status').textContent;
+    control('mwe-workspace-file').value = 'newer-selection';
+    if (failOlder) gate.reject(new Error('Stale read failure.'));
+    else gate.resolve(JSON.stringify(mweWorkspaceRecord));
+    await older;
+    assert.equal(context.mweDocument, current, 'Newer import must win');
+    assert.equal(control('mwe-workspace-status').textContent, status);
+    assert.equal(control('mwe-workspace-file').value, 'newer-selection', 'Stale cleanup must not clear a newer selection');
+  }
+  // Cancel during validation, after file.text has already completed.
+  for (const id of ['mwe-workspace-file', 'mwe-document-set-file', 'bnc-coca-profile', 'load-mwe-document']) {
+    fire('mwe-form', 'reset');
+    const gate = Promise.withResolvers();
+    const started = Promise.withResolvers();
+    const delayed = () => { started.resolve(); return gate.promise; };
+    context.restoreMweWorkspaceRecord = context.restoreMweDocumentSetRecord = context.sha256 = delayed;
+    control(id).files = [{size: 1, text: async () => JSON.stringify(
+      id === 'mwe-document-set-file' ? documentSetRecord : mweWorkspaceRecord
+    )}];
+    control(id).value = 'same-file.json';
+    if (id === 'load-mwe-document') {
+      context.mweDocumentSet.set('synthetic', {id: 'synthetic', label: 'Synthetic', workspace: mweWorkspaceRecord});
+      control('mwe-document-set-documents').value = 'synthetic';
+    }
+    const pending = fire(id, id === 'load-mwe-document' ? 'click' : 'change');
+    await started.promise;
+    if (id !== 'load-mwe-document') assert.equal(control(id).value, '', 'Release file selection before awaiting');
+    fire('mwe-form', 'reset');
+    const before = JSON.stringify([...context.mweDocumentSet]);
+    const status = control('bnc-coca-profile-status').textContent;
+    gate.resolve(id === 'bnc-coca-profile' ? 'synthetic' : {
+      document: reviewedDocument, patternSource: patternTsv,
+      setId: 'stale', setLabel: 'Stale', documents: documentSetRecord.documents
+    });
+    await pending;
+    assert.equal(context.mweDocument, null, `${id} must not restore after reset`);
+    assert.equal(JSON.stringify([...context.mweDocumentSet]), before);
+    assert.equal(control('bnc-coca-profile-status').textContent, status);
+    assert.equal(context.wordProfiles.has('bnc-coca-1000'), false);
+  }
+  // Loading an existing document must fix its identity just as adding it does.
+  context.mweDocumentSet.set('other', {id: 'other', label: 'Other document', workspace: mweWorkspaceRecord});
+  control('mwe-document-set-id').value = 'synthetic-set';
+  control('mwe-document-set-label').value = 'Synthetic set';
+  context.restoreMweWorkspaceRecord = restoreMweWorkspaceRecord;
+  context.makeMweWorkspaceRecord = makeMweWorkspaceRecord;
+  await fire('load-mwe-document', 'click');
+  assert.equal(context.currentSetDocumentId, 'synthetic');
+  assert.equal(control('mwe-document-id').value, 'synthetic');
+  assert.equal(control('mwe-document-id').disabled, true, 'Restored document identity must stay fixed');
+  assert.match(control('mwe-current-document-status').textContent, /現在の文書：synthetic。.*反映済み/);
+  control('mwe-document-set-documents').value = 'other';
+  fire('mwe-document-set-documents', 'change');
+  assert.equal(context.currentSetDocumentId, 'synthetic', 'Picking a document must not switch the active review');
+  await fire('load-mwe-document', 'click');
+  assert.equal(context.currentSetDocumentId, 'synthetic');
+  assert.match(control('mwe-document-set-status').textContent, /現在のレビューを閉じてから/);
+  const beforeIdentityChange = JSON.stringify([...context.mweDocumentSet]);
+  for (const id of ['other', 'new-id']) {
+    control('mwe-document-id').value = id; // A disabled control is not the only guard.
+    await fire('save-mwe-document', 'click');
+    assert.match(control('mwe-document-set-status').textContent, /IDは変更できません/);
+    assert.equal(JSON.stringify([...context.mweDocumentSet]), beforeIdentityChange);
+  }
+  control('mwe-document-id').value = 'synthetic';
+  control('mwe-document-label').value = ' Updated document name. ';
+  fire('mwe-document-label', 'input');
+  assert.equal(context.mweDocumentDirty, true);
+  assert.match(control('mwe-current-document-status').textContent, /現在の文書：synthetic。.*追加／更新してください/);
+  const downloadsBeforeRename = downloads.length;
+  fire('export-mwe-document-set', 'click');
+  assert.equal(downloads.length, downloadsBeforeRename, 'A changed name must not be omitted from a set download');
+  await fire('save-mwe-document', 'click');
+  assert.equal(context.mweDocumentSet.get('synthetic').label, 'Updated document name.');
+  assert.equal(context.mweDocumentSet.get('other').label, 'Other document');
+  assert.equal(control('mwe-document-label').value, 'Updated document name.');
+  assert.equal(context.mweDocumentDirty, false);
+  assert.match(control('mwe-current-document-status').textContent, /反映済み/);
+  fire('export-mwe-document-set', 'click');
+  assert.equal(downloads.length, downloadsBeforeRename + 1);
+  fire('mwe-form', 'reset');
+  assert.equal(control('mwe-document-id').disabled, false);
+  assert.equal(control('mwe-current-document-status').textContent, '現在開いているレビューはありません。');
+  assert.equal(context.mweDocumentSet.size, 2);
+  control('mwe-text').value = 'Another synthetic text.';
+  fire('mwe-form', 'submit');
+  assert.equal(control('mwe-current-document-status').textContent, '現在のレビューは文書セットに未追加です。');
+
+  // A rejected local-file replacement must not erase a previously verified profile.
+  fire('mwe-form', 'reset');
+  const retainedProfile = {profile: {identity: {profile_id: 'synthetic'}}};
+  const retainedSelection = {profile: retainedProfile, maximumRank: 1};
+  context.wordProfiles.set('bnc-coca-1000', retainedSelection);
+  context.wordProfiles.set('bnc-coca-2000', {profile: retainedProfile, maximumRank: 2});
+  control('bnc-coca-profile').files = [{size: 2, text() { throw new Error('Must not read a wrong-size file.'); }}];
+  await fire('bnc-coca-profile', 'change');
+  assert.equal(context.wordProfiles.get('bnc-coca-1000'), retainedSelection,
+    'An invalid replacement must preserve the verified local profile');
+  const localOptions = [{disabled: false}, {disabled: false}];
+  context.document.querySelectorAll = selector => selector.includes('data-local-profile') ? localOptions : [];
+  context.localBncCocaProfile.size = 100;
+  const replacement = {profile: {identity: {profile_id: 'synthetic'}}};
+  const localFile = {size: 100, text: async () => '{}'};
+  for (const [file, digest, prepare] of [
+    [{size: 100, text: async () => { throw new Error('Synthetic file read failure.'); }}, 'synthetic', () => replacement],
+    [localFile, 'wrong-hash', () => replacement],
+    [{size: 100, text: async () => '{'}, 'synthetic', () => replacement],
+    [localFile, 'synthetic', () => { throw new Error('Synthetic profile validation failure.'); }],
+    [localFile, 'synthetic', () => ({profile: {identity: {profile_id: 'wrong-id'}}})]
+  ]) {
+    context.sha256 = async () => digest;
+    context.prepareWordReferenceProfile = prepare;
+    control('bnc-coca-profile').files = [file];
+    await fire('bnc-coca-profile', 'change');
+    assert.equal(context.wordProfiles.get('bnc-coca-1000'), retainedSelection);
+    assert.equal(context.wordProfiles.get('bnc-coca-2000').profile, retainedProfile);
+    assert.ok(localOptions.every(option => !option.disabled));
+    assert.match(control('bnc-coca-profile-status').textContent, /検証済みの参照リストと現在の作業はそのまま保持/);
+  }
+  context.mweDocument = structuredClone(reviewedDocument);
+  const beforeRejectedProfile = context.mweDocument;
+  await fire('bnc-coca-profile', 'change');
+  assert.equal(context.mweDocument, beforeRejectedProfile, 'Even a forced change event must not discard an active review');
+  assert.equal(context.wordProfiles.get('bnc-coca-1000'), retainedSelection);
+  fire('mwe-form', 'reset');
+  context.sha256 = async () => 'synthetic';
+  context.prepareWordReferenceProfile = () => replacement;
+  control('bnc-coca-profile').files = [localFile];
+  await fire('bnc-coca-profile', 'change');
+  assert.equal(context.wordProfiles.get('bnc-coca-1000').profile, replacement);
+  assert.equal(context.wordProfiles.get('bnc-coca-2000').profile, replacement);
+  assert.equal(replacement.runtimeProfileSha256, 'synthetic');
+
+  // Rejected resume files preserve input drafts and never partially import a set.
+  fire('clear-mwe-document-set', 'click');
+  context.restoreMweWorkspaceRecord = restoreMweWorkspaceRecord;
+  context.restoreMweDocumentSetRecord = restoreMweDocumentSetRecord;
+  control('mwe-text').value = 'Keep this unextracted synthetic draft.';
+  control('mwe-document-id').value = 'draft-id';
+  control('mwe-document-label').value = 'Draft label';
+  const beforeImport = () => JSON.stringify({
+    document: context.mweDocument, documents: [...context.mweDocumentSet],
+    fields: ['mwe-text', 'mwe-patterns', 'word-reference', 'mwe-document-id', 'mwe-document-label']
+      .map(id => control(id).value)
+  });
+  const preserved = beforeImport();
+  for (const [id, record, otherKind, statusId] of [
+    ['mwe-workspace-file', mweWorkspaceRecord, documentSetRecord, 'mwe-workspace-status'],
+    ['mwe-document-set-file', documentSetRecord, mweWorkspaceRecord, 'mwe-document-set-status']
+  ]) {
+    const badHash = structuredClone(record);
+    const badWorkspace = badHash.document ? badHash : badHash.documents[1].workspace;
+    badWorkspace.document.text += ' Changed after saving.';
+    const oldVersion = {...record, contract_version: 'unsupported'};
+    for (const [sourceText, expected] of [
+      ['{', /JSONとして読み込めません/], ['null', /対応する再開用JSONではありません/],
+      ['[]', /対応する再開用JSONではありません/],
+      [JSON.stringify(mweReviewRecord), /CSV・方法JSONからは再開できません/],
+      [JSON.stringify(otherKind), /で選択してください/],
+      [JSON.stringify(badHash), /保存内容の整合性/],
+      [JSON.stringify(oldVersion), /互換性/]
+    ]) {
+      control(id).files = [{size: sourceText.length, text: async () => sourceText}];
+      await fire(id, 'change');
+      assert.match(control(statusId).textContent, expected);
+      assert.doesNotMatch(control(statusId).textContent, /TypeError|schema_version|SHA-256|occurrence/);
+      assert.equal(beforeImport(), preserved, `${id} failure must preserve current work`);
+      assert.equal(control(id).value, '', 'Allow retrying the same file after an error');
+    }
+    control(id).files = [{size: 1, text: async () => { throw new Error('Synthetic operating-system detail.'); }}];
+    await fire(id, 'change');
+    assert.match(control(statusId).textContent, /端末で利用できる保存コピーを選び直して/);
+    assert.equal(beforeImport(), preserved);
+    control(id).files = [{size: Number.MAX_SAFE_INTEGER, text() { assert.fail('Oversized files must not be read'); }}];
+    await fire(id, 'change');
+    assert.match(control(statusId).textContent, /読込サイズの上限/);
+    assert.equal(beforeImport(), preserved);
+  }
+  await assert.rejects(context.readMweResumeFile(
+    {size: 1, text: async () => '{"too":"long"}'},
+    {...mweContract.workspace_file, maximum_json_utf16_code_units: 5}
+  ), /読込上限/);
+  control('mwe-workspace-file').files = [{size: 1, text: async () => JSON.stringify(mweWorkspaceRecord)}];
+  await fire('mwe-workspace-file', 'change');
+  assert.equal(context.mweDocument.text, reviewedDocument.text, 'A valid retry must still restore normally');
+}
+
 console.log(
   `Contract verification: PASS (${fixture.cases.length} fixtures, ` +
   `${mweFixture.cases.length} MWE gold cases, ` +
   `${sampleDocument.comparison_sets.length} scenarios, ${samples.length} samples, ` +
-  `${contract.workspace.relationships.length} workspace modes, browser export)`
+  `${contract.workspace.relationships.length} workspace modes, exports, ` +
+  `single/document-set MWE resume round-trips, draft/save/reset and page-exit guards, async snapshots and stale-operation guards, document identity/save-state guards, import failure recovery, destructive-review cancellation and independent senses)`
 );

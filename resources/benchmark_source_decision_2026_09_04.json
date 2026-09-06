@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0.0",
+  "decision_id": "BENCHMARK-SOURCE-2026-09-04",
+  "date": "2026-09-04",
+  "status": "accepted_protocol_no_source_acquired",
+  "task": "IR-110",
+  "selected_source": {
+    "name": "English Wikipedia",
+    "population": "English-language, namespace-0 encyclopedia article revisions in one completed dated Wikimedia pages-articles multistream dump",
+    "language_variety": "Collaboratively edited international English; national variety is not controlled and no variety-specific inference is permitted",
+    "genre": "Encyclopedic prose",
+    "period": "The revision state in the completed 2026-09-01 English Wikipedia dump, whose exact recombined content/index filenames, bytes, MD5, SHA-1, and metadata retrieval time are frozen in resources/source_manifest.json",
+    "document_unit": "One namespace-0 article revision",
+    "acquisition": {
+      "route": "Official Wikimedia XML dump service",
+      "required_artifact": "enwiki-YYYYMMDD-pages-articles-multistream.xml.bz2 and its matching index and checksum files",
+      "rules": [
+        "Use a completed dated directory, never the mutable /latest/ alias.",
+        "Pin the exact filename, bytes, upstream checksum, local SHA-256, retrieval time, page ID, revision ID, revision timestamp, and source-text hash.",
+        "Filter to namespace 0 and exclude redirects before sampling; IR-121 freezes every further content-neutral eligibility rule.",
+        "Do not acquire or redistribute images, audio, video, or other non-text media."
+      ]
+    },
+    "rights_basis": {
+      "terms_url": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use/en",
+      "license": "CC BY-SA 4.0",
+      "acquisition": "Wikimedia publishes dated pages-articles dumps containing page metadata, revision metadata, and complete page content.",
+      "annotation_and_derivative": "Modified or added material based on reused Wikimedia text must be released under CC BY-SA 4.0 or later and identified as modified.",
+      "redistribution": "Text may be reused under the applicable license with author attribution, a license notice/link, ShareAlike, and preservation of any additional imported-text attribution.",
+      "persistence": "The release must bundle the selected text and also record permanent revision/history URLs, exact revision IDs, and hashes so a third party can verify or reconstruct it.",
+      "page_level_review": "Before admission, inspect the page footer, history, talk page, and visible attribution notices. Exclude any revision with unresolved imported-text, fair-use, or attribution obligations before target search."
+    }
+  },
+  "candidate_audit": [
+    {
+      "candidate": "English Wikipedia dated namespace-0 article revisions",
+      "acquisition": "yes_official_dated_dump",
+      "annotation": "yes_as_cc_by_sa_adaptation",
+      "derivative": "yes_with_attribution_sharealike_and_change_notice",
+      "redistribution": "yes_after_page_level_notice_review",
+      "persistence": "yes_release_bundle_plus_revision_history_and_hashes",
+      "decision": "selected"
+    },
+    {
+      "candidate": "STREUSLE 5.0",
+      "acquisition": "yes_external_pinned_release",
+      "annotation": "license_layers_and_source_permissions_must_remain_separate",
+      "derivative": "conditional_on_streusle_and_source_text_terms",
+      "redistribution": "external_only_in_this_project",
+      "persistence": "yes_pinned_repository_release",
+      "decision": "rejected_as_new_core",
+      "reason": "The inspected projection and labels are already exposed development evidence and cannot become a new independent sealed benchmark."
+    },
+    {
+      "candidate": "Project Gutenberg fixed-prefix prose frame",
+      "acquisition": "yes_for_local_audit_through_official_catalog_and_mirror_routes",
+      "annotation": "local_only_under_current_review",
+      "derivative": "jurisdiction_and_contributor_specific",
+      "redistribution": "not_established_for_worldwide_public_release",
+      "persistence": "source_files_are_stable_but_the_frozen_frame_failed_its_unit_stop",
+      "decision": "rejected",
+      "reason": "The frozen frame reached a maximum of eight eligible adult/unspecified units against a ten-unit stop, and United States availability did not establish Japanese or worldwide redistribution rights."
+    }
+  ],
+  "release_route_comparison": [
+    {
+      "route": "public_text",
+      "decision": "primary",
+      "implementation": "Release only the sampled article text, standoff offsets/labels, attribution manifest, change notice, and CC BY-SA 4.0 notice; keep project code under its existing license.",
+      "reason": "A bundled immutable analysis copy gives third parties the strongest obtainability and byte identity."
+    },
+    {
+      "route": "standoff_only",
+      "decision": "companion_not_sufficient_alone",
+      "implementation": "Keep stable document, token, and occurrence IDs in the public bundle.",
+      "reason": "Standoff data reduces duplication but does not itself resolve source rights or guarantee future source availability."
+    },
+    {
+      "route": "reconstruction_only",
+      "decision": "verification_route_not_sole_release",
+      "implementation": "Publish revision/history URLs, revision IDs, normalization version, offsets, and hashes with a fail-closed checker.",
+      "reason": "Reconstruction verifies provenance but a revision may later become unavailable or suppressed."
+    }
+  ],
+  "target_blind_order": [
+    "freeze this source and release decision",
+    "pin the completed dated dump identity under IR-113",
+    "freeze content-neutral eligibility, strata, seed, and sampling under IR-121",
+    "draw documents and complete page-level rights review without target or MWE search",
+    "freeze preprocessing and document/token IDs",
+    "only then begin candidate-independent annotation"
+  ],
+  "prohibited_selection_inputs": [
+    "target lists",
+    "dictionary entries",
+    "MWE search results",
+    "model predictions",
+    "annotation yield",
+    "downstream outcomes"
+  ],
+  "release_fail_closed_rules": [
+    "Exclude a page before target search if its license or additional attribution cannot be resolved.",
+    "Do not silently substitute another revision or page after observing target yield.",
+    "Reject reconstruction when any source-text, normalization, token, or occurrence hash differs.",
+    "Do not make a public benchmark-availability claim until the release bundle and clean-room reconstruction check exist."
+  ],
+  "current_boundary": {
+    "source_snapshot_frozen": true,
+    "preprocessing_contract_frozen": true,
+    "source_text_acquired": false,
+    "source_text_inspected_for_targets": false,
+    "sampling_frame_frozen": false,
+    "release_bundle_exists": false,
+    "reconstruction_verified": false,
+    "claim_ceiling": "dated_source_metadata_and_preprocessing_frozen_only"
+  },
+  "official_sources": [
+    {
+      "url": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use/en",
+      "supports": "Text licensing, attribution routes, imported-text notices, reuse, ShareAlike, and change/license notices."
+    },
+    {
+      "url": "https://meta.wikimedia.org/wiki/Data_dumps/What%27s_available_for_download",
+      "supports": "Dated dump naming and pages-articles page/revision metadata with complete content."
+    },
+    {
+      "url": "https://meta.wikimedia.org/wiki/Data_dumps/Dump_format",
+      "supports": "Revision IDs, timestamps, content hashes, multistream structure, and index format."
+    }
+  ],
+  "next_required_tasks": [
+    "IR-115",
+    "IR-121"
+  ]
+}

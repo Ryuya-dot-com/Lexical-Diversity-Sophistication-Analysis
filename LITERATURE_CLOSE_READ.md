@@ -143,6 +143,36 @@ distinct local workflow: reviewable occurrence decisions plus separate
 word-form, MWE-form, and MWE-sense reference channels. Treat dependency parsing
 as a candidate generator to be benchmarked on `take it in`, not as proof.
 
+### Kyle and Eguchi (2021): public analysis artifacts — corpus boundary check
+
+The paywalled chapter itself was not treated as an accessible corpus release.
+Its [public analysis
+repository](https://github.com/kristopherkyle/dependency_bigrams_Kyle_Eguchi_2021)
+was inspected separately on 2026-09-01:
+
+- the repository describes itself as data and analysis for the chapter and
+  exposes one R Markdown file, one rendered HTML file, and one substantive CSV;
+- the CSV has 480 data rows and 48 columns: file identifier, holistic `Score`,
+  `nwords`, and aggregate word, raw/lemmatized bigram, and dependency-bigram
+  measures;
+- it contains no essay prose, tokens, MWE spans, VPC/VID categories,
+  literal/idiomatic decisions, or contextual-sense labels;
+- the R Markdown reads both the available `granger_output_2019-11-19.csv` and an
+  unavailable `5_mc_refined_dataset.csv`, so a clean-clone source rerun is not
+  established by the public files; and
+- GitHub reports no repository license and no license file was found, so public
+  visibility is not being interpreted as permission to redistribute the code or
+  table.
+
+**Decision:** use the study design and published aggregate structure as the
+first document-level production comparator. If the underlying TOEFL essays are
+obtained lawfully, use them only as an optional L2-production robustness domain
+until a new double-reviewed VPC/VID occurrence-and-sense subset exists. The
+published holistic writing score is neither MWE gold nor evidence of contextual
+MWE knowledge or reading comprehension. The corpus therefore reduces baseline
+design work but does not remove the annotation or reading-criterion gates for a
+BERT comparison.
+
 ### Berzak et al. (2016): *Universal Dependencies for Learner English* — 10 pages
 
 - **PDF p. 1 / printed p. 737:** Introduces TLE: 5,124 FCE learner sentences with
@@ -352,6 +382,83 @@ and compare raw/corrected text. Do not bundle EVP-derived sense/CEFR data withou
 permission. BERT is a candidate baseline only after the human-reviewed contract
 and benchmark establish that it improves the target outcome.
 
+## Existing-participant resource audit: recruitment is not the default
+
+### Nahatame et al. (2024), TECO
+
+- **PDF p. 4:** After exclusions, 41 Japanese L2 readers remain. Each read 30
+  Eiken-derived expository passages of roughly 300–400 words spanning Pre-2,
+  Grade 2, and Pre-1 levels. Word records include text position and whether a
+  token is at the beginning or end of a displayed line.
+- **PDF p. 6:** The study includes a 19-item Eiken-derived reading-proficiency
+  score after removing five low-discrimination items. Passages were displayed
+  paragraph by paragraph, up to 115 words per screen, with a true/false question
+  after each screen primarily used as an attention check.
+- **PDF p. 7:** Nine word-level measures include skipping, first fixation, gaze
+  duration, total fixation, fixation count, refixation, regression-in,
+  rereading, and regression-path duration. This is sufficient to construct an
+  MWE-member ROI without pretending that `take part in` is one orthographic
+  token.
+- **PDF pp. 13–14:** The authors explicitly identify broader cognitive measures
+  as a limitation and MWUs as a future extension. General reading proficiency
+  is therefore a moderator, not occurrence-specific MWE knowledge.
+- **Live OSF v1.1 audit (2026-09-02):** The public project identifies 41 readers,
+  30 passages, more than 410,000 token observations, full reading materials,
+  participant information, word/text variables, and a CC BY 4.0 project
+  license. The node changed after the article; the project candidate manifest
+  now pins nine current file identities and locally verifies the README and four
+  analysis CSVs used for the join audit.
+
+**Decision:** TECO is the first existing-reader dataset. Annotate the exact
+stimuli for VPC/VID membership, members, discontinuity, idiomaticity, and
+contextual sense; then aggregate prespecified member-level eye measures while
+retaining line-boundary variables. It can test processing and ROI assumptions.
+It cannot identify each reader's `P_word` or `P_mwe_sense`, and the screen-level
+attention questions are not automatically a validated global-comprehension
+criterion. Analyze locally and withhold Eiken passage text from this repository
+until underlying redistribution rights are separately confirmed.
+
+### MECO-L2 and CELER
+
+- **MECO-L2 Wave 2, accepted manuscript pp. 2, 9–11, 15:** Wave 2 adds 661
+  readers across 13 L1 backgrounds; Waves 1 and 2 total 1,204. Readers saw 12
+  English ACCUPLACER-derived passages, each followed by two multiple-choice
+  questions. The battery includes spelling, LexTALE, word-recognition
+  vocabulary sampled across frequency bands, sight-word efficiency, and
+  decoding measures. These are broad participant skills, not knowledge of the
+  words and MWE senses required in each passage.
+- **CELER pp. 2–5:** CELER includes 296 L2 readers from five L1 backgrounds who
+  read 156 WSJ sentences; half the sentences are shared across readers and half
+  are individual. Michigan placement vocabulary/reading data exist for a
+  subset. Single-sentence display and simple yes/no questions make CELER useful
+  for a large processing replication, but weaker than TECO for passage-level
+  coverage and discourse comprehension.
+
+**Decision:** inspect MECO-L2 only when its vocabulary/comprehension breadth is
+needed and CELER only when participant count or sentence generalization is the
+named gap. More corpora are not automatically more validity.
+
+### Santos et al. (2026), L2 idiom eye-tracking dataset
+
+The arXiv paper and Zenodo record describe literal/figurative matched sentences,
+raw 60 Hz gaze data, comprehension responses, Portuguese-L1 participants, and a
+CC BY 4.0 release. The verified 140,609,151-byte archive has MD5
+`92b334c4f84438f165b979d60e94216a`, 16 participant IDs, 40,785 bytes of
+sentence/MWE metadata, and literal/figurative labels. It is unusually close to
+the project's idiomaticity question, but fails the admission check in its
+current form:
+
+- the paper does not report the participant count and claims A1–C2 coverage;
+- the archive contains only B1–C2 participants;
+- the README says 16 participants but its listed group counts sum to 17; and
+- P08 and P10 have byte-identical derived `metrics.csv` files despite different
+  proficiency labels.
+
+**Decision:** quarantine rather than reject. Request clarification or reproduce
+participant-level metrics from raw data before using it. Its existence further
+weakens any case for immediate recruitment, but its present QA does not support
+a primary result.
+
 ## Cross-study synthesis: what changes now
 
 | Live question | Evidence-backed answer | Required project action |
@@ -364,25 +471,29 @@ and benchmark establish that it improves the target outcome.
 | Does polysemy matter for lexical measurement? | Yes. Hu et al. find added criterion-related evidence from contextual CEFR-sense information. | Keep sense assignment separate from form membership, with uncertainty and inventory coverage. |
 | Should learner text be silently corrected before analysis? | No. Correction can improve processing, but changes the observation. | Raw is primary; corrected is a paired sensitivity condition with a full change log. |
 | Should BERT/LLMs be added now? | Not yet. WSD helps but remains imperfect on real learner text; phrases and rights remain unresolved. | First create adjudicated learner benchmarks; add the smallest model baseline only if it beats transparent baselines on prespecified outcomes. |
+| Should new L2 readers be recruited now? | No. TECO, MECO-L2, CELER, ICNALE, and a quarantined idiom-specific dataset cover several processing, comprehension, proficiency, and production variables already. | Admit and analyze existing data first; recruit only for an explicitly retained occurrence-specific knowledge variable that remains absent. |
+| Can Project Gutenberg replace participant-linked stimuli? | No. It supplies shareable natural prose but no reader outcomes. | Use it for the open app/annotation frame; use the exact existing-corpus stimuli for empirical reanalysis. |
 
 ## Revised empirical critical path
 
 1. Freeze the construct statement: reference-conditioned word, MWE-form, and
    MWE-sense coverage are separate descriptive outcomes; none directly measures
    knowledge, comprehension, correctness, or overall proficiency.
-2. Create a small, double-reviewed ICNALE GRA raw/corrected audit sample with
-   VPC candidate spans, gaps, occurrence status, category, idiomaticity, sense
-   state, error location/type, and reviewer confidence. Keep corpus text local.
-3. Evaluate the current transparent candidate baseline by continuous versus
+2. Pin and admit TECO v1.1, create a VPC/VID inventory for its 30 passages, and
+   test member/ROI aggregation with line-initial/final and split-line strata.
+3. Add MECO-L2, CELER, or ICNALE only for a named missing variable; if
+   production/error robustness remains, create a small double-reviewed ICNALE
+   GRA raw/corrected audit sample and keep corpus text local.
+4. Evaluate the current transparent candidate baseline by continuous versus
    discontinuous form, learner-error stratum, and raw versus corrected version.
    Report exact-span and relaxed member scores plus abstention/unresolved rates.
-4. Quantify measurement consequences: word-only result, added MWE-form channel,
+5. Quantify measurement consequences: word-only result, added MWE-form channel,
    added reviewed-sense channel, overlap policy, and sensitivity to reference and
    correction. Never turn the channels into one score merely for convenience.
-5. Only then compare a current dependency parser and one contextual-embedding
+6. Only then compare a current dependency parser and one contextual-embedding
    baseline. Promotion requires a material improvement on a genuinely held-out
    slice without hiding subgroup failures or license/runtime costs.
-6. Conduct task-based usability testing with L2 vocabulary researchers and
+7. Conduct task-based usability testing with L2 vocabulary researchers and
    teachers: can they identify the unit/reference/denominator, resolve a case,
    interpret uncertainty, and avoid the prohibited inferences?
 

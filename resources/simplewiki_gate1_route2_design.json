@@ -1,0 +1,233 @@
+{
+  "design_id": "gate1-simplewiki-route2-v1",
+  "status": "frozen_before_article_text_acquisition",
+  "frozen_on": "2026-09-02",
+  "purpose": "Bounded target-conditioned retrieval of natural passages for an exploratory English VPC/VID material pilot",
+  "supersedes": "The stopped target-blind 24-article VOA frame; it does not alter or reopen that frame",
+  "source_frame": {
+    "site": "Simple English Wikipedia",
+    "site_url": "https://simple.wikipedia.org/",
+    "audience_rationale": "The official About page identifies people learning English among the intended audiences; this does not make every article an L2-validated reading passage.",
+    "snapshot": "2026-08-01",
+    "dump_page": "https://dumps.wikimedia.org/simplewiki/20260801/",
+    "artifact_name": "simplewiki-20260801-pages-articles-multistream.xml.bz2",
+    "artifact_url": "https://dumps.wikimedia.org/simplewiki/20260801/simplewiki-20260801-pages-articles-multistream.xml.bz2",
+    "artifact_size_bytes": 384058867,
+    "artifact_sha1": "4f646363bd2d095652149a6bdd87a0cedf51f6b2",
+    "checksum_url": "https://dumps.wikimedia.org/simplewiki/20260801/simplewiki-20260801-sha1sums.txt",
+    "acquisition_rule": "Download only this dated artifact into ignored local research_data; verify byte size and SHA-1 before decompression or article inspection.",
+    "page_frame": {
+      "namespace": 0,
+      "revision": "current revision contained in the dated dump",
+      "exclude_redirects": true,
+      "exclude_page_classes": [
+        "disambiguation",
+        "list",
+        "timeline or chronology",
+        "non-article or navigation page"
+      ]
+    },
+    "passage_unit": {
+      "rule": "All rendered main-body prose paragraphs in document order, with section headings retained",
+      "mechanical_exclusions": [
+        "infoboxes",
+        "tables",
+        "lists",
+        "captions and non-text media",
+        "reference markers and reference sections",
+        "further-reading and external-link sections",
+        "navigation and page furniture"
+      ],
+      "coherence_rule": "Reject the article if the mechanical exclusions break propositional coherence; do not repair it by selecting or rewriting sentences.",
+      "no_target_editing": "Do not insert, replace, delete, reorder, bold, gloss, or otherwise manipulate a target occurrence during Gate 1."
+    },
+    "rights": {
+      "terms_url": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+      "working_license_route": "Applicable Wikimedia text terms, expected CC BY-SA 4.0/GFDL; verify the selected page and imported-text notices individually before release",
+      "required_record": [
+        "page title and page ID",
+        "revision ID and permanent revision URL",
+        "revision-history attribution URL",
+        "license and any additional attribution notice",
+        "retrieval date and exact extracted-text SHA-256",
+        "mechanical extraction and modification notice"
+      ],
+      "release_boundary": "The dump and media stay outside Git. Selected text is not publicly packaged until every page-level attribution and ShareAlike requirement is complete."
+    }
+  },
+  "target_derivation": {
+    "frozen_inputs": {
+      "streusle_release": "5.0 train split only",
+      "streusle_train_sha256": "36aef0205a6e2e154b681d7520858693a264d3c40ba7d97c089345bbd1149a22",
+      "streusle_profile_sha256": "448a4aeef60bc114cbd2fc6a839ddc168a068247222a708361ab7b32c9d3f6cd",
+      "oewn_profile_sha256": "513714774f0e087e9ba03c8fa04e969b8314786ccbdaa06dbbeeb35127f6a41e",
+      "ngsl_profile_sha256": "f613834eac74e19cef787faf1414a716388c047b3f5b7e39db88c78883fef6d9",
+      "mwe_contract_sha256": "6a5d3696f97fb07d17f903fe948f4e028ad2c6e42aef313b11325de9680b99ba"
+    },
+    "pool_rule": {
+      "categories": [
+        "V.VPC.full",
+        "V.VPC.semi",
+        "V.VID"
+      ],
+      "canonical_members": 2,
+      "ascii_alphabetic_members_only": true,
+      "minimum_streusle_train_occurrences": {
+        "VPC": 3,
+        "VID": 2
+      },
+      "minimum_oewn_2025_senses": 2,
+      "component_rule": "Every canonical member has an NGSL 1.2 head at rank 2000 or earlier.",
+      "low_risk_pilot_rule": "Before source retrieval, exclude a type whose conventional meaning necessarily centers death, self-harm, sexual violence, or acute violence.",
+      "ranking": "Within VPC and VID separately: descending OEWN sense count, then descending STREUSLE train count, then ASCII canonical form.",
+      "selection": "First four VPC types and first two VID types after the frozen filters."
+    },
+    "targets": [
+      {
+        "priority": 1,
+        "canonical_form": "take in",
+        "target_class": "VPC",
+        "streusle_train_categories": {
+          "V.VPC.full": 6
+        },
+        "oewn_sense_count": 17,
+        "ngsl_component_head_ranks": [
+          59,
+          7
+        ]
+      },
+      {
+        "priority": 2,
+        "canonical_form": "pick up",
+        "target_class": "VPC",
+        "streusle_train_categories": {
+          "V.VPC.full": 14
+        },
+        "oewn_sense_count": 16,
+        "ngsl_component_head_ranks": [
+          583,
+          52
+        ]
+      },
+      {
+        "priority": 3,
+        "canonical_form": "give up",
+        "target_class": "VPC",
+        "streusle_train_categories": {
+          "V.VPC.full": 5
+        },
+        "oewn_sense_count": 12,
+        "ngsl_component_head_ranks": [
+          77,
+          52
+        ]
+      },
+      {
+        "priority": 4,
+        "canonical_form": "come out",
+        "target_class": "VPC",
+        "streusle_train_categories": {
+          "V.VPC.full": 3,
+          "V.VPC.semi": 5
+        },
+        "oewn_sense_count": 11,
+        "ngsl_component_head_ranks": [
+          65,
+          55
+        ]
+      },
+      {
+        "priority": 5,
+        "canonical_form": "make it",
+        "target_class": "VID",
+        "streusle_train_categories": {
+          "V.VID": 2
+        },
+        "oewn_sense_count": 3,
+        "ngsl_component_head_ranks": [
+          48,
+          9
+        ]
+      },
+      {
+        "priority": 6,
+        "canonical_form": "get it",
+        "target_class": "VID",
+        "streusle_train_categories": {
+          "V.VID": 2
+        },
+        "oewn_sense_count": 2,
+        "ngsl_component_head_ranks": [
+          43,
+          9
+        ]
+      }
+    ],
+    "prespecified_exclusions": [
+      {
+        "canonical_form": "pass away",
+        "evidence": "STREUSLE train V.VID x3; OEWN senses x2; NGSL member ranks 416 and 234",
+        "reason": "Excluded before passage retrieval by the low-risk first-pilot rule because its conventional meaning necessarily centers death."
+      },
+      {
+        "canonical_form": "take part (in)",
+        "evidence": "OEWN projects take part with one sense and no exact take part in entry; no exact take part or take part in type occurs in the pinned STREUSLE train split.",
+        "reason": "Retained as a future unit-boundary/adposition stress case, not added as an exception that would silently widen the frozen VPC/VID target pool."
+      }
+    ]
+  },
+  "candidate_generation": {
+    "role": "High-recall lead generation only; no match is occurrence, idiomaticity, category, or sense truth.",
+    "surface_forms": "Use the pinned NGSL surface-to-head projection for verb inflections; require the non-verbal canonical member exactly.",
+    "vpc_pattern": "Allow contiguous members or 1-8 intervening profile tokens, preserving every gap token for review; this includes pronoun/NP cases such as take it in.",
+    "vid_pattern": "Require adjacent inflected verb plus exact it for make it and get it.",
+    "deduplication": "One candidate page per target form and page ID, regardless of occurrence count.",
+    "manual_review": "Review the complete retained article for false spans, missed target occurrences, category, members/gaps, idiomaticity, operational paraphrase meaning, OEWN candidates, source cueing, and centrality."
+  },
+  "passage_constraints": {
+    "profile_token_range_inclusive": [
+      400,
+      1000
+    ],
+    "length_role": "Pragmatic development bracket, not a coverage or comprehension threshold; revise only in a new design version.",
+    "target_location": "A usable focal occurrence is in ordinary main prose, not the title, heading, quotation-only material, caption, list, table, reference, bold/italic teaching cue, explicit gloss, or target-level hyperlink.",
+    "background": "The global proposition must be answerable from the retained prose without specialist formulas, tabular lookup, or assumed knowledge of a named person/event/institution.",
+    "content": "Exclude self-harm, sexual violence, graphic or acute violence, and individualized medical/legal/financial advice from the low-risk first pilot.",
+    "centrality": "The focal meaning must be needed for at least one proposition contributing to an uncued global-comprehension item; a phrase-definition item cannot establish centrality.",
+    "word_profiles": "Compute NGSL and local BNC/COCA profiles after selection as continuous descriptors. Do not select passages for being near 95% or 98%."
+  },
+  "sampling": {
+    "queue_key": "SHA-256 of gate1-simplewiki-route2-v1, newline, canonical form, newline, page ID, newline, revision ID; ascending hexadecimal order",
+    "maximum_desk_screens_per_target": 20,
+    "screening_rule": "For each target, review the first 20 mechanically eligible pages or stop earlier when three admissible pages spanning at least two operational paraphrase meanings are available.",
+    "sense_stratified_selection": "Select the earliest admissible page, the earliest admissible page with a clearly different operational paraphrase meaning, and then the earliest remaining admissible page.",
+    "article_assignment": "A page may serve only one focal target. Assign a cross-target page to the higher-priority target and log every non-focal target occurrence.",
+    "retention": "Retain every queue row, automated exclusion, desk decision, provisional sense decision, and admissible-but-unselected row without article prose in the public sampling ledger."
+  },
+  "gate": {
+    "per_target": "Exactly three distinct articles and at least two clearly different provisional operational paraphrase meanings.",
+    "minimum_panel": "At least four successful target types, including at least three VPC types and at least one VID type.",
+    "discontinuity": "At least one admitted VPC occurrence must contain a naturally intervening pronoun or noun-phrase object; otherwise the discontinuous-VPC material claim fails.",
+    "maximum_articles": 18,
+    "stop_rules": [
+      "Stop before inspection if artifact size or SHA-1 does not match.",
+      "Stop a target after 20 desk screens; do not extend its queue in this design version.",
+      "After all six target queues, stop Route 2 if the minimum panel or discontinuity condition fails; do not add a source, target, excerpt, or relaxed rule post hoc.",
+      "No passage is admitted until exact rights, prose-boundary, MWE, sense, centrality, and question records are complete."
+    ]
+  },
+  "inference": {
+    "permitted": [
+      "Feasibility of constructing a bounded target-conditioned natural-passage VPC/VID material panel",
+      "Transparent comparison of conventional word-profile output with separately reviewed focal MWE occurrences in those selected passages"
+    ],
+    "forbidden": [
+      "MWE prevalence in Simple English Wikipedia or general English",
+      "Representative lexical coverage of L2 reading",
+      "A revised universal 95% or 98% threshold",
+      "Learner knowledge or comprehension before participant measures",
+      "Automatic occurrence, idiomaticity, category, or contextual-sense accuracy"
+    ]
+  },
+  "implementation_boundary": "This freeze authorizes only local dump verification and an offline sampling ledger. It does not admit text, expand the Web app's sense inventory, add BERT, or begin human annotation."
+}
