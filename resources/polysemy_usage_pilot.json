@@ -1,0 +1,1322 @@
+{
+  "schema_version": "1.0.0",
+  "pilot_id": "ldfreq-polysemy-usage-pilot-v1",
+  "frozen_on": "2026-09-05",
+  "status": "manifest_built_no_semantic_judgments",
+  "task": "IR-136",
+  "purpose": "Test project sense granularity from contextual usage before expert review of dictionary-to-project mappings.",
+  "dependencies": {
+    "candidate_inventory": {
+      "path": "resources/hybrid_sense_inventory_v1.json",
+      "sha256": "a6a60349522899d9feca59d641ed879b722ed6e569e3d2340d4043abbe326ad9"
+    },
+    "coverage_audit": {
+      "path": "resources/hybrid_inventory_coverage_v2.json",
+      "sha256": "691cc67efa2d9e0388b07bad89adf447b86fef4cc89fa5ae6c8cd62f9f275696"
+    },
+    "streusle": {
+      "train": {
+        "path": "train/streusle.ud_train.json",
+        "size_bytes": 16845570,
+        "sha256": "36aef0205a6e2e154b681d7520858693a264d3c40ba7d97c089345bbd1149a22"
+      },
+      "dev": {
+        "path": "dev/streusle.ud_dev.json",
+        "size_bytes": 2050638,
+        "sha256": "56cc1783962ce8c9f06b7649ffdccb48cea14ee7e4a8be2e35214ffc71303e9a"
+      }
+    }
+  },
+  "scope": {
+    "forms": 9,
+    "source_splits": [
+      "train",
+      "dev"
+    ],
+    "excluded_split": "test",
+    "selection": "All in-scope STREUSLE train/dev occurrences whose canonical form is in the frozen nine-form candidate inventory.",
+    "source_text_bundled": false,
+    "join_rule": "Resolve sentence_id against the hash-verified local STREUSLE artifact when presenting context."
+  },
+  "judgment_contract": {
+    "unit": "Two occurrences of the same canonical form, presented with context and without dictionary glosses or candidate IDs.",
+    "scale": {
+      "1": "unrelated meanings",
+      "2": "distantly related meanings",
+      "3": "closely related meanings",
+      "4": "same meaning",
+      "cannot_decide": "context is insufficient or the comparison cannot be made reliably"
+    },
+    "independence": "Obtain two independent ratings per released pair before discussion or cluster review.",
+    "round_1": "Use the deterministic connected scaffold below; never compare occurrences from different forms.",
+    "later_rounds": "Add only edges needed to examine disagreement, weakly connected regions, or provisional cluster boundaries; freeze each batch before ratings.",
+    "edge_ceiling": "At most min(n*(n-1)/2, 3*n) unique pairs per form across all rounds; reaching the ceiling without stability yields unresolved granularity.",
+    "dictionary_blinding": "Usage-pair raters do not see OEWN IDs, glosses, source order, candidate counts, model scores, or proposed project clusters."
+  },
+  "interpretation": {
+    "permitted": [
+      "propose usage clusters for later lexicographic review",
+      "identify unstable or underdetermined distinctions",
+      "compare cluster proposals with the frozen source candidate inventory"
+    ],
+    "prohibited": [
+      "treat source sense count as observed polysemy",
+      "treat a graph cluster as an automatically admitted project sense",
+      "estimate English-wide sense frequencies from this purposive exposed slice",
+      "use this pilot as sealed-test evidence"
+    ],
+    "single_occurrence_rule": "A form with fewer than two occurrences remains insufficient_contexts; dictionary evidence may be reviewed but contextual separability is not established."
+  },
+  "summary": {
+    "occurrences": 54,
+    "by_split": {
+      "dev": 2,
+      "train": 52
+    },
+    "initial_pairs": 51,
+    "forms_with_at_least_two_occurrences": 8,
+    "forms_with_insufficient_contexts": 1,
+    "per_form": [
+      {
+        "type_id": "ldfreq-en-vmwe-t000147",
+        "canonical_lemma": "take in",
+        "occurrences": 8,
+        "initial_pairs": 8,
+        "inference_state": "eligible_for_usage_graph"
+      },
+      {
+        "type_id": "ldfreq-en-vmwe-t000148",
+        "canonical_lemma": "pick up",
+        "occurrences": 14,
+        "initial_pairs": 14,
+        "inference_state": "eligible_for_usage_graph"
+      },
+      {
+        "type_id": "ldfreq-en-vmwe-t000149",
+        "canonical_lemma": "give up",
+        "occurrences": 5,
+        "initial_pairs": 5,
+        "inference_state": "eligible_for_usage_graph"
+      },
+      {
+        "type_id": "ldfreq-en-vmwe-t000150",
+        "canonical_lemma": "come out",
+        "occurrences": 8,
+        "initial_pairs": 8,
+        "inference_state": "eligible_for_usage_graph"
+      },
+      {
+        "type_id": "ldfreq-en-vmwe-t000151",
+        "canonical_lemma": "make sure",
+        "occurrences": 6,
+        "initial_pairs": 6,
+        "inference_state": "eligible_for_usage_graph"
+      },
+      {
+        "type_id": "ldfreq-en-vmwe-t000152",
+        "canonical_lemma": "make it",
+        "occurrences": 2,
+        "initial_pairs": 1,
+        "inference_state": "eligible_for_usage_graph"
+      },
+      {
+        "type_id": "ldfreq-en-vmwe-t000153",
+        "canonical_lemma": "get it",
+        "occurrences": 2,
+        "initial_pairs": 1,
+        "inference_state": "eligible_for_usage_graph"
+      },
+      {
+        "type_id": "ldfreq-en-vmwe-t000154",
+        "canonical_lemma": "cut short",
+        "occurrences": 1,
+        "initial_pairs": 0,
+        "inference_state": "insufficient_contexts"
+      },
+      {
+        "type_id": "ldfreq-en-vmwe-t000155",
+        "canonical_lemma": "waste time",
+        "occurrences": 8,
+        "initial_pairs": 8,
+        "inference_state": "eligible_for_usage_graph"
+      }
+    ]
+  },
+  "occurrences": [
+    {
+      "occurrence_id": "streusle:dev:reviews-248616-0001:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "canonical_lemma": "take in",
+      "split": "dev",
+      "sentence_id": "reviews-248616-0001",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        1,
+        4
+      ],
+      "discontinuous": true,
+      "context_sha256": "dc157d42781781d79649a862c0c2bd2d072b190018c441cf0b9566685701792b"
+    },
+    {
+      "occurrence_id": "streusle:dev:reviews-248616-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "canonical_lemma": "take in",
+      "split": "dev",
+      "sentence_id": "reviews-248616-0002",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        9,
+        11
+      ],
+      "discontinuous": true,
+      "context_sha256": "ea1bfa8243b90880bd5b25c064b8084d75e7455bd08d36a638ce8fe494d9a236"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-071518-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "canonical_lemma": "take in",
+      "split": "train",
+      "sentence_id": "reviews-071518-0002",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        2,
+        7
+      ],
+      "discontinuous": true,
+      "context_sha256": "2ea5ad395299bf2097dc671e88f76c8d6bba6ae003572308d918bcfff8dfc793"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-086839-0003:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "canonical_lemma": "take in",
+      "split": "train",
+      "sentence_id": "reviews-086839-0003",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        2,
+        5
+      ],
+      "discontinuous": true,
+      "context_sha256": "4eb35ae110e17b824bf24e4cebc3cb3cb08cd379c26121fb035fef18d1908f1b"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-086839-0005:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "canonical_lemma": "take in",
+      "split": "train",
+      "sentence_id": "reviews-086839-0005",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        2,
+        5
+      ],
+      "discontinuous": true,
+      "context_sha256": "9cff06561d41e0b63e2f9ba4c55004c9b7290c44fb6fb01d918ba1c05d17dd17"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-091704-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "canonical_lemma": "take in",
+      "split": "train",
+      "sentence_id": "reviews-091704-0002",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        4,
+        9
+      ],
+      "discontinuous": true,
+      "context_sha256": "358c3626e2c45cf529bcbe04e5a2458f4ff9cdd5793ff7ec9ec9d27325e05669"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-120335-0006:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "canonical_lemma": "take in",
+      "split": "train",
+      "sentence_id": "reviews-120335-0006",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        5,
+        6
+      ],
+      "discontinuous": false,
+      "context_sha256": "4cdbc0a29e9f326e55aee742ee46705bf74a81bc0b33759c85a61d116b3abd18"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-135800-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "canonical_lemma": "take in",
+      "split": "train",
+      "sentence_id": "reviews-135800-0002",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        1,
+        4
+      ],
+      "discontinuous": true,
+      "context_sha256": "77af1c54dfc56296d10bc6c64ee765bab5ebc32ab97c1798b79353f73f4c090b"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-018548-0005:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-018548-0005",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        15,
+        16
+      ],
+      "discontinuous": false,
+      "context_sha256": "7dc36c434a208f0f084bce9f89cdc3f9742a0ddf172f2bae79366eb7056d3d7b"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-072507-0004:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-072507-0004",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        15,
+        16
+      ],
+      "discontinuous": false,
+      "context_sha256": "dbdf1b91d82bae6d7d26d939d5f17878cede7b8d8291468d53c480c2a41c6740"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-086839-0006:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-086839-0006",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        19,
+        20
+      ],
+      "discontinuous": false,
+      "context_sha256": "a00714e4278eafb8f78dc09e34cb39260f96ad9f16535c20f0c189789cc0f2e4"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-106150-0005:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-106150-0005",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        12,
+        13
+      ],
+      "discontinuous": false,
+      "context_sha256": "0794f4752671ea863de480750cbe4a02718eca7ec32195f92b220e60977523d7"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-119026-0001:smwe:5",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-119026-0001",
+      "mwe_id": "5",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        40,
+        42
+      ],
+      "discontinuous": true,
+      "context_sha256": "087128d81d83f3a0215eac50c51fab929ab24ff908851f93429415ae0f3dd468"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-121651-0003:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-121651-0003",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        13,
+        14
+      ],
+      "discontinuous": false,
+      "context_sha256": "362c70788c50685f2a2283f337cfd6f2315f4a20145e643bd8d73021563361b4"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-200429-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-200429-0002",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        15,
+        16
+      ],
+      "discontinuous": false,
+      "context_sha256": "c1738ab090e4836ec0dfe66d2002785b64e7dbe4c32c95daafd1f510a9631145"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-235423-0004:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-235423-0004",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        10,
+        12
+      ],
+      "discontinuous": true,
+      "context_sha256": "68420e4737b18713da9a6c069e822074f2d42ebecd1886ded2a45d7dcb81da46"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-235423-0008:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-235423-0008",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        12,
+        13
+      ],
+      "discontinuous": false,
+      "context_sha256": "8fc2167bcc47c26aee04ee206167d3c9befd56b5de1b01de528d7ae2e3643aa2"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-235576-0006:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-235576-0006",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        4,
+        5
+      ],
+      "discontinuous": false,
+      "context_sha256": "1fd4d561ace53f4b00b94840d548e844d03a00637ccbb304077c88249c077c0f"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-319816-0006:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-319816-0006",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        5,
+        6
+      ],
+      "discontinuous": false,
+      "context_sha256": "02725ae6eab7690d692ac611aa0028be65b872a0f6ac6ff120c69123b9ffe3d2"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-345182-0005:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-345182-0005",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        2,
+        4
+      ],
+      "discontinuous": true,
+      "context_sha256": "4781264e836bff3d865745fbe1dcf6169131b81f15e7817cdad67a0674df61eb"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-369087-0006:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-369087-0006",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        11,
+        13
+      ],
+      "discontinuous": true,
+      "context_sha256": "1043a1fdd184b748b1d57389a8e07e7721c16772bd9ffb6710c4c9fae1aabbcb"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-398243-0007:smwe:4",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "canonical_lemma": "pick up",
+      "split": "train",
+      "sentence_id": "reviews-398243-0007",
+      "mwe_id": "4",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        32,
+        33
+      ],
+      "discontinuous": false,
+      "context_sha256": "1909006a9c1a47d7aea6dc7cbc061116d5a4816798923ef89ad1cb2b82de7373"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-224906-0006:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000149",
+      "canonical_lemma": "give up",
+      "split": "train",
+      "sentence_id": "reviews-224906-0006",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        14,
+        15
+      ],
+      "discontinuous": false,
+      "context_sha256": "6a0507d073e66ba310c1d1c4aa8a64d277e72d17dd254934e7c695bda686e812"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-249123-0004:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000149",
+      "canonical_lemma": "give up",
+      "split": "train",
+      "sentence_id": "reviews-249123-0004",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        6,
+        7
+      ],
+      "discontinuous": false,
+      "context_sha256": "c5caa91f3e4342302624ff340eef647f0449ed1db21e83cac85a403e0b38fff7"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-288100-0005:smwe:5",
+      "type_id": "ldfreq-en-vmwe-t000149",
+      "canonical_lemma": "give up",
+      "split": "train",
+      "sentence_id": "reviews-288100-0005",
+      "mwe_id": "5",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        41,
+        42
+      ],
+      "discontinuous": false,
+      "context_sha256": "3cef40b13b415f9b3237293116d4e99bc09cb693ad145cffe4f2286a354ce9df"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-363685-0002:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000149",
+      "canonical_lemma": "give up",
+      "split": "train",
+      "sentence_id": "reviews-363685-0002",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        19,
+        20
+      ],
+      "discontinuous": false,
+      "context_sha256": "818f06b374f5bce2941cd0266bddf2d3536a58de68aafa8b107fb3e82e5ce075"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-396874-0003:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000149",
+      "canonical_lemma": "give up",
+      "split": "train",
+      "sentence_id": "reviews-396874-0003",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        5,
+        6
+      ],
+      "discontinuous": false,
+      "context_sha256": "83a2d4a9c6e35d9dfd4b43bc0d1cf02259c341de4558ef22a2fad7ea3f5bc65a"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-008585-0005:smwe:3",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "canonical_lemma": "come out",
+      "split": "train",
+      "sentence_id": "reviews-008585-0005",
+      "mwe_id": "3",
+      "category": "V.VPC.semi",
+      "token_numbers": [
+        22,
+        23
+      ],
+      "discontinuous": false,
+      "context_sha256": "1a68d242009aa344ad4c8a0542258fe3477f2ae5421a1a2bfe87ec8701dea64a"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-038358-0004:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "canonical_lemma": "come out",
+      "split": "train",
+      "sentence_id": "reviews-038358-0004",
+      "mwe_id": "2",
+      "category": "V.VPC.semi",
+      "token_numbers": [
+        3,
+        4
+      ],
+      "discontinuous": false,
+      "context_sha256": "4b416dbb8c0d319d694c366ce5069db7a09b67ea086982224c74a3dde7c0f463"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-043020-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "canonical_lemma": "come out",
+      "split": "train",
+      "sentence_id": "reviews-043020-0002",
+      "mwe_id": "1",
+      "category": "V.VPC.semi",
+      "token_numbers": [
+        2,
+        3
+      ],
+      "discontinuous": false,
+      "context_sha256": "22f6d2e76039bc3b6dfa57b140b5bf81d3771b28c5ab0c824017f617fb8f8b95"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-093655-0005:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "canonical_lemma": "come out",
+      "split": "train",
+      "sentence_id": "reviews-093655-0005",
+      "mwe_id": "1",
+      "category": "V.VPC.semi",
+      "token_numbers": [
+        10,
+        11
+      ],
+      "discontinuous": false,
+      "context_sha256": "5cfb25a5ad10e274fc4bf15a04c9090bb230b96ab83593fa9d8be1537a1d7464"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-094621-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "canonical_lemma": "come out",
+      "split": "train",
+      "sentence_id": "reviews-094621-0002",
+      "mwe_id": "1",
+      "category": "V.VPC.semi",
+      "token_numbers": [
+        2,
+        3
+      ],
+      "discontinuous": false,
+      "context_sha256": "f0ce88f246972618d9c270977ef97d78c148055a9c68d2a3f71ca839b7953d00"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-294081-0012:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "canonical_lemma": "come out",
+      "split": "train",
+      "sentence_id": "reviews-294081-0012",
+      "mwe_id": "2",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        16,
+        17
+      ],
+      "discontinuous": false,
+      "context_sha256": "a2742e895579515aab2b28c6fee61de143a4ce0fb0c0f17745eaa281b06ede46"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-319816-0013:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "canonical_lemma": "come out",
+      "split": "train",
+      "sentence_id": "reviews-319816-0013",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        14,
+        15
+      ],
+      "discontinuous": false,
+      "context_sha256": "0aa9f74772b68f5ba554f6163a85e91d15120471488930917c7dc79350efed89"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-363234-0003:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "canonical_lemma": "come out",
+      "split": "train",
+      "sentence_id": "reviews-363234-0003",
+      "mwe_id": "1",
+      "category": "V.VPC.full",
+      "token_numbers": [
+        2,
+        3
+      ],
+      "discontinuous": false,
+      "context_sha256": "f7517535f73925b4afa9c75ca2820411f5ba3f87ef834627246132226fbc75df"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-020851-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "canonical_lemma": "make sure",
+      "split": "train",
+      "sentence_id": "reviews-020851-0002",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        8,
+        9
+      ],
+      "discontinuous": false,
+      "context_sha256": "c16c42ff90c157d0c4d07dd05402f0e61e0690d1d21b14a318499aec6910e548"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-030811-0002:smwe:4",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "canonical_lemma": "make sure",
+      "split": "train",
+      "sentence_id": "reviews-030811-0002",
+      "mwe_id": "4",
+      "category": "V.VID",
+      "token_numbers": [
+        31,
+        32
+      ],
+      "discontinuous": false,
+      "context_sha256": "e293b15f014b508dc22ca85f2440ad74f8d347f4f9c28bf5dd2cf514ce550f52"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-042416-0006:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "canonical_lemma": "make sure",
+      "split": "train",
+      "sentence_id": "reviews-042416-0006",
+      "mwe_id": "2",
+      "category": "V.VID",
+      "token_numbers": [
+        13,
+        14
+      ],
+      "discontinuous": false,
+      "context_sha256": "539d2bce18eebcf05a2f4417b8b53df2f5a4f0fc87611a620dc251ecdee351fc"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-194316-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "canonical_lemma": "make sure",
+      "split": "train",
+      "sentence_id": "reviews-194316-0002",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        3,
+        4
+      ],
+      "discontinuous": false,
+      "context_sha256": "e8481cb19548e4cfbc5b717b45d8d837fd238b2f65606148348fd950bd94148e"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-235576-0005:smwe:3",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "canonical_lemma": "make sure",
+      "split": "train",
+      "sentence_id": "reviews-235576-0005",
+      "mwe_id": "3",
+      "category": "V.VID",
+      "token_numbers": [
+        5,
+        6
+      ],
+      "discontinuous": false,
+      "context_sha256": "14203292afaf1f88f7479e81e7769c69a9b1dbbbce9143bb9e7a95cbcec654af"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-363685-0015:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "canonical_lemma": "make sure",
+      "split": "train",
+      "sentence_id": "reviews-363685-0015",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        9,
+        10
+      ],
+      "discontinuous": false,
+      "context_sha256": "c64157a2ce3797474a51173e323948dbc6a85f33555d8dcaa963a491080132e3"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-225632-0009:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000152",
+      "canonical_lemma": "make it",
+      "split": "train",
+      "sentence_id": "reviews-225632-0009",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        11,
+        12
+      ],
+      "discontinuous": false,
+      "context_sha256": "0f8941e6578f7250c42768662b0418ca14f69cc95267a2e6274420ded65a9fbc"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-319816-0023:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000152",
+      "canonical_lemma": "make it",
+      "split": "train",
+      "sentence_id": "reviews-319816-0023",
+      "mwe_id": "2",
+      "category": "V.VID",
+      "token_numbers": [
+        6,
+        7
+      ],
+      "discontinuous": false,
+      "context_sha256": "c1804d81fca310aa4e565f2ef04c8c1485edc90e8df5ec69f3a000e61c69b38d"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-034813-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000153",
+      "canonical_lemma": "get it",
+      "split": "train",
+      "sentence_id": "reviews-034813-0002",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        4,
+        5
+      ],
+      "discontinuous": false,
+      "context_sha256": "d6c8901d7e6c15c117f1b7455cddf6ea763335dcf62d9f60bb42b9529840321f"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-381455-0002:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000153",
+      "canonical_lemma": "get it",
+      "split": "train",
+      "sentence_id": "reviews-381455-0002",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        4,
+        5
+      ],
+      "discontinuous": false,
+      "context_sha256": "d6c8901d7e6c15c117f1b7455cddf6ea763335dcf62d9f60bb42b9529840321f"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-023620-0001:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000154",
+      "canonical_lemma": "cut short",
+      "split": "train",
+      "sentence_id": "reviews-023620-0001",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        13,
+        16
+      ],
+      "discontinuous": true,
+      "context_sha256": "26ef78a94c47c842f0404bfef7772adf5f305ae1bb6e195eba66daeb521fa72a"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-022533-0006:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "canonical_lemma": "waste time",
+      "split": "train",
+      "sentence_id": "reviews-022533-0006",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        6,
+        8
+      ],
+      "discontinuous": true,
+      "context_sha256": "3c941b52f6cc00553462a2bd6b14b8a37a73f7c1e53a80d0272643cb95b5d477"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-083459-0006:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "canonical_lemma": "waste time",
+      "split": "train",
+      "sentence_id": "reviews-083459-0006",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        3,
+        4
+      ],
+      "discontinuous": false,
+      "context_sha256": "5d45408742c371469780ea349fba5030a9d8ac7a96d0678dfc4892c166a40d72"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-150192-0001:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "canonical_lemma": "waste time",
+      "split": "train",
+      "sentence_id": "reviews-150192-0001",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        16,
+        18
+      ],
+      "discontinuous": true,
+      "context_sha256": "892abd4915787bb875b4546cc9b0786a3c8c398f50d9671632449e9013267707"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-188548-0009:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "canonical_lemma": "waste time",
+      "split": "train",
+      "sentence_id": "reviews-188548-0009",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        15,
+        17
+      ],
+      "discontinuous": true,
+      "context_sha256": "af9fe01f098ab76aeaa595ad6f1356054236c4c9632f3e72eab02cde95d42382"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-211797-0001:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "canonical_lemma": "waste time",
+      "split": "train",
+      "sentence_id": "reviews-211797-0001",
+      "mwe_id": "2",
+      "category": "V.VID",
+      "token_numbers": [
+        6,
+        8
+      ],
+      "discontinuous": true,
+      "context_sha256": "36ba18c1cd5b39b48f23048e032b70925da0e13e10dfeacc208f2a0afe091b52"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-211797-0019:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "canonical_lemma": "waste time",
+      "split": "train",
+      "sentence_id": "reviews-211797-0019",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        5,
+        7
+      ],
+      "discontinuous": true,
+      "context_sha256": "ccf9a2a1cc1a5231ad1eef47850c6be0ae5ec861fd768002150b02811d9826ab"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-323449-0008:smwe:1",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "canonical_lemma": "waste time",
+      "split": "train",
+      "sentence_id": "reviews-323449-0008",
+      "mwe_id": "1",
+      "category": "V.VID",
+      "token_numbers": [
+        6,
+        8
+      ],
+      "discontinuous": true,
+      "context_sha256": "ad32276740fec21f3f9641c27c9c45e6b67f027ebce8a6fa11dabd5595671acb"
+    },
+    {
+      "occurrence_id": "streusle:train:reviews-328828-0005:smwe:2",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "canonical_lemma": "waste time",
+      "split": "train",
+      "sentence_id": "reviews-328828-0005",
+      "mwe_id": "2",
+      "category": "V.VID",
+      "token_numbers": [
+        7,
+        9
+      ],
+      "discontinuous": true,
+      "context_sha256": "433dd993660fc01ebcd065d832bb08f6c06cec749e3adc5c0e71a269916127ff"
+    }
+  ],
+  "initial_pairs": [
+    {
+      "pair_id": "usp-1398cbb95489c2a9",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "left_occurrence_id": "streusle:dev:reviews-248616-0001:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-120335-0006:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-3ba9e290e61daa6e",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "left_occurrence_id": "streusle:dev:reviews-248616-0001:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-135800-0002:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-70b5a7f56f1e3ee7",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "left_occurrence_id": "streusle:dev:reviews-248616-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-086839-0005:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-d1973c2f4042ca6a",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "left_occurrence_id": "streusle:dev:reviews-248616-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-120335-0006:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-43ea29287b9f29a8",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "left_occurrence_id": "streusle:train:reviews-071518-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-086839-0005:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-15569d01f0b64136",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "left_occurrence_id": "streusle:train:reviews-071518-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-091704-0002:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-3e825bc448106d96",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "left_occurrence_id": "streusle:train:reviews-086839-0003:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-091704-0002:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-c93be8d2cf5857f1",
+      "type_id": "ldfreq-en-vmwe-t000147",
+      "left_occurrence_id": "streusle:train:reviews-086839-0003:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-135800-0002:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-26d00f39f7273da6",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-018548-0005:smwe:2",
+      "right_occurrence_id": "streusle:train:reviews-235423-0004:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-8802782f33f8f490",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-018548-0005:smwe:2",
+      "right_occurrence_id": "streusle:train:reviews-235423-0008:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-69db3c6e53ef5c6a",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-072507-0004:smwe:2",
+      "right_occurrence_id": "streusle:train:reviews-086839-0006:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-fec62d5da5248dae",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-072507-0004:smwe:2",
+      "right_occurrence_id": "streusle:train:reviews-235423-0008:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-d3d0bc55242161ec",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-086839-0006:smwe:2",
+      "right_occurrence_id": "streusle:train:reviews-398243-0007:smwe:4",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-85d8af7881a9fa30",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-106150-0005:smwe:2",
+      "right_occurrence_id": "streusle:train:reviews-235576-0006:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-54a9c3ed9098b025",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-106150-0005:smwe:2",
+      "right_occurrence_id": "streusle:train:reviews-319816-0006:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-1048d53008cc481e",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-119026-0001:smwe:5",
+      "right_occurrence_id": "streusle:train:reviews-235423-0004:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-0fcfee08771d132f",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-119026-0001:smwe:5",
+      "right_occurrence_id": "streusle:train:reviews-369087-0006:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-3ec74e9f2763e6c2",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-121651-0003:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-200429-0002:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-eafd90d004283b67",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-121651-0003:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-235576-0006:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-ea680b7acd43ed36",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-200429-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-398243-0007:smwe:4",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-0098d597c70bd014",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-319816-0006:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-345182-0005:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-5805a2d5cdcf8736",
+      "type_id": "ldfreq-en-vmwe-t000148",
+      "left_occurrence_id": "streusle:train:reviews-345182-0005:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-369087-0006:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-799ccd9dcd1d5dad",
+      "type_id": "ldfreq-en-vmwe-t000149",
+      "left_occurrence_id": "streusle:train:reviews-224906-0006:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-288100-0005:smwe:5",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-f070df8b506a8bd6",
+      "type_id": "ldfreq-en-vmwe-t000149",
+      "left_occurrence_id": "streusle:train:reviews-224906-0006:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-363685-0002:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-752138d2b9766fd3",
+      "type_id": "ldfreq-en-vmwe-t000149",
+      "left_occurrence_id": "streusle:train:reviews-249123-0004:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-363685-0002:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-8ba9c90226819f90",
+      "type_id": "ldfreq-en-vmwe-t000149",
+      "left_occurrence_id": "streusle:train:reviews-249123-0004:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-396874-0003:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-c52757d3ee736121",
+      "type_id": "ldfreq-en-vmwe-t000149",
+      "left_occurrence_id": "streusle:train:reviews-288100-0005:smwe:5",
+      "right_occurrence_id": "streusle:train:reviews-396874-0003:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-fea03e6113150c23",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "left_occurrence_id": "streusle:train:reviews-008585-0005:smwe:3",
+      "right_occurrence_id": "streusle:train:reviews-038358-0004:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-5a71c5bf694cdbbf",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "left_occurrence_id": "streusle:train:reviews-008585-0005:smwe:3",
+      "right_occurrence_id": "streusle:train:reviews-294081-0012:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-3d793a886df677c0",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "left_occurrence_id": "streusle:train:reviews-038358-0004:smwe:2",
+      "right_occurrence_id": "streusle:train:reviews-093655-0005:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-d3d10d299a0cd9cf",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "left_occurrence_id": "streusle:train:reviews-043020-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-094621-0002:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-525040e29e06e308",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "left_occurrence_id": "streusle:train:reviews-043020-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-319816-0013:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-172a6f62997b3cb7",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "left_occurrence_id": "streusle:train:reviews-093655-0005:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-363234-0003:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-548718a634a9fb34",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "left_occurrence_id": "streusle:train:reviews-094621-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-294081-0012:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-fdbc9d53d3347d2f",
+      "type_id": "ldfreq-en-vmwe-t000150",
+      "left_occurrence_id": "streusle:train:reviews-319816-0013:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-363234-0003:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-13fdd8a75d5ccc72",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "left_occurrence_id": "streusle:train:reviews-020851-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-235576-0005:smwe:3",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-23e22b8552bf525c",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "left_occurrence_id": "streusle:train:reviews-020851-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-363685-0015:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-fa226fb76156feab",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "left_occurrence_id": "streusle:train:reviews-030811-0002:smwe:4",
+      "right_occurrence_id": "streusle:train:reviews-042416-0006:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-c1f0fbd1778d3fd2",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "left_occurrence_id": "streusle:train:reviews-030811-0002:smwe:4",
+      "right_occurrence_id": "streusle:train:reviews-363685-0015:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-2753162f5c6f17d4",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "left_occurrence_id": "streusle:train:reviews-042416-0006:smwe:2",
+      "right_occurrence_id": "streusle:train:reviews-194316-0002:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-7e5deabc90c95245",
+      "type_id": "ldfreq-en-vmwe-t000151",
+      "left_occurrence_id": "streusle:train:reviews-194316-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-235576-0005:smwe:3",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-d2b701c47888e3fb",
+      "type_id": "ldfreq-en-vmwe-t000152",
+      "left_occurrence_id": "streusle:train:reviews-225632-0009:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-319816-0023:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-bbcd46721c1f3900",
+      "type_id": "ldfreq-en-vmwe-t000153",
+      "left_occurrence_id": "streusle:train:reviews-034813-0002:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-381455-0002:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-bc7b02c8d31b364f",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "left_occurrence_id": "streusle:train:reviews-022533-0006:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-323449-0008:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-1c4f5466f97cbd40",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "left_occurrence_id": "streusle:train:reviews-022533-0006:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-328828-0005:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-c40c0f10067d1bec",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "left_occurrence_id": "streusle:train:reviews-083459-0006:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-150192-0001:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-5927ce5b7c0bba73",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "left_occurrence_id": "streusle:train:reviews-083459-0006:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-188548-0009:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-2564314c3134ab2a",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "left_occurrence_id": "streusle:train:reviews-150192-0001:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-211797-0001:smwe:2",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-8c040075eacfff49",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "left_occurrence_id": "streusle:train:reviews-188548-0009:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-323449-0008:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-c9c411d821997f88",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "left_occurrence_id": "streusle:train:reviews-211797-0001:smwe:2",
+      "right_occurrence_id": "streusle:train:reviews-211797-0019:smwe:1",
+      "round": 1
+    },
+    {
+      "pair_id": "usp-d4279c90a9925977",
+      "type_id": "ldfreq-en-vmwe-t000155",
+      "left_occurrence_id": "streusle:train:reviews-211797-0019:smwe:1",
+      "right_occurrence_id": "streusle:train:reviews-328828-0005:smwe:2",
+      "round": 1
+    }
+  ],
+  "current_boundary": {
+    "semantic_judgments": 0,
+    "usage_clusters": 0,
+    "expert_inventory_reviews": 0,
+    "admitted_project_senses": 0
+  }
+}

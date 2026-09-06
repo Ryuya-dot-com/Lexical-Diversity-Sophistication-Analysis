@@ -1,0 +1,658 @@
+{
+  "schema_version": "1.0.0",
+  "map_id": "vpc-vid-claim-evidence-map-2026-09-04",
+  "updated_on": "2026-09-05",
+  "project": "Open contextual VPC/VID identification and sense analysis",
+  "current_ceiling": {
+    "level": "demonstration",
+    "permitted_claim": "The browser-local human-reviewed workflow is executable and auditable on project-authored fixtures and bounded external development evidence.",
+    "blocked_claim": "The project is not yet a validated automatic analyzer, an independently validated benchmark, or an LRE-ready full-length resource."
+  },
+  "categories": [
+    "construct",
+    "resource",
+    "technical",
+    "response_process",
+    "downstream"
+  ],
+  "separation_rules": [
+    "Each claim belongs to exactly one category in this map.",
+    "Each evidence link states the narrow role it supports; sharing a file does not transfer support between constructs.",
+    "Software tests establish executable behavior, not linguistic, annotation, user, or population validity.",
+    "Dictionary membership establishes candidate inventory evidence, not occurrence, contextual sense, frequency, or learner knowledge.",
+    "Downstream coverage, learner-corpus, comprehension, and eye-movement results cannot validate upstream VPC/VID labels."
+  ],
+  "claims": [
+    {
+      "id": "CLM-CON-001",
+      "category": "construct",
+      "status": "permitted_bounded",
+      "claim": "The method separately represents candidate, occurrence, member, gap, category, idiomaticity, inventory coverage, one or multiple contextual assignment, unresolved alternatives, abstention, unfinished work, semantic out-of-inventory, and inventory ineligibility.",
+      "permitted_wording": "The executable contract and standalone guide separate the declared review states, and project-authored synthetic checks exercise their machine invariants; independent applicability is not yet established.",
+      "current_evidence": [
+        {
+          "path": "mwe_contract.json",
+          "supports": "The versioned record schema and allowed state transitions."
+        },
+        {
+          "path": "tests/verify_contract.mjs",
+          "supports": "Round-trip and fixture checks for the executable state contract."
+        },
+        {
+          "path": "ANNOTATION_GUIDE.md",
+          "supports": "A UI-independent decision order, definitions, examples, contextual-sense source-priority and uncertainty rules, export-state table, evaluation mapping, and synthetic M1–M5 fixture key; no human reliability evidence."
+        },
+        {
+          "path": "tests/test_annotation_guide.py",
+          "supports": "Dependency-free check that every executable state and training fixture is represented in the guide; tokenization, gaps, feature coverage, disagreement codes, field separation, candidate-origin language, and the loss-aware MAGPIE projection are internally consistent."
+        },
+        {
+          "path": "annotations/training_cases.json",
+          "supports": "Twelve project-authored synthetic occurrence/span/category cases with complete gap derivation and first-cause disagreement codes; no human or natural benchmark evidence."
+        },
+        {
+          "path": "annotations/hard_case_bank.json",
+          "supports": "A wholly project-authored, redistributable training/QA bank covers each prespecified hard-case stratum at least twice with admissible routes and rationales rather than benchmark gold."
+        },
+        {
+          "path": "ANNOTATOR_TRAINING.md",
+          "supports": "A synthetic-only staged training protocol fixes separate task gates, critical sentinels, and one failed-task retry; it has not been administered and supplies no qualification evidence."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "ANNOTATION_GUIDE.md",
+          "state": "annotation_rules_and_training_protocol_complete_human_validation_pending",
+          "criterion": "After applicable authorization, an unexposed synthetic qualification form and independent pilot show that annotators can distinguish and apply every retained state."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "mwe_contract.json",
+          "state": "available"
+        },
+        {
+          "path": "ANNOTATION_GUIDE.md",
+          "state": "available"
+        },
+        {
+          "path": "ANNOTATOR_TRAINING.md",
+          "state": "available"
+        },
+        {
+          "path": "annotations/hard_case_bank.json",
+          "state": "available"
+        },
+        {
+          "path": "annotations/training_cases.json",
+          "state": "available"
+        }
+      ],
+      "prohibited_inferences": [
+        "The separated states are linguistically valid because the schema and tests pass.",
+        "A confirmed form lookup establishes occurrence, idiomaticity, or contextual sense."
+      ]
+    },
+    {
+      "id": "CLM-CON-002",
+      "category": "construct",
+      "status": "permitted_bounded",
+      "claim": "The first technical scope is English VPC.full, VPC.semi, and VID occurrence-and-sense review.",
+      "permitted_wording": "The planned resource and evaluation concern English VPC.full/VPC.semi/VID only.",
+      "current_evidence": [
+        {
+          "path": "ROADMAP.md",
+          "supports": "The declared primary scope, claim ladder, non-goals, and gate order."
+        },
+        {
+          "path": "resources/lre_submission_readiness_2026_09_03.json",
+          "supports": "The LRE-facing scope and evidence gaps."
+        },
+        {
+          "path": "resources/target_population_contract.json",
+          "supports": "The candidate-independent English VPC/VID inclusion, exclusion, form, span, and taxonomy boundaries."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "BENCHMARK_PROTOCOL.md",
+          "state": "planned",
+          "criterion": "The target population and operational category rules are frozen before sampling."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "ROADMAP.md",
+          "state": "available"
+        },
+        {
+          "path": "resources/target_population_contract.json",
+          "state": "available"
+        }
+      ],
+      "prohibited_inferences": [
+        "Results generalize to all MWEs, non-verbal idioms, other languages, proficiency, or pedagogical importance.",
+        "The repository name expands the study construct."
+      ]
+    },
+    {
+      "id": "CLM-RES-001",
+      "category": "resource",
+      "status": "permitted_bounded",
+      "claim": "STREUSLE 5.0 supplies bounded external English VPC/VID occurrence, span, and category development evidence.",
+      "permitted_wording": "The exposed STREUSLE projection supports a reproducible occurrence/category floor with separately reported continuous/discontinuous and form-seen/unseen strata.",
+      "current_evidence": [
+        {
+          "path": "benchmarks/streusle_v5_vpc_vid.json",
+          "supports": "Pinned split metadata, target counts, strata, hashes, and baseline result."
+        },
+        {
+          "path": "resources/mwe_core_evidence_admission_2026_09_03.json",
+          "supports": "Artifact, rights, construct, and split admission limits."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "reports/occurrence_baseline_results.json",
+          "state": "planned",
+          "criterion": "New benchmark results use the frozen metrics and sealed split."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "benchmarks/streusle_v5_vpc_vid.json",
+          "state": "available"
+        },
+        {
+          "path": "reports/occurrence_baseline_results.json",
+          "state": "planned"
+        }
+      ],
+      "prohibited_inferences": [
+        "The inspected STREUSLE test projection is a blinded project holdout.",
+        "STREUSLE supplies fine-grained OEWN sense, literal-negative, representative L2, or general automatic-analyzer validity."
+      ]
+    },
+    {
+      "id": "CLM-RES-002",
+      "category": "resource",
+      "status": "permitted_severely_bounded",
+      "claim": "The admitted standard-WSD slice supplies a small external conditional contextual-sense smoke test.",
+      "permitted_wording": "The 23-row, 18-type exposed VPC slice can test deterministic conditional sense ranking only as a smoke-test floor.",
+      "current_evidence": [
+        {
+          "path": "resources/wsd_mwe_sense_slice_audit_2026_09_03.json",
+          "supports": "Pinned source artifacts, mapping rules, retained rows, limitations, and exposed split roles."
+        },
+        {
+          "path": "resources/mwe_core_evidence_admission_2026_09_03.json",
+          "supports": "The decision to admit only a conditional sense smoke test."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "reports/exposed_sense_smoke_test.json",
+          "state": "planned",
+          "criterion": "Train-only MFS and deterministic gloss/rule results are reported without blinded or target-wide language."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "resources/wsd_mwe_sense_slice_audit_2026_09_03.json",
+          "state": "available"
+        },
+        {
+          "path": "reports/exposed_sense_smoke_test.json",
+          "state": "planned"
+        }
+      ],
+      "prohibited_inferences": [
+        "The slice validates open-text occurrence detection, member spans, VID, take in, unseen forms, or target-wide sense analysis.",
+        "The 17 source-test rows are blinded; their labels were inspected during audit.",
+        "One retained multi-label row validates ambiguity, abstention, out-of-inventory handling, or calibration."
+      ]
+    },
+    {
+      "id": "CLM-RES-003",
+      "category": "resource",
+      "status": "design_only",
+      "claim": "The hybrid sense-inventory contract, public schema, synthetic lifecycle exercise, full-denominator coverage audit, bounded nonexact queue, VID workflow pilot, and OEWN VPC/VID seed define stable project identities, source mapping, lifecycle rules, uncertainty states, and the present coverage ceiling.",
+      "permitted_wording": "A versioned pre-annotation design, public Draft 2020-12 schema, hash-fixed synthetic lifecycle exercise, reproducible 146-type VID candidate-review queue, 14-type VID workflow pilot, nine-form/67-candidate OEWN seed, and 624-occurrence coverage audit exist. The seed is available for 57/624 occurrences and 9/389 types, including 21/319 VID and 20/188 discontinuous occurrences, but formal and contextually assessed coverage are 0/624; all contextual-sense claims remain held.",
+      "current_evidence": [
+        {
+          "path": "resources/hybrid_sense_inventory_contract_2026_09_03.json",
+          "supports": "The empty inventory schema, source fingerprint rules, mapping stop, and release constraints."
+        },
+        {
+          "path": "resources/streusle_v5_kaikki_vid_audit_2026_09_03.json",
+          "supports": "Aggregate evidence for exact-route coverage and stable-ID limitations."
+        },
+        {
+          "path": "resources/sense_mapping_queue.json",
+          "supports": "All 146 exact misses remain in the denominator; the bounded source scan yields three candidate sets and 143 no-route unresolved states."
+        },
+        {
+          "path": "resources/sense_mapping_guide.md",
+          "supports": "The frozen source, normalization, review, time, stopping, and non-inference rules."
+        },
+        {
+          "path": "resources/hybrid_sense_inventory_v1.json",
+          "supports": "Four fixed VPC and five fixed VID training/development forms have 67 ID-reserved OEWN candidates with fingerprints, CILI/ILI, licensed wording, and no admitted project senses."
+        },
+        {
+          "path": "resources/hybrid_sense_inventory.schema.json",
+          "supports": "The public Draft 2020-12 structure covers candidate and formal sense records, source links, rights, and explicit lifecycle relation arrays; project tests add registry-wide collision, uniqueness, and update checks that JSON Schema cannot express."
+        },
+        {
+          "path": "tests/fixtures/sense_inventory_versions/lifecycle_exercise.json",
+          "supports": "A wholly synthetic, hash-fixed old/new pair exercises split, merge, source deprecation, a training-only OOI-prompted sense, and five non-rewritten migration records without supplying lexical evidence."
+        },
+        {
+          "path": "resources/inventory_governance.md",
+          "supports": "The prospective approval, versioning, preservation, manual migration, and post-test branch rules that prohibit performance-driven repair of an exposed benchmark."
+        },
+        {
+          "path": "resources/inventory_population_log.json",
+          "supports": "The fixed 14-type VID pilot retains exact, slot, nonexact, rights-gated, and no-route states with an explicit unresolved rate and no source text."
+        },
+        {
+          "path": "resources/hybrid_inventory_coverage_v2.json",
+          "supports": "All 624 STREUSLE targets, 389 types, and the complete IR-132 pilot remain in the denominator; category, continuity, split, candidate-count, unresolved, and unassessed OOI states show zero formal/contextually assessed coverage and trigger the claim hold."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "resources/hybrid_sense_inventory_v1.json",
+          "state": "planned",
+          "criterion": "The present candidate seed is independently reviewed and adjudicated, with accepted entries moved unchanged into the formal senses layer."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "resources/hybrid_sense_inventory_contract_2026_09_03.json",
+          "state": "available"
+        },
+        {
+          "path": "resources/sense_mapping_queue.json",
+          "state": "available"
+        },
+        {
+          "path": "resources/sense_mapping_guide.md",
+          "state": "available"
+        },
+        {
+          "path": "resources/hybrid_sense_inventory_v1.json",
+          "state": "available"
+        },
+        {
+          "path": "resources/hybrid_sense_inventory.schema.json",
+          "state": "available"
+        },
+        {
+          "path": "tests/fixtures/sense_inventory_versions/lifecycle_exercise.json",
+          "state": "available"
+        },
+        {
+          "path": "resources/inventory_governance.md",
+          "state": "available"
+        },
+        {
+          "path": "resources/inventory_population_log.json",
+          "state": "available"
+        },
+        {
+          "path": "resources/hybrid_inventory_coverage_v2.json",
+          "state": "available"
+        }
+      ],
+      "prohibited_inferences": [
+        "The contract or candidate seed validates contextual assignments or admits a project sense.",
+        "Schema validity, collision-free project IDs, or lifecycle fields establish semantic equivalence, split/merge correctness, or independent lexical review.",
+        "The synthetic lifecycle exercise is a real lexical adjudication, validates the example meanings, or licenses automatic migration of an old annotation.",
+        "Candidate availability for 57/624 occurrences is operational inventory coverage, contextual adequacy, OOI prevalence, or sense accuracy.",
+        "OEWN or Wiktionary exact matches alone establish complete target coverage, corpus frequency, or gold senses.",
+        "The 143 no-route states prove true lexical or semantic inventory gaps, or may be removed from the denominator."
+      ]
+    },
+    {
+      "id": "CLM-RES-004",
+      "category": "resource",
+      "status": "blocked",
+      "claim": "A substantial independent VPC/VID benchmark can be lawfully obtained or reconstructed by third parties.",
+      "permitted_wording": "The completed 2026-09-01 English Wikipedia dump identity and reversible preprocessing protocol are frozen for a future namespace-0 sample and CC BY-SA release, but no source content, sample, release bundle, or clean-room benchmark reconstruction exists yet.",
+      "current_evidence": [
+        {
+          "path": "resources/evaluation_strata.json",
+          "supports": "The prospectively frozen claim denominators, reporting strata, design weighting, cluster boundaries, and descriptive-only rule for underpowered strata; it contains no result."
+        },
+        {
+          "path": "resources/split_protocol.json",
+          "supports": "The frozen document-level partition, information boundary, independent-custodian requirement, and prohibition on claiming an uninstantiated sealed test."
+        },
+        {
+          "path": "resources/leakage_ledger.json",
+          "supports": "Known STREUSLE, WSD-slice, and dictionary exposure is explicitly classified as external development or smoke-test evidence."
+        },
+        {
+          "path": "resources/lre_submission_readiness_2026_09_03.json",
+          "supports": "The documented benchmark-scale, independence, rights, annotation, and comparison gaps."
+        },
+        {
+          "path": "RIGHTS.md",
+          "supports": "Current layer-specific rights and external-only restrictions."
+        },
+        {
+          "path": "resources/benchmark_source_decision_2026_09_04.json",
+          "supports": "The pre-acquisition source choice, official rights basis, target-blind order, release-route comparison, and fail-closed rules."
+        },
+        {
+          "path": "resources/release_layer_manifest.json",
+          "supports": "Current file-level license, notice, redistribution, removal, and future benchmark-layer gates."
+        },
+        {
+          "path": "resources/source_manifest.json",
+          "supports": "The exact completed dated dump metadata plus a project-authored reconstruction probe with stable IDs, offsets, and fail-closed hash checks; no dump content was acquired."
+        },
+        {
+          "path": "resources/preprocessing_contract.json",
+          "supports": "The frozen loss-aware render, prose extraction, paragraph segmentation, tokenization, and source-trace rules before sampling."
+        },
+        {
+          "path": "BENCHMARK_CARD.md",
+          "supports": "The pre-data resource scope, population layers, intended/non-intended uses, release gates, and known limitations."
+        },
+        {
+          "path": "DATA_STATEMENT.md",
+          "supports": "Language, provenance, population, human-work, bias, distribution, and explicitly unknown release fields."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "resources/benchmark_source_decision_2026_09_04.json",
+          "state": "available",
+          "criterion": "A source decision records acquisition, annotation, derivative, redistribution, and persistence rights."
+        },
+        {
+          "path": "resources/reconstruction_manifest.json",
+          "state": "planned",
+          "criterion": "A clean third party can obtain or deterministically reconstruct the released benchmark."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "resources/benchmark_source_decision_2026_09_04.json",
+          "state": "available"
+        },
+        {
+          "path": "resources/reconstruction_manifest.json",
+          "state": "planned"
+        }
+      ],
+      "prohibited_inferences": [
+        "Server-side storage or standoff annotation alone grants redistribution permission.",
+        "Current external development resources form a new independent sealed benchmark.",
+        "A full-length LRE availability claim is permitted before the release route passes."
+      ]
+    },
+    {
+      "id": "CLM-TEC-001",
+      "category": "technical",
+      "status": "permitted_bounded",
+      "claim": "The browser-local workflow, exports, and provisional annotation-platform converter execute according to the current software contracts on project-authored fixtures.",
+      "permitted_wording": "The implemented method hypothesis and synthetic platform-format conversion pass their software contract checks; no live multi-user workflow has passed.",
+      "current_evidence": [
+        {
+          "path": "app.mjs",
+          "supports": "The browser-local candidate review, state editing, resume, and export implementation."
+        },
+        {
+          "path": "tests/verify_contract.mjs",
+          "supports": "The JavaScript contract and round-trip checks."
+        },
+        {
+          "path": "tests/test_data.py",
+          "supports": "Static data, provenance, and audit consistency checks."
+        },
+        {
+          "path": "ANNOTATION_PLATFORM_DECISION.md",
+          "supports": "The provisional platform choice, frozen custom-layer mapping, independence configuration, and explicit boundary between a synthetic format check and live two-user acceptance."
+        },
+        {
+          "path": "scripts/convert_annotation_export.py",
+          "supports": "A standard-library UIMA CAS JSON converter whose synthetic self-test preserves discontinuous gaps, multiple senses, OOI, and conversion audit hashes."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "reports/clean_room_reproduction.md",
+          "state": "planned",
+          "criterion": "A clean archived checkout reproduces every released technical result."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "app.mjs",
+          "state": "available"
+        },
+        {
+          "path": "mwe_contract.json",
+          "state": "available"
+        },
+        {
+          "path": "ANNOTATION_PLATFORM_DECISION.md",
+          "state": "available"
+        },
+        {
+          "path": "scripts/convert_annotation_export.py",
+          "state": "available"
+        }
+      ],
+      "prohibited_inferences": [
+        "Passing software tests validates linguistic decisions, annotation agreement, intended-user interpretation, or real-browser accessibility.",
+        "A synthetic UIMA CAS JSON conversion proves live annotator isolation, platform usability, or institutional data-management compliance.",
+        "The current implementation is a validated automatic analyzer."
+      ]
+    },
+    {
+      "id": "CLM-TEC-002",
+      "category": "technical",
+      "status": "blocked",
+      "claim": "The released workflow has empirically characterized held-out occurrence, span, category, and contextual-sense performance.",
+      "permitted_wording": "Target-wide technical validity is not yet established; only exposed external floors and smoke tests exist.",
+      "current_evidence": [
+        {
+          "path": "resources/lre_submission_readiness_2026_09_03.json",
+          "supports": "The missing independent gold, sealed evaluation, error analysis, and burden evidence."
+        },
+        {
+          "path": "resources/mwe_core_evidence_admission_2026_09_03.json",
+          "supports": "The current task-specific evidence ceilings."
+        },
+        {
+          "path": "metric_contract.json",
+          "supports": "The pre-data task-specific inputs, formulas, denominators, undefined states, cluster units, conditional calibration/selective metrics, and combined-score prohibition."
+        },
+        {
+          "path": "scripts/evaluate_mwe_predictions.py",
+          "supports": "Executable point-estimate formulas with legacy supplied-candidate compatibility; not held-out performance evidence."
+        },
+        {
+          "path": "tests/test_metrics.py",
+          "supports": "Synthetic separation and boundary checks for the metric implementation; not linguistic validation."
+        },
+        {
+          "path": "scripts/bootstrap_evaluation.py",
+          "supports": "The fixed-seed document-cluster, canonical-type sensitivity, and paired-resample interval implementation; no observed estimate."
+        },
+        {
+          "path": "tests/test_bootstrap.py",
+          "supports": "Synthetic reproducibility, overall/stratum reuse, paired comparison, and degenerate-sample checks; not inferential evidence."
+        },
+        {
+          "path": "resources/precision_plan.json",
+          "supports": "The frozen 0.05/0.10 gates, observed-input requirements, resolved planning-pilot route, and no-post-hoc-relaxation rule; no allocation or estimate."
+        },
+        {
+          "path": "resources/planning_pilot_addendum.json",
+          "supports": "The prospective separation of target-enriched training material from a target-blind probability-sampled planning prefix that is excluded from sealed testing; no pilot rows."
+        },
+        {
+          "path": "scripts/simulate_benchmark_precision.py",
+          "supports": "A standard-library candidate-allocation simulator that rejects target-conditioned selection and inactive plans; not a sample-size result."
+        },
+        {
+          "path": "tests/test_precision_simulation.py",
+          "supports": "Synthetic reproducibility, insufficient-cluster, target-conditioned-selection, blocked-plan, and dependency-hash checks; not population evidence."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "reports/core_evaluation.json",
+          "state": "planned",
+          "criterion": "Frozen sealed-test results report candidate recall, exact span, category, sense, uncertainty, clustered intervals, and prespecified strata."
+        },
+        {
+          "path": "reports/error_and_burden_analysis.md",
+          "state": "planned",
+          "criterion": "Errors and human corrections are separated by construct and stratum."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "reports/core_evaluation.json",
+          "state": "planned"
+        },
+        {
+          "path": "reports/error_and_burden_analysis.md",
+          "state": "planned"
+        }
+      ],
+      "prohibited_inferences": [
+        "External exposed floors or synthetic fixtures establish held-out target-wide performance.",
+        "An aggregate score can substitute for separate candidate, span, category, idiomaticity, sense, and uncertainty results."
+      ]
+    },
+    {
+      "id": "CLM-TEC-003",
+      "category": "technical",
+      "status": "conditional",
+      "claim": "One contextual model assists a named occurrence or sense-ranking task better than the transparent baseline.",
+      "permitted_wording": "No model-assisted claim is currently authorized; one comparator may be evaluated only after gold, splits, and transparent baselines are frozen.",
+      "current_evidence": [
+        {
+          "path": "ROADMAP.md",
+          "supports": "The conditional single-model rule and omission condition."
+        },
+        {
+          "path": "resources/lre_submission_readiness_2026_09_03.json",
+          "supports": "The absent model, comparison, calibration, privacy, and deployment evidence."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "reports/contextual_comparator.json",
+          "state": "planned",
+          "criterion": "One frozen comparator improves a prespecified held-out accuracy, calibration, or review-effort outcome and records rights, compute, latency, privacy, and reproducibility costs."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "reports/contextual_comparator.json",
+          "state": "planned"
+        }
+      ],
+      "prohibited_inferences": [
+        "A model is needed before a measured transparent-baseline deficit exists.",
+        "A ranking improvement authorizes unattended automatic truth or a server-side runtime."
+      ]
+    },
+    {
+      "id": "CLM-RSP-001",
+      "category": "response_process",
+      "status": "blocked",
+      "claim": "Intended L2 vocabulary researchers can operate, resume, interpret, and reproduce the retained workflow without hidden coaching.",
+      "permitted_wording": "Intended-user usability and interpretation remain untested.",
+      "current_evidence": [
+        {
+          "path": "GATE_0_TEACH_BACK.md",
+          "supports": "A protocol draft that is explicitly not a publication sample."
+        },
+        {
+          "path": "ROADMAP.md",
+          "supports": "The unrun real-browser and intended-user acceptance gates."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "reports/intended_user_study.md",
+          "state": "planned",
+          "criterion": "Eligible intended users complete and correctly interpret the frozen tasks with critical errors, time, corrections, unresolved decisions, and qualitative failures reported."
+        },
+        {
+          "path": "reports/browser_accessibility_matrix.json",
+          "state": "planned",
+          "criterion": "Current Chromium and non-Chromium browsers pass the frozen keyboard, reflow, privacy, and assistive-technology checks."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "reports/intended_user_study.md",
+          "state": "planned"
+        },
+        {
+          "path": "reports/browser_accessibility_matrix.json",
+          "state": "planned"
+        }
+      ],
+      "prohibited_inferences": [
+        "Developer operation, unit tests, or an optional teach-back protocol establishes intended-user usability.",
+        "User agreement with the interface establishes linguistic truth.",
+        "Automated accessibility checks alone establish WCAG conformance."
+      ]
+    },
+    {
+      "id": "CLM-DWN-001",
+      "category": "downstream",
+      "status": "conditional",
+      "claim": "A validated VPC/VID resource can support one separately governed coverage, learner-text, source-corpus, comprehension, or eye-movement application in its sampled domain.",
+      "permitted_wording": "Downstream work is optional reuse evidence and is not on the core validation path.",
+      "current_evidence": [
+        {
+          "path": "ROADMAP.md",
+          "supports": "The downstream/non-core boundary, archived material work, and one-application limit."
+        },
+        {
+          "path": "resources/teco_v1_1_mwe_desk_triage.json",
+          "supports": "A provisional later eye-movement application candidate without outcome analysis."
+        }
+      ],
+      "required_evidence": [
+        {
+          "path": "analysis/downstream_protocol.md",
+          "state": "planned",
+          "criterion": "One retained application freezes its own population, outcome, exclusions, rights, model, and prohibited inferences after core validation."
+        },
+        {
+          "path": "reports/downstream_analysis.md",
+          "state": "planned",
+          "criterion": "The report stays within the named sample and distinguishes reuse evidence from technical validity."
+        }
+      ],
+      "release_artifacts": [
+        {
+          "path": "analysis/downstream_protocol.md",
+          "state": "planned"
+        },
+        {
+          "path": "reports/downstream_analysis.md",
+          "state": "planned"
+        }
+      ],
+      "prohibited_inferences": [
+        "Coverage, learner-corpus, comprehension, or eye-movement associations validate occurrence boundaries or contextual senses.",
+        "Corpus occurrence establishes individual knowledge, learning, comprehension, proficiency, causality, or pedagogical value.",
+        "An optional application is required to define the primary technology."
+      ]
+    }
+  ]
+}

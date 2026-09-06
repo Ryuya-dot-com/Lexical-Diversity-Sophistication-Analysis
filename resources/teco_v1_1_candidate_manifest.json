@@ -1,0 +1,184 @@
+{
+  "manifest_id": "teco-v1.1-existing-reader-candidate-v1",
+  "reviewed_on": "2026-09-02",
+  "status": "metadata_and_join_contract_verified_not_yet_admitted_for_analysis",
+  "source": {
+    "title": "TECO: Tsukuba Eye-Tracking Corpus",
+    "osf_node": "wrvj3",
+    "osf_url": "https://osf.io/wrvj3/",
+    "article_doi": "10.1016/j.rmal.2024.100123",
+    "readme_version": "1.1",
+    "node_last_modified": "2026-08-10T06:32:59.090187",
+    "osf_license": "CC-BY-4.0"
+  },
+  "rights_review": {
+    "reviewed_on": "2026-09-04",
+    "scope": "Public redistribution through GitHub Pages, repository downloads, and an API",
+    "finding": "hold_eiken_text_and_reconstructable_token_sequences_pending_documented_downstream_permission",
+    "evidence": [
+      {
+        "source": "TECO article",
+        "url": "https://doi.org/10.1016/j.rmal.2024.100123",
+        "local_sha256": "5f96a222f21abc345e7923f62ffcfac24e54ef5a4b1474afa5c9d6746a8d4840",
+        "observation": "The Materials section describes the 30 passages as previously employed in Eiken Tests, not as prose authored by the TECO researchers. The acknowledgement names JSPS funding but no Eiken permission or downstream reuse terms."
+      },
+      {
+        "source": "TECO OSF README v1.1",
+        "url": "https://osf.io/9dn7e/",
+        "observation": "The README lists full reading passages and general disclaimers but no Eiken permission, exclusion, sublicense, or downstream redistribution statement."
+      },
+      {
+        "source": "TECO Reading Matarials.pdf",
+        "url": "https://osf.io/tj3wf/",
+        "sha256": "ec35051cf388c2cc81463a41fd6b01b76337b1ef6e5783484714922dcf69d825",
+        "observation": "The 34-page file contains the Eiken-labelled passage and comprehension-question text but no copyright, permission, attribution, Creative Commons, or redistribution notice."
+      },
+      {
+        "source": "TECO OSF node and CC BY 4.0 terms",
+        "urls": [
+          "https://api.osf.io/v2/nodes/wrvj3/",
+          "https://creativecommons.org/licenses/by/4.0/legalcode"
+        ],
+        "observation": "The node is set to CC BY 4.0, which grants only copyright and similar rights that the licensor has authority to license; that setting alone does not establish authority over third-party Eiken prose."
+      },
+      {
+        "source": "Current Eiken intellectual-property terms",
+        "urls": [
+          "https://www.eiken.or.jp/trademark/index.html",
+          "https://www.eiken.or.jp/eiken/en/user-agreement/"
+        ],
+        "observation": "The current public terms claim rights in past-test content, prohibit unauthorized public copying, and direct researchers to obtain permission. These current terms do not prove what private permission, if any, the TECO team received earlier."
+      }
+    ],
+    "release_boundary": {
+      "exclude": [
+        "Reading Matarials.pdf and Reading Proficiency Test.pdf",
+        "passage, comprehension-question, and answer text",
+        "ordered ia, lemma, or other surface/token sequences capable of reconstructing a passage"
+      ],
+      "may_publish": [
+        "project-authored code and rights metadata",
+        "stable source IDs and positions without surface tokens",
+        "derived results that are non-reconstructive and separately pass participant-data review"
+      ]
+    },
+    "decision_change_requires": [
+      "written evidence covering the identified 30 passages and questions",
+      "permission for public repository, GitHub Pages, download, and API redistribution",
+      "permission for downstream reuse, transformation, tokenization, and information analysis",
+      "commercial-use and CC BY compatibility or an explicitly narrower segregated release",
+      "term, territory, attribution, modification, and any upstream third-party-rights conditions"
+    ],
+    "caveat": "No public permission record was located. This is not a finding that no private or historical permission exists, and it is not legal advice."
+  },
+  "project_role": {
+    "core_dependency": false,
+    "first_paper_downstream_selection": "none",
+    "runtime_or_api_data_dependency": false,
+    "author_contact": "planned_non_blocking_rights_clarification",
+    "reentry_gate": "Core benchmark frozen, separate hypothesis justified, artifact-level rights and participant-data review passed, and analysis plan frozen before any outcome join."
+  },
+  "design": {
+    "participants": 41,
+    "participant_population": "Japanese L2 English learners",
+    "passages_per_participant": 30,
+    "passage_source": "Eiken-derived expository passages",
+    "passage_length_words": "approximately 300-400",
+    "word_items": 10063,
+    "participant_word_observations": 412583,
+    "participant_passage_observations": 1230
+  },
+  "verified_files": [
+    {
+      "name": "ReadMe.md",
+      "size_bytes": 6240,
+      "sha256": "3501c12a94f11cab76487b59087f14c90f8023effbc2477d475002e9356a3cba",
+      "osf_file_id": "9dn7e",
+      "local_hash_verified": true
+    },
+    {
+      "name": "wordmeasure_v1.csv",
+      "size_bytes": 22129487,
+      "sha256": "dbc1d52e87ebe1a222057a209d0773b981937ee46f784f78d7c5e98b338b0969",
+      "osf_file_id": "xmt3k",
+      "local_hash_verified": true
+    },
+    {
+      "name": "participant info_v1.csv",
+      "size_bytes": 1193,
+      "sha256": "873ed1afebe14991373ede612f1f1e2b27e1260dddd7e9660d12103dc5fa9867",
+      "osf_file_id": "mfuyt",
+      "local_hash_verified": true
+    },
+    {
+      "name": "word info_v2.csv",
+      "size_bytes": 1006935,
+      "sha256": "25ea5891c269edd8efb1f29c27b233efb2837ded29f620b04a81eea1d5309f4b",
+      "osf_file_id": "3vb9s",
+      "local_hash_verified": true
+    },
+    {
+      "name": "textmeasure_v2.1.csv",
+      "size_bytes": 87396,
+      "sha256": "6882faba674575c64f7086aab468541baf23850aa4f01ce9fcb3bf0f89e71044",
+      "osf_file_id": "2g4pn",
+      "local_hash_verified": true
+    },
+    {
+      "name": "text info_v2.1.csv.xlsx",
+      "size_bytes": 256393,
+      "sha256": "855e55d22195c6cf5da82ca060f7b337199e3c1238d9352110890b681d5202ad",
+      "osf_file_id": "jz5wu",
+      "local_hash_verified": false
+    },
+    {
+      "name": "Index list v2.1.xlsx",
+      "size_bytes": 18336,
+      "sha256": "b527f1e00960a49088106b52d9795f074faa120a3f93596e5de74b89136f6e54",
+      "osf_file_id": "hqu6s",
+      "local_hash_verified": false
+    },
+    {
+      "name": "Reading Matarials.pdf",
+      "size_bytes": 578343,
+      "sha256": "ec35051cf388c2cc81463a41fd6b01b76337b1ef6e5783484714922dcf69d825",
+      "osf_file_id": "tj3wf",
+      "local_hash_verified": true
+    },
+    {
+      "name": "Reading Proficiency Test.pdf",
+      "size_bytes": 304821,
+      "sha256": "b02ec36b8cbd69ab8fc73dea538e7b4e07b13af5b45d07e50b8b3000fbb3830d",
+      "osf_file_id": "695us",
+      "local_hash_verified": false
+    }
+  ],
+  "verified_join_contract": {
+    "word_information_key": ["textid", "itemid"],
+    "word_measure_key": ["subjectid", "textid", "itemid"],
+    "passage_measure_key": ["subject", "text"],
+    "word_measure_subjects": 41,
+    "word_measure_texts": 30,
+    "word_information_unique_keys": 10063,
+    "word_information_duplicate_keys": 0,
+    "observations_per_subject_min": 10063,
+    "observations_per_subject_max": 10063,
+    "word_keys_not_repeated_for_all_41_subjects": 0,
+    "passage_subject_text_pairs": 1230,
+    "passage_subject_text_duplicate_pairs": 0
+  },
+  "admitted_role_if_rights_check_passes": [
+    "existing-reader MWE processing analysis",
+    "multi-member and discontinuous ROI feasibility",
+    "line-initial, line-final, and split-line sensitivity",
+    "exploratory moderation by general reading proficiency"
+  ],
+  "forbidden_inferences": [
+    "eye movement proves contextual MWE knowledge",
+    "general reading proficiency equals P_word or P_mwe_sense",
+    "screen-level attention checks are automatically global comprehension",
+    "TECO results transfer to Project Gutenberg or all L2 readers",
+    "the OSF project license alone proves the underlying Eiken passages may be redistributed"
+  ],
+  "next_action": "Continue core benchmark work without waiting for TECO correspondence. Archive any author response for possible later re-entry; do not publish Eiken text or reconstructable token sequences, and keep any future TECO outcome join local and separately gated for participant-data review."
+}

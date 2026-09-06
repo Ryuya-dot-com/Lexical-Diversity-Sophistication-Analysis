@@ -1,0 +1,359 @@
+{
+  "contract_version": "2.0.0",
+  "contract_id": "ldfreq-en-vmwe-hybrid-sense-inventory",
+  "frozen_on": "2026-09-05",
+  "status": "frozen_pre_annotation_design_no_inventory_entries",
+  "purpose": "Define stable project sense identities and bounded source-evidence mapping for an English VPC/VID benchmark without treating dictionary lookup as contextual gold.",
+  "scope": {
+    "language": "en",
+    "included_categories": [
+      "V.VPC.full",
+      "V.VPC.semi",
+      "V.VID"
+    ],
+    "core_tasks": [
+      "confirmed occurrence to candidate-sense inventory alignment",
+      "contextual sense assignment with uncertainty"
+    ],
+    "excluded_claims": [
+      "dictionary membership proves an occurrence is an MWE",
+      "an exact lookup miss proves lexical or semantic absence",
+      "a dictionary gloss is contextual gold",
+      "a source sense identifier is the project's primary identifier",
+      "a source fingerprint is a semantic identifier",
+      "one inventory is a universal English sense taxonomy"
+    ],
+    "runtime_integration": "none_until_benchmark_inventory_and_release_route_are_admitted",
+    "current_runtime_contract": "mwe_contract.json@0.11.0-mwe"
+  },
+  "project_identity": {
+    "type_id_pattern": "^ldfreq-en-vmwe-t[0-9]{6}$",
+    "sense_id_pattern": "^ldfreq-en-vmwe-t[0-9]{6}-s[0-9]{3}$",
+    "allocation": "Assign the next unused opaque integer in a versioned registry; IDs contain no lemma, category, source, or gloss semantics.",
+    "rules": [
+      "Every admitted type receives one project type ID, including types aligned exactly to OEWN.",
+      "Every admitted sense receives one project sense ID; source IDs remain links, never primary keys.",
+      "An allocated ID is never reassigned, recycled, or silently redirected.",
+      "A spelling, display-lemma, or category correction that preserves identity keeps the ID and is logged.",
+      "A changed meaning boundary creates a new sense ID under the lifecycle rules."
+    ]
+  },
+  "record_contract": {
+    "type_required_fields": [
+      "type_id",
+      "language",
+      "canonical_lemma",
+      "part_of_speech",
+      "observed_vmwe_categories",
+      "member_pattern",
+      "inventory_status",
+      "source_route_status",
+      "senses"
+    ],
+    "sense_required_fields": [
+      "sense_id",
+      "type_id",
+      "lifecycle_status",
+      "definition",
+      "source_basis",
+      "source_links",
+      "rights"
+    ],
+    "allowed_values": {
+      "type_inventory_status": [
+        "source_anchored",
+        "hybrid",
+        "project_defined",
+        "unresolved"
+      ],
+      "source_route_status": [
+        "all_active_senses_verified",
+        "partly_verified",
+        "candidate_route_only",
+        "no_bounded_route"
+      ],
+      "sense_lifecycle_status": [
+        "active",
+        "deprecated"
+      ],
+      "sense_source_basis": [
+        "oewn_anchored",
+        "project_defined_with_source_evidence",
+        "project_defined_without_source_match"
+      ],
+      "source_mapping_relation": [
+        "equivalent",
+        "broader",
+        "narrower",
+        "overlapping",
+        "candidate_only"
+      ],
+      "definition_origin": [
+        "project_original",
+        "source_verbatim",
+        "source_adaptation"
+      ],
+      "redistribution_status": [
+        "permitted",
+        "external_only",
+        "withheld_pending_review"
+      ],
+      "source_verification_status": [
+        "independently_verified",
+        "single_review_candidate",
+        "unreviewed"
+      ]
+    },
+    "definition_shape": {
+      "required_fields": [
+        "text",
+        "origin",
+        "controlling_license_id",
+        "attribution_notice_ids"
+      ],
+      "rule": "Source wording must remain in a separately licensed layer; a project-original definition must not be a cosmetic paraphrase used to evade upstream terms."
+    },
+    "member_pattern_shape": {
+      "required_fields": [
+        "ordered_lexical_members",
+        "variable_slots",
+        "realization_note"
+      ],
+      "rules": [
+        "Inflection and intervening non-member gaps do not create a new lexical type.",
+        "A pronoun in take it in is an occurrence-level non-member gap unless the frozen type record says it is a lexicalized member.",
+        "A fixed article or possessive may remain a lexical member even when the bounded source-mapping prefilter removes it to propose a candidate.",
+        "A structurally different variant shares a type ID only after independently verified construction and meaning equivalence."
+      ]
+    },
+    "source_link_required_fields": [
+      "source_inventory_id",
+      "source_version",
+      "source_artifact_sha256",
+      "source_entry_id",
+      "source_sense_id",
+      "source_record_sha256",
+      "mapping_relation",
+      "verification_status",
+      "controlling_license_id",
+      "attribution_notice_ids"
+    ],
+    "source_link_rules": [
+      "source_sense_id may be null only when the source supplies no stable sense identifier",
+      "a null source_sense_id requires a source_record_sha256 and does not weaken the project ID requirement",
+      "candidate_only is evidence for review and cannot by itself create gold",
+      "broader, narrower, and overlapping links remain explicit and cannot be exported as equivalence",
+      "every source artifact and source record fingerprint is verified before an inventory release is frozen"
+    ],
+    "sense_rights_required_fields": [
+      "controlling_license_id",
+      "attribution_notice_ids",
+      "redistribution_status"
+    ],
+    "state_invariants": [
+      "source_anchored requires every active project sense to have an independently_verified equivalent source link",
+      "hybrid requires at least one source-anchored and at least one project-defined active sense",
+      "project_defined requires at least one active project sense and no claim that every sense has a source equivalent",
+      "unresolved has no admitted project senses and remains in population-level coverage denominators",
+      "all_active_senses_verified is valid only for source_anchored; partly_verified is required for hybrid",
+      "candidate_route_only and no_bounded_route never imply an admitted source equivalence",
+      "observed_vmwe_categories is a non-empty array and never forces one category onto every occurrence or sense of a canonical form",
+      "a sense ID starts with its type ID followed by '-s'",
+      "a sense-level rights record and every source link use only declared license identifiers from the release manifest"
+    ]
+  },
+  "fingerprints": {
+    "algorithm": "sha256",
+    "artifact_rule": "Hash the exact downloaded artifact bytes before extraction.",
+    "source_record_rule": "Hash UTF-8 JSON of the declared source-record projection with object keys sorted, separators ',' and ':', ensure_ascii false, and no trailing newline.",
+    "source_record_projection_required_fields": [
+      "source_inventory_id",
+      "source_version",
+      "source_entry_id",
+      "source_sense_id",
+      "part_of_speech",
+      "glosses",
+      "examples",
+      "usage_labels"
+    ],
+    "warning": "Fingerprints detect source-record change; they do not assert meaning identity or replace project sense IDs."
+  },
+  "source_identity_requirements": {
+    "oewn": [
+      "release tag or edition",
+      "repository commit",
+      "exact artifact SHA-256",
+      "entry ID",
+      "OEWN sense key",
+      "source-record SHA-256",
+      "OEWN and underlying WordNet notices"
+    ],
+    "enwiktionary": [
+      "dated English Wiktionary dump identity and SHA-256",
+      "page title and revision ID when present in the dump",
+      "pinned Wiktextract commit and extraction options",
+      "Wiktionary senseid when supplied, otherwise null",
+      "source-record SHA-256",
+      "the chosen compliant reuse route, attribution/history record, and imported-content review"
+    ],
+    "current_candidate_evidence": {
+      "oewn_release": "2025-edition",
+      "oewn_artifact_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+      "kaikki_reported_enwiktionary_dump_date": "2026-08-05",
+      "kaikki_extraction_date": "2026-08-28",
+      "wiktextract_commits_reported_by_kaikki": [
+        "872fc7b",
+        "4deed51"
+      ],
+      "kaikki_response_manifest_sha256": "a1499e616b7ebc75de8b52e3e4d7e01c764108bc0d739946f740a0a0379479c6",
+      "admission": "aggregate_audit_evidence_only_not_an_inventory_source_snapshot"
+    }
+  },
+  "bounded_non_exact_mapping": {
+    "population": {
+      "definition": "All 239 STREUSLE V.VID types; the completed prefilter leaves a fixed residual of 146 types for the non-exact stages.",
+      "type_count": 239,
+      "occurrence_count": 319,
+      "residual_type_count": 146,
+      "residual_occurrence_count": 169,
+      "population_manifest": "resources/streusle_v5_kaikki_vid_audit_2026_09_03.json"
+    },
+    "completed_prefilter": [
+      {
+        "stage": 1,
+        "name": "exact_oewn_verb_entry",
+        "result": "31 types"
+      },
+      {
+        "stage": 2,
+        "name": "fixed_slot_skeleton",
+        "rule": "Remove only a, an, the, my, your, his, her, its, our, their, one's, someone's, or somebody's from both lemmas, preserve all remaining token identities and order, and retain only a unique OEWN source-entry candidate.",
+        "result": "2 additional types"
+      },
+      {
+        "stage": 3,
+        "name": "exact_enwiktionary_verb_entry",
+        "result": "60 additional types"
+      }
+    ],
+    "remaining_ordered_stages": [
+      {
+        "stage": 4,
+        "name": "source_declared_variant_index",
+        "rule": "Build an index only from alternate-form and cross-reference fields explicitly encoded in the pinned OEWN and dated English Wiktionary verb records; match the unchanged target lemma to those declared fields."
+      },
+      {
+        "stage": 5,
+        "name": "orthographic_equivalence",
+        "rule": "Build a second index over pinned source entry lemmas and declared variant strings using only declared Unicode, case, whitespace, hyphen, and apostrophe normalization; match the normalized target while preserving every open-class member and its order."
+      },
+      {
+        "stage": 6,
+        "name": "logged_candidate_review",
+        "rule": "Review the complete candidate set produced by stages 4-5 without adding candidates; record equivalent, broader, narrower, overlapping, candidate_only, or no_bounded_route for every source link."
+      }
+    ],
+    "allowed_normalization": [
+      "Unicode normalization declared by the source extractor",
+      "Unicode casefolding",
+      "the already audited fixed closed-class slot deletion in prefilter stage 2",
+      "an inflection or alternate form explicitly linked by the pinned source"
+    ],
+    "prohibited_operations": [
+      "free Web or dictionary search after the bounded sources are exhausted",
+      "synonym, particle, preposition, or open-class word substitution not linked by a pinned source",
+      "dropping or reordering open-class members",
+      "using held-out occurrence context, gold labels, or baseline predictions to invent candidates",
+      "treating one plausible gloss as an accepted contextual label",
+      "excluding unresolved types from the benchmark population",
+      "creating a project-defined sense during this source-mapping pass"
+    ],
+    "review_output_per_type": [
+      "project type ID",
+      "input canonical lemma and all observed categories",
+      "stage reached",
+      "all candidates considered",
+      "accepted mapping relation or no_bounded_route",
+      "source identities and fingerprints",
+      "reviewer decision and adjudication state",
+      "rights state"
+    ],
+    "stop_rule": "Run remaining stages 4-6 once for every one of the 146 fixed residual types, without reprioritizing by familiarity, yield, or downstream performance. After stage 6, preserve no_bounded_route as unresolved. A project-defined sense inventory, if needed, is a separate lexicographic annotation phase whose guide, independent review, and rights decision are frozen before that phase begins.",
+    "success_rule": "This pass measures candidate-route coverage and mapping relations. It succeeds by exhausting the fixed population reproducibly, not by reaching a desired coverage percentage."
+  },
+  "contextual_assignment": {
+    "allowed_statuses": [
+      "assigned",
+      "multiple_assigned",
+      "ambiguous",
+      "abstained",
+      "unassigned",
+      "out_of_inventory",
+      "inventory_ineligible"
+    ],
+    "rules": {
+      "assigned": "Exactly one active project sense ID is selected.",
+      "multiple_assigned": "At least two distinct active project sense IDs genuinely apply together in context; preserve all of them.",
+      "ambiguous": "At least two named active project sense IDs remain alternative contextual readings that the evidence cannot resolve; preserve all of them.",
+      "abstained": "The annotator cannot make the declared judgment from the available evidence; do not force a sense or relabel it out_of_inventory.",
+      "unassigned": "The sense task has not been completed; this is workflow state, not a scored semantic outcome.",
+      "out_of_inventory": "The occurrence is confirmed, the frozen inventory was shown completely, the context supports a coherent meaning, and no active project sense is adequate. An exact dictionary miss alone never licenses this state.",
+      "inventory_ineligible": "The confirmed occurrence is outside the declared type or part-of-speech scope of the inventory. This is an administrative routing state, not a semantic absence claim."
+    },
+    "separation_rule": "Joint applicability, unresolved alternatives, insufficient evidence, type-level unresolved/no_bounded_route, occurrence-level out_of_inventory, and inventory ineligibility answer different questions and must never be collapsed."
+  },
+  "lifecycle_and_versioning": {
+    "inventory_release_versioning": {
+      "patch": "Correct non-semantic metadata, attribution, or formatting without changing IDs, forms, sense boundaries, mappings, or labels.",
+      "minor": "Add new types or senses without changing any existing sense boundary or contextual label.",
+      "major": "Change a sense boundary, mapping interpretation, or label meaning, including any merge or split."
+    },
+    "split_rule": "Deprecate the old sense ID, allocate at least two new sense IDs, and publish explicit split_from crosswalks; do not copy old occurrence labels forward automatically.",
+    "merge_rule": "Deprecate every merged sense ID, allocate one new sense ID, and publish merged_from crosswalks; do not retain one old ID as if its meaning were unchanged.",
+    "deletion_rule": "Deprecate rather than erase an allocated sense; state the reason and replacement IDs if any.",
+    "frozen_benchmark_rule": "Any correction to a released benchmark creates a new version and manifest hash. Preserve the old release and report evaluation results against one exact version."
+  },
+  "rights_and_release": {
+    "contract_license": "CC-BY-4.0",
+    "rules": [
+      "Every released definition and source link declares one controlling_license_id, attribution notices, and redistribution status.",
+      "Project IDs and project decisions do not relicense source wording or imported content.",
+      "OEWN-derived wording remains under OEWN CC BY 4.0 plus the underlying WordNet notice.",
+      "Wiktionary-derived wording is released only after an exact dated artifact, compliant CC BY-SA 4.0 or GFDL route, attribution/history, ShareAlike where applicable, and imported-content review are recorded.",
+      "If source wording cannot be redistributed, release IDs, project-original annotations, permissible fingerprints, and reconstruction instructions while marking the wording external_only.",
+      "A private database or access control is not a rights grant."
+    ],
+    "current_release_state": "contract_only_no_lexical_entries_or_source_wording"
+  },
+  "independence_and_leakage": {
+    "inventory_builders_may_see": [
+      "canonical form",
+      "part of speech",
+      "VMWE category evidence from non-held-out material",
+      "pinned dictionary evidence"
+    ],
+    "inventory_builders_must_not_see": [
+      "sealed held-out occurrence context",
+      "sealed held-out occurrence category",
+      "held-out contextual labels",
+      "held-out baseline predictions"
+    ],
+    "context_annotators_may_see": [
+      "confirmed occurrence context required by the guide",
+      "the complete frozen active project sense inventory"
+    ],
+    "context_annotators_must_not_see": [
+      "baseline or model recommendations",
+      "other annotators' pre-adjudication decisions"
+    ],
+    "repair_rule": "A held-out out_of_inventory decision cannot expand or backfit the same frozen test inventory. Log it as an error for a later release."
+  },
+  "admission_gates": [
+    "populate and independently review every target type under the bounded protocol",
+    "freeze a lawful public release route and layer-specific artifact manifest",
+    "freeze an annotation guide and training-only pilot before final labels",
+    "freeze document split, test seal, metrics, precision rule, and baselines",
+    "verify record invariants and exact release hashes",
+    "only then cut a new runtime contract version"
+  ]
+}

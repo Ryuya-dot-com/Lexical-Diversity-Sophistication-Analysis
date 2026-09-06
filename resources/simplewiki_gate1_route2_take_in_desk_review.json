@@ -1,0 +1,384 @@
+{
+  "review_schema_version": "1.0.0",
+  "review_id": "gate1-simplewiki-route2-take-in-desk-review-v1",
+  "reviewed_on": "2026-09-02",
+  "inputs": {
+    "rendered_screen_id": "gate1-simplewiki-route2-rendered-screen-v1",
+    "rendered_screen_sha256": "e0cce039a3331fffdc0e8ff914506db5004bf7c782d5cceb2d354a5f1cfac148",
+    "oewn_take_in_subset_id": "oewn-2025-take-in-v",
+    "oewn_take_in_subset_sha256": "cd5381a09769f9d3e66e0a608ecd8016d775350abd4e882095a085c471df6867"
+  },
+  "construct": {
+    "purpose": "bounded project-internal desk review of the first 20 mechanically eligible take in queue rows",
+    "method": "Read every retained paragraph, adjudicate every automatic one-to-eight-token gap lead, and inspect every take-head token for missed contiguous or longer-gap take in occurrences.",
+    "review_status": "preliminary single project review; author confirmation and independent annotation are absent",
+    "lead_columns": [
+      "lead_id",
+      "paragraph",
+      "member_profile_token_positions",
+      "gap_token_count",
+      "surface_span_sha256",
+      "desk_state",
+      "reason_code"
+    ],
+    "false_span_reason_codes": {
+      "embedded_take_part_in": "The take head belongs to the distinct take part in construction.",
+      "take_place_plus_in_modifier": "The take head belongs to take place and in begins a locative, temporal, or other modifier.",
+      "literal_take_np_plus_in_modifier": "Take governs a noun phrase and in modifies that noun phrase or event.",
+      "other_take_construction_plus_unrelated_in": "Take belongs to another construction and the later in is not its particle.",
+      "cross_sentence_or_clause_boundary": "The candidate members cross an independent sentence or clause boundary.",
+      "crosses_complete_take_construction": "The long candidate starts inside a complete take construction and ends at a later independent in token."
+    },
+    "stopping_rule": "Stop this target after all 20 frozen desk rows; do not extend the queue after target failure.",
+    "downstream_rule": "Category, idiomaticity, sense, cueing, centrality, coherence, background, and content admission are not scored after the decisive absence of any target occurrence.",
+    "excluded_inferences": [
+      "gold MWE labels",
+      "automatic detector precision outside this frozen target queue",
+      "MWE prevalence",
+      "learner knowledge",
+      "comprehension validity",
+      "passage admission"
+    ],
+    "article_text_bundled": false,
+    "surface_spans_bundled": false,
+    "contributor_data_bundled": false
+  },
+  "summary": {
+    "canonical_form": "take in",
+    "desk_row_count": 20,
+    "distinct_page_count": 20,
+    "take_head_token_count_reviewed": 41,
+    "automatic_gap_lead_count": 28,
+    "false_span_count": 28,
+    "confirmed_target_occurrence_count": 0,
+    "manual_missed_target_occurrence_count": 0,
+    "false_span_reason_counts": {
+      "cross_sentence_or_clause_boundary": 3,
+      "crosses_complete_take_construction": 2,
+      "embedded_take_part_in": 5,
+      "literal_take_np_plus_in_modifier": 6,
+      "other_take_construction_plus_unrelated_in": 6,
+      "take_place_plus_in_modifier": 6
+    },
+    "target_state": "failed_at_frozen_20_desk_screen_limit"
+  },
+  "articles": [
+    {
+      "desk_screen_rank": 1,
+      "queue_rank": 3,
+      "page_id": 1270539,
+      "revision_id": 10880499,
+      "title": "Igor Rybakov",
+      "extracted_text_sha256": "d96bed5e38cb61fa9cf607fc429364bfbae076383e7c97ecc9c0e84c936d7d61",
+      "profile_token_count": 542,
+      "take_head_token_count_reviewed": 1,
+      "automatic_gap_decisions": [
+        ["take-in-01-gap-01", 11, [303, 305], 1, "d74b1a2775b444b5824783c905818f7560aea891e1bb3b3bf43dfca67d5eab4f", "false_span", "embedded_take_part_in"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 2,
+      "queue_rank": 5,
+      "page_id": 117087,
+      "revision_id": 10573628,
+      "title": "Exeter Cathedral",
+      "extracted_text_sha256": "6bca560665dd26d745479890de999c4a4b343df0952fe2131eb278bdfc4044af",
+      "profile_token_count": 541,
+      "take_head_token_count_reviewed": 2,
+      "automatic_gap_decisions": [
+        ["take-in-02-gap-01", 2, [94, 100], 5, "6d7cb1b921bd20bf15ee3e58554f209bbe0abfb21d117aafd91e475cbd54b2a0", "false_span", "cross_sentence_or_clause_boundary"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 3,
+      "queue_rank": 9,
+      "page_id": 928038,
+      "revision_id": 10806022,
+      "title": "2022 Brazilian general election",
+      "extracted_text_sha256": "a5ba5d669c2b62e5fd7ca9cd7ccf1d2925f0564efcd8168e71e2319d6328bcc2",
+      "profile_token_count": 615,
+      "take_head_token_count_reviewed": 3,
+      "automatic_gap_decisions": [
+        ["take-in-03-gap-01", 1, [6, 10], 3, "4e110a0830707c26f56d9f7b3ee55117bf11d67aee6c9b4a510bbb1c55ba4cd0", "false_span", "take_place_plus_in_modifier"],
+        ["take-in-03-gap-02", 2, [41, 50], 8, "23cce6f484e03142880f7156bbc4abf8a98c5c38f8cdfe9ac20370bf4a15c4e6", "false_span", "take_place_plus_in_modifier"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 4,
+      "queue_rank": 23,
+      "page_id": 196700,
+      "revision_id": 10463313,
+      "title": "WWE Breaking Point",
+      "extracted_text_sha256": "22070bb128af6ca46392b919b51b760539140c29e912091f5663548341b0e8f7",
+      "profile_token_count": 568,
+      "take_head_token_count_reviewed": 1,
+      "automatic_gap_decisions": [
+        ["take-in-04-gap-01", 1, [19, 27], 7, "65775b86b1b2e2bd81da866abf6c4ef6671b614c4db1816ecad6d115515c6856", "false_span", "take_place_plus_in_modifier"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 5,
+      "queue_rank": 30,
+      "page_id": 776230,
+      "revision_id": 10399608,
+      "title": "Helen Betty Osborne",
+      "extracted_text_sha256": "e81df15f57b22cf4bab2bb8db5542029689ce42b143cd272a2e789e612deab83",
+      "profile_token_count": 838,
+      "take_head_token_count_reviewed": 2,
+      "automatic_gap_decisions": [
+        ["take-in-05-gap-01", 5, [330, 338], 7, "5ae58d1fdad2141dfb9a976c6ad10c4e5776bf83fed0df40983994469825068c", "false_span", "other_take_construction_plus_unrelated_in"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 6,
+      "queue_rank": 39,
+      "page_id": 180322,
+      "revision_id": 10155639,
+      "title": "Juvenal (footballer, born 1923)",
+      "extracted_text_sha256": "909a56143b6c58c6370312f517d5d3f0759b03c0a29bf3bdbc958b427a971658",
+      "profile_token_count": 592,
+      "take_head_token_count_reviewed": 3,
+      "automatic_gap_decisions": [
+        ["take-in-06-gap-01", 3, [296, 298], 1, "d74b1a2775b444b5824783c905818f7560aea891e1bb3b3bf43dfca67d5eab4f", "false_span", "embedded_take_part_in"],
+        ["take-in-06-gap-02", 3, [296, 304], 7, "77e8f21d1891e344a2b4bd9e1666a5c14b1a972109676dccda8caf98b7768097", "false_span", "crosses_complete_take_construction"],
+        ["take-in-06-gap-03", 3, [310, 312], 1, "eb7858159ddce270769c10b9067b1e74b10628d69cfd9872c2f26974bf3963fd", "false_span", "embedded_take_part_in"],
+        ["take-in-06-gap-04", 4, [547, 550], 2, "9cf5632e614114db543ce40671272d741c8627db791691541cea01edd2ed191b", "false_span", "literal_take_np_plus_in_modifier"],
+        ["take-in-06-gap-05", 4, [547, 556], 8, "4fac17866b1160b1675849ddfa9041130b1528a5f4f885e8a7cdf48259f145fb", "false_span", "crosses_complete_take_construction"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 7,
+      "queue_rank": 49,
+      "page_id": 145886,
+      "revision_id": 9812522,
+      "title": "Charles Villiers Stanford",
+      "extracted_text_sha256": "408a225f5b1173c1b3fb1ff4fa2c699db61075098fb0407cb43f11d1c515476f",
+      "profile_token_count": 512,
+      "take_head_token_count_reviewed": 1,
+      "automatic_gap_decisions": [
+        ["take-in-07-gap-01", 4, [205, 209], 3, "a4c5c69e125ea103782a96a0fe051dc791b0a98f39ec06a4a6c8afbe72eb5b67", "false_span", "literal_take_np_plus_in_modifier"],
+        ["take-in-07-gap-02", 4, [205, 212], 6, "835e0f6d705db20d3a8884ff4d291099acfaf109273b09cd60a8abf0685f9f04", "false_span", "literal_take_np_plus_in_modifier"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 8,
+      "queue_rank": 54,
+      "page_id": 53201,
+      "revision_id": 8798308,
+      "title": "Edward Abbey",
+      "extracted_text_sha256": "d5e6d5afc8143df391455185827a50038ace6ea348acd2648621d8b18d035914",
+      "profile_token_count": 511,
+      "take_head_token_count_reviewed": 4,
+      "automatic_gap_decisions": [
+        ["take-in-08-gap-01", 5, [283, 290], 6, "47f8596e8b7cd03d47405a5e16f1b63a8c809e8d0531c814044c5b5e56553059", "false_span", "literal_take_np_plus_in_modifier"],
+        ["take-in-08-gap-02", 5, [321, 324], 2, "c6bd2892002e1718655a81f7fff6a4e9354dc078b1e6dd80932e2f891e6cea50", "false_span", "literal_take_np_plus_in_modifier"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 9,
+      "queue_rank": 55,
+      "page_id": 883269,
+      "revision_id": 10824282,
+      "title": "Gokyo Lakes",
+      "extracted_text_sha256": "fd7cafc8ec61afe0b940738053e40d7be45e77cec637b0f44e16a5d9ff5b0ec5",
+      "profile_token_count": 578,
+      "take_head_token_count_reviewed": 1,
+      "automatic_gap_decisions": [
+        ["take-in-09-gap-01", 6, [363, 367], 3, "e64a40578dfce09d246b227f5a9dc29e349465838ee606006c5b55af69b9da8a", "false_span", "literal_take_np_plus_in_modifier"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 10,
+      "queue_rank": 57,
+      "page_id": 1230012,
+      "revision_id": 10612418,
+      "title": "Dickinson State University",
+      "extracted_text_sha256": "91d252113e56a7dee9f2a0e957506456b6dcbb25c523379756c63bcd63d41505",
+      "profile_token_count": 839,
+      "take_head_token_count_reviewed": 2,
+      "automatic_gap_decisions": [
+        ["take-in-10-gap-01", 3, [137, 139], 1, "eb7858159ddce270769c10b9067b1e74b10628d69cfd9872c2f26974bf3963fd", "false_span", "embedded_take_part_in"],
+        ["take-in-10-gap-02", 5, [316, 321], 4, "5e2d4b4f93d64cde3fed2aca8f87e98ec80f5bdc0745263cb447cf23c5a9acc8", "false_span", "other_take_construction_plus_unrelated_in"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 11,
+      "queue_rank": 58,
+      "page_id": 170678,
+      "revision_id": 10579088,
+      "title": "John Caesar",
+      "extracted_text_sha256": "7249a2ca224a17c5708f5324562a01fee24a433a4319fa7448b368c5c79026ef",
+      "profile_token_count": 605,
+      "take_head_token_count_reviewed": 7,
+      "automatic_gap_decisions": [
+        ["take-in-11-gap-01", 7, [474, 478], 3, "019959e1caaa3760f9f7a6c3369721ffdbde77bb2c1f421e1df6132a4ed83f85", "false_span", "other_take_construction_plus_unrelated_in"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 12,
+      "queue_rank": 59,
+      "page_id": 732192,
+      "revision_id": 9855265,
+      "title": "Kafana",
+      "extracted_text_sha256": "d55867fa258044045508a995c9fe0956a36687123ca941cabc409278396877e1",
+      "profile_token_count": 612,
+      "take_head_token_count_reviewed": 2,
+      "automatic_gap_decisions": [
+        ["take-in-12-gap-01", 3, [110, 119], 8, "1ff3179db7f31907105e461b61c98fcb5c7610cea00db60b5e03e62bd5decfbc", "false_span", "other_take_construction_plus_unrelated_in"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 13,
+      "queue_rank": 60,
+      "page_id": 16530,
+      "revision_id": 10919735,
+      "title": "Mulan (1998 movie)",
+      "extracted_text_sha256": "fcc86cf39ac700b9dfe5c80e52223f54d6e5e7d98f6b443ba4ac5acd2fadc859",
+      "profile_token_count": 653,
+      "take_head_token_count_reviewed": 3,
+      "automatic_gap_decisions": [
+        ["take-in-13-gap-01", 1, [145, 147], 1, "44a582e02c523f54ccd0152202b81fb5c4707d389d622fdd79d3b8071c768b86", "false_span", "take_place_plus_in_modifier"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 14,
+      "queue_rank": 62,
+      "page_id": 585931,
+      "revision_id": 10880371,
+      "title": "Chyler Leigh",
+      "extracted_text_sha256": "e142086987f4dd0dcb60bfa9cc26ad43ea2a7f22d7d293987f4c1ad6f5743e6f",
+      "profile_token_count": 565,
+      "take_head_token_count_reviewed": 1,
+      "automatic_gap_decisions": [
+        ["take-in-14-gap-01", 10, [327, 329], 1, "de90c63738c76ddf7da54fa55238a231683ffdd4fcf471eec8b2ee01e576419c", "false_span", "embedded_take_part_in"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 15,
+      "queue_rank": 64,
+      "page_id": 41927,
+      "revision_id": 10791006,
+      "title": "Big Ben",
+      "extracted_text_sha256": "5d9c4bdb2e048d238a6492c9bde01b0f0f8a9bdf9e20808ecbb7f4d70329e9b0",
+      "profile_token_count": 497,
+      "take_head_token_count_reviewed": 2,
+      "automatic_gap_decisions": [
+        ["take-in-15-gap-01", 2, [87, 95], 7, "cdaa15f894951628726b88700f1c05e6e71a6ebb272b359715ad2421e4800cdc", "false_span", "cross_sentence_or_clause_boundary"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 16,
+      "queue_rank": 65,
+      "page_id": 168918,
+      "revision_id": 10935324,
+      "title": "Philosophy of mind",
+      "extracted_text_sha256": "cbcac17b6907c84eccb0cc06cacd6edf00c630a009303287d5094accae4f40b6",
+      "profile_token_count": 974,
+      "take_head_token_count_reviewed": 1,
+      "automatic_gap_decisions": [
+        ["take-in-16-gap-01", 10, [834, 836], 1, "dae13f84337357ee7138a18164f3fc24e6091c17af465f1755a33905a10b7876", "false_span", "other_take_construction_plus_unrelated_in"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 17,
+      "queue_rank": 82,
+      "page_id": 62058,
+      "revision_id": 10867208,
+      "title": "Eric Cartman",
+      "extracted_text_sha256": "d63319eb4ec244543f1f63afbb9a9615f8f986a2c0586bcd73b2eab70e90e262",
+      "profile_token_count": 491,
+      "take_head_token_count_reviewed": 2,
+      "automatic_gap_decisions": [
+        ["take-in-17-gap-01", 7, [257, 260], 2, "8abd965ff3054a0efe428651343e58b8950ed6c235c453d02177f857a66f3323", "false_span", "other_take_construction_plus_unrelated_in"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 18,
+      "queue_rank": 86,
+      "page_id": 983923,
+      "revision_id": 10596031,
+      "title": "1800 United States presidential election",
+      "extracted_text_sha256": "1a432aa7ece886d7c936c73183ae9f8cdd1f4be70462d8a5a6433a53fd3fa466",
+      "profile_token_count": 613,
+      "take_head_token_count_reviewed": 1,
+      "automatic_gap_decisions": [
+        ["take-in-18-gap-01", 5, [336, 345], 8, "299f50abad953dfa34972e174e97d6fcb391dd4d8fb693d7aa5f89c4e36ff7a1", "false_span", "take_place_plus_in_modifier"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 19,
+      "queue_rank": 90,
+      "page_id": 376540,
+      "revision_id": 10609407,
+      "title": "Chemical weapons in World War I",
+      "extracted_text_sha256": "f01266b6e23b25f6e65301e94e123af229ba726faa240551c8cd267838a4bfb9",
+      "profile_token_count": 825,
+      "take_head_token_count_reviewed": 1,
+      "automatic_gap_decisions": [
+        ["take-in-19-gap-01", 27, [769, 771], 1, "a6a6a390114b96c4ebb9505eaa33035b1737c1ecc8b5b4925ff47edf0a7a5040", "false_span", "cross_sentence_or_clause_boundary"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 20,
+      "queue_rank": 97,
+      "page_id": 14472,
+      "revision_id": 10524858,
+      "title": "Subatomic particle",
+      "extracted_text_sha256": "5cf8634359518dddc3724c3bcfa2c61507d4f484e73c4258a53627a3e4468d99",
+      "profile_token_count": 414,
+      "take_head_token_count_reviewed": 1,
+      "automatic_gap_decisions": [
+        ["take-in-20-gap-01", 6, [302, 304], 1, "b5af364793038b522edb044226b4cd059cc70e909ba5fe818418e8438ab56155", "false_span", "take_place_plus_in_modifier"]
+      ],
+      "target_occurrence_count": 0,
+      "passage_state": "reject_target_absent"
+    }
+  ],
+  "overall_decision": {
+    "state": "target_failed_no_occurrence_in_frozen_desk_limit",
+    "reason": "All 28 automatic gap leads are false spans and exhaustive inspection of 41 take-head tokens found no missed take in occurrence in the 20 desk rows.",
+    "sense_evidence": "not_applicable_no_target_occurrence",
+    "discontinuity_evidence": "failed_no_target_occurrence",
+    "passage_admission": "none",
+    "app_change": "none",
+    "next_step": "Review pick up desk rows without extending or replacing the failed take in queue."
+  }
+}

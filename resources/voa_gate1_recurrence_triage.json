@@ -1,0 +1,111 @@
+{
+  "triage_schema_version": "1.0.0",
+  "triage_id": "gate1-voa-recurrence-triage-v1",
+  "reviewed_on": "2026-09-01",
+  "source_profile_id": "gate1-voa-automated-screen-v1",
+  "source_profile_sha256": "efe61f49a81e59274d532a650da4a362dab4067eeaa0f0fe79bdebf4b8b77603",
+  "construct": {
+    "unit": "contiguous OEWN canonical-form lead occurring in at least two source-eligible articles, followed by a separate one-to-two-token-gap false-recurrence audit",
+    "purpose": "decide which recurrence can still change passage-set admission before reviewing singleton leads",
+    "target_scope": "plausible English VPC or VID only; occurrence, category, idiomaticity, sense, and centrality remain unconfirmed",
+    "review_status": "project-internal preliminary desk triage; author confirmation and independent gold are absent",
+    "source_marking_check": "no retained lead surface or canonical form was found by exact token-sequence comparison in h1, strong, b, or post-credit direct-paragraph text; semantic and discourse cues still require manual review",
+    "excluded_inferences": [
+      "MWE occurrence truth",
+      "VPC or VID category truth",
+      "contextual sense truth",
+      "absence of indirect source cues",
+      "learner knowledge",
+      "passage admission"
+    ],
+    "article_text_bundled": false
+  },
+  "summary": {
+    "recurrent_form_count": 38,
+    "retain_for_occurrence_review": 13,
+    "reject_as_decision_relevant_recurrence": 25,
+    "candidate_pair_count": 4,
+    "priority_pair_count": 2,
+    "gap_recurrent_form_count": 19,
+    "gap_recurrent_form_retained_count": 0,
+    "author_confirmation_pending": true
+  },
+  "forms": [
+    {"canonical_form": "go to", "state": "reject_as_decision_relevant_recurrence", "reason": "literal motion and grammatical going-to futures dominate"},
+    {"canonical_form": "go on", "state": "retain_for_occurrence_review", "reason": "continuation, happening, dating, and activity contexts require occurrence-level separation"},
+    {"canonical_form": "look at", "state": "reject_as_decision_relevant_recurrence", "reason": "consistent transparent examination or visual-attention uses outside the bounded target"},
+    {"canonical_form": "work in", "state": "reject_as_decision_relevant_recurrence", "reason": "locative or occupational prepositional complements"},
+    {"canonical_form": "do in", "state": "reject_as_decision_relevant_recurrence", "reason": "all five leads cross an ordinary verb-object boundary into a following in-phrase"},
+    {"canonical_form": "come to", "state": "reject_as_decision_relevant_recurrence", "reason": "motion, come-to-think, and come-to-an-end strings do not repeat one decision-relevant target"},
+    {"canonical_form": "care for", "state": "retain_for_occurrence_review", "reason": "three genuine care or nurture contexts remain after two CARE-program acronym false hits"},
+    {"canonical_form": "live in", "state": "reject_as_decision_relevant_recurrence", "reason": "transparent residence-location complements"},
+    {"canonical_form": "think about", "state": "reject_as_decision_relevant_recurrence", "reason": "transparent topic complements outside the bounded VPC or VID target"},
+    {"canonical_form": "think of", "state": "reject_as_decision_relevant_recurrence", "reason": "transparent consideration or construal complements outside the bounded target"},
+    {"canonical_form": "center on", "state": "reject_as_decision_relevant_recurrence", "reason": "three of four leads are Center proper-name boundaries; one verbal occurrence cannot establish recurrence"},
+    {"canonical_form": "have on", "state": "reject_as_decision_relevant_recurrence", "reason": "all leads cross an ordinary have-object boundary into a following on-phrase"},
+    {"canonical_form": "make it", "state": "reject_as_decision_relevant_recurrence", "reason": "causative or referential it uses, not the succeed or arrive expression"},
+    {"canonical_form": "do it", "state": "reject_as_decision_relevant_recurrence", "reason": "ordinary verb plus referential pronoun"},
+    {"canonical_form": "come with", "state": "retain_for_occurrence_review", "reason": "abstract association and concrete equipment-accompaniment contexts may support a VPC distinction"},
+    {"canonical_form": "grow up", "state": "retain_for_occurrence_review", "reason": "three genuine maturation uses, although all are same-sense biographical background"},
+    {"canonical_form": "know as", "state": "reject_as_decision_relevant_recurrence", "reason": "passive aliasing next to explicit names; locally self-explanatory and peripheral"},
+    {"canonical_form": "look for", "state": "retain_for_occurrence_review", "reason": "three genuine search uses; category and target centrality still require review"},
+    {"canonical_form": "step in", "state": "reject_as_decision_relevant_recurrence", "reason": "all three are noun step or steps followed by an in-phrase"},
+    {"canonical_form": "talk about", "state": "reject_as_decision_relevant_recurrence", "reason": "transparent topic complements outside the bounded target"},
+    {"canonical_form": "go out", "state": "retain_for_occurrence_review", "reason": "dating and outdoor-foraging contexts create a plausible cross-sense VPC contrast"},
+    {"canonical_form": "live with", "state": "reject_as_decision_relevant_recurrence", "reason": "all three are transparent co-residence contexts"},
+    {"canonical_form": "pay for", "state": "reject_as_decision_relevant_recurrence", "reason": "transparent payment-object complements"},
+    {"canonical_form": "point out", "state": "retain_for_occurrence_review", "reason": "three genuine reporting VPCs, though all share a sense and may be discourse-peripheral"},
+    {"canonical_form": "be born", "state": "reject_as_decision_relevant_recurrence", "reason": "same-sense biographical background with no target-critical role"},
+    {"canonical_form": "be on", "state": "reject_as_decision_relevant_recurrence", "reason": "team-membership and help-availability copular complements do not repeat one target"},
+    {"canonical_form": "do well", "state": "retain_for_occurrence_review", "reason": "two genuine success expressions with potentially different discourse importance"},
+    {"canonical_form": "feel like", "state": "retain_for_occurrence_review", "reason": "two stance expressions in quoted speech; VID status and register burden remain open"},
+    {"canonical_form": "find out", "state": "retain_for_occurrence_review", "reason": "two genuine discovery VPCs with different roles in the article arguments"},
+    {"canonical_form": "get into", "state": "retain_for_occurrence_review", "reason": "one trouble expression and one malformed literal entry context expose a likely false recurrence"},
+    {"canonical_form": "have the best", "state": "reject_as_decision_relevant_recurrence", "reason": "ordinary have plus superlative noun phrase"},
+    {"canonical_form": "look to", "state": "reject_as_decision_relevant_recurrence", "reason": "one direction-of-choice complement and one infinitival boundary"},
+    {"canonical_form": "make sure", "state": "retain_for_occurrence_review", "reason": "two genuine ensure expressions that may be VID candidates"},
+    {"canonical_form": "prepare for", "state": "reject_as_decision_relevant_recurrence", "reason": "transparent preparation-topic complements"},
+    {"canonical_form": "stay at", "state": "reject_as_decision_relevant_recurrence", "reason": "stay-at-home modifier and hotel-location complement do not repeat one target"},
+    {"canonical_form": "travel to", "state": "reject_as_decision_relevant_recurrence", "reason": "transparent destination complements"},
+    {"canonical_form": "work on", "state": "retain_for_occurrence_review", "reason": "issue-directed and study-participation contexts may differ in category and centrality"},
+    {"canonical_form": "write in", "state": "reject_as_decision_relevant_recurrence", "reason": "ordinary writing followed by email or book location phrases"}
+  ],
+  "gap_review": {
+    "state": "all_recurrent_gap_forms_rejected_as_discontinuous_occurrences",
+    "recurrent_canonical_forms": [
+      "be on", "go to", "take to", "go for", "make for", "ask for",
+      "come in", "do in", "have on", "get to", "add to", "come to",
+      "come with", "do good", "go in", "go with", "live in", "out in",
+      "take for"
+    ],
+    "reason": "context review found ordinary phrase boundaries or a different nested contiguous construction, not a separated occurrence of the projected OEWN form",
+    "named_target_check": "the only take in gap lead was taking classes in in education-16; no take it in-type occurrence was found",
+    "remaining_limit": "forms longer than two members, gaps longer than two tokens, spelling variants, and out-of-OEWN expressions still require manual review"
+  },
+  "candidate_pairs": [
+    {
+      "article_ids": ["education-07", "education-12"],
+      "shared_retained_forms": ["go on", "work on"],
+      "priority": "full_review_first",
+      "reason": "similar topic, 932 versus 994 tokens, and closely matched NGSL/BNC-COCA 2K values; work on may still fail target centrality"
+    },
+    {
+      "article_ids": ["education-12", "education-16"],
+      "shared_retained_forms": ["go on", "point out"],
+      "priority": "full_review_first",
+      "reason": "related higher-education topics and close NGSL-2K values; point out may remain a peripheral reporting device"
+    },
+    {
+      "article_ids": ["education-07", "health-03"],
+      "shared_retained_forms": ["feel like", "go on"],
+      "priority": "defer_after_education_pairs",
+      "reason": "topic, program, interview structure, and 394-token length differences threaten interpretation"
+    },
+    {
+      "article_ids": ["health-03", "health-22"],
+      "shared_retained_forms": ["go on", "go out"],
+      "priority": "defer_after_education_pairs",
+      "reason": "plausible go-out sense contrast but 503-token and roughly 7-8 percentage-point first-2K imbalances confound a paired material"
+    }
+  ]
+}

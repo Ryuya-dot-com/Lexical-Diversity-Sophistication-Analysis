@@ -1,0 +1,117 @@
+{
+  "audit_schema_version": "1.0.0",
+  "audit_id": "gate1-voa-out-of-inventory-recurrence-audit-v1",
+  "audited_on": "2026-09-02",
+  "inputs": {
+    "automated_profile_id": "gate1-voa-automated-screen-v1",
+    "automated_profile_sha256": "efe61f49a81e59274d532a650da4a362dab4067eeaa0f0fe79bdebf4b8b77603",
+    "mwe_contract_version": "0.10.0-mwe",
+    "mwe_contract_sha256": "6a5d3696f97fb07d17f903fe948f4e028ad2c6e42aef313b11325de9680b99ba",
+    "ngsl_profile_sha256": "f613834eac74e19cef787faf1414a716388c047b3f5b7e39db88c78883fef6d9",
+    "oewn_form_profile_sha256": "513714774f0e087e9ba03c8fa04e969b8314786ccbdaa06dbbeeb35127f6a41e",
+    "streusle_profile_id": "streusle-v5-vpc-vid-offline",
+    "streusle_profile_sha256": "448a4aeef60bc114cbd2fc6a839ddc168a068247222a708361ab7b32c9d3f6cd",
+    "streusle_release": "5.0",
+    "streusle_artifact_sha256": {
+      "train": "36aef0205a6e2e154b681d7520858693a264d3c40ba7d97c089345bbd1149a22",
+      "dev": "56cc1783962ce8c9f06b7649ffdccb48cea14ee7e4a8be2e35214ffc71303e9a",
+      "test": "f8144e6227db2e845cda4aa832f8d5644cb40b9e743d1dbe05663dd687d2c70c"
+    }
+  },
+  "construct": {
+    "purpose": "one bounded challenge search for recurrent VPC or VID leads absent from the OEWN form projection after every frozen recurrence pair failed",
+    "article_set_rule": "the 19 source-eligible VOA articles not already included in the five-article occurrence review",
+    "candidate_lexicon_rule": "casefolded strong STREUSLE 5.0 smwe lexlemma from V.VPC.full, V.VPC.semi, or V.VID in train, dev, or test; require two or more ASCII alphabetic space-delimited members; exclude exact OEWN projected forms",
+    "candidate_matching_rule": "reuse the frozen profile's NGSL surface-to-head projection for within-paragraph contiguous sequences and two-member sequences with one or two intervening tokens",
+    "channel_merge_rule": "merge contiguous and short-gap leads by canonical form before the cross-document upper-bound pair scan",
+    "holdout_boundary": "all STREUSLE splits are used only as an adversarial desk-search lexicon; no benchmark score, app lexicon, detector, or sense projection changes",
+    "stop_rule": "stop the frozen frame when even a generous union of prior triage leads and non-false new leads gives no article pair more than one repeated candidate form",
+    "excluded_inferences": [
+      "gold VOA MWE labels",
+      "validated contextual categories or senses",
+      "STREUSLE genre generalization",
+      "learner knowledge",
+      "passage admission",
+      "automatic-system accuracy"
+    ],
+    "source_row_columns": ["article_id", "source_sha256", "text_sha256", "paragraph_count"],
+    "candidate_decision_columns": ["canonical_form", "generated_occurrences", "generated_document_frequency", "upper_bound_article_ids", "decision_code"],
+    "raw_html_bundled": false,
+    "article_text_bundled": false,
+    "streusle_data_bundled": false
+  },
+  "source_verification": [
+    ["education-03", "7ebd1d025abfdb909965090279d9d122efb74fabb29003151fe87d59348781f8", "30c9a537ad18b933ffe3fbf8009b0a80d51c009ada511ed74c08660efa03e93b", 24],
+    ["education-06", "fe36e92199a2a209acd9fa17832f2516e10199947ebb73e0851c73886b18676e", "8cea873c90ca90f354592968af7da51ab1639ca377cb7ef1556728e5c93d5fd0", 29],
+    ["education-08", "ff22fd9727ea992f0654935de515437cba71a9af3947fdefa7b1e87cf48ad45a", "463fcf3d71763a9e959b33e2bf67f0c54d459581a1dc0e34bbcc19970d63ee4a", 29],
+    ["education-13", "53d9fcdb2e37d1c0ce4b66633e22dfa7c31011c9363573f44c501195dc644347", "dfb70858d6166408aaacbef9b4817d8ef39b6c98c8215d5333fda7144bcb7051", 25],
+    ["education-18", "3441a4bef46dcdc2b9578242bccfcdd4a415d5a31898654c4411d3731969a805", "5c0437b8ee61338301dae81c425e5cbcb23c8e08d96c8fc7a2d95e073ced2457", 17],
+    ["education-20", "97cbf849a8539aa84edbd142324715e952b73ec30614532902003ff0f5c1742c", "f85ca42421dea1483169a5447b741fe01e6058cec4a6fd7031297ed2a0c59732", 32],
+    ["education-22", "397768481fddfef9da568dd03ecd02b0d128e303853633141b285cd42cb3b423", "34e7d95201bb4f0cb987c52bed55efb6ec2406a5773385d4807a9439d4c35eff", 27],
+    ["education-23", "ca4c93415814292db07adb437b97b612c9a547025656328ecd53e03bddd5d99c", "d5ca73f7ea6e85c5a3be1b364650cdd1a7dd1449a108e76063794ca8465bbdd0", 38],
+    ["education-25", "f9efdee070e5b3e2000af9335c73bdd60b7643a3c86899aff0b28c07a03ba950", "04c72cc6d2652ab0739948c2cb4e2613b1072657be7d758a3718026417ef35fd", 31],
+    ["health-07", "fe357a4ddedc672249bca1914dd1675da8e0c89f64aaa1d48fa497c8778ea399", "710817862c72582acf98693633e2246f1667496615818887b6808043541ec7b6", 36],
+    ["health-11", "eca50afc3ce5e6468ca1565fe166bb91796f4f899fd8f7024c4612f674ca6ebf", "8b0e05be7b95ba4fdbd180ff6f01d51eed070fe6fda6a959d1dde90e141738d5", 23],
+    ["health-19", "2e7c9996d9f4eef0ce84f843bf1335f11a88895df0b674ea8838c2e9671de438", "064e291c252206d09ee5fe7a1cb8014d157c3f9ed6c3f3ed15fbd36caedd3fd1", 22],
+    ["health-20", "ca6dddb15da410b4907b5abe3f323a556a565369ed3ae2abe2390c998ce73d79", "5e8442b101e9c01f1cfe264a80df57b227b442d0075deabf07b6c6061360dbbc", 24],
+    ["health-24", "669b817ec75ceaca91410b85b11b05f102195ff3f67598c5232fceddf1509064", "7d55cf23db586913c88a17efab3171061f09c2931cac90d5cd2d47bd712a82cd", 18],
+    ["health-30", "caa50cc3def457e3cb5c135ca2e8d17af66a4c0573ca5ce67273dbaa3d40778e", "028d5bea2af5ce23ebf4e1e8b17922aa63948805067a06436fc094569fca3d8f", 18],
+    ["health-32", "f6fd8e7822b6596165879c5674624b54c86c1bab050a0b02f3d71ebacc5ff128", "7dddca3365f575caa1509a166e02c680c3f7e963b6346adc4bf5a54b87535f11", 30],
+    ["health-33", "ed407d867e4f9df3515a035568946cbf14be27f7c29df2101f4f5ff7ef2bb6b8", "91af83d0ffe611d0bad58f82bd6fbea85826e7c2b440f6740a6e0a6fb6a5d5a2", 27],
+    ["health-35", "afc9c71acb7c483de00537e3a280b417e6edd31c8237872ae99b187c3796e070", "1e0bb690ffbd1ce966ddaedb1a5e6398b95a0225797433860f9ed0b77ed50d89", 33],
+    ["health-38", "ba6c5d08a5a323249a6fdda3f5e80b307a0dc79e0b16af39a63d71ca0f9cc67b", "2394baeac4fc5ea87c0102b01070cf585ac0b660485cb08a151fb45b8d210299", 30]
+  ],
+  "generation_summary": {
+    "streusle_strong_types_before_projection_filter": 389,
+    "candidate_types_after_ascii_member_and_oewn_filters": 227,
+    "contiguous_leads": 30,
+    "contiguous_distinct_forms": 18,
+    "contiguous_cross_document_forms": 6,
+    "short_gap_leads": 41,
+    "short_gap_distinct_forms": 12,
+    "short_gap_cross_document_forms": 6,
+    "merged_cross_document_forms": 10
+  },
+  "merged_recurrent_candidate_decisions": [
+    ["have to", 26, 13, [], "modal_auxiliary_or_false_gap"],
+    ["be up", 4, 4, [], "false_gap_or_grammatical_string"],
+    ["have do", 5, 4, [], "perfect_auxiliary_or_false_gap"],
+    ["have it", 3, 3, [], "false_gap_possessive_string"],
+    ["spend time", 3, 3, ["education-20", "education-22", "health-33"], "provisional_vid_upper_bound"],
+    ["base on", 4, 2, ["education-22", "health-30"], "mixed_streusle_category_upper_bound"],
+    ["have time", 4, 2, ["education-13", "education-25"], "mixed_frame_upper_bound"],
+    ["make money", 4, 2, ["health-07", "health-19"], "provisional_vid_upper_bound"],
+    ["say no", 2, 2, ["health-20"], "one_vid_candidate_and_one_false_boundary"],
+    ["take time", 2, 2, ["education-20"], "one_vid_candidate_and_one_nested_take_time_off"]
+  ],
+  "upper_bound_pair_scan": {
+    "prior_triage_forms_included_even_if_later_reclassified": 13,
+    "new_non_false_or_unresolved_forms_included": ["base on", "have time", "make money", "say no", "spend time", "take time"],
+    "pair_columns": ["article_ids", "shared_candidate_forms"],
+    "pairs_with_one_shared_candidate_form": [
+      [["education-06", "education-25"], ["look for"]],
+      [["education-08", "education-25"], ["grow up"]],
+      [["education-13", "education-25"], ["have time"]],
+      [["education-18", "education-20"], ["care for"]],
+      [["education-18", "education-25"], ["care for"]],
+      [["education-18", "health-07"], ["care for"]],
+      [["education-20", "education-22"], ["spend time"]],
+      [["education-20", "education-25"], ["care for"]],
+      [["education-20", "health-07"], ["care for"]],
+      [["education-20", "health-33"], ["spend time"]],
+      [["education-22", "health-30"], ["base on"]],
+      [["education-22", "health-33"], ["spend time"]],
+      [["education-25", "health-07"], ["care for"]],
+      [["health-07", "health-11"], ["come with"]],
+      [["health-07", "health-19"], ["make money"]]
+    ],
+    "maximum_shared_candidate_forms_per_pair": 1,
+    "pairs_with_more_than_one_shared_candidate_form": []
+  },
+  "decision": {
+    "state": "frozen_voa_frame_exhausted_no_passage_pair_admitted",
+    "reason_code": "no_pair_exceeds_one_repeated_candidate_even_under_upper_bound",
+    "app_change": "none",
+    "next_action": "choose_and_freeze_material_redesign_before_more_candidate_search"
+  }
+}

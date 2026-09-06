@@ -1,0 +1,292 @@
+{
+  "review_schema_version": 1,
+  "review_id": "gutenberg-2026-08-30-front-matter-review-batch3",
+  "reviewed_on": "2026-09-03",
+  "status": "front_matter_reviewed_unit_gate_ready",
+  "inputs": {
+    "notice_audit_sha256": "f1688aa580ba84f65d3ae80ccaba1c65fb4ae1fcd8c7505494d86600cc68e33c",
+    "source_files_bundled": false
+  },
+  "artifact_decision": {
+    "analysis_source": "The exact SHA-256-pinned Project Gutenberg UTF-8 electronic file, not a reconstructed or imputed print edition.",
+    "permitted_claim": "Version-conditioned lexical and MWE analysis after deterministic non-body removal and unit admission.",
+    "forbidden_claims": [
+      "diplomatic representation of a named print edition",
+      "historical orthography evidence without comparison to page images",
+      "worldwide permission to bundle or serve source prose",
+      "representativeness of contemporary L2 or examination reading"
+    ]
+  },
+  "review_policy": {
+    "reviewed_material": "Title, copyright, dedication, contents, illustration, explicit transcriber-note, and source-authored prefatory matter needed to locate the first retained prose unit and document the electronic artifact.",
+    "excluded_from_units": "Project Gutenberg notices and producer-added summaries, title/copyright matter, dedications, contents, illustration lists and captions, advertisements, and transcriber notes.",
+    "first_unit_rule": "After the enumerated exclusions, freeze the first retained source-authored prose section. A source-authored preface, introduction, foreword, or reader address is not skipped to reach a later chapter.",
+    "front_matter_hash_rule": "SHA-256 over the exact raw bytes of the inclusive one-based line range before the first retained prose section, preserving source line endings.",
+    "textual_contributor_rule": "A translator, adapter, editor, introducer, underlying source author, or other retained textual contributor must be named and rights-reviewed; purely visual contributors do not enter prose units.",
+    "mwe_searches_run": 0
+  },
+  "supplementary_sources": [
+    {
+      "url": "https://www.ibdb.com/broadway-production/going-some-6644",
+      "role": "Broadway League database record identifying the 1909 Going Some play as written by Paul Armstrong and Rex Beach"
+    },
+    {
+      "url": "https://nyplorg-data-archives.s3.amazonaws.com/uploads/collection/generated_finding_aids/the21612.pdf",
+      "role": "New York Public Library finding aid giving Paul Armstrong authority dates as 1869-1915"
+    }
+  ],
+  "record_columns": [
+    "stratum",
+    "queue_rank",
+    "text_id",
+    "file_sha256",
+    "reviewed_front_matter_lines_inclusive",
+    "front_matter_sha256",
+    "first_unit_heading_line",
+    "publication_evidence",
+    "creator_and_contributor_evidence",
+    "edition_or_transcription_evidence",
+    "excluded_nonprose_material",
+    "decision"
+  ],
+  "records": [
+    [
+      "adult_or_unspecified",
+      21,
+      13530,
+      "8b65d90b0e62ef063a18ad04023244d64a4cb3968b29397eb827f6ac86a8093c",
+      [28, 83],
+      "67cf84baf31491d0d76609b7fb324a3ea16daa3bb0ab0093f4c19f99cee6ecf3",
+      84,
+      "The reviewed title matter gives 1912; publisher and place are absent.",
+      "Elinor Glyn is the sole retained prose creator. An attributed excerpt from Charles Kingsley's The Heroes is title-page paratext and is excluded rather than treated as Glyn prose.",
+      "The print publication statement is incomplete; no explicit electronic normalization note was found.",
+      "Title matter, frontispiece, dedication, and attributed epigraph.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "adult_or_unspecified",
+      22,
+      63142,
+      "2e84525c40e2b306c703141fef0364c17fa6bec6645ec1114fe263314c38feed",
+      [30, 70],
+      "7e2d16d68559e8162df998f39672d2b6d83dced29511412eb7774936065ef0ef",
+      71,
+      "Hurst and Blackett, London, 1881.",
+      "Margaret Oliphant is the sole retained prose creator.",
+      "No explicit textual normalization note was found in the reviewed matter or trailing notes.",
+      "Title, volume, publisher, and rights-reservation matter.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "adult_or_unspecified",
+      23,
+      26523,
+      "28cb46110af0f74fbf25fcd968a0c4dd796290a966bbd08b6bd5d3278cfa5fa2",
+      [29, 60],
+      "586bcc2836bd83dd79304ea85c2935e29ea1c17ec2fe36b902a2aed6b627b9e8",
+      61,
+      "G. P. Putnam's Sons, New York and London, 1904; copyright and April 1904 publication statements are present.",
+      "Paul Elmer More and Corra Harris are the two retained prose creators identified by the pinned catalog record; the opening source-authored letter introduces no additional contributor.",
+      "A source footnote says the letters' spelling was corrected for the press; this is print-edition intervention, not an electronic transcriber note.",
+      "Electronic production credit, title, publisher, copyright, and contents matter; the opening source-authored letter is retained as the first unit.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "adult_or_unspecified",
+      25,
+      29545,
+      "377eb07e3b019da5ef5f5c5b868e077b910275db375541f7eb1808e60014ac77",
+      [30, 143],
+      "6bf30c7866f67c8e47034eafcf1f1dc8da29d7998313d1a0fd370c9bd59709eb",
+      144,
+      "Cassell and Company, London, Paris, New York, Toronto, and Melbourne, 1908.",
+      "Maurice Hewlett is the sole retained prose creator; William Hyde is credited only for illustrations.",
+      "The transcriber explains how superscripted characters are represented.",
+      "Electronic production credit, transcriber note, illustrations, title, publisher, contents, and illustration list; the source-authored introduction is retained.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "adult_or_unspecified",
+      26,
+      27996,
+      "61e8814a741b803cc54e8e43b06aa98b461515a5ec8a08d42fbef9b6f9b0db1a",
+      [27, 39],
+      "879006b699151f54aa3bb4b749a81fc982664d0922f3044938d0ebf0b46724e9",
+      40,
+      "No print publisher, place, or date is present in the reviewed matter.",
+      "Mayne Reid is the sole retained prose creator.",
+      "The print publication statement is incomplete; no explicit textual normalization note was found.",
+      "Electronic production credit and title matter.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "adult_or_unspecified",
+      27,
+      6488,
+      "b61ab6eede85d7cec7bf23d01e24269cabfa62311d7e59cacd6c5e0363362c6a",
+      [28, 56],
+      "7a484884ae61ce546c73737cdf80430a5a2b39e12a46c345f9d11abcc36de737",
+      57,
+      "No print publisher, place, or date is present in the reviewed title matter; the underlying play opened on Broadway in 1909.",
+      "Rex Beach is the named prose creator. The title page says the book was suggested by the play by Beach and Paul Armstrong; the Broadway League confirms both play authors and the New York Public Library gives Armstrong's dates as 1869-1915, so the underlying contribution is named and its Japanese term expired long before 2018. Mark Fenderson is credited only for illustrations.",
+      "The exact dependence on the play is not delimited, so claims remain about this electronic text version; no explicit normalization note was found.",
+      "Electronic production credit, title, play-source credit, and illustration credit.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "adult_or_unspecified",
+      30,
+      40587,
+      "9e86e5649cfeb6b0b8860443d8ca3eafbc7f5428b1c8aea74cdd65ea30e37d94",
+      [31, 52],
+      "31ee329052a876128f9bf43a452daeedc01752624d2ce07db0d3d4fc4ca66e74",
+      53,
+      "Grosset and Dunlap, New York; copyright 1911 by the Bobbs-Merrill Company.",
+      "Herbert Quick is the sole retained prose creator.",
+      "No explicit textual normalization note was found in the reviewed matter or trailing notes.",
+      "Title, publisher, and copyright matter.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "juvenile",
+      21,
+      36396,
+      "dc00c0fbe322984427bac829e5a3185fdfbbaa2c8d66338ed82b298adf319500",
+      [30, 167],
+      "5d29fc07734020d8bef2936140cc28f971e183a8aef2cf3122b00c369cc3a56e",
+      168,
+      "Cupples and Leon Company, New York, 1917.",
+      "Alice B. Emerson is the publication pseudonym retained as creator identity; the conservative W. Bert Foster fallback was already rights-reviewed. No additional textual contributor is named.",
+      "The electronic file retains a stray closing preformatted-text tag; no explicit normalization note was found.",
+      "Electronic production credit, illustration, title, publisher advertisement, copyright, and contents matter.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "juvenile",
+      24,
+      72094,
+      "513982ca90b59257d1e1d7b3f8f63ab20dd4bae795c3f493c9d193c6bd598b91",
+      [30, 86],
+      "1a42a6a57fe4222b258d5e7adc35ba129cb145ec6b07aeeb4a546acd76873843",
+      87,
+      "Lee and Shepard, Boston, 1866; the copyright entry is 1862.",
+      "Oliver Optic is the named creator and the copyright page identifies the same author as William T. Adams; no additional textual contributor is named.",
+      "Trailing notes mark italics, standardize inconsistent hyphenation, retain archaic or variant spelling, and identify new electronic cover art.",
+      "Illustrations, title, publisher, copyright, stereotype-foundry, electronic cover-art, and transcriber-note matter.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "juvenile",
+      25,
+      36833,
+      "6108d75e1b2a7bde69ea7b9abf96908169ea6e549caf23e4d2f54a05c55be289",
+      [30, 83],
+      "43ffc98a4ef7055e6922363793d7277bcea0b26a27c0ec59147dca7553426a71",
+      84,
+      "A. L. Burt Company, New York; copyright 1916.",
+      "Hildegard G. Frey is the sole retained prose creator; the frontispiece is uncredited and excluded.",
+      "The electronic file retains a stray closing preformatted-text tag; no explicit normalization note was found.",
+      "Electronic production credit, frontispiece, title, publisher, and copyright matter.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "juvenile",
+      26,
+      14890,
+      "e812ee918f4d1c293a7e3dca591b5ee308f8a2d2a14f4bf5a7edccd4ad2cd386",
+      [28, 56],
+      "759d88ac36b3335b562260b0018ca14049389e6533a6ecd09c578d7db35288f5",
+      57,
+      "Appleton-Century-Crofts, New York, 1916.",
+      "Joseph A. Altsheler is the sole retained prose creator.",
+      "No explicit textual normalization note was found in the reviewed matter or trailing notes.",
+      "Electronic production credit and title/publisher matter; the source-authored foreword is retained.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "juvenile",
+      27,
+      21326,
+      "6b7384f81921f738c80e9e19aaf4655982a35a2d238ba04d4d6b9af5234f3108",
+      [27, 64],
+      "12478c683fd45a60a9edc7f133ef2eeefaeb3e1f7848402fb497f1e5391764ae",
+      65,
+      "No print publisher, place, or date is present in the reviewed matter.",
+      "George Manville Fenn is the sole retained source-work creator; Nick Hodson's electronic synopsis is excluded rather than treated as source prose.",
+      "The print publication statement is incomplete; no explicit textual normalization note was found.",
+      "Electronic production credit, synopsis, and repeated title matter.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "juvenile",
+      28,
+      25817,
+      "34396a9651546722f942543b3f5f5911907aebf31a5a17b66f3186e59422a405",
+      [29, 71],
+      "65aa5dc462149d4fd192efffce5d4b8baf5eb29f99860ee3a3c0215c9005f614",
+      72,
+      "No print publisher, place, or date is present in the reviewed matter.",
+      "Harry Collingwood is the sole retained source-work creator; Nick Hodson's electronic synopsis is excluded and William Heysham Overend is listed only as illustrator in the pinned catalog record.",
+      "The print publication statement is incomplete; no explicit textual normalization note was found.",
+      "Electronic production credit, synopsis, and repeated title matter.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "juvenile",
+      29,
+      23683,
+      "01a6038c9b85c3c22dbf7ecc750898da0a455debd7a0c4abaffa977c92080967",
+      [30, 181],
+      "7bca271aca73b717b4d3cf1bc1658fa4b92cfaf8df9daff60417438ab63ec88f",
+      182,
+      "Woolworth, Ainsworth and Company, Boston, and A. S. Barnes and Company, New York; copyright 1868 by A. R. Baker.",
+      "Mrs. Madeline Leslie is the named prose creator. A. R. Baker is identified only as copyright claimant, not as a textual contributor.",
+      "No explicit textual normalization note was found in the reviewed matter or trailing notes.",
+      "Electronic production credit, title, publisher, copyright, illustrations, series advertisement, dedication, and contents matter.",
+      "ready_for_version_conditioned_unit_gate"
+    ],
+    [
+      "juvenile",
+      30,
+      44045,
+      "439cb4022fecf61116dc48c7485a53d85380efbf81722f771b8db31eea84c67b",
+      [28, 86],
+      "a7b46551d923b0ab71a199593a4e8faa3cdab4825a3b3d8eccc94e1d6c8cfb63",
+      87,
+      "F. Houlston and Son, Wellington; no year is printed, while the prior rights review dates the edition to approximately 1820-1840.",
+      "The work remains anonymously attributed. An unsigned frontispiece verse and a Shakespeare title-page epigraph are excluded paratext, not evidence of prose authorship.",
+      "Trailing notes report silently corrected minor punctuation and moved illustrations.",
+      "Electronic artifact/image notes, frontispiece, verse, title, epigraph, publisher, price, illustrations, and trailing transcriber notes.",
+      "ready_for_version_conditioned_unit_gate"
+    ]
+  ],
+  "boundary_location_exposure": {
+    "reason": "Locating first-unit boundaries and trailing transcriber notes exposed bounded post-boundary text and isolated full-file pattern matches; this is disclosed even though no lexical or MWE decision was made.",
+    "text_ids": [13530, 63142, 26523, 29545, 27996, 6488, 40587, 36396, 72094, 36833, 14890, 21326, 25817, 23683, 44045],
+    "incidental_target_string_exposure": {
+      "by_text_id": {
+        "63142": ["give up"],
+        "36833": ["take in"]
+      },
+      "queried": false,
+      "contextual_mwe_decisions_made": 0
+    },
+    "selection_effect": "None: the queue, exclusions, first-unit rule, and length gate were frozen before exposure; contributor review follows provenance rather than topic or lexical content.",
+    "mwe_or_lexical_search_run": false
+  },
+  "summary": {
+    "records": 15,
+    "complete_print_publication_statement": 9,
+    "incomplete_print_publication_statement": 6,
+    "additional_retained_textual_contributors": 1,
+    "explicit_transcriber_notes": 3,
+    "source_authored_preface_or_introduction_first": 3,
+    "excluded_electronic_producer_summaries": 2,
+    "ready_for_version_conditioned_unit_gate": 15,
+    "held_for_underlying_adaptation_provenance": 0,
+    "admitted_units": 0,
+    "mwe_searches_run": 0
+  },
+  "next_action": "Mechanically delimit and count the first retained prose unit for all 15 files in fixed queue order. Do not skip a source-authored opening letter, introduction, or foreword to reach a chapter; reject an invalid first unit and do not substitute a later unit. Keep every source and passing unit local and unbundled."
+}

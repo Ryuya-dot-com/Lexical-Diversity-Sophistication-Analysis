@@ -1,0 +1,622 @@
+{
+  "review_schema_version": "1.0.0",
+  "review_id": "gate1-simplewiki-route2-give-up-desk-review-v1",
+  "reviewed_on": "2026-09-02",
+  "inputs": {
+    "rendered_screen_id": "gate1-simplewiki-route2-rendered-screen-v1",
+    "rendered_screen_sha256": "e0cce039a3331fffdc0e8ff914506db5004bf7c782d5cceb2d354a5f1cfac148",
+    "oewn_release": "2025-edition; commit dc343f2683279ecbb13fab4e2fd778d7b162d287",
+    "oewn_artifact_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+    "wikimedia_terms_url": "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use"
+  },
+  "construct": {
+    "purpose": "bounded project-internal desk review of the frozen give up queue until the prespecified three-page, two-meaning early stop",
+    "method": "Read each complete retained article in rank order, adjudicate every automatic contiguous or one-to-eight-token gap lead, and inspect every give-head token for missed or longer-gap give up occurrences.",
+    "review_status": "preliminary single project review; author confirmation and independent annotation are absent",
+    "automatic_decision_columns": [
+      "lead_id",
+      "channel",
+      "paragraph",
+      "member_profile_token_positions",
+      "gap_token_count",
+      "surface_span_sha256",
+      "desk_state",
+      "provisional_category",
+      "idiomaticity_status",
+      "operational_meaning_id",
+      "candidate_sense_ids",
+      "reason_or_note"
+    ],
+    "non_focal_decision_columns": [
+      "lead_id",
+      "canonical_form",
+      "channel",
+      "paragraph",
+      "member_profile_token_positions",
+      "gap_token_count",
+      "surface_span_sha256",
+      "desk_state",
+      "provisional_category",
+      "idiomaticity_status",
+      "operational_meaning_id",
+      "candidate_sense_ids",
+      "reason_or_note"
+    ],
+    "screening_rule": "Select the earliest admissible page, the earliest admissible page with a clearly different operational paraphrase meaning, and the earliest remaining admissible page; stop after that third selection.",
+    "formal_stop_rank": 15,
+    "protocol_deviation": {
+      "state": "post_stop_row_viewed_not_used",
+      "description": "Desk rank 16 was displayed in the same internal review batch as ranks 13-15 before the early-stop decision was finalized. It receives no formal label and cannot replace or supplement ranks 3, 5, and 15.",
+      "selection_effect": "none; rank 15 completed the frozen sense-stratified selection"
+    },
+    "content_boundary_issue": "The frozen rule excludes sexual violence but does not operationalize sexually explicit consensual material. Rank 13 is held unresolved rather than excluded by a new post hoc rule.",
+    "excluded_inferences": [
+      "gold MWE labels",
+      "validated contextual senses",
+      "MWE prevalence",
+      "learner knowledge",
+      "comprehension validity",
+      "final passage admission",
+      "automatic detector accuracy outside the reviewed prefix"
+    ],
+    "article_text_bundled": false,
+    "surface_spans_bundled": false,
+    "rendered_html_bundled": false,
+    "contributor_data_bundled": false
+  },
+  "summary": {
+    "canonical_form": "give up",
+    "desk_row_count": 15,
+    "distinct_page_count": 15,
+    "give_head_token_count_reviewed": 35,
+    "automatic_contiguous_lead_count": 15,
+    "automatic_gap_lead_count": 4,
+    "confirmed_target_occurrence_count": 15,
+    "false_span_count": 4,
+    "manual_missed_target_occurrence_count": 0,
+    "target_absent_page_count": 3,
+    "provisionally_selected_page_count": 3,
+    "selected_desk_screen_ranks": [3, 5, 15],
+    "selected_operational_meaning_ids": [
+      "relinquish_territorial_control",
+      "abandon_territorial_claim",
+      "relinquish_embodied_form_permanently",
+      "stop_using_artistic_system"
+    ],
+    "selected_target_occurrence_count": 5,
+    "selected_discontinuous_target_occurrence_count": 0,
+    "primary_nonselection_reason_counts": {
+      "prespecified_violence_or_self_harm_content": 5,
+      "prespecified_sexual_coercion_content": 1,
+      "broken_propositional_coherence_after_mechanical_exclusions": 2,
+      "target_absent": 3,
+      "unresolved_explicit_consensual_sexual_content_boundary": 1
+    },
+    "non_focal_confirmed_occurrence_count": 0,
+    "non_focal_false_or_outside_count": 7,
+    "target_state": "provisionally_passed_at_frozen_early_stop_pending_author_confirmation"
+  },
+  "articles": [
+    {
+      "desk_screen_rank": 1,
+      "queue_rank": 2,
+      "page_id": 801471,
+      "revision_id": 10600793,
+      "revision_timestamp": "2025-10-30T07:06:21Z",
+      "title": "Assassination of Yitzhak Rabin",
+      "extracted_text_sha256": "1e31a8889b2f8c7df784e481837677623983bd2513627562a6b2f77e9a6f194a",
+      "profile_token_count": 467,
+      "give_head_token_count_reviewed": 1,
+      "automatic_decisions": [
+        ["give-up-01-contiguous-01", "contiguous", 7, [282, 283], 0, "ab69133ad798eeb516c708e70bbb5d8cd4c2141038af56235f428c53a7aeb3b7", "confirmed_target_occurrence", "VPC.full", "idiomatic", "stop_attempting_activity", ["give_up%2:33:00::", "give_up%2:42:00::"], "the medical team ceased attempts to revive the victim"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass",
+        "source_cueing": "ordinary unmarked prose with no explicit target gloss",
+        "centrality_state": "pass",
+        "background_state": "pass_from_retained_prose_with_named_event_load",
+        "content_state": "reject_prespecified_acute_violence",
+        "language_or_source_threats": ["assassination", "gunshot injuries", "failed resuscitation", "death"],
+        "global_question": null,
+        "target_critical_item": null
+      },
+      "rights": null,
+      "screening_selection_role": "rejected_before_first_selection",
+      "passage_state": "reject_prespecified_acute_violence"
+    },
+    {
+      "desk_screen_rank": 2,
+      "queue_rank": 8,
+      "page_id": 19,
+      "revision_id": 10897725,
+      "revision_timestamp": "2026-06-23T19:26:06Z",
+      "title": "Farming",
+      "extracted_text_sha256": "72187149543f3546d15b2ea824669a889c760120a78030f1965521db470fa382",
+      "profile_token_count": 857,
+      "give_head_token_count_reviewed": 3,
+      "automatic_decisions": [
+        ["give-up-02-contiguous-01", "contiguous", 4, [100, 101], 0, "ab69133ad798eeb516c708e70bbb5d8cd4c2141038af56235f428c53a7aeb3b7", "confirmed_target_occurrence", "VPC.full", "idiomatic", "stop_nomadic_hunting_practice", ["give_up%2:31:00::", "give_up%2:42:00::"], "people ceased nomadic hunting when becoming settlers"],
+        ["give-up-02-gap-01", "gap", 4, [92, 101], 8, "1f37ee6aca2526340a39ce1b8dbaf9e717b35a796b8102e485737325a5223f9d", "false_span", null, "not_assessed", null, [], "starts in give rise and ends at a separate complete give up occurrence"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {
+        "prose_boundary_state": "fail",
+        "coherence_state": "reject_dangling_list_and_table_introductions",
+        "source_cueing": "ordinary unmarked prose with no explicit target gloss",
+        "centrality_state": "pass",
+        "background_state": "pass_from_retained_prose_with_agricultural_terminology",
+        "content_state": "pass_low_risk_first_pilot",
+        "language_or_source_threats": ["the excluded Problems lists leave two dangling introductions", "the excluded crop table leaves an unsupported figure discussion", "minor grammatical errors"],
+        "global_question": null,
+        "target_critical_item": null
+      },
+      "rights": null,
+      "screening_selection_role": "rejected_before_first_selection",
+      "passage_state": "reject_broken_propositional_coherence"
+    },
+    {
+      "desk_screen_rank": 3,
+      "queue_rank": 11,
+      "page_id": 802289,
+      "revision_id": 10698563,
+      "revision_timestamp": "2026-01-03T03:16:46Z",
+      "title": "Peace of Riga",
+      "extracted_text_sha256": "691bd6f6de87cad9ce51f0d2d271284d080c70acf65e733cdb0cdbc851039233",
+      "profile_token_count": 450,
+      "give_head_token_count_reviewed": 4,
+      "automatic_decisions": [
+        ["give-up-03-contiguous-01", "contiguous", 3, [86, 87], 0, "ab69133ad798eeb516c708e70bbb5d8cd4c2141038af56235f428c53a7aeb3b7", "confirmed_target_occurrence", "VPC.full", "idiomatic", "relinquish_territorial_control", ["give_up%2:33:01::", "give_up%2:40:01::"], "Russia relinquished control over Poland under a treaty"],
+        ["give-up-03-contiguous-02", "contiguous", 6, [350, 351], 0, "bcfea9f848bc62a0d99600b0b3da3d05016ec0be55ff64c294eb19371fda6521", "confirmed_target_occurrence", "VPC.full", "idiomatic", "abandon_territorial_claim", ["give_up%2:31:00::", "give_up%2:40:02::"], "military problems caused abandonment of a territorial demand"],
+        ["give-up-03-contiguous-03", "contiguous", 7, [440, 441], 0, "bcfea9f848bc62a0d99600b0b3da3d05016ec0be55ff64c294eb19371fda6521", "confirmed_target_occurrence", "VPC.full", "idiomatic", "relinquish_territorial_control", ["give_up%2:33:01::", "give_up%2:40:01::", "give_up%2:40:03::"], "the Soviets were willing to cede Minsk"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [
+        ["give-up-03-take-in-gap-01", "take in", "gap", 4, [137, 140], 2, "70bd5226c58249902040ce0817891b9c4aa21296a69d68e310e83144fdb23b94", "false_span", null, "not_assessed", null, [], "literal passive take followed by a temporal in modifier"]
+      ],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass_with_language_threats",
+        "source_cueing": "ordinary unmarked treaty narrative with no explicit target gloss",
+        "centrality_state": "pass",
+        "centrality_basis": "territorial concessions explain the treaty outcome and are needed for a global account of the settlement",
+        "background_state": "pass_from_retained_prose_with_european_history_load",
+        "content_state": "pass_low_risk_first_pilot",
+        "language_or_source_threats": ["dense named-event and geopolitical background", "minor grammatical and spelling errors", "historical claims need specialist review"],
+        "global_question": {
+          "item_id": "give-up-03-global-01",
+          "prompt": "Why did the negotiations end with the territorial settlement described in the article?",
+          "expected_propositions": ["both sides were tired of war", "Soviet military problems weakened its position", "the League of Nations and Polish political preferences constrained the settlement", "territorial control and claims were relinquished"],
+          "target_dependency": "the focal meanings supply the territorial-concession proposition rather than a phrase definition",
+          "state": "draft_project_internal_uncued"
+        },
+        "target_critical_item": {
+          "item_id": "give-up-03-target-01",
+          "prompt": "What territorial concessions does the article attribute to Russia or the Soviets?",
+          "expected_proposition": "control over Poland and claims to other land, potentially including Minsk, were relinquished",
+          "phrase_definition_item": false,
+          "state": "draft_project_internal"
+        }
+      },
+      "rights": {
+        "permanent_revision_url": "https://simple.wikipedia.org/w/index.php?title=Peace_of_Riga&oldid=10698563",
+        "revision_history_url": "https://simple.wikipedia.org/w/index.php?title=Peace_of_Riga&action=history",
+        "license_route": "CC BY-SA 4.0",
+        "revision_comments_checked_through_target": 22,
+        "import_or_copy_comment_flags": [],
+        "current_wikitext_notice_flags": [],
+        "additional_attribution": [],
+        "modification_notice": "Project extraction retains rendered headings and main-prose paragraphs while excluding page furniture, tables, lists, media, captions, references, and tail sections.",
+        "release_state": "metadata_only_in_repository; extracted prose remains local"
+      },
+      "screening_selection_role": "earliest_admissible_page",
+      "passage_state": "provisionally_selected_pending_author_confirmation"
+    },
+    {
+      "desk_screen_rank": 4,
+      "queue_rank": 12,
+      "page_id": 283859,
+      "revision_id": 10334560,
+      "revision_timestamp": "2025-06-16T18:15:47Z",
+      "title": "Angela Burdett-Coutts",
+      "extracted_text_sha256": "a2c7b63b58410e6dc1941ea6ca6a9b6839f83f84fc9805fb526e5805ad9c15d0",
+      "profile_token_count": 469,
+      "give_head_token_count_reviewed": 3,
+      "automatic_decisions": [
+        ["give-up-04-gap-01", "gap", 3, [129, 136], 6, "7901e8808b1ddda87c320f79ce6a097c0207256182d3aad01dfcc587e0aec7cb", "false_span", null, "not_assessed", null, [], "give away is followed later by the separate set up construction"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {"downstream_state": "not_scored_after_target_absence"},
+      "rights": null,
+      "screening_selection_role": "target_absent",
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 5,
+      "queue_rank": 13,
+      "page_id": 450623,
+      "revision_id": 10865079,
+      "revision_timestamp": "2026-05-21T21:22:15Z",
+      "title": "Steven Universe",
+      "extracted_text_sha256": "79769da8e230dac9833e86c74f07069e368da1b6336728f2e52e08d93994b718",
+      "profile_token_count": 546,
+      "give_head_token_count_reviewed": 2,
+      "automatic_decisions": [
+        ["give-up-05-contiguous-01", "contiguous", 8, [412, 413], 0, "bcfea9f848bc62a0d99600b0b3da3d05016ec0be55ff64c294eb19371fda6521", "confirmed_target_occurrence", "VPC.full", "idiomatic", "relinquish_embodied_form_permanently", ["give_up%2:40:00::", "give_up%2:40:03::"], "the character permanently relinquished her physical form so a child could be born"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [
+        ["give-up-05-take-in-gap-01", "take in", "gap", 7, [372, 379], 6, "5b475aaaae87a0b6505facf66ad932a3eddf0ad7252ac5da4d8d6975b2eb93dd", "false_span", null, "not_assessed", null, [], "starts in take on and ends at the preposition introducing an in-order clause"]
+      ],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass_with_language_threats",
+        "source_cueing": "ordinary unmarked character-history prose; the birth purpose constrains the meaning without explicitly glossing the target",
+        "centrality_state": "pass",
+        "centrality_basis": "the relinquishment explains the protagonist's birth and inherited gem, a central relationship in the article",
+        "background_state": "pass_from_retained_prose_with_fictional_world_terminology",
+        "content_state": "pass_with_fictional_self_erasure_boundary",
+        "language_or_source_threats": ["fictional warfare and punishment", "voluntary loss of embodied form may be interpreted as self-sacrifice", "multiple grammatical and spelling errors"],
+        "global_question": {
+          "item_id": "give-up-05-global-01",
+          "prompt": "How does the article connect Rose's conflict with Homeworld to Steven's origin?",
+          "expected_propositions": ["Rose was originally Pink Diamond", "she opposed Homeworld to protect Earth", "she relinquished her physical form so Steven could be born", "Steven inherited her gem"],
+          "target_dependency": "the focal meaning supplies the relinquished-form proposition rather than a phrase definition",
+          "state": "draft_project_internal_uncued"
+        },
+        "target_critical_item": {
+          "item_id": "give-up-05-target-01",
+          "prompt": "What did Rose do so that Steven could be born?",
+          "expected_proposition": "she permanently relinquished her physical form",
+          "phrase_definition_item": false,
+          "state": "draft_project_internal"
+        }
+      },
+      "rights": {
+        "permanent_revision_url": "https://simple.wikipedia.org/w/index.php?title=Steven_Universe&oldid=10865079",
+        "revision_history_url": "https://simple.wikipedia.org/w/index.php?title=Steven_Universe&action=history",
+        "license_route": "CC BY-SA 4.0",
+        "revision_comments_checked_through_target": 282,
+        "import_or_copy_comment_flags": ["a direct-copy edit from English Wikipedia was explicitly reverted at revision 5545666"],
+        "current_wikitext_notice_flags": [],
+        "additional_attribution": [],
+        "modification_notice": "Project extraction retains rendered headings and main-prose paragraphs while excluding page furniture, tables, lists, media, captions, references, and tail sections.",
+        "release_state": "metadata_only_in_repository; extracted prose remains local"
+      },
+      "screening_selection_role": "earliest_admissible_with_different_operational_meaning",
+      "passage_state": "provisionally_selected_pending_author_confirmation"
+    },
+    {
+      "desk_screen_rank": 6,
+      "queue_rank": 19,
+      "page_id": 1125015,
+      "revision_id": 10906167,
+      "revision_timestamp": "2026-07-01T09:06:06Z",
+      "title": "Rashtrakuta Empire",
+      "extracted_text_sha256": "9d1403cbe9b5688d09f15167cd4b671cb0f5b387d77b8ee453a13c2b78a68235",
+      "profile_token_count": 804,
+      "give_head_token_count_reviewed": 1,
+      "automatic_decisions": [
+        ["give-up-06-contiguous-01", "contiguous", 13, [716, 717], 0, "ab69133ad798eeb516c708e70bbb5d8cd4c2141038af56235f428c53a7aeb3b7", "confirmed_target_occurrence", "VPC.full", "idiomatic", "relinquish_position", ["give_up%2:40:03::", "give_up%2:41:05::"], "the emperor relinquished his throne"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [
+        ["give-up-06-make-it-contiguous-01", "make it", "contiguous", 13, [755, 756], 0, "a9702e274a086927dfddfceeb2d7759231b25075b9d6e2625c6343fc414016c6", "literal_or_grammatical", null, "not_assessed", null, [], "resultative make plus pronoun object and capital complement, not a VID"]
+      ],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass_with_language_threats",
+        "source_cueing": "ordinary unmarked decline narrative with no explicit target gloss",
+        "centrality_state": "pass",
+        "background_state": "pass_from_retained_prose_with_dense_dynastic_history",
+        "content_state": "reject_prespecified_self_inflicted_death",
+        "language_or_source_threats": ["the target sentence immediately links abdication to voluntary fasting unto death", "religious and cultural interpretation requires specialist review", "dense warfare and dynastic terminology"],
+        "global_question": null,
+        "target_critical_item": null
+      },
+      "rights": null,
+      "screening_selection_role": "rejected_after_second_selection",
+      "passage_state": "reject_prespecified_self_inflicted_death"
+    },
+    {
+      "desk_screen_rank": 7,
+      "queue_rank": 24,
+      "page_id": 839197,
+      "revision_id": 10173000,
+      "revision_timestamp": "2025-04-06T00:49:12Z",
+      "title": "Itadaki Street DS",
+      "extracted_text_sha256": "31b7ff12ab3568dbbffef0fd659878ad7774d0140fd62f8cfc7db8a582a4d23c",
+      "profile_token_count": 424,
+      "give_head_token_count_reviewed": 1,
+      "automatic_decisions": [
+        ["give-up-07-gap-01", "gap", 8, [363, 368], 4, "3a91ca8dafcb446255ee1babc116a0b254dd43f4114ce8c4a9d77afb874c30f6", "false_span", null, "not_assessed", null, [], "give governs marks while up belongs to the separate leveling up construction"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {"downstream_state": "not_scored_after_target_absence"},
+      "rights": null,
+      "screening_selection_role": "target_absent",
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 8,
+      "queue_rank": 25,
+      "page_id": 121940,
+      "revision_id": 9587300,
+      "revision_timestamp": "2024-06-08T11:21:37Z",
+      "title": "Hercules in the Maze of the Minotaur",
+      "extracted_text_sha256": "3a5ba403de5aa8f16cc03df5790a9a1cff0a2d684fade80e3bfd55133a921b58",
+      "profile_token_count": 890,
+      "give_head_token_count_reviewed": 3,
+      "automatic_decisions": [
+        ["give-up-08-contiguous-01", "contiguous", 1, [25, 26], 0, "623448243c17b64205099193f57084bb3a4de22e621060f998e85ac4fdbc323a", "confirmed_target_occurrence", "VPC.full", "idiomatic", "stop_adventuring_activity", ["give_up%2:31:00::", "give_up%2:42:00::"], "the character ceased traveling adventures"],
+        ["give-up-08-contiguous-02", "contiguous", 3, [481, 482], 0, "ab69133ad798eeb516c708e70bbb5d8cd4c2141038af56235f428c53a7aeb3b7", "confirmed_target_occurrence", "VPC.full", "idiomatic", "stop_adventuring_activity", ["give_up%2:31:00::", "give_up%2:42:00::"], "the character ceased his adventures"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass_with_language_threats",
+        "source_cueing": "ordinary unmarked plot prose with no explicit target gloss",
+        "centrality_state": "pass",
+        "background_state": "pass_from_retained_prose_with_mythological_names",
+        "content_state": "reject_prespecified_acute_violence",
+        "language_or_source_threats": ["monster attacks", "multiple killings", "extended combat", "frequent grammatical errors"],
+        "global_question": null,
+        "target_critical_item": null
+      },
+      "rights": null,
+      "screening_selection_role": "rejected_after_second_selection",
+      "passage_state": "reject_prespecified_acute_violence"
+    },
+    {
+      "desk_screen_rank": 9,
+      "queue_rank": 30,
+      "page_id": 778209,
+      "revision_id": 10408828,
+      "revision_timestamp": "2025-07-22T03:26:24Z",
+      "title": "Tino rangatiratanga",
+      "extracted_text_sha256": "98c62b2e930532e5d7f4b9fb29e743688fe5af6640f9b1dd533367eba7e731d3",
+      "profile_token_count": 532,
+      "give_head_token_count_reviewed": 3,
+      "automatic_decisions": [
+        ["give-up-09-contiguous-01", "contiguous", 6, [294, 295], 0, "bcfea9f848bc62a0d99600b0b3da3d05016ec0be55ff64c294eb19371fda6521", "confirmed_target_occurrence", "VPC.full", "idiomatic", "renounce_legal_right", ["give_up%2:31:00::", "give_up%2:40:03::"], "the article states that the rights cannot be renounced"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {
+        "prose_boundary_state": "fail",
+        "coherence_state": "reject_missing_dictionary_list",
+        "source_cueing": "ordinary unmarked treaty discussion with no explicit target gloss",
+        "centrality_state": "pass",
+        "background_state": "pass_from_retained_prose_with_indigenous_rights_and_treaty_load",
+        "content_state": "pass_low_risk_first_pilot",
+        "language_or_source_threats": ["the excluded dictionary list leaves an unanswered introduction", "politically and culturally sensitive sovereignty claims", "specialist review is required"],
+        "global_question": null,
+        "target_critical_item": null
+      },
+      "rights": null,
+      "screening_selection_role": "rejected_after_second_selection",
+      "passage_state": "reject_broken_propositional_coherence"
+    },
+    {
+      "desk_screen_rank": 10,
+      "queue_rank": 31,
+      "page_id": 1259329,
+      "revision_id": 10842740,
+      "revision_timestamp": "2026-05-02T22:32:41Z",
+      "title": "Princess Nafissa",
+      "extracted_text_sha256": "fdf50f9e2c552ce657e1be92a4ebccb41408bd4dc7ec9c15518e5a93084b2f49",
+      "profile_token_count": 560,
+      "give_head_token_count_reviewed": 1,
+      "automatic_decisions": [
+        ["give-up-10-contiguous-01", "contiguous", 7, [376, 377], 0, "ab69133ad798eeb516c708e70bbb5d8cd4c2141038af56235f428c53a7aeb3b7", "confirmed_target_occurrence", "VPC.full", "idiomatic", "surrender_in_defeat", ["give_up%2:33:00::", "give_up%2:33:01::"], "the royal family agreed to surrender peacefully"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass",
+        "source_cueing": "ordinary unmarked coup narrative with no explicit target gloss",
+        "centrality_state": "pass",
+        "background_state": "pass_from_retained_prose_with_iraqi_history_load",
+        "content_state": "reject_prespecified_acute_violence",
+        "language_or_source_threats": ["promised safe surrender followed by mass shooting", "multiple deaths", "assassination"],
+        "global_question": null,
+        "target_critical_item": null
+      },
+      "rights": null,
+      "screening_selection_role": "rejected_after_second_selection",
+      "passage_state": "reject_prespecified_acute_violence"
+    },
+    {
+      "desk_screen_rank": 11,
+      "queue_rank": 32,
+      "page_id": 1005120,
+      "revision_id": 10751640,
+      "revision_timestamp": "2026-02-15T18:16:10Z",
+      "title": "Edith Frank",
+      "extracted_text_sha256": "7a4a6139227db12b25de72ae4099e4e94f051d8cca4ddc19e18039af24aaaa5a",
+      "profile_token_count": 832,
+      "give_head_token_count_reviewed": 3,
+      "automatic_decisions": [
+        ["give-up-11-contiguous-01", "contiguous", 6, [494, 495], 0, "bcfea9f848bc62a0d99600b0b3da3d05016ec0be55ff64c294eb19371fda6521", "confirmed_target_occurrence", "VPC.full", "idiomatic", "relinquish_control_of_businesses", ["give_up%2:40:01::"], "the owner was forced to relinquish his companies"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass",
+        "source_cueing": "ordinary unmarked persecution narrative with no explicit target gloss",
+        "centrality_state": "pass",
+        "background_state": "pass_from_retained_prose_with_holocaust_history_load",
+        "content_state": "reject_prespecified_acute_and_mass_violence",
+        "language_or_source_threats": ["Nazi persecution", "deportation", "gas chambers", "family deaths"],
+        "global_question": null,
+        "target_critical_item": null
+      },
+      "rights": null,
+      "screening_selection_role": "rejected_after_second_selection",
+      "passage_state": "reject_prespecified_acute_and_mass_violence"
+    },
+    {
+      "desk_screen_rank": 12,
+      "queue_rank": 47,
+      "page_id": 416977,
+      "revision_id": 10897138,
+      "revision_timestamp": "2026-06-23T08:37:12Z",
+      "title": "Assemblywomen",
+      "extracted_text_sha256": "758a55c30e978b5dd3d8c5fd0dc3445dfa4883027774137ce236ae2504bb1982",
+      "profile_token_count": 405,
+      "give_head_token_count_reviewed": 3,
+      "automatic_decisions": [
+        ["give-up-12-contiguous-01", "contiguous", 4, [178, 179], 0, "bcfea9f848bc62a0d99600b0b3da3d05016ec0be55ff64c294eb19371fda6521", "confirmed_target_occurrence", "VPC.full", "idiomatic", "relinquish_possession", ["give_up%2:40:01::", "give_up%2:40:03::"], "a character refuses to relinquish his property"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [
+        ["give-up-12-make-it-contiguous-01", "make it", "contiguous", 6, [262, 263], 0, "cea17300d3bcf775bfaee6982f2dc8ebfd8085403e24e6e20ebc89e64e98398f", "false_span", null, "not_assessed", null, [], "the possessive its was projected to the pronoun it"]
+      ],
+      "assessment": {
+        "prose_boundary_state": "fail",
+        "coherence_state": "reject_content_and_dangling_ingredient_list",
+        "source_cueing": "ordinary unmarked plot prose with no explicit target gloss",
+        "centrality_state": "pass",
+        "background_state": "pass_from_retained_prose_with_classical_context",
+        "content_state": "reject_prespecified_sexual_coercion",
+        "language_or_source_threats": ["coerced sexual sequence", "appearance-based sexual ordering", "the excluded ingredient list leaves a dangling introduction"],
+        "global_question": null,
+        "target_critical_item": null
+      },
+      "rights": null,
+      "screening_selection_role": "rejected_after_second_selection",
+      "passage_state": "reject_prespecified_sexual_coercion"
+    },
+    {
+      "desk_screen_rank": 13,
+      "queue_rank": 48,
+      "page_id": 892787,
+      "revision_id": 10583281,
+      "revision_timestamp": "2025-10-21T05:26:49Z",
+      "title": "Female submission",
+      "extracted_text_sha256": "9e12372c8e61038ab4552035de554ce7bc2c5f3969f16f99c59adde01b8ed921",
+      "profile_token_count": 687,
+      "give_head_token_count_reviewed": 2,
+      "automatic_decisions": [
+        ["give-up-13-contiguous-01", "contiguous", 5, [364, 365], 0, "e98862a00aff3110958a486bc6e0d061809858dc8518c952a2593662c64ffee4", "confirmed_target_occurrence", "VPC.full", "idiomatic", "relinquish_personal_control", ["give_up%2:40:01::", "give_up%2:40:03::"], "the article describes consensual relinquishment of sexual or personal control"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [
+        ["give-up-13-take-in-gap-01", "take in", "gap", 2, [127, 129], 1, "d74b1a2775b444b5824783c905818f7560aea891e1bb3b3bf43dfca67d5eab4f", "false_span", null, "not_assessed", null, [], "embedded take part in construction"],
+        ["give-up-13-take-in-gap-02", "take in", "gap", 2, [154, 162], 7, "35186b0e76519f665ccb95581ab65e3845a2cd31181719a7f74e1a16c11ad5d8", "false_span", null, "not_assessed", null, [], "take roles and a later in token belong to different clauses"],
+        ["give-up-13-take-in-gap-03", "take in", "gap", 5, [399, 404], 4, "49b8e26c864e3c43d8c188e1387e0a1add6cba94e7485c9d3b906beb5de7edf3", "false_span", null, "not_assessed", null, [], "take form and the preposition in an embedded gerund clause are unrelated"]
+      ],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass",
+        "source_cueing": "the article explicitly explains the relinquished-control proposition, so the target is strongly context-cued",
+        "centrality_state": "pass_but_definition_like",
+        "background_state": "pass_from_retained_prose_with_specialized_sexual_terminology",
+        "content_state": "unresolved_explicit_consensual_sexual_content_boundary",
+        "language_or_source_threats": ["explicit BDSM and sexual-practice descriptions", "humiliation, punishment, bondage, prostitution, and slavery terminology", "the frozen rule names sexual violence but not explicit consensual sexual content"],
+        "global_question": null,
+        "target_critical_item": null
+      },
+      "rights": null,
+      "screening_selection_role": "held_unresolved_not_selected",
+      "passage_state": "hold_content_boundary_not_operationalized"
+    },
+    {
+      "desk_screen_rank": 14,
+      "queue_rank": 49,
+      "page_id": 1185509,
+      "revision_id": 10939737,
+      "revision_timestamp": "2026-07-26T15:33:49Z",
+      "title": "Tibetans in India",
+      "extracted_text_sha256": "5e729bf63f7e578e8444b13fafb2d33e77d75d57982f5f37c31a772700c7c613",
+      "profile_token_count": 587,
+      "give_head_token_count_reviewed": 4,
+      "automatic_decisions": [
+        ["give-up-14-gap-01", "gap", 2, [117, 126], 8, "e6577324a750683401d30f50bc5c82f3096bc13c8f59db4ac442598b13d93ef5", "false_span", null, "not_assessed", null, [], "give governs shelter while up belongs to the separate set up construction"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {"downstream_state": "not_scored_after_target_absence"},
+      "rights": null,
+      "screening_selection_role": "target_absent",
+      "passage_state": "reject_target_absent"
+    },
+    {
+      "desk_screen_rank": 15,
+      "queue_rank": 60,
+      "page_id": 377429,
+      "revision_id": 9103178,
+      "revision_timestamp": "2023-10-01T17:44:30Z",
+      "title": "Richard Rodney Bennett",
+      "extracted_text_sha256": "896343d7cfa79ba74d54b8c3772b8dac6f72c4ab530d1ff5026fd94c9acab5ca",
+      "profile_token_count": 506,
+      "give_head_token_count_reviewed": 1,
+      "automatic_decisions": [
+        ["give-up-15-contiguous-01", "contiguous", 4, [253, 254], 0, "bcfea9f848bc62a0d99600b0b3da3d05016ec0be55ff64c294eb19371fda6521", "confirmed_target_occurrence", "VPC.full", "idiomatic", "stop_using_artistic_system", ["give_up%2:31:00::", "give_up%2:42:00::"], "the composer gradually stopped using serialism and combined techniques"]
+      ],
+      "manual_missed_occurrences": [],
+      "non_focal_target_decisions": [],
+      "assessment": {
+        "prose_boundary_state": "pass",
+        "coherence_state": "pass",
+        "source_cueing": "ordinary unmarked career narrative; the following description of combined techniques supports the change without explicitly glossing the target",
+        "centrality_state": "pass",
+        "centrality_basis": "the change away from serialism explains the development of the composer's personal style",
+        "background_state": "pass_from_retained_prose_with_music_terminology",
+        "content_state": "pass_low_risk_first_pilot",
+        "language_or_source_threats": ["named composers, institutions, and musical styles", "serialism is not defined", "specialist music review is required"],
+        "global_question": {
+          "item_id": "give-up-15-global-01",
+          "prompt": "How did Bennett's training and later choices contribute to his personal musical style?",
+          "expected_propositions": ["he studied with major teachers and encountered serialism", "he gradually stopped relying on serialism", "he combined several musical techniques", "he worked across concert, film, and jazz music"],
+          "target_dependency": "the focal meaning supplies the stopped-using-serialism proposition rather than a phrase definition",
+          "state": "draft_project_internal_uncued"
+        },
+        "target_critical_item": {
+          "item_id": "give-up-15-target-01",
+          "prompt": "What change did Bennett make after his early work with serial music?",
+          "expected_proposition": "he gradually stopped using it and combined multiple techniques",
+          "phrase_definition_item": false,
+          "state": "draft_project_internal"
+        }
+      },
+      "rights": {
+        "permanent_revision_url": "https://simple.wikipedia.org/w/index.php?title=Richard_Rodney_Bennett&oldid=9103178",
+        "revision_history_url": "https://simple.wikipedia.org/w/index.php?title=Richard_Rodney_Bennett&action=history",
+        "license_route": "CC BY-SA 4.0",
+        "revision_comments_checked_through_target": 19,
+        "import_or_copy_comment_flags": [],
+        "current_wikitext_notice_flags": [],
+        "additional_attribution": [],
+        "modification_notice": "Project extraction retains rendered headings and main-prose paragraphs while excluding page furniture, tables, lists, media, captions, references, and tail sections.",
+        "release_state": "metadata_only_in_repository; extracted prose remains local"
+      },
+      "screening_selection_role": "earliest_remaining_admissible_page",
+      "passage_state": "provisionally_selected_pending_author_confirmation"
+    }
+  ],
+  "target_decision": {
+    "state": "provisionally_passed_at_frozen_early_stop_pending_author_confirmation",
+    "selected_desk_screen_ranks": [3, 5, 15],
+    "rule_match": "three distinct articles span at least four provisional operational paraphrases across relinquishment and cessation meanings",
+    "gate_contribution": "a second provisional VPC target; because take in failed, come out must also pass before the three-VPC minimum remains viable",
+    "app_change": "none; do not add the give up sense inventory unless the complete non-human material panel passes",
+    "hard_admission_missing": [
+      "author confirmation",
+      "independent occurrence/category/sense annotation",
+      "final language, history, music, and content review",
+      "verified sentence segmentation",
+      "resolution of the sexually explicit but consensual content boundary",
+      "final item review and passage release packaging"
+    ],
+    "next_desk_step": "review come out in frozen rank order; stop Route 2 as mathematically nonviable if it fails"
+  }
+}

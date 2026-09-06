@@ -1,0 +1,145 @@
+{
+  "triage_schema_version": 1,
+  "triage_id": "gutenberg-2026-08-30-rights-triage-batch2",
+  "reviewed_on": "2026-09-03",
+  "status": "pre_acquisition_metadata_triage_not_legal_clearance",
+  "input": {
+    "frame_id": "gutenberg-2026-08-30-target-blind-prose-v1",
+    "frame_sha256": "fab6b04d5096eb777464e1e1191800cbe9b3e05abbf710b61a8a01ea1209aaa5",
+    "prior_unit_gate_sha256": "78cc15dae922695cf2d64ff1c2723db623ce1e4f6bef8912d44ae8ae1e3832a9",
+    "screened_rank_range_per_stratum": [11, 20],
+    "ebook_files_acquired": 0,
+    "mwe_searches_run": 0
+  },
+  "decision_contract": {
+    "notice_check_allowed": "Metadata supports acquiring the official text file only to verify its internal notice, edition, credits, and contributors. This is not a public-domain declaration or admission of prose.",
+    "hold_term_likely_active": "Available author and publication evidence indicates that Japanese protection may still subsist. Do not acquire or inspect the ebook for this frame.",
+    "hold_identity_or_death_unverified": "Neither a named-author death calculation nor a verified anonymous/pseudonymous publication-term calculation is supported well enough. Do not acquire or inspect the ebook for this frame."
+  },
+  "method": {
+    "minimum_jurisdictions_checked": ["United States", "Japan"],
+    "global_web_distribution_status": "unresolved_do_not_bundle_or_serve_source_text",
+    "japan_rules_applied": [
+      "Terms run from January 1 of the year after death, publication, or creation as applicable.",
+      "The ordinary term changed from 50 to 70 years on 2018-12-30, without reviving an already expired term.",
+      "Anonymous or pseudonymous prose normally follows a publication-based term unless an author-identity exception applies.",
+      "A pre-1971 anonymous or pseudonymous work requires the old-law transition as well as later publication-term rules.",
+      "A term still running on 2018-12-29 because of wartime addition receives the extension; the published Allied-country maximum is 4,180 days."
+    ],
+    "pseudonym_rule": "Use publication time only when evidence establishes anonymous or pseudonymous publication and no author-identity exception is established. An unexplained name without life dates is not assumed to be a pseudonym.",
+    "text_only_scope": "Images, cover art, ornamental art, image-only credits, and illustration-specific captions or alt text are excluded; retained contributor-authored prose must be reviewed after acquisition.",
+    "content_blindness": "Decisions use creator identity, publication evidence, and legal term only; title topic, sensitivity, lexical yield, MWE presence, and sense distribution do not affect a row.",
+    "incidental_search_exposure": {
+      "occurred": true,
+      "text_ids": [72192, 70572, 14130, 50287],
+      "description": "Rights-oriented Web results exposed automated summaries, front matter, or source snippets for these already frozen rows. No ebook file was acquired and no target or MWE search was run; exposure cannot alter queue order or the first-unit rule."
+    }
+  },
+  "sources": [
+    {
+      "source_id": "bunka-copyright-text-2026",
+      "url": "https://www.bunka.go.jp/seisaku/chosakuken/seidokaisetsu/pdf/94383901_01.pdf",
+      "role": "Official current table for named, anonymous, and pseudonymous terms plus old-law transition notes"
+    },
+    {
+      "source_id": "bunka-term-qa",
+      "url": "https://www.bunka.go.jp/seisaku/chosakuken/hokaisei/kantaiheiyo_chosakuken/1411890.html",
+      "role": "Official non-revival, reciprocity, wartime-addition, and old-law transition guidance"
+    },
+    {
+      "source_id": "gutenberg-terms",
+      "url": "https://www.gutenberg.org/policy/terms_of_use.html",
+      "role": "United States determination and non-US user duty to check local law"
+    },
+    {
+      "source_id": "gutenberg-72192",
+      "url": "https://www.gutenberg.org/ebooks/72192",
+      "role": "Official Mark Clifton life dates and 1962 United States publication metadata"
+    },
+    {
+      "source_id": "sfe-mari-wolf",
+      "url": "https://sf-encyclopedia.com/entry/wolf_mari",
+      "role": "Secondary evidence retaining Mari Wolf as 1926- with no established death year and dating Homo Inferior to 1953"
+    },
+    {
+      "source_id": "stratemeyer-roy-rockwood",
+      "url": "https://stratemeyer.org/roy-rockwood/",
+      "role": "Specialist evidence that Roy Rockwood was a Stratemeyer house pseudonym used for the Bomba series"
+    },
+    {
+      "source_id": "gutenberg-70572",
+      "url": "https://www.gutenberg.org/ebooks/70572",
+      "role": "Official 1926 United States publication metadata for Bomba the Jungle Boy"
+    },
+    {
+      "source_id": "lit2go-quincy-allen",
+      "url": "https://etc.usf.edu/lit2go/authors/12/captain-quincy-allen/",
+      "role": "University-hosted evidence that Quincy Allen was a Stratemeyer Syndicate pseudonym"
+    },
+    {
+      "source_id": "free-library-14130",
+      "url": "https://catalog.freelibrary.org/Record/668912",
+      "role": "Library catalog evidence for the 1911 United States publication"
+    },
+    {
+      "source_id": "gutenberg-50287",
+      "url": "https://www.gutenberg.org/ebooks/50287",
+      "role": "Official catalog and electronic-artifact evidence naming Frank Walton but supplying no life dates; the artifact title matter gives 1913 copyright"
+    }
+  ],
+  "screen_columns": [
+    "stratum",
+    "queue_rank",
+    "text_id",
+    "decision",
+    "creator_term_evidence",
+    "non_text_contributor_treatment"
+  ],
+  "screens": [
+    ["adult_or_unspecified", 11, 14654, "notice_check_allowed", "Jack London died in 1916; the applicable authorial term expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["adult_or_unspecified", 12, 72192, "notice_check_allowed", "Mark Clifton died in 1963, and Project Gutenberg identifies a 1962 United States publication. The postwar work receives no wartime addition, and the former 50-year term expired before the 2018 extension.", "Virgil Finlay's illustrations and illustration-specific text are excluded."],
+    ["adult_or_unspecified", 13, 31692, "hold_identity_or_death_unverified", "The catalog and Science Fiction Encyclopedia identify Mari Wolf as born in 1926, but no death year is established. The named-author Japanese term therefore cannot be calculated; the 1953 publication date does not replace that test.", "Rudolph Palais is listed only as illustrator; excluding his images does not resolve the author's term."],
+    ["adult_or_unspecified", 14, 17793, "notice_check_allowed", "Mary Eleanor Wilkins Freeman died in 1930; even the former term plus the published maximum wartime addition expired long before 2018.", "William Dodge Stevens's illustrations and illustration-specific text are excluded."],
+    ["adult_or_unspecified", 15, 36753, "notice_check_allowed", "William Alexander Caruthers died in 1846; the applicable authorial term expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["adult_or_unspecified", 16, 7517, "notice_check_allowed", "Edith Wharton's 1937 death was already reviewed in batch 1; even the former term plus the published maximum wartime addition expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["adult_or_unspecified", 17, 68552, "notice_check_allowed", "Gordon McCreagh died in 1953; even the former 50-year term plus the published maximum wartime addition expired before 2018-12-29.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["adult_or_unspecified", 18, 65032, "hold_term_likely_active", "Kris Neville died in 1980, so the ordinary Japanese term remains active.", "W. E. Terry's illustrations and illustration-specific text are excluded, but that does not cure the author's active term."],
+    ["adult_or_unspecified", 19, 14832, "notice_check_allowed", "John Oxenham died in 1941; even the former term plus the published maximum wartime addition expired before 2018.", "Harold Copping's illustrations and illustration-specific text are excluded."],
+    ["adult_or_unspecified", 20, 33298, "notice_check_allowed", "William Le Queux died in 1927; even the former term plus the published maximum wartime addition expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["juvenile", 11, 21729, "notice_check_allowed", "R. M. Ballantyne died in 1894; the applicable authorial term expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["juvenile", 12, 55040, "notice_check_allowed", "Lewis Carroll died in 1898; the applicable authorial term expired long before 2018.", "John Tenniel and E. Gertrude Thomson are listed only as illustrators; images and illustration-specific text are excluded."],
+    ["juvenile", 13, 70572, "notice_check_allowed", "Roy Rockwood is documented as a Stratemeyer house pseudonym, and Project Gutenberg identifies this United States publication as 1926. Even the publication-based former term plus the United States wartime addition expired before 2018; no author-identity exception is established by the reviewed sources.", "Walter S. Rogers's illustrations and illustration-specific text are excluded."],
+    ["juvenile", 14, 64033, "notice_check_allowed", "Edith Kellogg Dunton died in 1944; even the former term plus the published maximum wartime addition expired long before 2018.", "Eva M. Nagel is listed only as illustrator; images and illustration-specific text are excluded."],
+    ["juvenile", 15, 23072, "notice_check_allowed", "William Henry Giles Kingston died in 1880; the applicable authorial term expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["juvenile", 16, 6655, "notice_check_allowed", "Percy Keese Fitzhugh died in 1950; even the former 50-year term plus the published maximum wartime addition expired before 2018-12-29.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["juvenile", 17, 14130, "notice_check_allowed", "Quincy Allen is documented as a Stratemeyer Syndicate pseudonym and the work as a 1911 United States publication. Even the old-law publication term plus the United States wartime addition expired before the 1971 transition; no author-identity exception is established by the reviewed sources.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["juvenile", 18, 46205, "notice_check_allowed", "George Bird Grinnell died in 1938; even the former term plus the published maximum wartime addition expired long before 2018.", "Edwin Willard Deming's illustrations and illustration-specific text are excluded."],
+    ["juvenile", 19, 47128, "notice_check_allowed", "Norman Duncan died in 1916; the applicable authorial term expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["juvenile", 20, 50287, "hold_identity_or_death_unverified", "The artifact gives a 1913 copyright but the catalog supplies no life dates for Frank Walton, and this review did not establish that the displayed name is a pseudonym eligible for a publication-term calculation. Neither route is assumed.", "J. Watson Davis's illustrations and illustration-specific text are excluded; that does not resolve the author's status."]
+  ],
+  "summary": {
+    "screened": 20,
+    "notice_check_allowed": 17,
+    "hold_term_likely_active": 1,
+    "hold_identity_or_death_unverified": 2,
+    "allowed_by_stratum": {
+      "adult_or_unspecified": 8,
+      "juvenile": 9
+    },
+    "allowed_via_pseudonymous_publication_term": 2,
+    "prior_mechanical_passes_by_stratum": {
+      "adult_or_unspecified": 1,
+      "juvenile": 1
+    },
+    "admitted_units": 0
+  },
+  "claim_limits": [
+    "No row is declared public domain worldwide or admitted to the study.",
+    "United States and Japanese metadata triage does not authorize global Web serving; source prose remains local and unbundled.",
+    "Pseudonymous publication-term treatment is work-specific and does not identify the human writer.",
+    "The screen does not infer audience suitability, instructional quality, representativeness, MWE yield, meaning, or coverage.",
+    "Content shown in automated search summaries or snippets did not affect any decision.",
+    "Illustrator exclusion cannot erase contributor-authored prose, notes, captions, or edition-specific material discovered after acquisition."
+  ],
+  "next_action": "Acquire only the 17 notice_check_allowed files into a separate unbundled local batch through an official Project Gutenberg mirror. Verify exact file identity, internal notice, front matter, retained textual contributors, and first-unit boundaries before any target or MWE search."
+}

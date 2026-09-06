@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0.0",
+  "manifest_id": "ENWIKI-SOURCE-SNAPSHOT-2026-09-01",
+  "date": "2026-09-04",
+  "status": "snapshot_frozen_no_source_content_acquired",
+  "task": "IR-113",
+  "source_snapshot": {
+    "source": "English Wikipedia",
+    "population_ceiling": "English-language namespace-0 non-redirect article revisions; IR-121 freezes further content-neutral eligibility and sampling",
+    "dated_directory": "https://dumps.wikimedia.org/enwiki/20260901/",
+    "dump_status_url": "https://dumps.wikimedia.org/enwiki/20260901/dumpstatus.json",
+    "checksum_url": "https://dumps.wikimedia.org/enwiki/20260901/enwiki-20260901-sha1sums.txt",
+    "metadata_retrieved_at": "2026-09-04T03:36:33Z",
+    "mutable_latest_alias_allowed": false,
+    "jobs": {
+      "articlesmultistreamdump": {
+        "status": "done",
+        "updated": "2026-09-03 21:31:51"
+      },
+      "articlesmultistreamdumprecombine": {
+        "status": "done",
+        "updated": "2026-09-03 21:39:34"
+      }
+    },
+    "files": [
+      {
+        "role": "content",
+        "name": "enwiki-20260901-pages-articles-multistream.xml.bz2",
+        "url": "https://dumps.wikimedia.org/enwiki/20260901/enwiki-20260901-pages-articles-multistream.xml.bz2",
+        "bytes": 26797495184,
+        "md5": "f251f445259e452fafcb67d9f2c26513",
+        "sha1": "e0a53c30c3a3b444018df95704d3d101cd618440",
+        "local_sha256": null,
+        "acquired": false
+      },
+      {
+        "role": "index",
+        "name": "enwiki-20260901-pages-articles-multistream-index.txt.bz2",
+        "url": "https://dumps.wikimedia.org/enwiki/20260901/enwiki-20260901-pages-articles-multistream-index.txt.bz2",
+        "bytes": 284375992,
+        "md5": "1d730f63aae2805882f11cbaf639ca53",
+        "sha1": "ce0cbff600b0be2eed98da5ce189f847232d2282",
+        "local_sha256": null,
+        "acquired": false
+      }
+    ],
+    "identity_record": {
+      "canonical_rows": "compact JSON arrays [role, name, bytes, md5, sha1] in files order",
+      "sha256": "14760286b4a63f301120465d7606bcbaa807015251d09591d821e401cd404ebf"
+    },
+    "checksum_observation": {
+      "bytes": 40756,
+      "sha256": "45d99a7b90de72fec1af9f14246a7e1865585220548dc7a6ebd7bbb262fba096"
+    },
+    "source_content_acquired": false,
+    "index_acquired": false,
+    "target_search_count": 0,
+    "local_sha256_rule": "Compute SHA-256 after acquisition and reject the file unless bytes, MD5, and SHA-1 also match this record. Null is required before acquisition."
+  },
+  "contract": {
+    "encoding": "UTF-8 strict after bzip2/XML decoding",
+    "source_identity": "Dated dump file identity plus namespace-0 page ID and revision ID; exact source and derived layer bytes each retain SHA-256",
+    "document_id": "doc- plus the first 20 hexadecimal characters of SHA-256 over compact JSON [document-v1, immutable_source_id]",
+    "tokenizer": "metric_contract.json ASCII alphabetic token with internal straight or curly apostrophes; Unicode letters, numbers, and underscore prevent partial matches",
+    "normalization": "Replace curly apostrophe with straight apostrophe and apply ASCII lowercase at token level only; do not normalize source or extracted-text bytes",
+    "offsets": "Zero-based half-open Unicode character and UTF-8 byte offsets into exact extracted text",
+    "token_id": "t plus one-based token position, scoped by document_id",
+    "token_hash": "SHA-256 of compact JSON rows [token_id, normalized, character_start, character_end, byte_start, byte_end]",
+    "occurrence_id": "occ- plus the first 20 hexadecimal characters of SHA-256 over compact JSON [occurrence-v1, document_id, category, canonical_form, member_token_ids]",
+    "mismatch_behavior": "Exit 2 before emitting a verified report on any byte, hash, ID, token, offset, member, gap, or occurrence mismatch"
+  },
+  "planned_document_identity": {
+    "immutable_source_id": "enwiki:page:{page_id}:revision:{revision_id}",
+    "permanent_revision_url": "https://en.wikipedia.org/w/index.php?oldid={revision_id}",
+    "history_url": "https://en.wikipedia.org/w/index.php?title={url_encoded_title}&action=history",
+    "required_fields": [
+      "page_id",
+      "revision_id",
+      "revision_timestamp",
+      "title",
+      "dump_wikitext_sha256",
+      "api_response_sha256",
+      "rendered_html_sha256",
+      "extracted_text_sha256",
+      "retrieved_at"
+    ]
+  },
+  "documents": [
+    {
+      "immutable_source_id": "probe:project-authored:reconstruction-source:v1",
+      "document_id": "doc-9f7d2e3470fbb864cbf1",
+      "source_kind": "project_authored_test_fixture",
+      "acquisition_route": "bundled tests/fixtures/reconstruction_source.txt",
+      "rights": "MIT OR CC-BY-4.0",
+      "local_path": "tests/fixtures/reconstruction_source.txt",
+      "encoding": "utf-8",
+      "source_bytes": 52,
+      "source_sha256": "13cdc99c4389e2f19ef11a7eaeab53bde3e2aaff158e25518d3ec6a7b2f09958",
+      "token_count": 9,
+      "token_sha256": "5ae995d0ff6ccfce71f52d76ef2aa2d4ecef3c98d25c3a606b824b4a1b958156",
+      "occurrences": [
+        {
+          "occurrence_id": "occ-9f4a76534fc43fb7d76a",
+          "canonical_form": "take in",
+          "category": "VPC.full",
+          "member_token_ids": [
+            "t2",
+            "t5"
+          ],
+          "gap_token_ids": [
+            "t3",
+            "t4"
+          ]
+        },
+        {
+          "occurrence_id": "occ-75fd33706aa20bfb76f7",
+          "canonical_form": "spill the beans",
+          "category": "VID",
+          "member_token_ids": [
+            "t7",
+            "t9"
+          ],
+          "gap_token_ids": [
+            "t8"
+          ]
+        }
+      ]
+    }
+  ],
+  "remaining_gates": [
+    "Acquire and verify both frozen files before sampling; record their local SHA-256 values in a superseding manifest version.",
+    "IR-121 must freeze the namespace-0 non-redirect frame, exclusions, strata, seed, and page/revision rows before target search.",
+    "Do not change preprocessing, tokenization, offsets, or ID formulas after annotation without a new version.",
+    "Do not claim that Wikipedia source text or a benchmark is available from this metadata-only freeze and project-authored probe."
+  ]
+}

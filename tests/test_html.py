@@ -56,6 +56,35 @@ class StructureParser(HTMLParser):
 
 
 class HtmlContractTests(unittest.TestCase):
+    def test_review_and_export_guidance(self):
+        source = INDEX.read_text(encoding="utf-8")
+        for wording in (
+            "自動で正解や語義を確定する分析器ではありません",
+            "決められない候補は未確定のまま残せます",
+            "原文欄・語の一覧はありません",
+            "根拠に引用した文章も含まれます",
+            "再開用JSONには原文・候補パターン・記録済みの判断と根拠を含みます",
+            "共有用の匿名化ファイルではありません",
+            "ページを閉じても自動保存されません",
+            "ファイル保存ではありません",
+            "記録するまでは書き出し・再開用ファイルに反映されません",
+            "未確定の候補が残っているだけでは保存を止めません",
+            "判断を自動確定することもありません",
+            'id="mwe-pending-edits"',
+            'id="mwe-pending-list"',
+            'id="mwe-current-document-status"',
+            '選択だけではレビューは切り替わりません',
+            '一方を未判定に戻しても他方は保持します',
+            '取り消すと記録と入力途中の内容を保持します',
+            '端末や操作によっては表示されません',
+            'ファイルの保存完了をアプリでは確認できない',
+        ):
+            self.assertIn(wording, source)
+        for help_id in (
+            "mwe-result-export-help", "mwe-resume-export-help", "mwe-document-set-export-help"
+        ):
+            self.assertIn(f'aria-describedby="{help_id}"', source)
+
     def test_accessibility_structure(self):
         parser = StructureParser()
         parser.feed(INDEX.read_text(encoding="utf-8"))
@@ -78,7 +107,7 @@ class HtmlContractTests(unittest.TestCase):
         source = INDEX.read_text(encoding="utf-8")
         app_source = APP.read_text(encoding="utf-8")
         metrics_source = METRICS.read_text(encoding="utf-8")
-        for forbidden in ("/api/", 'type="file"', " action=", " method="):
+        for forbidden in ("/api/", " action=", " method="):
             with self.subTest(forbidden=forbidden):
                 self.assertNotIn(forbidden, source)
         for forbidden in (
@@ -98,7 +127,11 @@ class HtmlContractTests(unittest.TestCase):
             "fetch('mwe_contract.json')", ""
         ).replace(
             "fetch('resources/tubelex_en_regex_ascii_2025.json')", ""
-        ).replace("fetch('resources/oewn_2025_multiword_verbs.json')", "")
+        ).replace(
+            "fetch('resources/ngsl_1_2_ascii_forms.json')", ""
+        ).replace("fetch('resources/oewn_2025_multiword_verbs.json')", "").replace(
+            "fetch('resources/oewn_take_in_2025.json')", ""
+        )
         self.assertNotIn("fetch(", network_calls_removed)
         self.assertIn('<script type="module" src="app.mjs"></script>', source)
         self.assertIn("Content-Security-Policy", source)
@@ -115,6 +148,24 @@ class HtmlContractTests(unittest.TestCase):
         self.assertIn('id="export-mwe-csv"', source)
         self.assertIn('id="export-word-coverage-csv"', source)
         self.assertIn('id="word-coverage-items"', source)
+        self.assertIn('id="word-reference"', source)
+        self.assertEqual(source.count('type="file"'), 3)
+        self.assertIn('id="bnc-coca-profile"', source)
+        self.assertIn('id="mwe-workspace-file"', source)
+        self.assertIn('id="export-mwe-workspace"', source)
+        self.assertIn('id="mwe-document-set-form"', source)
+        self.assertIn('id="mwe-document-set-file"', source)
+        self.assertIn('id="save-mwe-document"', source)
+        self.assertIn('id="load-mwe-document"', source)
+        self.assertIn('id="export-mwe-document-set"', source)
+        self.assertIn('<option value="bnc-coca-1000" data-local-profile disabled>', source)
+        self.assertIn('<option value="bnc-coca-2000" data-local-profile disabled>', source)
+        self.assertIn('<option value="ngsl-2000">', source)
+        self.assertIn("runtimeProfileSha256", app_source)
+        self.assertIn("lockMweSourceInputs(true)", app_source)
+        self.assertIn("prepareMweSenseReferenceProfile", app_source)
+        self.assertIn("Contextual senseを保存", app_source)
+        self.assertIn("Idiomaticityを保存", app_source)
         self.assertIn('id="method-references"', source)
         self.assertIn('id="rights-attestation"', source)
         self.assertIn('<option value="declared-segments">', source)

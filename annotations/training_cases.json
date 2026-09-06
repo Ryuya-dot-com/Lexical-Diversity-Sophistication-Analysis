@@ -1,0 +1,492 @@
+{
+  "schema_version": "1.1.0",
+  "task": "IR-141",
+  "guide_version": "0.5.0-contextual-sense",
+  "contract_version": "0.11.0-mwe",
+  "status": "project_authored_synthetic_training_only_not_annotator_qualification",
+  "provenance": {
+    "kind": "synthetic",
+    "author": "project team",
+    "created_on": "2026-09-05",
+    "rights_status": "project-authored; MIT or CC BY 4.0",
+    "human_response_data": false,
+    "natural_benchmark_items": false
+  },
+  "training_program": {
+    "program_version": "1.0.0",
+    "task": "IR-145",
+    "status": "designed_not_authorized_or_administered",
+    "human_use_authorized": false,
+    "practice_sources": [
+      "annotations/training_cases.json",
+      "annotations/hard_case_bank.json"
+    ],
+    "benchmark_material_permitted": false,
+    "stages": [
+      "teach_back",
+      "guided_practice",
+      "feedback",
+      "hard_case_practice",
+      "qualification"
+    ],
+    "combined_score": "forbidden",
+    "qualification_form": {
+      "state": "not_materialized_pending_human_use_authorization",
+      "source_requirement": "new_project_authored_or_independently_cleared_synthetic_text_only",
+      "answer_visibility": "withheld_during_administration_released_with_study_record",
+      "retry_form": "new_previously_unexposed_equivalent_version",
+      "public_repository_form_counts_as_exposed": true
+    },
+    "task_gates": [
+      {
+        "task": "occurrence",
+        "minimum_scored_items": 12,
+        "composition_minimums": {
+          "literal_or_spatial_negative": 2,
+          "accidental_sequence": 2
+        },
+        "thresholds": {"exact_status_accuracy_min": 0.9},
+        "zero_error_sentinels": [
+          "literal_or_spatial_promoted",
+          "accidental_sequence_promoted"
+        ]
+      },
+      {
+        "task": "member_and_gap_span",
+        "minimum_scored_items": 12,
+        "composition_minimums": {"pronoun_insertion": 2, "long_gap": 2},
+        "thresholds": {"exact_joint_member_and_gap_accuracy_min": 0.9},
+        "zero_error_sentinels": ["pronoun_insertion", "long_gap"]
+      },
+      {
+        "task": "category",
+        "minimum_scored_items": 12,
+        "composition_minimums": {"VPC.full": 4, "VPC.semi": 4, "VID": 4},
+        "thresholds": {
+          "three_class_macro_f1_min": 0.8,
+          "each_class_recall_min": 0.75
+        },
+        "zero_error_sentinels": []
+      },
+      {
+        "task": "idiomaticity",
+        "minimum_scored_items": 12,
+        "composition_minimums": {
+          "idiomatic": 2,
+          "literal": 2,
+          "ambiguous": 2,
+          "not_assessed": 2
+        },
+        "thresholds": {"exact_status_accuracy_min": 0.8},
+        "zero_error_sentinels": [
+          "figurative_but_compositional",
+          "ambiguous",
+          "not_assessed"
+        ]
+      },
+      {
+        "task": "contextual_sense",
+        "minimum_scored_items": 15,
+        "composition_minimums": {
+          "assigned": 3,
+          "multiple_assigned": 2,
+          "ambiguous": 2,
+          "abstained": 2,
+          "out_of_inventory": 2,
+          "inventory_ineligible": 2
+        },
+        "thresholds": {
+          "eligible_reference_assignment_state_accuracy_min": 0.8,
+          "eligible_reference_exact_set_accuracy_min": 0.8
+        },
+        "zero_error_sentinels": [
+          "multiple_vs_ambiguous",
+          "abstained",
+          "out_of_inventory",
+          "inventory_ineligible"
+        ]
+      }
+    ],
+    "retraining": {
+      "failure_scope": "failed_task_only",
+      "required_before_retry": [
+        "rule_feedback",
+        "failed_boundary_teach_back",
+        "new_synthetic_practice"
+      ],
+      "maximum_qualification_attempts_per_task_and_guide_version": 2,
+      "cross_task_compensation": false,
+      "second_failure_action": "exclude_from_production_for_failed_task_under_current_guide_version",
+      "substantive_version_change_requires_requalification": true
+    }
+  },
+  "decision_order": [
+    "candidate",
+    "occurrence",
+    "members",
+    "gaps",
+    "category"
+  ],
+  "disagreement_codes": [
+    {
+      "code": "literal_or_spatial_promoted",
+      "level": "occurrence",
+      "definition": "A literal, compositional, or spatial use was confirmed as an in-scope occurrence."
+    },
+    {
+      "code": "accidental_sequence_promoted",
+      "level": "occurrence",
+      "definition": "Adjacent or nearby forms without the required verbal construction were confirmed."
+    },
+    {
+      "code": "inflected_member_missed",
+      "level": "span",
+      "definition": "An eligible inflected surface member was omitted because it did not match the citation form."
+    },
+    {
+      "code": "particle_movement_missed",
+      "level": "span",
+      "definition": "A moved particle was omitted or attached to the wrong candidate."
+    },
+    {
+      "code": "open_slot_marked_member",
+      "level": "span",
+      "definition": "A replaceable pronoun, noun phrase, determiner, possessor, modifier, or other open slot was marked as lexicalized."
+    },
+    {
+      "code": "required_member_omitted",
+      "level": "span",
+      "definition": "A lexicalized particle or fixed dependent required by the occurrence was omitted."
+    },
+    {
+      "code": "gap_not_complete",
+      "level": "span",
+      "definition": "The gap does not contain every nonmember token strictly between the first and last member."
+    },
+    {
+      "code": "tokenization_mismatch",
+      "level": "span",
+      "definition": "The records rely on different token boundaries or an annotator retokenized the frozen input."
+    },
+    {
+      "code": "embedded_occurrence_omitted",
+      "level": "span",
+      "definition": "An independently qualifying embedded or overlapping occurrence was not recorded."
+    },
+    {
+      "code": "particle_preposition_boundary",
+      "level": "category",
+      "definition": "The same exact span was analyzed as particle-like versus prepositional or spatial."
+    },
+    {
+      "code": "vpc_full_semi_boundary",
+      "level": "category",
+      "definition": "The same exact particle construction received VPC.full versus VPC.semi."
+    },
+    {
+      "code": "vpc_vid_boundary",
+      "level": "category",
+      "definition": "The same exact lexicalized components received a VPC versus VID analysis."
+    },
+    {
+      "code": "unclassified",
+      "level": "fallback",
+      "definition": "The first recoverable source of disagreement cannot be determined from the retained raw records."
+    }
+  ],
+  "tokenization_rules": [
+    "Use the frozen preprocessing token IDs; do not retokenize during annotation.",
+    "Internal straight or curly apostrophes remain inside one token.",
+    "ASCII hyphens split token records, but orthographic splitting alone does not create MWE membership.",
+    "Punctuation without a token ID is neither a member nor a gap token."
+  ],
+  "cases": [
+    {
+      "id": "IR141-C01-inflection-continuous",
+      "features": ["inflection", "continuous"],
+      "text": "They gave up immediately.",
+      "tokens": [
+        {"id": "t1", "surface": "They"},
+        {"id": "t2", "surface": "gave"},
+        {"id": "t3", "surface": "up"},
+        {"id": "t4", "surface": "immediately"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "give up",
+          "status": "confirmed",
+          "category": "VPC.full",
+          "member_token_ids": ["t2", "t3"],
+          "gap_token_ids": [],
+          "rationale": "Ordinary past-tense inflection preserves the citation form and the particle is continuous.",
+          "diagnostic_codes": ["inflected_member_missed"]
+        }
+      ]
+    },
+    {
+      "id": "IR141-C02-particle-movement-np-gap",
+      "features": ["inflection", "particle_movement", "full_np_gap", "discontinuous"],
+      "text": "They gave the proposal up.",
+      "tokens": [
+        {"id": "t1", "surface": "They"},
+        {"id": "t2", "surface": "gave"},
+        {"id": "t3", "surface": "the"},
+        {"id": "t4", "surface": "proposal"},
+        {"id": "t5", "surface": "up"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "give up",
+          "status": "confirmed",
+          "category": "VPC.full",
+          "member_token_ids": ["t2", "t5"],
+          "gap_token_ids": ["t3", "t4"],
+          "rationale": "Particle movement does not change the type; the replaceable noun phrase is the complete gap.",
+          "diagnostic_codes": ["particle_movement_missed", "open_slot_marked_member", "gap_not_complete"]
+        }
+      ]
+    },
+    {
+      "id": "IR141-C03-pronoun-gap",
+      "features": ["particle_movement", "pronoun_gap", "discontinuous"],
+      "text": "They gave it up.",
+      "tokens": [
+        {"id": "t1", "surface": "They"},
+        {"id": "t2", "surface": "gave"},
+        {"id": "t3", "surface": "it"},
+        {"id": "t4", "surface": "up"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "give up",
+          "status": "confirmed",
+          "category": "VPC.full",
+          "member_token_ids": ["t2", "t4"],
+          "gap_token_ids": ["t3"],
+          "rationale": "The pronoun is the replaceable object and therefore a gap, not a lexicalized member.",
+          "diagnostic_codes": ["open_slot_marked_member", "gap_not_complete"]
+        }
+      ]
+    },
+    {
+      "id": "IR141-C04-vpc-semi",
+      "features": ["inflection", "particle_movement", "full_np_gap", "discontinuous"],
+      "text": "She ate the cake up.",
+      "tokens": [
+        {"id": "t1", "surface": "She"},
+        {"id": "t2", "surface": "ate"},
+        {"id": "t3", "surface": "the"},
+        {"id": "t4", "surface": "cake"},
+        {"id": "t5", "surface": "up"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "eat up",
+          "status": "confirmed",
+          "category": "VPC.semi",
+          "member_token_ids": ["t2", "t5"],
+          "gap_token_ids": ["t3", "t4"],
+          "rationale": "Eating remains the same event, up is non-spatial here, and the construction has a spatial literal counterpart.",
+          "diagnostic_codes": ["vpc_full_semi_boundary"]
+        }
+      ]
+    },
+    {
+      "id": "IR141-C05-vid-fixed-dependent",
+      "features": ["inflection", "vid", "discontinuous"],
+      "text": "After months of secrecy, he spilled the beans.",
+      "tokens": [
+        {"id": "t1", "surface": "After"},
+        {"id": "t2", "surface": "months"},
+        {"id": "t3", "surface": "of"},
+        {"id": "t4", "surface": "secrecy"},
+        {"id": "t5", "surface": "he"},
+        {"id": "t6", "surface": "spilled"},
+        {"id": "t7", "surface": "the"},
+        {"id": "t8", "surface": "beans"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "spill the beans",
+          "status": "confirmed",
+          "category": "VID",
+          "member_token_ids": ["t6", "t8"],
+          "gap_token_ids": ["t7"],
+          "rationale": "The verbal head and fixed nominal dependent carry the expression-level reading; the determiner is not lexicalized in this project case.",
+          "diagnostic_codes": ["required_member_omitted", "open_slot_marked_member", "vpc_vid_boundary"]
+        }
+      ]
+    },
+    {
+      "id": "IR141-C06-literal-counterpart",
+      "features": ["literal_particle", "negative", "discontinuous"],
+      "text": "He spilled the beans onto the floor.",
+      "tokens": [
+        {"id": "t1", "surface": "He"},
+        {"id": "t2", "surface": "spilled"},
+        {"id": "t3", "surface": "the"},
+        {"id": "t4", "surface": "beans"},
+        {"id": "t5", "surface": "onto"},
+        {"id": "t6", "surface": "the"},
+        {"id": "t7", "surface": "floor"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "spill the beans",
+          "status": "rejected",
+          "category": "VID",
+          "member_token_ids": ["t2", "t4"],
+          "gap_token_ids": ["t3"],
+          "rationale": "The same surface members describe physical spilling and do not instantiate the VID in this context.",
+          "diagnostic_codes": ["literal_or_spatial_promoted"]
+        }
+      ]
+    },
+    {
+      "id": "IR141-C07-spatial-preposition",
+      "features": ["literal_particle", "particle_preposition", "negative", "continuous"],
+      "text": "She looked up the chimney.",
+      "tokens": [
+        {"id": "t1", "surface": "She"},
+        {"id": "t2", "surface": "looked"},
+        {"id": "t3", "surface": "up"},
+        {"id": "t4", "surface": "the"},
+        {"id": "t5", "surface": "chimney"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "look up",
+          "status": "rejected",
+          "category": "VPC.full",
+          "member_token_ids": ["t2", "t3"],
+          "gap_token_ids": [],
+          "rationale": "Up heads the spatial path phrase in this context; adjacency does not establish a particle occurrence.",
+          "diagnostic_codes": ["literal_or_spatial_promoted", "particle_preposition_boundary"]
+        }
+      ]
+    },
+    {
+      "id": "IR141-C08-accidental-sequence",
+      "features": ["accidental_sequence", "negative", "continuous"],
+      "text": "The report listed the take in dollars.",
+      "tokens": [
+        {"id": "t1", "surface": "The"},
+        {"id": "t2", "surface": "report"},
+        {"id": "t3", "surface": "listed"},
+        {"id": "t4", "surface": "the"},
+        {"id": "t5", "surface": "take"},
+        {"id": "t6", "surface": "in"},
+        {"id": "t7", "surface": "dollars"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "take in",
+          "status": "rejected",
+          "category": "VPC.full",
+          "member_token_ids": ["t5", "t6"],
+          "gap_token_ids": [],
+          "rationale": "Take is a noun here, so the adjacent forms do not have the required verbal head.",
+          "diagnostic_codes": ["accidental_sequence_promoted"]
+        }
+      ]
+    },
+    {
+      "id": "IR141-C09-embedded-overlap",
+      "features": ["nested_overlap", "vid", "continuous", "discontinuous"],
+      "text": "She made up her mind.",
+      "tokens": [
+        {"id": "t1", "surface": "She"},
+        {"id": "t2", "surface": "made"},
+        {"id": "t3", "surface": "up"},
+        {"id": "t4", "surface": "her"},
+        {"id": "t5", "surface": "mind"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "make up one's mind",
+          "status": "confirmed",
+          "category": "VID",
+          "member_token_ids": ["t2", "t3", "t5"],
+          "gap_token_ids": ["t4"],
+          "rationale": "The larger expression has fixed lexicalized components and a replaceable possessor slot."
+        },
+        {
+          "canonical_form": "make up",
+          "status": "confirmed",
+          "category": "VPC.full",
+          "member_token_ids": ["t2", "t3"],
+          "gap_token_ids": [],
+          "rationale": "The embedded verb-particle construction independently qualifies outside the larger expression.",
+          "diagnostic_codes": ["embedded_occurrence_omitted", "vpc_vid_boundary"]
+        }
+      ]
+    },
+    {
+      "id": "IR141-C10-tokenization-punctuation",
+      "features": ["tokenization_exception", "apostrophe_token", "punctuation_non_token", "discontinuous"],
+      "text": "They couldn't take—after hours—the explanation in.",
+      "tokens": [
+        {"id": "t1", "surface": "They"},
+        {"id": "t2", "surface": "couldn't"},
+        {"id": "t3", "surface": "take"},
+        {"id": "t4", "surface": "after"},
+        {"id": "t5", "surface": "hours"},
+        {"id": "t6", "surface": "the"},
+        {"id": "t7", "surface": "explanation"},
+        {"id": "t8", "surface": "in"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "take in",
+          "status": "confirmed",
+          "category": "VPC.full",
+          "member_token_ids": ["t3", "t8"],
+          "gap_token_ids": ["t4", "t5", "t6", "t7"],
+          "rationale": "The apostrophe remains inside one earlier token; em dashes have no token IDs; every intervening word token is a gap.",
+          "diagnostic_codes": ["tokenization_mismatch", "gap_not_complete"]
+        }
+      ]
+    },
+    {
+      "id": "IR141-C11-hyphen-split-not-membership",
+      "features": ["tokenization_exception", "hyphen_split", "negative"],
+      "text": "They stage-managed the event.",
+      "tokens": [
+        {"id": "t1", "surface": "They"},
+        {"id": "t2", "surface": "stage"},
+        {"id": "t3", "surface": "managed"},
+        {"id": "t4", "surface": "the"},
+        {"id": "t5", "surface": "event"}
+      ],
+      "decisions": [],
+      "exclusion": {
+        "reason": "The tokenizer's hyphen split does not turn one orthographic lexical item into a two-member verbal MWE.",
+        "diagnostic_codes": ["tokenization_mismatch", "accidental_sequence_promoted"]
+      }
+    },
+    {
+      "id": "IR141-C12-unresolved-particle-reading",
+      "features": ["pronoun_gap", "borderline", "discontinuous"],
+      "text": "Lee saw Jordan take it in.",
+      "tokens": [
+        {"id": "t1", "surface": "Lee"},
+        {"id": "t2", "surface": "saw"},
+        {"id": "t3", "surface": "Jordan"},
+        {"id": "t4", "surface": "take"},
+        {"id": "t5", "surface": "it"},
+        {"id": "t6", "surface": "in"}
+      ],
+      "decisions": [
+        {
+          "canonical_form": "take in",
+          "status": "candidate",
+          "category": "VPC.full",
+          "member_token_ids": ["t4", "t6"],
+          "gap_token_ids": ["t5"],
+          "rationale": "The clipped context does not resolve an in-scope particle reading against a spatial interpretation; no terminal decision is forced.",
+          "diagnostic_codes": ["particle_preposition_boundary"]
+        }
+      ]
+    }
+  ]
+}

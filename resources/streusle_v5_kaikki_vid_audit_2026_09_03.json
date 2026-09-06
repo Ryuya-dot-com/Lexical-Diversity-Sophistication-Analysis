@@ -1,0 +1,113 @@
+{
+  "audit_version": "1.0.0",
+  "audit_id": "streusle-v5-oewn-unmatched-vid-kaikki-enwiktionary-2026-08-05",
+  "purpose": "Test whether exact English Wiktionary entries repair the measured OEWN VID inventory gap and whether their raw sense identifiers are adequate for a fixed public benchmark.",
+  "source_identity": {
+    "streusle_tag": "v5.0",
+    "streusle_commit": "8ba61fe4f216e7967500a862554a4fff79d25f5d",
+    "streusle_profile": "benchmarks/streusle_v5_vpc_vid.json",
+    "streusle_artifacts": {
+      "train": {
+        "path": "train/streusle.ud_train.json",
+        "size_bytes": 16845570,
+        "sha256": "36aef0205a6e2e154b681d7520858693a264d3c40ba7d97c089345bbd1149a22"
+      },
+      "dev": {
+        "path": "dev/streusle.ud_dev.json",
+        "size_bytes": 2050638,
+        "sha256": "56cc1783962ce8c9f06b7649ffdccb48cea14ee7e4a8be2e35214ffc71303e9a"
+      },
+      "test": {
+        "path": "test/streusle.ud_test.json",
+        "size_bytes": 2051895,
+        "sha256": "f8144e6227db2e845cda4aa832f8d5644cb40b9e743d1dbe05663dd687d2c70c"
+      }
+    },
+    "oewn_release": "2025-edition",
+    "oewn_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+    "kaikki_endpoint": "https://kaikki.org/dictionary/English/meaning",
+    "enwiktionary_dump_date_reported_by_kaikki": "2026-08-05",
+    "kaikki_extraction_date": "2026-08-28",
+    "wiktextract_commits_reported_by_kaikki": [
+      "872fc7b",
+      "4deed51"
+    ],
+    "retrieval_warning": "Per-word URLs are not date-versioned; local response hashes identify this audit, but a fixed benchmark must use a dated dump and pinned extractor or lawfully archive the exact derived layer."
+  },
+  "rights_and_release": {
+    "state": "audit_only_not_admitted",
+    "terms": "Wiktionary text reuse remains subject to applicable CC BY-SA 4.0/GFDL attribution and derivative obligations, including any imported-content conditions; the MIT Wiktextract software license does not relicense extracted data.",
+    "public_output": "Aggregate counts and a combined response-manifest hash only; no gloss, example, entry row, or target list is committed.",
+    "evidence_urls": [
+      "https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use",
+      "https://kaikki.org/dictionary/rawdata.html",
+      "https://github.com/tatuylonen/wiktextract"
+    ]
+  },
+  "summary": {
+    "target_population": {
+      "types": 206,
+      "occurrences": 265,
+      "definition": "STREUSLE V.VID canonical types with neither an exact OEWN verb entry nor a unique fixed article/possessive-slot OEWN candidate"
+    },
+    "exact_kaikki_coverage": {
+      "types_with_verb_entry": 60,
+      "occurrences_with_verb_entry": 96,
+      "types_with_lexicalized_candidate": 57,
+      "occurrences_with_lexicalized_candidate": 93,
+      "types_with_multiple_lexicalized_candidates": 22,
+      "occurrences_with_multiple_lexicalized_candidates": 36,
+      "types_without_exact_verb_entry": 146,
+      "occurrences_without_exact_verb_entry": 169,
+      "http_200_without_exact_english_verb_entry": 5,
+      "http_200_with_exact_word_but_no_verb_entry": 5,
+      "http_200_without_exact_english_word": 0
+    },
+    "combined_lookup_routes": {
+      "total_vid_types": 239,
+      "total_vid_occurrences": 319,
+      "exact_oewn_types": 31,
+      "exact_oewn_occurrences": 45,
+      "unique_slot_oewn_candidate_types": 2,
+      "unique_slot_oewn_candidate_occurrences": 9,
+      "exact_kaikki_verb_types_after_oewn": 60,
+      "exact_kaikki_verb_occurrences_after_oewn": 96,
+      "types_with_any_unreviewed_dictionary_route": 93,
+      "occurrences_with_any_unreviewed_dictionary_route": 150,
+      "type_coverage": 0.389121,
+      "occurrence_coverage": 0.470219,
+      "types_with_multiple_inventory_candidates": 28,
+      "warning": "These disjoint lookup routes are unreviewed inventory candidates, not accepted mappings or evidence that multiple senses occur in STREUSLE."
+    },
+    "sense_schema": {
+      "raw_senses": 99,
+      "glossed_senses": 99,
+      "lexicalized_candidate_senses": 91,
+      "uofi_literal_fallback_senses": 6,
+      "senses_with_wiktionary_senseid": 5,
+      "senseid_coverage": 0.050505,
+      "lexicalized_senses_with_wiktionary_senseid": 5,
+      "types_with_complete_lexicalized_senseids": 1,
+      "senses_with_wikidata_id": 0,
+      "senses_with_raw_id_field": 0
+    },
+    "response_identity": {
+      "combined_manifest_sha256": "a1499e616b7ebc75de8b52e3e4d7e01c764108bc0d739946f740a0a0379479c6",
+      "http_status_counts": {
+        "200": 65,
+        "404": 141
+      },
+      "responses_with_last_modified": 65,
+      "unique_last_modified_values": 65,
+      "responses_with_etag": 65,
+      "raw_lexical_content_committed": false
+    },
+    "construct_limits": [
+      "Exact canonical-form lookup measures dictionary-entry alignment, not occurrence identification or contextual sense truth.",
+      "A Wiktionary gloss is lexicographic evidence, not an independently annotated STREUSLE occurrence label.",
+      "UOFI literal fallbacks are reported separately from lexicalized candidate senses.",
+      "The raw per-word endpoint omits Kaikki-generated display IDs; optional Wiktionary senseid and Wikidata fields are measured separately."
+    ]
+  },
+  "decision_rule": "Do not admit Wiktionary as benchmark gold solely from coverage. Require a fixed lawful artifact, reproducible entry-to-canonical mapping, adequate sense identifiers or a separately versioned project ID layer, and independent contextual annotation."
+}

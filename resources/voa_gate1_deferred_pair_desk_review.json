@@ -1,0 +1,207 @@
+{
+  "review_schema_version": "1.0.0",
+  "review_id": "gate1-voa-deferred-pair-desk-review-v1",
+  "reviewed_on": "2026-09-02",
+  "inputs": {
+    "automated_profile_id": "gate1-voa-automated-screen-v1",
+    "automated_profile_sha256": "efe61f49a81e59274d532a650da4a362dab4067eeaa0f0fe79bdebf4b8b77603",
+    "recurrence_triage_id": "gate1-voa-recurrence-triage-v1",
+    "recurrence_triage_sha256": "884c087db0821131e5b76168f3640fcbd5f7f2e08171226ba0430eef030a88a0",
+    "priority_review_id": "gate1-voa-priority-education-desk-review-v1",
+    "priority_review_sha256": "37b4d98de38f2dd269c5e96fdab47ba9e96fe2b479270b77bc65f5d716f622eb",
+    "oewn_release": "2025-edition; commit dc343f2683279ecbb13fab4e2fd778d7b162d287",
+    "oewn_artifact_sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51",
+    "taxonomy_standard": "PARSEME shared-task annotation guidelines 1.2",
+    "taxonomy_url": "https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2/?page=030_Categories_of_VMWEs",
+    "streusle_profile_id": "streusle-v5-vpc-vid-offline"
+  },
+  "construct": {
+    "purpose": "full project-internal desk review of the two deferred passage pairs after both priority pairs failed",
+    "target_scope": "plausible English VPC or VID; transparent complements, LVCs, nonverbal MWEs, and grammatical constructions remain outside the bounded first-paper target but important exclusions are recorded",
+    "automatic_decision_columns": ["lead_id", "desk_state", "provisional_category", "candidate_sense_ids", "note"],
+    "manual_addition_columns": ["manual_id", "paragraph", "surface_or_canonical_form", "desk_state", "provisional_category", "note"],
+    "review_status": "preliminary single project review; author confirmation and independent annotation are absent",
+    "source_check": "the two official AMP artifacts and their extracted texts exactly reproduce the frozen source and text SHA-256 values",
+    "excluded_inferences": [
+      "gold MWE label",
+      "validated contextual sense",
+      "learner knowledge",
+      "comprehension validity",
+      "passage admission",
+      "automatic-system accuracy"
+    ],
+    "raw_html_bundled": false,
+    "article_text_bundled": false
+  },
+  "articles": [
+    {
+      "article_id": "health-03",
+      "title": "Looking for Love During COVID",
+      "source_bytes": 92561,
+      "source_sha256": "7f049cc3728f719ebab761e1bb049e8e77c957017526e48c6c907ed5280d6fad",
+      "text_sha256": "5af1f4fcb2710867a52f7a7539f6d6a28978e04b89f942f7583db17f592f7b53",
+      "paragraph_count": 43,
+      "word_token_count": 1326,
+      "ngsl_2k_token_coverage": 0.911011,
+      "automatic_contiguous_decisions": [
+        ["health-03-lead-001", "literal_or_grammatical", null, [], "ordinary co-residence with daughters; OEWN only supplies tolerate or accommodate"],
+        ["health-03-lead-002", "plausible_in_scope", "VPC.full", ["go_out%2:41:00::"], "date regularly; central opening relationship and the dating sense needed by the pair contrast"],
+        ["health-03-lead-003", "false_span", null, [], "home is a noun followed by the Maryland location phrase"],
+        ["health-03-lead-004", "false_span", null, [], "members occur inside the hyphenated stay-at-home modifier"],
+        ["health-03-lead-005", "unresolved_in_scope", "VID_or_VPC.semi", [], "get on the phone is conventional but none of OEWN's seven get on senses fits; narrative detail"],
+        ["health-03-lead-006", "literal_or_grammatical", null, [], "going-to future"],
+        ["health-03-lead-007", "literal_or_grammatical", null, [], "going-to future"],
+        ["health-03-lead-008", "unresolved_in_scope", "VPC.semi", [], "return to an online dating service; OEWN lacks the contextual return sense"],
+        ["health-03-lead-009", "outside_bounded_scope", "productive_prepositional_construction", [], "in go on Zoom dates, on heads a noun-phrase complement rather than the retained intransitive go on VPC"],
+        ["health-03-lead-010", "outside_bounded_scope", "productive_prepositional_construction", [], "same noun-phrase-complement construction as lead 009"],
+        ["health-03-lead-011", "outside_bounded_scope", null, ["get_into%2:38:00::"], "transparent physical entry in the source's awkward get into inside sequence"],
+        ["health-03-lead-012", "outside_bounded_scope", null, ["go_into%2:38:00::"], "transparent physical entry"],
+        ["health-03-lead-013", "outside_bounded_scope", null, ["look_at%2:39:01::"], "transparent visual examination of a video background"],
+        ["health-03-lead-014", "literal_or_grammatical", null, [], "ordinary residence in Philadelphia; OEWN live in means residing where one works"],
+        ["health-03-lead-015", "outside_bounded_scope_pending_independent_taxonomy", "finite_clause_stance_construction", [], "epistemic or stance use before a finite clause; the selected STREUSLE VID evidence covers inclination plus gerund and does not establish this occurrence as VID"],
+        ["health-03-lead-016", "unresolved_in_scope", "VPC.semi", [], "return to using online dating services; OEWN lacks the contextual return sense"],
+        ["health-03-lead-017", "plausible_in_scope_partly_source_cued", "VPC.full", ["pop_out%2:38:00::"], "exit briefly for coffee; popping alone is bolded and pop is glossary-defined"],
+        ["health-03-lead-018", "literal_or_grammatical", null, [], "ordinary co-residence with parents; OEWN only supplies tolerate or accommodate"],
+        ["health-03-lead-019", "outside_bounded_scope", "productive_prepositional_construction", [], "in go on an in-person date, on heads a noun-phrase complement rather than the retained intransitive go on VPC"],
+        ["health-03-lead-020", "nonverbal_or_adjectival_source_cued", null, [], "copular adjective in a coordinated close or intimate phrase; intimate is bolded and glossary-defined"],
+        ["health-03-lead-021", "literal_or_grammatical", null, [], "going-to future"],
+        ["health-03-lead-022", "false_span", null, [], "ordinary do followed by the next-week in phrase"],
+        ["health-03-lead-023", "outside_bounded_scope", null, ["think_of%2:36:00::"], "transparent idea generation outside the bounded VPC or VID target"],
+        ["health-03-lead-024", "plausible_in_scope", "VPC.full", ["end_up%2:30:01::"], "eventual lower cost; central to one benefit of outdoor dates"],
+        ["health-03-lead-025", "literal_or_grammatical", null, [], "ordinary destination or attendance at a restaurant"],
+        ["health-03-lead-026", "plausible_in_scope", "VPC.full", ["put_on%2:29:00::"], "put clothing on the body; a peripheral joking recommendation"],
+        ["health-03-lead-027", "outside_bounded_scope", "IAV", ["come_with%2:42:00::"], "nervousness associated with physical contact; STREUSLE labels come with IAV, which this VPC/VID projection excludes"],
+        ["health-03-lead-028", "outside_bounded_scope", null, ["think_about%2:31:05::"], "transparent active consideration"],
+        ["health-03-lead-029", "false_span", null, [], "overlap inside the complete fall in love expression"],
+        ["health-03-lead-030", "plausible_in_scope", "VID", ["fall_in_love%2:30:00::"], "begin to experience love; title-level and closing thematic relevance"]
+      ],
+      "automatic_gap_decisions": [
+        ["health-03-gap-lead-001", "false_span", null, [], "overlap across contiguous go out with; not gapped go with"],
+        ["health-03-gap-lead-002", "false_span", null, [], "going-to future plus work for; not gapped go for"],
+        ["health-03-gap-lead-003", "false_span", null, [], "contiguous go back followed by to; not gapped go to"],
+        ["health-03-gap-lead-004", "false_span", null, [], "contiguous go into followed by home; not gapped go home"],
+        ["health-03-gap-lead-005", "plausible_in_scope", "VPC.full", ["find_out%2:31:00::"], "pronoun-separated found that out; learning contextual information is central to an online-dating benefit"],
+        ["health-03-gap-lead-006", "false_span", null, [], "contiguous go back followed by to; not gapped go to"],
+        ["health-03-gap-lead-007", "outside_bounded_scope", null, ["put_in%2:30:00::"], "transparent causative placement in a risk group rather than a decision-relevant VPC"],
+        ["health-03-gap-lead-008", "nonverbal_or_adjectival_source_cued", null, [], "coordinated copular adjectives rather than a separated verbal MWE"],
+        ["health-03-gap-lead-009", "false_span", null, [], "source says made creative ways; not gapped make way"],
+        ["health-03-gap-lead-010", "false_span", null, [], "going-to future plus do followed by an in phrase; not gapped go in"],
+        ["health-03-gap-lead-011", "false_span", null, [], "notes in the mail; not gapped send in"]
+      ],
+      "manual_additions": [
+        ["health-03-manual-001", 19, "found himself dating again", "outside_bounded_scope", "IRV", "introduces a recurring participant; PARSEME 1.2 places the result-state find oneself construction under inherently reflexive verbs"],
+        ["health-03-manual-002", 18, "at risk", "outside_bounded_scope", "nonverbal_MWE", "central health-risk expression, showing lexical burden outside the first-paper VPC or VID claim"],
+        ["health-03-manual-003", 25, "got lucky", "unresolved_in_scope_out_of_oewn", "VID_or_resultative_construction", "introduces the successful relationship but supplies no clean VPC analysis"],
+        ["health-03-manual-004", 35, "holding hands", "outside_bounded_scope", "lexical_collocation", "one example of physical contact; not a bounded VPC or VID target"],
+        ["health-03-manual-005", 42, "turn into", "outside_bounded_scope", "IAV", "become an interesting love story; STREUSLE labels turn into IAV, which this VPC/VID projection excludes"],
+        ["health-03-manual-006", 43, "you cannot beat that", "unresolved_in_scope_out_of_oewn", "VID", "evaluative closing formula; rhetorically central but not independently validated"]
+      ],
+      "assessment": {
+        "global_question_feasibility": "plausible for how COVID changed dating risks, practices, costs, and intimacy",
+        "target_criticality": "dating go out is locally central; go on date constructions are outside the bounded projection, feel like is a quoted finite-clause stance frame, and many other candidates are narrative details",
+        "source_marking": "no shared target form is bolded or glossary-defined; popping and intimate are individually taught, while the nearby dating paraphrase makes the dating sense of go out comparatively easy to infer",
+        "content_threats": ["COVID-era restrictions and risk norms", "U.S. geography", "dating and sexual-intimacy sensitivity", "four named interviewees", "dense direct speech and conversational disfluency"]
+      }
+    },
+    {
+      "article_id": "health-22",
+      "title": "Mushroom Hunting Gains Popularity in US",
+      "source_bytes": 90214,
+      "source_sha256": "8c6215d2acb551714b3c995bc83674b49fd501aca2d74d2bf210f7426719b4b1",
+      "text_sha256": "2b82ea42cd4768106fbcbed22c45617078f2f5bb1aef53c40fe1a94933b22c69",
+      "paragraph_count": 33,
+      "word_token_count": 823,
+      "ngsl_2k_token_coverage": 0.837181,
+      "automatic_contiguous_decisions": [
+        ["health-22-lead-001", "outside_bounded_scope", null, ["talk_about%2:32:00::", "talk_about%2:32:01::"], "transparent topic introduction"],
+        ["health-22-lead-002", "literal_or_grammatical", null, [], "ordinary residence in New York; OEWN live in means residing where one works"],
+        ["health-22-lead-003", "outside_bounded_scope_meaning_cued", "weak_or_prepositional_verb", ["look_for%2:35:00::"], "search for mushrooms; STREUSLE records look for only in the weak-MWE layer, outside this strong VPC/VID projection"],
+        ["health-22-lead-004", "plausible_in_scope_meaning_cued", "VPC.semi", ["slow_up%2:30:01::", "slow_up%2:30:03::"], "move more slowly; the preceding sentence says walk slowly"],
+        ["health-22-lead-005", "plausible_in_scope", "VPC.full", ["go_out%2:38:02::"], "leave home for a prolonged foraging activity; central motivation question"],
+        ["health-22-lead-006", "literal_or_grammatical", null, ["travel_to%2:38:00::"], "literal travel to named countries"],
+        ["health-22-lead-007", "literal_or_grammatical", null, [], "literal movement or visit to Italy"],
+        ["health-22-lead-008", "contextual_lexicon_mismatch", null, [], "anaphoric do it alone, not OEWN's sexual do it sense"],
+        ["health-22-lead-009", "outside_bounded_scope", "productive_prepositional_construction", [], "in go on walks, on heads a noun-phrase complement rather than the retained intransitive go on VPC"],
+        ["health-22-lead-010", "contextual_lexicon_mismatch", null, [], "anaphoric best way to do it, not OEWN's sexual do it sense"],
+        ["health-22-lead-011", "outside_bounded_scope_meaning_cued", "weak_or_prepositional_verb", ["look_like%2:42:00::"], "resemble edible mushrooms; the form is not independently supported as a strong VPC or VID in the selected STREUSLE projection"],
+        ["health-22-lead-012", "plausible_in_scope", "VPC.full", ["go_away%2:39:00::"], "poisoning signs disappear; central diagnostic warning"],
+        ["health-22-lead-013", "plausible_in_scope", "VPC.full", ["go_out%2:38:02::"], "leave to forage with experienced hunters; central recommendation"],
+        ["health-22-lead-014", "plausible_in_scope", "VPC.full", ["go_out%2:38:00::", "go_out%2:38:02::"], "leave for the woods; central closing warning"],
+        ["health-22-lead-015", "unresolved_in_scope", "VPC.semi", [], "return carrying mushrooms; OEWN lacks the ordinary physical-return come back sense"]
+      ],
+      "automatic_gap_decisions": [
+        ["health-22-gap-lead-001", "false_span", null, [], "try foraging followed by for mushrooms; not gapped try for"],
+        ["health-22-gap-lead-002", "false_span", null, [], "get a chance to is not gapped get to"],
+        ["health-22-gap-lead-003", "false_span", null, [], "second get a chance to is not gapped get to"],
+        ["health-22-gap-lead-004", "false_span", null, [], "get lost followed by an in phrase; not gapped get in"],
+        ["health-22-gap-lead-005", "false_span", null, [], "causative makes people plus go out; not gapped make out"],
+        ["health-22-gap-lead-006", "false_span", null, [], "contiguous go out followed by a purpose for phrase; not gapped go for"],
+        ["health-22-gap-lead-007", "false_span", null, [], "causative make plus feel fuller; not gapped make full"],
+        ["health-22-gap-lead-008", "false_span", null, [], "feel fuller followed by a duration for phrase; not gapped feel for"],
+        ["health-22-gap-lead-009", "contextual_lexicon_mismatch", null, [], "negated anaphoric do it, not a separated OEWN sexual expression"],
+        ["health-22-gap-lead-010", "false_span", null, [], "crosses eat and the following you go on clause"],
+        ["health-22-gap-lead-011", "false_span", null, [], "looks similar followed by to; not gapped look to"],
+        ["health-22-gap-lead-012", "false_span", null, [], "contiguous go out plus foraging with; not gapped go with"],
+        ["health-22-gap-lead-013", "false_span", null, [], "contiguous go out followed by destination to; not gapped go to"],
+        ["health-22-gap-lead-014", "false_span", null, [], "contiguous come back followed by with; not gapped come with"]
+      ],
+      "manual_additions": [
+        ["health-22-manual-001", 9, "pay close attention to", "unresolved_in_scope_out_of_oewn", "VID_or_lexical_collocation", "central foraging technique; absent from the projected OEWN inventory"],
+        ["health-22-manual-002", 11, "get lost", "unresolved_in_scope_out_of_oewn", "VID_or_resultative_construction", "central danger but category and compositionality require independent review"],
+        ["health-22-manual-003", 12, "after all", "outside_bounded_scope", "nonverbal_MWE", "discourse marker outside the VPC or VID claim"],
+        ["health-22-manual-004", 15, "in search of", "outside_bounded_scope", "nonverbal_MWE", "fixed search expression outside the verbal target"],
+        ["health-22-manual-005", 14, "be known for", "outside_bounded_scope", "passive_or_adjectival_formula", "cultural background statement rather than a bounded verbal target"],
+        ["health-22-manual-006", 19, "lose weight", "outside_bounded_scope", "lexical_collocation", "health-benefit collocation outside the VPC or VID claim"],
+        ["health-22-manual-007", 21, "on your own", "outside_bounded_scope", "nonverbal_MWE", "central warning meaning without a verbal head"],
+        ["health-22-manual-008", 26, "by mistake", "outside_bounded_scope", "nonverbal_MWE", "central poisoning mechanism outside the verbal target"],
+        ["health-22-manual-009", 28, "take a long time", "outside_bounded_scope", "LVC_or_lexical_collocation", "central delayed-symptom proposition but excluded construction type"],
+        ["health-22-manual-010", 30, "result in", "outside_bounded_scope", "transparent_prepositional_verb", "states the severe consequence but lies outside the VPC or VID target"]
+      ],
+      "assessment": {
+        "global_question_feasibility": "plausible for motivations, claimed benefits, dangers, and the experienced-guide recommendation",
+        "target_criticality": "go out is central in the motivation and safety sections; go on walks is central advice but lies outside the bounded strong VPC/VID projection",
+        "source_marking": "no shared form is bolded or glossary-defined; look for, slow up, and look like receive close discourse paraphrases that reduce hidden-sense burden",
+        "content_threats": ["mushroom and poisoning terminology", "many named regions and cultures", "health claims requiring dated-source caution", "foraging safety knowledge", "substantially lower fixed-list membership than the partner passage"]
+      }
+    }
+  ],
+  "pair_decisions": [
+    {
+      "article_ids": ["health-03", "health-22"],
+      "shared_forms": ["go on", "go out"],
+      "state": "reject_from_primary_material_set_pending_author_confirmation",
+      "reasons": [
+        "go out supplies a genuine dating versus leave-to-forage sense contrast and is locally relevant in both passages",
+        "go on takes a noun-phrase complement in the date and walk occurrences, outside the retained intransitive VPC, and does not supply a second bounded target",
+        "only go out remains a clean repeated VPC that is plausibly target-critical across both passages",
+        "the passages differ by 503 tokens, 7.38 percentage points on NGSL-2K token membership, and sharply different interview and expository structures"
+      ]
+    },
+    {
+      "article_ids": ["education-07", "health-03"],
+      "shared_forms": ["feel like", "go on"],
+      "state": "reject_from_primary_material_set_pending_author_confirmation",
+      "reasons": [
+        "feel like is an epistemic finite-clause frame in both passages; the selected STREUSLE VID evidence covers inclination plus gerund and does not establish these occurrences as VID",
+        "health-03 go on a date is a productive prepositional construction outside the retained intransitive go on VPC",
+        "the pair therefore does not provide more than one independently defensible repeated VPC or VID target",
+        "health-03 is 394 tokens longer and its COVID dating interviews differ from education-07 in topic, program, discourse structure, sensitivity, and background knowledge"
+      ]
+    }
+  ],
+  "manual_recurrence_leads": [
+    {
+      "article_ids": ["education-16", "health-03"],
+      "forms": ["find oneself", "go on"],
+      "state": "reject_from_bounded_pair_scope_pending_author_confirmation",
+      "reason": "PARSEME 1.2 places English find oneself in a difficult situation under inherently reflexive verbs, outside this project's VPC or VID target; in the reviewed go on a date and go on the market occurrences, on heads a noun-phrase complement rather than functioning as the particle in the retained intransitive go on VPC, so any inherently adpositional or productive-construction analysis is also outside the bounded target"
+    }
+  ],
+  "overall_decision": {
+    "state": "all_four_frozen_recurrence_pairs_rejected_pending_author_confirmation",
+    "reason": "each frozen pair fails the requirement for more than one independently defensible, decision-relevant repeated target or fails material comparability after occurrence-level review",
+    "app_change": "none; no target-form sense projection is admitted",
+    "completed_by_audit_id": "gate1-voa-out-of-inventory-recurrence-audit-v1",
+    "next_desk_step": "use the completed audit's frozen-frame stop and choose a material-redesign route before further acquisition"
+  }
+}

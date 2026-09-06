@@ -1,0 +1,536 @@
+{
+  "audit_version": "1.0.0",
+  "audit_id": "wsd-mwe-sense-slice-audit-2026-09-03",
+  "audited_on": "2026-09-03",
+  "question": "Can an existing public resource provide a defensible external test of contextual fine-sense assignment for confirmed English phrasal-verb or verbal-idiom occurrences without conflating it with MWE detection?",
+  "task_separation": {
+    "occurrence_task": "Use STREUSLE 5.0 to evaluate open-text candidate retrieval, member span, gap, and VPC.full/VPC.semi/VID category.",
+    "sense_task": "Condition on a supplied multiword-verb lemma and context, then rank or select an OEWN-compatible contextual sense.",
+    "reason": "No located corpus simultaneously provides target occurrence boundaries/categories, stable fine senses, uncertainty states, rights clarity, and an adequate untouched split. Requiring one corpus for both tasks would discard valid task-specific evidence."
+  },
+  "bounded_search": {
+    "stop_rule": "Inspect the actual artifacts named by the recent idiom-dataset survey and the MWE/WSD citation neighbourhoods; stop once the named English sense, idiomaticity, and verbal-MWE corpora have been classified by target construct.",
+    "search_complete": true,
+    "candidates": [
+      {
+        "id": "raganato_wsd_framework",
+        "source": "https://lcl.uniroma1.it/wsdeval/",
+        "result": "admit_external_conditional_sense_smoke_test_with_limits",
+        "evidence": "The exact archive contains SemCor training data and five fixed Senseval/SemEval evaluation sets. Its XML/gold pairs include multiword verb lemmas with WordNet sense keys, but do not reliably encode all expression-member spans."
+      },
+      {
+        "id": "semcor_original",
+        "source": "https://web.eecs.umich.edu/~mihalcea/downloads.html#semcor",
+        "result": "training_and_development_only",
+        "evidence": "The framework projection contains 1,563 rows whose lemma type intersects a STREUSLE VPC/VID type and 74 forms with cross-occurrence sense contrasts. It is established training data, not independent held-out evidence."
+      },
+      {
+        "id": "kit_requirements_mwe_wsd",
+        "source": "https://doi.org/10.5281/zenodo.5167248",
+        "result": "reject_target_scope",
+        "evidence": "The CC BY 4.0 artifact links requirement-document MWEs to WordNet 3.1/Wikipedia senses, but the paper explicitly disregards idioms, fixed expressions, light-verb constructions, and verb-particle constructions and focuses on compound nouns/proper names."
+      },
+      {
+        "id": "epie",
+        "source": "https://github.com/prateeksaxena2809/EPIE_Corpus",
+        "result": "reject_fine_sense",
+        "evidence": "The public labels inspected are binary 0/1 idiomaticity labels plus BIO-style spans, not reusable inventory-linked contextual senses; no repository license was located."
+      },
+      {
+        "id": "vnc_tokens",
+        "source": "http://multiword.sourceforge.net/PHITE.php?sitesig=FILES&page=FILES_20_Data",
+        "result": "reject_fine_sense_and_scope",
+        "evidence": "Verb-noun combinations are labeled literal or idiomatic; they do not supply VPC/VID categories or fine senses."
+      },
+      {
+        "id": "idix",
+        "source": "https://aclanthology.org/L10-1253/",
+        "result": "reject_fine_sense_and_availability",
+        "evidence": "The recent survey reports 78 English idiom types and 5,836 binary idiomatic/non-idiomatic instances and marks the dataset unavailable."
+      },
+      {
+        "id": "semeval_2013_task_5b",
+        "source": "https://aclanthology.org/S13-2045/",
+        "result": "reject_fine_sense",
+        "evidence": "The task supplies binary literal/figurative decisions for ambiguous idioms rather than WordNet/OEWN fine-sense labels."
+      },
+      {
+        "id": "pvc_data_2013",
+        "source": "https://cogcomp.seas.upenn.edu/page/resource_view/26",
+        "result": "reject_fine_sense",
+        "evidence": "The 1,348 BNC-indexed sentences distinguish true phrasal verbs from simplex verb-preposition combinations with reported 84.5% agreement; no contextual fine sense is annotated."
+      },
+      {
+        "id": "masc_word_sense_sentence_corpus",
+        "source": "https://anc.org/data/masc/downloads/data-download/",
+        "result": "reject_target_scope",
+        "evidence": "The manually sense-annotated sentence corpus targets 114 selected single words; broader MASC MWE layers do not provide target VPC/VID fine-sense gold."
+      },
+      {
+        "id": "streusle_parseme_kato_coam",
+        "source": "https://aclanthology.org/L18-1396/",
+        "result": "occurrence_evidence_only",
+        "evidence": "These resources strengthen member-span/category evidence but do not attach a stable OEWN/WordNet fine sense to each target occurrence."
+      },
+      {
+        "id": "mweaswsd_added_labels",
+        "source": "https://aclanthology.org/2023.findings-emnlp.14/",
+        "result": "reject_added_labels_as_validation_gold",
+        "evidence": "The separate pinned audit found no category-confirmed VPC/VID rows, no independent annotation evidence, conflicting first-wins duplicates, and mapping loss. This does not invalidate original Senseval/SemEval gold in the WSD framework."
+      }
+    ]
+  },
+  "source_and_annotation_evidence": [
+    {
+      "source": "https://aclanthology.org/E17-1010/",
+      "evidence": "Raganato et al. standardize five all-words evaluation sets and distinguish them from SemCor training data; legacy sense mappings were semi-automatic with remaining cases manually checked."
+    },
+    {
+      "source": "https://aclanthology.org/W04-0811/",
+      "evidence": "Senseval-3 double-annotated verbs, nouns, and adjectives, adjudicated/corrected them with a third person, encouraged multiword constructions, allowed multiple senses and a no-fitting-sense U label, and reported 67.8% verb agreement."
+    },
+    {
+      "source": "https://aclanthology.org/S07-1016/",
+      "evidence": "SemEval-2007 Task 17 used two linguistics students who examined and resolved disagreements and reported 72% agreement for verbs."
+    },
+    {
+      "source": "https://aclanthology.org/S15-2049/",
+      "evidence": "SemEval-2015 used two taggers per language, allowed all appropriate senses, reported agreement on at least one meaning for 68% of instances, and used a third judge."
+    },
+    {
+      "source": "https://aclanthology.org/2025.konvens-1.9/",
+      "evidence": "The 2025 survey inventory confirms that prominent English idiom corpora mainly expose binary idiomaticity, paraphrase, sentiment, or compositionality labels rather than inventory-linked fine senses."
+    }
+  ],
+  "rights": {
+    "framework_archive": {
+      "state": "external_analysis_only_pending_explicit_redistribution_terms",
+      "evidence": "The public project distributes the archive and its README requests citation of the framework and source tasks, but the exact zip contains no LICENSE file or explicit redistribution grant."
+    },
+    "semcor": {
+      "state": "reusable_with_retained_notice_from_official_archive",
+      "evidence": "Use the separately audited official SemCor 3.0 distribution and retain its Princeton notice; do not infer that its grant covers every evaluation dataset in the framework."
+    },
+    "repository_policy": "No source sentence, gold row, model, or external data archive is bundled in this repository. The audit stores only hashes, counts, lexical identifiers, and source links."
+  },
+  "decision": {
+    "state": "go_with_severe_limits_external_conditional_sense_smoke_test",
+    "admitted_resource_id": "raganato_wsd_framework_mwe_verb_slice",
+    "slice_rule": [
+      "verb lemma contains an underscore in the standardized WSD XML",
+      "lemma type occurs in STREUSLE 5.0 under exactly one of V.VPC.full, V.VPC.semi, or V.VID",
+      "every gold WordNet 3.0 sense key has the same CILI ILI in OEWN 2025",
+      "the OEWN 2025 lemma has at least two candidate verb senses"
+    ],
+    "frozen_roles": {
+      "training": [
+        "semcor"
+      ],
+      "development": [
+        "semeval2007"
+      ],
+      "source_test_evaluation": [
+        "senseval2",
+        "senseval3",
+        "semeval2015"
+      ],
+      "zero_target_rows": [
+        "semeval2013"
+      ]
+    },
+    "claim_ceiling": "A feasibility-level conditional sense-ranking score on 23 externally annotated occurrences across 18 multiword-verb types, with six development rows and 17 fixed source-test rows. The source-test labels have been inspected during this artifact audit and are not a blinded project holdout. This is not validation of automatic MWE detection, member spans, VID senses, take in, ambiguity calibration, abstention, out-of-inventory handling, domain generality, or researcher usability.",
+    "critical_limits": [
+      "The category link is type-level evidence imported from STREUSLE, not an occurrence-level VPC/VID judgment in the WSD texts.",
+      "The 17 source-test rows and labels were inspected during this audit; freeze them now, report the exposure, and do not call them untouched or blinded.",
+      "All 23 forms occur in SemCor and 22 rows have all gold senses represented there, so this is not a form-unseen generalization test.",
+      "The final slice contains 15 V.VPC.full types and three V.VPC.semi types but zero V.VID types.",
+      "Only find_out shows two different gold senses across evaluation occurrences.",
+      "take_in has 11 SemCor training rows and eight observed training senses but zero evaluation rows.",
+      "One row retains multiple acceptable senses; the slice does not test calibrated ambiguity, abstention, or out-of-inventory decisions.",
+      "The source tasks and annotation procedures are heterogeneous, and 23 rows are too small for stable form-level or domain-level inference."
+    ],
+    "consequence_for_gate_1": "The bounded search is closed. Gate 1 no longer lacks all external sense evidence, but it still lacks an adequate target-wide validation benchmark. Use the admitted slice as a smoke-test floor, retain STREUSLE as the separate occurrence benchmark, and narrow any first-paper validation claim until stronger independent evidence exists.",
+    "model_authorization": "Do not acquire or train BERT yet. First implement and score the transparent most-frequent-sense and gloss/rule baselines on the frozen slice; authorize at most one contextual ranker only if that tiny check exposes a ranking problem that a model can meaningfully test."
+  },
+  "reproduction": {
+    "script": "scripts/audit_wsd_mwe_sense_slice.py",
+    "privacy": "The script reads external text locally but emits no sentences.",
+    "command": "python3 scripts/audit_wsd_mwe_sense_slice.py WSD_Evaluation_Framework.zip streusle.ud_train.v5.json streusle.ud_dev.v5.json streusle.ud_test.v5.json english-wordnet-2025-json.zip cili-pwn30-sense-map.tab cili-pwn30-ili-map.tab --check resources/wsd_mwe_sense_slice_audit_2026_09_03.json"
+  },
+  "computed_observations": {
+    "artifacts": {
+      "framework": {
+        "size_bytes": 165655083,
+        "sha256": "d71c4d3e93d265cb31e032ab3db8c0f9186af95a4c7a9a637d66dfef81dfbf47"
+      },
+      "streusle_train": {
+        "size_bytes": 16845570,
+        "sha256": "36aef0205a6e2e154b681d7520858693a264d3c40ba7d97c089345bbd1149a22"
+      },
+      "streusle_dev": {
+        "size_bytes": 2050638,
+        "sha256": "56cc1783962ce8c9f06b7649ffdccb48cea14ee7e4a8be2e35214ffc71303e9a"
+      },
+      "streusle_test": {
+        "size_bytes": 2051895,
+        "sha256": "f8144e6227db2e845cda4aa832f8d5644cb40b9e743d1dbe05663dd687d2c70c"
+      },
+      "oewn": {
+        "size_bytes": 9986555,
+        "sha256": "7d749f6e2c39e6970e4997839dcf6e42fd281f3c2fae0171d2192bae8cfa4b51"
+      },
+      "cili_sense_map": {
+        "size_bytes": 6637176,
+        "sha256": "446a94e3fdf7d5b6b9604797ab99c727e15856a46d57307a23bf2cea1da418f2"
+      },
+      "cili_ili_map": {
+        "size_bytes": 2124416,
+        "sha256": "13b6741395a8bdf20e5a19686ffa49167653696d4f523db17a79dce3211a6627"
+      }
+    },
+    "framework_members": {
+      "semcor": {
+        "xml": {
+          "path": "WSD_Evaluation_Framework/Training_Corpora/SemCor/semcor.data.xml",
+          "sha256": "45003c51336fcb15b9d8a6556be65eaadf5bf3285ddbae763675000e28b00753"
+        },
+        "gold": {
+          "path": "WSD_Evaluation_Framework/Training_Corpora/SemCor/semcor.gold.key.txt",
+          "sha256": "d5bb7966417fc1861c43a3851e03aa7b762b9004d9ffe7636637420d779259af"
+        }
+      },
+      "evaluation": {
+        "senseval2": {
+          "xml": {
+            "path": "WSD_Evaluation_Framework/Evaluation_Datasets/senseval2/senseval2.data.xml",
+            "sha256": "5f5fe6a74fdd4ee85ca271c49a3b88131e4a7ba04a11a1392c1333efcbfe9be9"
+          },
+          "gold": {
+            "path": "WSD_Evaluation_Framework/Evaluation_Datasets/senseval2/senseval2.gold.key.txt",
+            "sha256": "1e1c43116dadc796763c59f66cc61aa204cfb1886e5825836a96cf9b96a056e8"
+          }
+        },
+        "senseval3": {
+          "xml": {
+            "path": "WSD_Evaluation_Framework/Evaluation_Datasets/senseval3/senseval3.data.xml",
+            "sha256": "ecd472808c5f3873b0e90fda6182519e5ed6081929435a67eb7f2c5a8fd36839"
+          },
+          "gold": {
+            "path": "WSD_Evaluation_Framework/Evaluation_Datasets/senseval3/senseval3.gold.key.txt",
+            "sha256": "1faa09ca47a9c4627c0c1078dfc30e39c16d6ce728a532cc670007fbca0be70e"
+          }
+        },
+        "semeval2007": {
+          "xml": {
+            "path": "WSD_Evaluation_Framework/Evaluation_Datasets/semeval2007/semeval2007.data.xml",
+            "sha256": "ff0cb1350acf7d0bf09f05b18c537870c8205f12daa2510099674a227c149f38"
+          },
+          "gold": {
+            "path": "WSD_Evaluation_Framework/Evaluation_Datasets/semeval2007/semeval2007.gold.key.txt",
+            "sha256": "06dce0b5892bb5c625ebfd8755d1a31a5a04df6882709aa29c1dcd44befb3b41"
+          }
+        },
+        "semeval2013": {
+          "xml": {
+            "path": "WSD_Evaluation_Framework/Evaluation_Datasets/semeval2013/semeval2013.data.xml",
+            "sha256": "58682da53cdb24e7563f9a77bc357616eee6863399c2be62f8927c9d5eb20245"
+          },
+          "gold": {
+            "path": "WSD_Evaluation_Framework/Evaluation_Datasets/semeval2013/semeval2013.gold.key.txt",
+            "sha256": "3dcedb0b9bed2906c3651d089236801c5353198ba6eda0575f864e3d18ee81cc"
+          }
+        },
+        "semeval2015": {
+          "xml": {
+            "path": "WSD_Evaluation_Framework/Evaluation_Datasets/semeval2015/semeval2015.data.xml",
+            "sha256": "e0804170a39fac9d0da6c707b0b974d493a385743557a40626abf36609372650"
+          },
+          "gold": {
+            "path": "WSD_Evaluation_Framework/Evaluation_Datasets/semeval2015/semeval2015.gold.key.txt",
+            "sha256": "3a15c65607f27efb3846a71a303b21d0916b5bb527348bf27f526d6770301eaf"
+          }
+        }
+      }
+    },
+    "framework_rights_artifact": {
+      "license_file_present": false,
+      "readme_requests_framework_and_source_task_citations": true,
+      "explicit_redistribution_grant_in_readme": false
+    },
+    "semcor_multiword_verbs": {
+      "rows": 5361,
+      "types": 1147,
+      "documents": 352,
+      "rows_with_multiple_acceptable_gold_senses": 11,
+      "forms_with_cross_occurrence_sense_contrast": 287,
+      "rows_in_cross_occurrence_sense_contrast_forms": 3075,
+      "target_type_intersection": {
+        "rows": 1563,
+        "types": 123,
+        "documents": 321,
+        "rows_with_multiple_acceptable_gold_senses": 4,
+        "forms_with_cross_occurrence_sense_contrast": 74,
+        "rows_in_cross_occurrence_sense_contrast_forms": 1333,
+        "rows_by_dataset": {
+          "semcor": 1563
+        },
+        "types_with_one_streusle_category": 117,
+        "types_with_conflicting_streusle_categories": 6,
+        "rows_with_one_streusle_category": 1411,
+        "rows_with_conflicting_streusle_categories": 152,
+        "unique_category_types": {
+          "V.VID": 19,
+          "V.VPC.full": 68,
+          "V.VPC.semi": 30
+        },
+        "conflicting_category_types": [
+          {
+            "lemma": "call_in",
+            "categories": {
+              "V.VPC.full": 1,
+              "V.VPC.semi": 2
+            }
+          },
+          {
+            "lemma": "come_out",
+            "categories": {
+              "V.VPC.full": 3,
+              "V.VPC.semi": 5
+            }
+          },
+          {
+            "lemma": "come_through",
+            "categories": {
+              "V.VPC.full": 3,
+              "V.VPC.semi": 1
+            }
+          },
+          {
+            "lemma": "go_out",
+            "categories": {
+              "V.VPC.full": 3,
+              "V.VPC.semi": 1
+            }
+          },
+          {
+            "lemma": "make_up",
+            "categories": {
+              "V.VPC.full": 1,
+              "V.VPC.semi": 2
+            }
+          },
+          {
+            "lemma": "take_out",
+            "categories": {
+              "V.VPC.full": 1,
+              "V.VPC.semi": 1
+            }
+          }
+        ]
+      },
+      "take_in": {
+        "rows": 11,
+        "documents": 10,
+        "observed_senses": 8
+      }
+    },
+    "evaluation_multiword_verbs": {
+      "rows": 92,
+      "types": 77,
+      "documents": 11,
+      "rows_with_multiple_acceptable_gold_senses": 1,
+      "forms_with_cross_occurrence_sense_contrast": 4,
+      "rows_in_cross_occurrence_sense_contrast_forms": 9,
+      "cross_occurrence_sense_contrasts": [
+        {
+          "lemma": "come_to",
+          "rows": 3,
+          "observed_senses": 3
+        },
+        {
+          "lemma": "find_out",
+          "rows": 2,
+          "observed_senses": 2
+        },
+        {
+          "lemma": "knock_out",
+          "rows": 2,
+          "observed_senses": 2
+        },
+        {
+          "lemma": "think_of",
+          "rows": 2,
+          "observed_senses": 2
+        }
+      ],
+      "rows_by_dataset": {
+        "semeval2007": 20,
+        "semeval2015": 4,
+        "senseval2": 25,
+        "senseval3": 43
+      },
+      "target_type_intersection": {
+        "rows": 31,
+        "types": 24,
+        "documents": 11,
+        "rows_with_multiple_acceptable_gold_senses": 1,
+        "forms_with_cross_occurrence_sense_contrast": 1,
+        "rows_in_cross_occurrence_sense_contrast_forms": 2,
+        "cross_occurrence_sense_contrasts": [
+          {
+            "lemma": "find_out",
+            "rows": 2,
+            "observed_senses": 2
+          }
+        ],
+        "rows_by_dataset": {
+          "semeval2007": 7,
+          "semeval2015": 2,
+          "senseval2": 9,
+          "senseval3": 13
+        },
+        "types_with_one_streusle_category": 23,
+        "types_with_conflicting_streusle_categories": 1,
+        "rows_with_one_streusle_category": 29,
+        "rows_with_conflicting_streusle_categories": 2,
+        "unique_category_types": {
+          "V.VID": 2,
+          "V.VPC.full": 17,
+          "V.VPC.semi": 4
+        },
+        "conflicting_category_types": [
+          {
+            "lemma": "make_up",
+            "categories": {
+              "V.VPC.full": 1,
+              "V.VPC.semi": 2
+            }
+          }
+        ]
+      },
+      "semcor_training_overlap": {
+        "rows_with_form_seen_in_semcor": 87,
+        "rows_with_any_gold_sense_seen_in_semcor": 83,
+        "rows_with_all_gold_senses_seen_in_semcor": 83
+      },
+      "target_semcor_training_overlap": {
+        "rows_with_form_seen_in_semcor": 31,
+        "rows_with_any_gold_sense_seen_in_semcor": 30,
+        "rows_with_all_gold_senses_seen_in_semcor": 30
+      },
+      "oewn_2025_mapping": {
+        "gold_label_mapping_status": {
+          "exact_ili_mismatch": 1,
+          "exact_same_ili": 90,
+          "exact_sense_id_absent": 2
+        },
+        "non_lossless_gold_labels": [
+          {
+            "lemma": "paint_a_picture",
+            "sense": "paint_a_picture%2:32:00::",
+            "status": "exact_sense_id_absent",
+            "rows": 1
+          },
+          {
+            "lemma": "take_off",
+            "sense": "take_off%2:30:00::",
+            "status": "exact_ili_mismatch",
+            "rows": 1
+          },
+          {
+            "lemma": "turn_to",
+            "sense": "turn_to%2:30:00::",
+            "status": "exact_sense_id_absent",
+            "rows": 1
+          }
+        ],
+        "rows_with_all_gold_labels_exact_same_ili": 89,
+        "rows_with_inventory_entry": 92,
+        "rows_with_at_least_two_inventory_senses": 61,
+        "candidate_sense_count_distribution": {
+          "1": 31,
+          "2": 18,
+          "3": 9,
+          "4": 9,
+          "5": 5,
+          "6": 6,
+          "7": 4,
+          "8": 1,
+          "9": 3,
+          "12": 4,
+          "13": 1,
+          "15": 1
+        }
+      },
+      "target_oewn_2025_mapping": {
+        "gold_label_mapping_status": {
+          "exact_ili_mismatch": 1,
+          "exact_same_ili": 31
+        },
+        "non_lossless_gold_labels": [
+          {
+            "lemma": "take_off",
+            "sense": "take_off%2:30:00::",
+            "status": "exact_ili_mismatch",
+            "rows": 1
+          }
+        ],
+        "rows_with_all_gold_labels_exact_same_ili": 30,
+        "rows_with_inventory_entry": 31,
+        "rows_with_at_least_two_inventory_senses": 26,
+        "candidate_sense_count_distribution": {
+          "1": 5,
+          "2": 2,
+          "3": 8,
+          "4": 4,
+          "5": 2,
+          "6": 1,
+          "7": 1,
+          "9": 3,
+          "12": 4,
+          "15": 1
+        }
+      },
+      "admissible_candidate_polysemy_slice": {
+        "selection_funnel": {
+          "streusle_target_rows": 31,
+          "one_streusle_category_rows": 29,
+          "lossless_oewn_mapping_rows": 28,
+          "at_least_two_oewn_candidate_senses_rows": 23
+        },
+        "rows": 23,
+        "types": 18,
+        "documents": 10,
+        "rows_with_multiple_acceptable_gold_senses": 1,
+        "forms_with_cross_occurrence_sense_contrast": 1,
+        "rows_in_cross_occurrence_sense_contrast_forms": 2,
+        "cross_occurrence_sense_contrasts": [
+          {
+            "lemma": "find_out",
+            "rows": 2,
+            "observed_senses": 2
+          }
+        ],
+        "rows_by_dataset": {
+          "semeval2007": 6,
+          "semeval2015": 1,
+          "senseval2": 7,
+          "senseval3": 9
+        },
+        "development_rows": 6,
+        "source_test_rows": 17,
+        "source_test_status": "fixed_but_not_blinded_after_artifact_and_label_audit",
+        "types_by_streusle_category": {
+          "V.VPC.full": 15,
+          "V.VPC.semi": 3
+        },
+        "semcor_training_overlap": {
+          "rows_with_form_seen_in_semcor": 23,
+          "rows_with_any_gold_sense_seen_in_semcor": 22,
+          "rows_with_all_gold_senses_seen_in_semcor": 22
+        }
+      },
+      "take_in_rows": 0
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0.0",
+  "contract_id": "ENWIKI-PREPROCESSING-2026-09-04",
+  "date": "2026-09-04",
+  "status": "frozen_before_sampling_no_source_text_acquired",
+  "task": "IR-113",
+  "inputs": {
+    "source_manifest": "resources/source_manifest.json",
+    "source_manifest_sha256": "a5f7e6d9a3fd64907bdc2e3d8741b1641412f06c2696c1b555db92ea96efe8af",
+    "metric_contract": "metric_contract.json",
+    "metric_contract_sha256": "a293ed4c34b671945623109b4c08f932889ab648ecfd0853b9893cfdd1700c30",
+    "extractor": "scripts/screen_simplewiki_route2_rendered.py",
+    "extractor_sha256": "094a90596a14e4bfa0b7fd84f8d58df7cedeeb7cdb36f0cd1c025aa3519dddb8",
+    "reconstructor": "scripts/reconstruct_benchmark.py",
+    "reconstructor_sha256": "eccdf34d8007e180e666290beecda511899362da50e41a0bf88cf46026935743"
+  },
+  "stages": [
+    {
+      "id": "dump_revision",
+      "input": "Verified bzip2/XML dump bytes",
+      "operation": "Stream pages whose ns is exactly 0, model is wikitext, and redirect marker is absent; retain page ID, title, revision ID, timestamp, and exact revision text",
+      "output": "Exact UTF-8 wikitext bytes plus byte count and SHA-256",
+      "loss_rule": "Preserve the verified dump files and exact extracted wikitext; never overwrite either layer"
+    },
+    {
+      "id": "pinned_render",
+      "input": "Frozen revision ID and dump wikitext",
+      "operation": "Call the English Wikipedia Action API parse endpoint with action=parse, format=json, formatversion=2, oldid={revision_id}, prop=text|wikitext|revid, disableeditsection=1, disabletoc=1, disablelimitreport=1, and maxlag=5; require returned pageid, revid, title, and wikitext SHA-256 to match the dump record",
+      "output": "Exact API response and rendered HTML bytes with retrieval time, byte counts, and SHA-256",
+      "loss_rule": "Cache the response and HTML because templates can expand using retrieval-time state; a later rerender is not an identity substitute"
+    },
+    {
+      "id": "prose_extract",
+      "input": "Verified rendered HTML",
+      "operation": "Reuse extract_blocks; retain nonempty p and h2-h6 blocks in document order, normalize runs of whitespace within each block to one ASCII space, exclude configured tables, lists, media, references, navigation, and page furniture, stop at a configured tail-section heading, and join plain blocks with two LF characters",
+      "output": "Ordered block records and exact extracted UTF-8 text with byte count and SHA-256",
+      "loss_rule": "Preserve response, HTML, block records, and extracted text as separate layers"
+    },
+    {
+      "id": "segment",
+      "input": "Ordered extracted blocks",
+      "operation": "Treat one frozen article revision as one document; assign s1, s2, ... to retained p blocks only, keep headings as context, and derive each block's zero-based half-open character and UTF-8 byte offsets from the exact two-LF join",
+      "output": "Stable paragraph segment IDs and offsets into exact extracted text",
+      "loss_rule": "Segments reference but never replace the exact extracted text"
+    },
+    {
+      "id": "tokenize",
+      "input": "Exact extracted text",
+      "operation": "Reuse token_records and the metric contract; assign t1, t2, ... in document order and store surface, token-level normalized form, and zero-based half-open character and UTF-8 byte offsets",
+      "output": "Stable token records and token SHA-256",
+      "loss_rule": "No whole-text Unicode normalization; normalized tokens always retain surface and both offsets"
+    }
+  ],
+  "identities": {
+    "document": "doc- plus the first 20 hexadecimal characters of SHA-256 over compact JSON [document-v1, enwiki:page:{page_id}:revision:{revision_id}]",
+    "segment": "s plus one-based retained-paragraph position, scoped by document ID",
+    "token": "t plus one-based token position, scoped by document ID",
+    "encoding": "UTF-8 strict",
+    "line_separator": "LF",
+    "source_trace": "Every segment and token surface must equal both its character slice and decoded UTF-8 byte slice of the hashed extracted text"
+  },
+  "fail_closed": [
+    "Reject acquisition unless local bytes, MD5, and SHA-1 match the frozen dump descriptor; record local SHA-256 before sampling.",
+    "Reject a document when page, revision, title, wikitext, rendered response, extracted text, segment, token, or offset identity differs.",
+    "Reject preprocessing if an original layer was discarded or an irreversible view cannot be traced to exact retained bytes.",
+    "Start a new contract version before changing extraction, segmentation, tokenization, normalization, or IDs after annotation begins."
+  ],
+  "current_boundary": {
+    "wikipedia_source_text_acquired": false,
+    "wikipedia_text_processed": false,
+    "target_search_count": 0,
+    "verified_evidence": "Project-authored synthetic HTML and text only",
+    "claim_ceiling": "dated source metadata and preprocessing procedure frozen; no sampled documents, annotations, or benchmark availability"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "contract_version": "0.5.0-mwe",
+  "contract_version": "0.11.0-mwe",
   "status": "browser-reference-coverage-and-review-prototype-not-validated-analyzer",
   "project_license": "MIT OR CC-BY-4.0",
   "external_resource_dependencies": [
@@ -10,6 +10,14 @@
       "path_sha256": "d177f22f5cd4c86d5d7465197eebccceda84c0e3ab8ca5ecfbcdbc9fbd29d1bc",
       "license": "BSD-3-Clause",
       "use": "browser-local word-token and word-type frequency-profile coverage"
+    },
+    {
+      "id": "ngsl-1.2-ascii-research-forms",
+      "version": "1.2.projection-1",
+      "path": "resources/ngsl_1_2_ascii_forms.json",
+      "path_sha256": "f613834eac74e19cef787faf1414a716388c047b3f5b7e39db88c78883fef6d9",
+      "license": "CC-BY-SA-4.0",
+      "use": "browser-local selectable first-1000, first-2000, or full NGSL ranked-list coverage"
     },
     {
       "id": "oewn-2025-ascii-multiword-verb-forms",
@@ -24,8 +32,9 @@
       "version": "2025",
       "subset_id": "oewn-2025-take-in-v",
       "path": "resources/oewn_take_in_2025.json",
+      "path_sha256": "cd5381a09769f9d3e66e0a608ecd8016d775350abd4e882095a085c471df6867",
       "license": "CC-BY-4.0 AND WordNet",
-      "use": "complete take in#v candidate-sense projection for reviewed fixtures"
+      "use": "complete take in#v candidate-sense projection for browser-local human review and fixtures"
     }
   ],
   "scope": {
@@ -36,28 +45,43 @@
       "url": "https://parsemefr.lis-lab.fr/parseme-st-guidelines/1.2/",
       "projection": ["VPC.full", "VPC.semi", "VID"]
     },
-    "claims": "separate TUBELEX word-frequency coverage, OEWN multiword-verb form membership, transparent user-pattern candidates, and human review",
+    "claims": "explicitly selected TUBELEX frequency-profile, NGSL ranked-list, or researcher-supplied Nation BNC/COCA word-family coverage; separate OEWN multiword-verb form membership; transparent user-pattern candidates; and human occurrence/idiomaticity/target-sense review",
     "not_implemented": [
       "automatic-occurrence-identification",
       "automatic-sense-assignment",
       "mwe-form-or-sense-frequency",
       "combined-word-and-mwe-score",
-      "reference-profile-comparison"
+      "simultaneous-reference-profile-comparison"
     ]
   },
   "reference_profiles": {
-    "separation_rule": "word frequency and confirmed-MWE lexicon membership use different resources, token units, denominators, and outputs and are never averaged or substituted",
+    "separation_rule": "the selected word frequency or ranked-list profile and confirmed-MWE lexicon membership use named resources, units, denominators, and outputs and are never averaged or substituted",
     "word": {
-      "profile_id": "tubelex-en-regex-ascii-word-frequency",
+      "profile_ids": ["tubelex-en-regex-ascii-word-frequency", "ngsl-1.2-ascii-research-forms", "bnc-coca-level6-v1.0.0-first-2k-local"],
+      "selection_rule": "the researcher explicitly selects one profile and the applicable NGSL head-rank or Nation BNC/COCA word-family-level cutoff before analysis",
+      "local_import": {
+        "profile_id": "bnc-coca-level6-v1.0.0-first-2k-local",
+        "source_artifact_sha256": "ac81c7a60e5c76cd2bbf0c59b0501808f0d4fa026b2936919dd54329a9bb6a69",
+        "generated_profile_size_bytes": 366120,
+        "generated_profile_sha256": "ebd06548187988eb1a61ab967cc39c01461023043ee7aef427606e5bf508f138",
+        "delivery_rule": "researcher generates and imports the exact profile locally; neither source nor generated profile is bundled, transmitted, or retained by the app",
+        "special_list_rule": "basewrd31 proper nouns, basewrd32 marginal words, basewrd33 transparent compounds, and basewrd34 acronyms are excluded"
+      },
       "input_unit": "NFKC-normalized ASCII alphabetic surface token; apostrophes and hyphens are boundaries",
       "denominators": ["profile-tokenized input tokens", "distinct profile-tokenized input types"],
-      "boundary": "YouTube subtitle exposure approximation; not general English, written/academic frequency, learner knowledge, CEFR, or MWE frequency"
+      "boundary": "TUBELEX is a YouTube subtitle exposure approximation; NGSL is ranked-list membership; BNC/COCA is Level 6 receptive word-family membership with special lists excluded. None establishes contextual meaning, learner knowledge, CEFR, MWE knowledge, or a universal comprehension threshold"
     },
     "mwe_form": {
       "profile_id": "oewn-2025-ascii-multiword-verb-forms",
       "input_unit": "researcher-confirmed occurrence with an exact normalized canonical form",
       "denominators": ["confirmed MWE occurrences", "distinct confirmed canonical forms"],
       "boundary": "lexicographic membership; not occurrence truth, PARSEME category, corpus frequency, contextual sense, or pedagogical importance"
+    },
+    "mwe_sense": {
+      "profile_id": "oewn-2025-take-in-v",
+      "input_unit": "researcher-confirmed take in occurrence with full local context",
+      "denominators": ["confirmed occurrences with an admitted candidate-sense projection", "human-assigned contextual senses"],
+      "boundary": "complete OEWN candidate set for take in#v only; human assignment, ambiguity, and abstention are separate from inventory membership, sense frequency, and learner knowledge"
     }
   },
   "candidate_generation": {
@@ -94,7 +118,7 @@
     "overlap_rule": "a token may belong to multiple occurrences; confirmed member density counts the union once",
     "decision_rule": "confirmed and rejected occurrences require provenance and a note; unresolved candidates have no terminal decision",
     "form_lookup_statuses": ["matched", "out_of_inventory", "not_attempted"],
-    "inventory_identity_rule": "matched or out_of_inventory requires both inventory ID and version; not_attempted requires both to be null",
+    "inventory_identity_rule": "matched or out_of_inventory requires both inventory ID and version; not_attempted or inventory_ineligible requires both to be null",
     "form_sense_count_rule": "an optional matched-profile sense_count describes inventory entries only and never assigns a contextual sense",
     "idiomaticity_statuses": ["idiomatic", "literal", "ambiguous", "not_assessed"],
     "idiomaticity_rules": [
@@ -103,36 +127,64 @@
       "not_assessed carries no idiomaticity decision",
       "an unresolved candidate is always not_assessed"
     ],
-    "sense_lookup_statuses": ["matched", "out_of_inventory", "not_attempted"],
+    "sense_lookup_statuses": ["matched", "out_of_inventory", "not_attempted", "inventory_ineligible"],
     "sense_assignment_statuses": [
       "assigned",
+      "multiple_assigned",
       "ambiguous",
       "abstained",
       "unassigned",
-      "out_of_inventory"
+      "out_of_inventory",
+      "inventory_ineligible"
     ],
     "sense_rules": [
       "confirmed occurrences always carry explicit form and sense records",
-      "not_attempted lookup carries no invented inventory identity",
+      "not_attempted and inventory_ineligible lookup carry no invented inventory identity",
       "a matched candidate list contains the complete admitted sense projection for that form and part of speech",
       "assigned selects exactly one candidate sense",
-      "ambiguous preserves at least two selected candidate senses",
+      "multiple_assigned selects at least two senses that jointly apply in context",
+      "ambiguous preserves at least two named alternatives because the context does not resolve among them",
       "abstained requires matched candidates but selects no sense",
-      "unassigned and out_of_inventory select no sense",
-      "assigned, ambiguous, and abstained states require project decision provenance; an inventory supplies candidates but does not validate contextual assignment",
+      "unassigned, abstained, out_of_inventory, and inventory_ineligible select no sense",
+      "out_of_inventory requires a complete permitted search and may follow either a zero-candidate lookup or review of an inadequate matched candidate set",
+      "inventory_ineligible means the confirmed type is outside the declared inventory scope; it is not a semantic miss",
+      "assigned, multiple_assigned, ambiguous, abstained, out_of_inventory, and inventory_ineligible states require decision provenance; an inventory supplies candidates but does not validate contextual assignment",
       "rejected and unresolved candidate occurrences carry no inventory or sense result"
     ]
   },
+  "workspace_file": {
+    "schema_version": "0.2.0-mwe-workspace",
+    "scope": "one MWE review document; not a publication export",
+    "maximum_json_file_bytes": 5000000,
+    "maximum_json_utf16_code_units": 2000000,
+    "raw_content_included": ["source text", "candidate pattern TSV", "decision notes"],
+    "restore_rule": "require current authorization attestation plus exact source-text SHA-256, contract, word-profile selection, and runtime-resource identities before restoring",
+    "retention_rule": "explicit user download only; no browser storage, upload, autosave, or server copy"
+  },
+  "document_set_file": {
+    "schema_version": "0.1.0-mwe-document-set",
+    "scope": "one named set of independently reviewed MWE documents; no pooling, collaboration, or publication export",
+    "maximum_documents": 20,
+    "maximum_json_file_bytes": 20000000,
+    "maximum_json_utf16_code_units": 10000000,
+    "maximum_combined_text_characters": 2000000,
+    "maximum_id_characters": 100,
+    "maximum_label_characters": 200,
+    "raw_content_included": ["set and document labels", "source texts", "candidate pattern TSVs", "decision notes"],
+    "restore_rule": "validate every embedded workspace and source-text SHA-256 before replacing the current in-memory set",
+    "retention_rule": "explicit user download only; no browser storage, upload, autosave, server copy, pooling, or inference"
+  },
   "measurement": {
-    "word_token_coverage": "TUBELEX-profile-tokenized input tokens with a matched surface form divided by all tokens from that profile-specific tokenizer",
-    "word_type_coverage": "distinct TUBELEX-profile-tokenized input forms with a match divided by all distinct forms from that profile-specific tokenizer",
+    "word_token_coverage": "selected-profile-tokenized input tokens meeting the declared frequency-membership or ranked-list cutoff rule divided by all tokens from that profile-specific tokenizer",
+    "word_type_coverage": "distinct selected-profile-tokenized input forms meeting the declared rule divided by all distinct forms from that profile-specific tokenizer",
+    "word_ranked_list_status": "for NGSL or the local Nation BNC/COCA profile, matched is at or below the selected cutoff, beyond_cutoff is source-listed above it, and unmatched is absent from the projection; ambiguous head mappings remain visible where present",
     "confirmed_member_density": "union of confirmed member token IDs divided by all word tokens; gap tokens are excluded",
     "occurrence_annotation_coverage": "confirmed plus rejected occurrences divided by all candidate occurrences",
     "idiomaticity_annotation_coverage": "idiomatic, literal, or ambiguous decisions divided by all candidate occurrences",
     "form_inventory_coverage": "confirmed occurrences with a matched form divided by confirmed occurrences",
     "form_inventory_type_coverage": "distinct confirmed canonical forms with a matched form divided by all distinct confirmed canonical forms",
     "sense_inventory_coverage": "confirmed occurrences with matched sense candidates divided by confirmed occurrences",
-    "sense_assignment_coverage": "assigned occurrences divided by confirmed occurrences with matched sense candidates",
+    "sense_assignment_coverage": "assigned or multiple_assigned occurrences divided by confirmed occurrences with matched sense candidates",
     "zero_denominator": "ratio value is null and numerator and denominator remain visible"
   }
 }

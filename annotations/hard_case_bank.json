@@ -1,0 +1,132 @@
+{
+  "schema_version": "1.0.0",
+  "guide_version": "0.5.0-contextual-sense",
+  "contract_version": "0.11.0-mwe",
+  "status": "project_authored_synthetic_training_and_qa_only_not_gold_or_qualification",
+  "purpose": "Expose prespecified boundary conditions before an authorized pilot without importing corpus text or creating benchmark gold.",
+  "use_rule": "Review the permitted routes and rationale; do not score a route as benchmark truth or substitute these cases for independent annotation evidence.",
+  "rights": {
+    "authorship": "project team",
+    "source_kind": "project_authored_synthetic",
+    "redistribution_permitted": true,
+    "license": "MIT OR CC-BY-4.0",
+    "third_party_text_reproduced": false
+  },
+  "prespecified_strata": [
+    {"id": "pronoun_insertion", "minimum_cases": 2},
+    {"id": "long_gap", "minimum_cases": 2},
+    {"id": "overlap", "minimum_cases": 2},
+    {"id": "nested", "minimum_cases": 2},
+    {"id": "coordination", "minimum_cases": 2},
+    {"id": "spelling_error", "minimum_cases": 2},
+    {"id": "punctuation", "minimum_cases": 2},
+    {"id": "quoted_speech", "minimum_cases": 2},
+    {"id": "metalinguistic_mention", "minimum_cases": 2}
+  ],
+  "cases": [
+    {
+      "id": "HC-01-pronoun-in-quotation",
+      "text": "\"They gave it up,\" Mara said.",
+      "source": {"kind": "project_authored_synthetic", "redistribution_permitted": true, "license": "MIT OR CC-BY-4.0"},
+      "strata": ["pronoun_insertion", "punctuation", "quoted_speech"],
+      "candidate_routes": [
+        {"canonical_form": "give up", "member_surfaces": ["gave", "up"], "gap_surfaces": ["it"], "permitted_statuses": ["confirmed"], "permitted_categories": ["VPC.full"], "idiomaticity_statuses": ["not_assessed"]}
+      ],
+      "decision_rationale": "Quoted speech remains contextual use. The pronoun is the replaceable object and complete gap; quotation marks and the reporting clause are outside the member span."
+    },
+    {
+      "id": "HC-02-pronoun-question",
+      "text": "Can you take all of that in?",
+      "source": {"kind": "project_authored_synthetic", "redistribution_permitted": true, "license": "MIT OR CC-BY-4.0"},
+      "strata": ["pronoun_insertion", "punctuation"],
+      "candidate_routes": [
+        {"canonical_form": "take in", "member_surfaces": ["take", "in"], "gap_surfaces": ["all", "of", "that"], "permitted_statuses": ["confirmed"], "permitted_categories": ["VPC.full"], "idiomaticity_statuses": ["not_assessed"]}
+      ],
+      "decision_rationale": "The full object phrase is a gap even though its head is pronominal. The question mark has no token membership and does not break the occurrence."
+    },
+    {
+      "id": "HC-03-long-gap-with-coordination",
+      "text": "They gave the draft, after Rosa and Ken checked every citation, up.",
+      "source": {"kind": "project_authored_synthetic", "redistribution_permitted": true, "license": "MIT OR CC-BY-4.0"},
+      "strata": ["long_gap", "coordination", "punctuation"],
+      "candidate_routes": [
+        {"canonical_form": "give up", "member_surfaces": ["gave", "up"], "gap_surfaces": ["the", "draft", "after", "Rosa", "and", "Ken", "checked", "every", "citation"], "permitted_statuses": ["candidate", "confirmed"], "permitted_categories": ["VPC.full"], "idiomaticity_statuses": ["not_assessed"]}
+      ],
+      "decision_rationale": "A long interrupted span is not rejected by distance alone. Confirm only if the full context establishes that the final particle belongs to the verbal head; otherwise preserve candidate status."
+    },
+    {
+      "id": "HC-04-long-coordinated-object-gap",
+      "text": "She took the dates and all three revised totals from the meeting in.",
+      "source": {"kind": "project_authored_synthetic", "redistribution_permitted": true, "license": "MIT OR CC-BY-4.0"},
+      "strata": ["long_gap", "coordination"],
+      "candidate_routes": [
+        {"canonical_form": "take in", "member_surfaces": ["took", "in"], "gap_surfaces": ["the", "dates", "and", "all", "three", "revised", "totals", "from", "the", "meeting"], "permitted_statuses": ["confirmed"], "permitted_categories": ["VPC.full"], "idiomaticity_statuses": ["not_assessed"]}
+      ],
+      "decision_rationale": "The coordinated and modified object remains an open slot. Every intervening word token belongs in the gap; none becomes an MWE member because of distance."
+    },
+    {
+      "id": "HC-05-give-up-the-ghost-overlap",
+      "text": "At dawn, the old engine gave up the ghost.",
+      "source": {"kind": "project_authored_synthetic", "redistribution_permitted": true, "license": "MIT OR CC-BY-4.0"},
+      "strata": ["overlap", "nested", "punctuation"],
+      "candidate_routes": [
+        {"canonical_form": "give up the ghost", "member_surfaces": ["gave", "up", "ghost"], "gap_surfaces": ["the"], "permitted_statuses": ["confirmed"], "permitted_categories": ["VID"], "idiomaticity_statuses": ["idiomatic"]},
+        {"canonical_form": "give up", "member_surfaces": ["gave", "up"], "gap_surfaces": [], "permitted_statuses": ["candidate", "rejected"], "permitted_categories": ["VPC.full"], "idiomaticity_statuses": ["not_assessed"]}
+      ],
+      "decision_rationale": "Record the full VID. Review the token-sharing inner VPC independently; the outer decision neither confirms nor silently deletes the inner candidate."
+    },
+    {
+      "id": "HC-06-make-up-mind-overlap",
+      "text": "After one last check, she made up her mind.",
+      "source": {"kind": "project_authored_synthetic", "redistribution_permitted": true, "license": "MIT OR CC-BY-4.0"},
+      "strata": ["overlap", "nested", "punctuation"],
+      "candidate_routes": [
+        {"canonical_form": "make up one's mind", "member_surfaces": ["made", "up", "mind"], "gap_surfaces": ["her"], "permitted_statuses": ["confirmed"], "permitted_categories": ["VID"], "idiomaticity_statuses": ["idiomatic"]},
+        {"canonical_form": "make up", "member_surfaces": ["made", "up"], "gap_surfaces": [], "permitted_statuses": ["candidate", "rejected"], "permitted_categories": ["VPC.full", "VPC.semi"], "idiomaticity_statuses": ["not_assessed"]}
+      ],
+      "decision_rationale": "The full expression and token-sharing inner candidate must be represented separately. Preserve the inner route as unresolved or reject it after applying the category tests; do not infer it from the outer VID."
+    },
+    {
+      "id": "HC-07-coordinated-particle-verbs",
+      "text": "They looked the address up and wrote it down.",
+      "source": {"kind": "project_authored_synthetic", "redistribution_permitted": true, "license": "MIT OR CC-BY-4.0"},
+      "strata": ["pronoun_insertion", "coordination", "punctuation"],
+      "candidate_routes": [
+        {"canonical_form": "look up", "member_surfaces": ["looked", "up"], "gap_surfaces": ["the", "address"], "permitted_statuses": ["confirmed"], "permitted_categories": ["VPC.full"], "idiomaticity_statuses": ["not_assessed"]},
+        {"canonical_form": "write down", "member_surfaces": ["wrote", "down"], "gap_surfaces": ["it"], "permitted_statuses": ["confirmed"], "permitted_categories": ["VPC.full", "VPC.semi"], "idiomaticity_statuses": ["not_assessed"]}
+      ],
+      "decision_rationale": "Coordination does not fuse two predicates into one MWE. Create two occurrence records, each with its own members and exhaustive object gap."
+    },
+    {
+      "id": "HC-08-misspelling-as-mention",
+      "text": "The worksheet prints \"giv up\" as a misspelling of \"give up.\"",
+      "source": {"kind": "project_authored_synthetic", "redistribution_permitted": true, "license": "MIT OR CC-BY-4.0"},
+      "strata": ["spelling_error", "punctuation", "quoted_speech", "metalinguistic_mention"],
+      "candidate_routes": [
+        {"canonical_form": "give up", "member_surfaces": ["giv", "up"], "gap_surfaces": [], "permitted_statuses": ["rejected"], "permitted_categories": ["VPC.full"], "idiomaticity_statuses": ["not_assessed"]},
+        {"canonical_form": "give up", "member_surfaces": ["give", "up"], "gap_surfaces": [], "permitted_statuses": ["rejected"], "permitted_categories": ["VPC.full"], "idiomaticity_statuses": ["not_assessed"]}
+      ],
+      "decision_rationale": "Both strings are explicitly mentioned rather than used as predicates. Do not silently correct the misspelling or count either quotation as an occurrence."
+    },
+    {
+      "id": "HC-09-misspelled-use-in-quotation",
+      "text": "Mara wrote, \"I gve up.\"",
+      "source": {"kind": "project_authored_synthetic", "redistribution_permitted": true, "license": "MIT OR CC-BY-4.0"},
+      "strata": ["spelling_error", "punctuation", "quoted_speech"],
+      "candidate_routes": [
+        {"canonical_form": "give up", "member_surfaces": ["gve", "up"], "gap_surfaces": [], "permitted_statuses": ["candidate"], "permitted_categories": ["VPC.full"], "idiomaticity_statuses": ["not_assessed"]}
+      ],
+      "decision_rationale": "The quotation is contextual use, but the undeclared spelling repair cannot be applied silently. Preserve the candidate and the observed surface form until a versioned correction policy resolves it."
+    },
+    {
+      "id": "HC-10-explicit-metalinguistic-citation",
+      "text": "In \"They gave up,\" the words \"gave up\" are under discussion.",
+      "source": {"kind": "project_authored_synthetic", "redistribution_permitted": true, "license": "MIT OR CC-BY-4.0"},
+      "strata": ["punctuation", "quoted_speech", "metalinguistic_mention"],
+      "candidate_routes": [
+        {"canonical_form": "give up", "member_surfaces": ["gave", "up"], "gap_surfaces": [], "permitted_statuses": ["rejected"], "permitted_categories": ["VPC.full"], "idiomaticity_statuses": ["not_assessed"]}
+      ],
+      "decision_rationale": "The matrix clause explicitly converts the quoted words into a metalinguistic object. Reject the candidate rather than treating quotation alone as evidence of use."
+    }
+  ]
+}

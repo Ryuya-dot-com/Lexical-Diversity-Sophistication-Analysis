@@ -1,0 +1,267 @@
+{
+  "triage_schema_version": 1,
+  "triage_id": "gutenberg-2026-08-30-rights-triage-batch1",
+  "reviewed_on": "2026-09-03",
+  "status": "pre_acquisition_metadata_triage_not_legal_clearance",
+  "input": {
+    "frame_id": "gutenberg-2026-08-30-target-blind-prose-v1",
+    "frame_sha256": "fab6b04d5096eb777464e1e1191800cbe9b3e05abbf710b61a8a01ea1209aaa5",
+    "screened_prefix_per_stratum": 10,
+    "ebook_files_acquired": 0,
+    "mwe_searches_run": 0
+  },
+  "decision_contract": {
+    "notice_check_allowed": "Metadata supports acquiring the official text file only to verify its internal notice, edition, credits, and contributors. This is not a public-domain declaration or admission of prose.",
+    "hold_term_likely_active": "Available author and publication evidence indicates that Japanese protection may still subsist. Do not acquire or inspect the ebook for this frame.",
+    "hold_identity_or_death_unverified": "The credited author's legal identity or death year was not established well enough to calculate the Japanese term. Do not acquire or inspect the ebook for this frame."
+  },
+  "method": {
+    "minimum_jurisdictions_checked": [
+      "United States",
+      "Japan"
+    ],
+    "global_web_distribution_status": "unresolved_do_not_bundle_or_serve_source_text",
+    "japan_rules_applied": [
+      "Terms run from January 1 of the year after death, publication, or creation as applicable.",
+      "The ordinary term changed from 50 to 70 years on 2018-12-30.",
+      "A term already expired on 2018-12-29 is not revived.",
+      "A work still protected on 2018-12-29 because of wartime addition receives the extended term.",
+      "The published Allied-country wartime additions range up to 4,180 days; exact country, rights-holder, acquisition date, and reciprocity still require work-level checking."
+    ],
+    "text_only_scope": "Images, cover art, ornamental art, image-only credits, and illustration-specific captions or alt text are excluded. An illustrator does not block the author's prose merely because the illustrator is credited; any contributor-authored prose, notes, or captions must be screened separately.",
+    "content_blindness": "Decisions use catalog creator metadata and bibliographic or legal sources, never topic, acceptability, lexical yield, MWE presence, or sense distribution.",
+    "incidental_search_exposure": {
+      "occurred": true,
+      "text_ids": [
+        9746,
+        25885,
+        46892,
+        67809,
+        69405
+      ],
+      "description": "Rights-oriented Web search results exposed automatically generated descriptions, front matter, or short source-text snippets for these fixed-rank works. No ebook file was acquired, no complete unit was selected, and no word or MWE query was run. Frozen ranks and first-intact-unit rules remain unchanged, so the exposure cannot alter selection."
+    }
+  },
+  "sources": [
+    {
+      "source_id": "bunka-term-qa",
+      "url": "https://www.bunka.go.jp/seisaku/chosakuken/hokaisei/kantaiheiyo_chosakuken/1411890.html",
+      "role": "Japanese ordinary term, 2018 non-revival rule, foreign-work reciprocity, and wartime-addition transition"
+    },
+    {
+      "source_id": "bunka-copyright-textbook",
+      "url": "https://www.bunka.go.jp/seisaku/chosakuken/seidokaisetsu/pdf/94388701_01.pdf",
+      "role": "Country-specific wartime-addition day counts, including 3,794 days for the United States and United Kingdom and the published 4,180-day maximum"
+    },
+    {
+      "source_id": "gutenberg-terms",
+      "url": "https://www.gutenberg.org/policy/terms_of_use.html",
+      "role": "United States determination and non-US user duty to check local law"
+    },
+    {
+      "source_id": "sfe-ellanby",
+      "url": "https://sf-encyclopedia.com/entry/ellanby_boyd",
+      "role": "Secondary identity evidence that Boyd Ellanby was the joint pseudonym of Lyle Gifford Boyd (1907-1982) and William Clouser Boyd (1903-1983)"
+    },
+    {
+      "source_id": "hubin-saxby",
+      "url": "https://www.crimefictioniv.com/Part_48.html",
+      "role": "Secondary identity evidence for C. F. Argyll Saxby (approximately 1870-1959); sufficient to hold, not to clear"
+    },
+    {
+      "source_id": "gutenberg-bolo-metadata",
+      "url": "https://www.gutenberg.org/ebooks/69405",
+      "role": "Official work metadata identifying the 1915 United States publication used only for the conservative Japanese wartime-addition hold"
+    }
+  ],
+  "screen_columns": [
+    "stratum",
+    "queue_rank",
+    "text_id",
+    "decision",
+    "creator_term_evidence",
+    "non_text_contributor_treatment"
+  ],
+  "screens": [
+    [
+      "adult_or_unspecified",
+      1,
+      32427,
+      "hold_term_likely_active",
+      "Secondary identity evidence resolves Boyd Ellanby to two United States authors who died in 1982 and 1983; their ordinary Japanese terms have not expired.",
+      "Ed Emshwiller's illustrations and illustration-specific text are excluded, but that does not cure the authors' active terms."
+    ],
+    [
+      "adult_or_unspecified",
+      2,
+      27601,
+      "notice_check_allowed",
+      "Harold Bindloss died in 1945. Even the former 50-year term plus the published 4,180-day upper bound expired before 2018-12-29, so the 2018 extension does not revive it; the internal edition notice remains unchecked.",
+      "Cyrus Cuneo died in 1916; all illustrations and illustration-specific text remain excluded."
+    ],
+    [
+      "adult_or_unspecified",
+      3,
+      9746,
+      "hold_identity_or_death_unverified",
+      "The catalog names Marion Bryce and exposes the alias Mrs. Charles Bryce, but this review did not establish the legal identity and death year needed for a Japanese term calculation.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "adult_or_unspecified",
+      4,
+      43731,
+      "notice_check_allowed",
+      "Neil Munro died in 1930; even the former 50-year term plus the published maximum wartime addition expired long before 2018-12-29. The internal edition notice remains unchecked.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "adult_or_unspecified",
+      5,
+      25885,
+      "notice_check_allowed",
+      "Ben Ames Williams died in 1953. Even the former 50-year term plus the published 4,180-day upper bound expired before 2018-12-29, so the extension does not revive it; the internal edition notice remains unchecked.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "adult_or_unspecified",
+      6,
+      32805,
+      "hold_term_likely_active",
+      "F. L. Wallace died in 2004; the ordinary Japanese term remains active.",
+      "The catalog gives no dates for illustrator Dick Francis. Images and illustration-specific text are excluded, but that does not cure the author's active term."
+    ],
+    [
+      "adult_or_unspecified",
+      7,
+      59258,
+      "hold_term_likely_active",
+      "Poul Anderson died in 2001; the ordinary Japanese term remains active.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "adult_or_unspecified",
+      8,
+      46966,
+      "notice_check_allowed",
+      "Annie S. Swan died in 1943; even the former 50-year term plus the published maximum wartime addition expired before 2018-12-29. The internal edition notice remains unchecked.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "adult_or_unspecified",
+      9,
+      76417,
+      "notice_check_allowed",
+      "Edith Wharton died in 1937; even the former 50-year term plus the published maximum wartime addition expired before 2018-12-29. The internal edition notice remains unchecked.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "adult_or_unspecified",
+      10,
+      7667,
+      "notice_check_allowed",
+      "Edward Bulwer-Lytton died in 1873; the applicable authorial term expired long before 2018. The internal edition notice and Volume 09 relationship remain unchecked.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "juvenile",
+      1,
+      72983,
+      "notice_check_allowed",
+      "Amy Ella Blanchard died in 1926; even the former 50-year term plus the published maximum wartime addition expired long before 2018-12-29. The internal edition notice remains unchecked.",
+      "Ida Waugh died in 1919; all illustrations and illustration-specific text remain excluded."
+    ],
+    [
+      "juvenile",
+      2,
+      29686,
+      "hold_term_likely_active",
+      "A secondary bibliography identifies C. F. Argyll Saxby as a United Kingdom author who died in 1959. A prewar work would still have been in its 3,794-day wartime addition on 2018-12-29 and would therefore receive the 70-year extension; hold also avoids relying on secondary identity evidence to clear.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "juvenile",
+      3,
+      69405,
+      "hold_term_likely_active",
+      "Katharine Atherton Grimes died in 1967 and the bibliographic record identifies a 1915 United States publication. Its 3,794-day wartime addition kept the term active on 2018-12-29, so the 70-year extension applies and protection is likely still active.",
+      "The catalog gives no dates for illustrator L. J. Wilson. Images and illustration-specific text are excluded, but that does not cure the author's active term."
+    ],
+    [
+      "juvenile",
+      4,
+      6973,
+      "notice_check_allowed",
+      "John Henry Goldfrap died in 1917; even the former 50-year term plus the published maximum wartime addition expired long before 2018-12-29. The internal edition notice remains unchecked.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "juvenile",
+      5,
+      46892,
+      "notice_check_allowed",
+      "Owen Johnson died in 1952. Even the former 50-year term plus the published 4,180-day upper bound expired before 2018-12-29, so the extension does not revive it; the internal edition notice remains unchecked.",
+      "All images and illustration-specific text are excluded even though no illustrator appears in the frozen catalog row."
+    ],
+    [
+      "juvenile",
+      6,
+      67809,
+      "hold_identity_or_death_unverified",
+      "The catalog names Lizzie Bates, but this review did not establish whether that is a legal name or pseudonym or establish a death year. A very early publication date is not substituted for the missing authorship analysis.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "juvenile",
+      7,
+      73331,
+      "notice_check_allowed",
+      "O. F. Walton died in 1939; even the former 50-year term plus the published maximum wartime addition expired before 2018-12-29. The internal edition notice remains unchecked.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "juvenile",
+      8,
+      48608,
+      "notice_check_allowed",
+      "The catalog resolves Aunt Fanny to an author born in 1822 and deceased in 1894; the applicable authorial term expired long before 2018. The internal edition notice remains unchecked.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ],
+    [
+      "juvenile",
+      9,
+      53088,
+      "notice_check_allowed",
+      "Sarah Tytler died in 1914; even the former 50-year term plus the published maximum wartime addition expired long before 2018-12-29. The internal edition notice remains unchecked.",
+      "Edwin Landseer died in 1873; all illustrations and illustration-specific text remain excluded."
+    ],
+    [
+      "juvenile",
+      10,
+      1573,
+      "notice_check_allowed",
+      "Horatio Alger Jr. died in 1899; the applicable authorial term expired long before 2018. The internal edition notice remains unchecked.",
+      "No separate visual contributor is listed in the frozen catalog row."
+    ]
+  ],
+  "summary": {
+    "screened": 20,
+    "notice_check_allowed": 13,
+    "hold_term_likely_active": 5,
+    "hold_identity_or_death_unverified": 2,
+    "allowed_by_stratum": {
+      "adult_or_unspecified": 6,
+      "juvenile": 7
+    },
+    "admitted_units": 0
+  },
+  "claim_limits": [
+    "No row is declared public domain worldwide or admitted to the study.",
+    "A public Web app is globally reachable: United States and Japanese checks do not authorize bundling or serving source text worldwide. Until a release territory or globally valid permission is fixed, Project Gutenberg prose stays local and the public app receives no source passage.",
+    "Project Gutenberg's United States status is not treated as Japanese clearance.",
+    "The screen does not infer audience suitability, instructional quality, representativeness, MWE yield, meaning, or coverage.",
+    "Illustrator exclusion applies only to a text-only derivative and cannot erase contributor-authored prose, notes, captions, or edition-specific material.",
+    "Secondary identity evidence can justify a conservative hold but cannot by itself justify release."
+  ],
+  "next_action": "Acquire only the 13 notice_check_allowed files into an unbundled local workspace through an official Project Gutenberg mirror or robot route, in frozen rank order. Before reading body prose, verify the internal restriction notice, original edition, credits, and every retained textual contributor; hash the exact file and record any rejection. Do not serve or commit passage text, and do not run an MWE search until the first intact unit has been fixed."
+}

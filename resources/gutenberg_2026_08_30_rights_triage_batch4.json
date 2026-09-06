@@ -1,0 +1,193 @@
+{
+  "triage_schema_version": 1,
+  "triage_id": "gutenberg-2026-08-30-rights-triage-batch4",
+  "reviewed_on": "2026-09-03",
+  "status": "final_prefix_metadata_triage_frame_futile_before_acquisition",
+  "input": {
+    "frame_id": "gutenberg-2026-08-30-target-blind-english-prose-v1",
+    "frame_sha256": "fab6b04d5096eb777464e1e1191800cbe9b3e05abbf710b61a8a01ea1209aaa5",
+    "prior_unit_gate_sha256": "6cf1328fdeaa53b6c65db749691f66e73e08f0cf81affd69397895fe44b9ec92",
+    "screened_rank_range_per_stratum": [31, 40],
+    "ebook_files_acquired": 0,
+    "target_form_searches_run": 0,
+    "mwe_searches_run": 0
+  },
+  "decision_contract": {
+    "notice_check_allowed": "Metadata supports acquiring the official text file only to verify its internal notice, edition, credits, and contributors. This is not a public-domain declaration or admission of prose.",
+    "hold_term_likely_active": "Available author and publication evidence indicates that Japanese protection may still subsist. Do not acquire or inspect the ebook for this frame.",
+    "hold_identity_or_death_unverified": "Neither a named-author death calculation nor a verified anonymous or pseudonymous publication-term calculation is supported well enough. Do not acquire or inspect the ebook for this frame."
+  },
+  "method": {
+    "minimum_jurisdictions_checked": ["United States", "Japan"],
+    "global_web_distribution_status": "unresolved_do_not_bundle_or_serve_source_text",
+    "japan_rules_applied": [
+      "Terms run from January 1 of the year after death, publication, or creation as applicable.",
+      "The ordinary term changed from 50 to 70 years on 2018-12-30, without reviving an already expired term.",
+      "Anonymous or pseudonymous prose normally follows a publication-based term unless an author-identity exception applies.",
+      "A pre-1971 work requires the old-law transition as well as later death- or publication-term rules.",
+      "A term still running on 2018-12-29 because of wartime addition receives the extension; the United States addition is 3,794 days."
+    ],
+    "pseudonym_rule": "Use publication time only when evidence establishes anonymous or pseudonymous publication and no author-identity exception controls. When a plausible true-author attribution is available, require that the named-author route also be expired; an unexplained name is not assumed to be a pseudonym.",
+    "text_only_scope": "Images, cover art, ornamental art, image-only credits, and illustration-specific captions or alt text are excluded; retained contributor-authored prose must be reviewed after acquisition.",
+    "content_blindness": "Decisions use creator identity, publication evidence, and legal term only; title topic, sensitivity, lexical yield, MWE presence, and sense distribution do not affect a row.",
+    "futility_rule": "At rank 40, stop before further acquisition when prior mechanical passes plus every remaining rights-eligible file cannot reach ten in either stratum.",
+    "incidental_search_exposure": {
+      "occurred": true,
+      "text_ids": [79336, 19651, 1419, 73324, 74227, 75909, 43344, 15188, 23763, 57827],
+      "description": "Rights-oriented Web results exposed automated summaries, title matter, first-edition facsimile text, or body snippets for these already frozen rows. No query contained an MWE or target form, and no exposure affected order, rights decisions, or the futility calculation.",
+      "target_forms_incidentally_exposed": {
+        "text_ids": [15188, 23763],
+        "surface_strings": ["come out", "give up", "take part", "taking part"],
+        "queried": false,
+        "classification_performed": false
+      }
+    }
+  },
+  "sources": [
+    {
+      "source_id": "bunka-copyright-text-2026",
+      "url": "https://www.bunka.go.jp/seisaku/chosakuken/seidokaisetsu/pdf/94383901_01.pdf",
+      "role": "Official current named, anonymous, and pseudonymous terms, old-law transition, and non-revival rules"
+    },
+    {
+      "source_id": "bunka-term-qa",
+      "url": "https://www.bunka.go.jp/seisaku/chosakuken/hokaisei/kantaiheiyo_chosakuken/1411890.html",
+      "role": "Official extension, reciprocity, wartime-addition, and old-law transition guidance"
+    },
+    {
+      "source_id": "gutenberg-terms",
+      "url": "https://www.gutenberg.org/policy/terms_of_use.html",
+      "role": "United States determination and non-US user duty to check local law"
+    },
+    {
+      "source_id": "djo-mugby-junction",
+      "url": "https://www.djo.org.uk/all-the-year-round/volume-xvi/page-573.html",
+      "role": "First-edition facsimile index identifying the five retained Mugby Junction contributors omitted from the frozen catalog row"
+    },
+    {
+      "source_id": "gutenberg-79336",
+      "url": "https://www.gutenberg.org/ebooks/79336",
+      "role": "Official Erle Stanley Gardner life dates and exact work record"
+    },
+    {
+      "source_id": "bnf-andre-norton",
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb11917877j",
+      "role": "National-library authority record for Andre Norton, 1912-2005"
+    },
+    {
+      "source_id": "gutenberg-73324",
+      "url": "https://www.gutenberg.org/ebooks/73324",
+      "role": "Official Vincent H. Gowen life dates and exact work record"
+    },
+    {
+      "source_id": "gutenberg-74227",
+      "url": "https://www.gutenberg.org/ebooks/74227",
+      "role": "Official Nelson S. Bond and Julian S. Krupa life dates and 1940 publication record"
+    },
+    {
+      "source_id": "stratemeyer-nat-ridley",
+      "url": "https://stratemeyer.org/edward-stratemeyer-author-and-book-packager/stratemeyer-man-of-mystery/",
+      "role": "Archive-based series table identifying The Double Dagger as a Nat Ridley house-name work ghostwritten by Howard R. Garis"
+    },
+    {
+      "source_id": "loc-howard-garis",
+      "url": "https://www.loc.gov/item/22012347/",
+      "role": "Library of Congress authority-form evidence for Howard Roger Garis, 1873-1962"
+    },
+    {
+      "source_id": "gutenberg-75909",
+      "url": "https://www.gutenberg.org/ebooks/75909",
+      "role": "Official 1926 publication and Nat Ridley credit for The Double Dagger"
+    },
+    {
+      "source_id": "onlinebooks-w-crispin-sheppard",
+      "url": "https://onlinebooks.library.upenn.edu/webbin/book/lookupname?key=Sheppard%2C+W.+Crispin+%28William+Crispin%29%2C+1871-",
+      "role": "University catalog aggregation retaining W. Crispin Sheppard as 1871- without a death year"
+    },
+    {
+      "source_id": "lit2go-quincy-allen",
+      "url": "https://etc.usf.edu/lit2go/authors/12/captain-quincy-allen/",
+      "role": "University-hosted evidence that Quincy Allen was a Stratemeyer Syndicate pseudonym"
+    },
+    {
+      "source_id": "gutenberg-15188",
+      "url": "https://www.gutenberg.org/ebooks/15188",
+      "role": "Official exact-work record; electronic title matter reports 1911 copyright"
+    },
+    {
+      "source_id": "stratemeyer-allen-chapman",
+      "url": "https://stratemeyer.org/chapman/",
+      "role": "Specialist evidence that Allen Chapman was a Stratemeyer house pseudonym and Fred Fenton was a 1913-1915 series"
+    },
+    {
+      "source_id": "gutenberg-23763",
+      "url": "https://www.gutenberg.org/ebooks/23763",
+      "role": "Official exact-work record; electronic title matter reports 1913 copyright"
+    },
+    {
+      "source_id": "gutenberg-57827",
+      "url": "https://www.gutenberg.org/ebooks/57827",
+      "role": "Official work record naming Elizabeth D. Renninger without life dates"
+    },
+    {
+      "source_id": "iranica-shahnameh-translations",
+      "url": "https://www.iranicaonline.org/articles/sah-nama-translations-iii-english/",
+      "role": "Scholarly bibliography confirming Renninger's 1909 English retelling and illustrator credit without resolving her death"
+    }
+  ],
+  "screen_columns": ["stratum", "queue_rank", "text_id", "decision", "creator_term_evidence", "non_text_contributor_treatment"],
+  "screens": [
+    ["adult_or_unspecified", 31, 1422, "notice_check_allowed", "Charles Dickens died in 1870; the applicable authorial term expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["adult_or_unspecified", 32, 3363, "notice_check_allowed", "William Dean Howells died in 1920; the applicable authorial term expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["adult_or_unspecified", 33, 79336, "hold_term_likely_active", "Erle Stanley Gardner died in 1970, so the ordinary Japanese term remains active.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["adult_or_unspecified", 34, 19651, "hold_term_likely_active", "Andre Norton died in 2005, so the ordinary Japanese term remains active.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["adult_or_unspecified", 35, 48603, "notice_check_allowed", "Harriet Beecher Stowe died in 1896; the applicable authorial term expired long before 2018.", "Alfred Fredericks died in 1926 and is listed only as illustrator; images and illustration-specific text are excluded."],
+    ["adult_or_unspecified", 36, 1419, "notice_check_allowed", "The 1866 first-edition index identifies Charles Dickens, Andrew Halliday, Charles Collins, Hesba Stretton, and Amelia B. Edwards as retained contributors. All died by 1911, so their applicable terms expired long before 2018.", "The frozen catalog's Dickens-only credit is incomplete; all five textual contributors remain in the provenance chain."],
+    ["adult_or_unspecified", 37, 73324, "hold_term_likely_active", "Vincent H. Gowen died in 1984, so the ordinary Japanese term remains active.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["adult_or_unspecified", 38, 74227, "hold_term_likely_active", "Nelson S. Bond died in 2006, so the ordinary Japanese term remains active.", "Julian S. Krupa died in 1989 and is listed only as illustrator; image exclusion does not cure the author's active term."],
+    ["adult_or_unspecified", 39, 75909, "hold_term_likely_active", "Nat Ridley is a Stratemeyer house name, but the archive-based series table attributes The Double Dagger to Howard R. Garis, who died in 1962. His United States work remained protected through wartime addition on 2018-12-29 and received the extension, so the publication-based pseudonym route cannot clear this work.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["adult_or_unspecified", 40, 69642, "notice_check_allowed", "William Howitt died in 1879; the applicable authorial term expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["juvenile", 31, 43344, "hold_identity_or_death_unverified", "The official and university records identify W. Crispin Sheppard as born in 1871 but supply no death year. No verified pseudonymous publication route was established, so a named-author term cannot be cleared.", "Hugh A. Bodine is listed only as illustrator; images and illustration-specific text are excluded, but that does not resolve the author's term."],
+    ["juvenile", 32, 35821, "notice_check_allowed", "Edward Stratemeyer died in 1930; even the former term plus the published maximum wartime addition expired before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["juvenile", 33, 6676, "notice_check_allowed", "Mary Louisa Molesworth died in 1921; the applicable authorial term expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."],
+    ["juvenile", 34, 56686, "notice_check_allowed", "Horatio Alger Jr. died in 1899 and the credited textual contributor Edward Sylvester Ellis died in 1916; both applicable terms expired long before 2018.", "Edward Sylvester Ellis is retained as a textual contributor, not discarded as paratext."],
+    ["juvenile", 35, 68252, "notice_check_allowed", "T. C. Bridges died in 1944; even the former term plus the published maximum wartime addition expired before 2018.", "Allan Stewart died in 1951 and is listed only as illustrator; images and illustration-specific text are excluded."],
+    ["juvenile", 36, 15188, "notice_check_allowed", "Quincy Allen is documented as a Stratemeyer Syndicate pseudonym and the exact work carries a 1911 United States copyright. Even the old-law publication term plus wartime addition expired before the 1971 transition; no author-identity exception was established by the reviewed sources.", "No separate visual contributor is listed in the frozen catalog row; uncredited illustration provenance remains for front-matter review only if the failed frame is redesigned to retain this row."],
+    ["juvenile", 37, 23763, "notice_check_allowed", "Allen Chapman is documented as a Stratemeyer house pseudonym, the Fred Fenton series dates to 1913-1915, and the exact work carries a 1913 United States copyright. Even the old-law publication term plus wartime addition expired before the 1971 transition; no work-specific true-author attribution was established.", "No named visual contributor is listed; uncredited illustration provenance remains for front-matter review only if the failed frame is redesigned to retain this row."],
+    ["juvenile", 38, 21488, "notice_check_allowed", "William Henry Giles Kingston died in 1880; the applicable authorial term expired long before 2018.", "Edouard Riou died in 1900 and is listed only as illustrator; images and illustration-specific text are excluded."],
+    ["juvenile", 39, 57827, "hold_identity_or_death_unverified", "The official record and scholarly bibliography identify Elizabeth D. Renninger as the 1909 reteller but supply no life dates. No verified pseudonymous route was established, so a named-author term cannot be cleared.", "J. L. S. Williams is listed only as illustrator; images and illustration-specific text are excluded, but that does not resolve Renninger's term."],
+    ["juvenile", 40, 77860, "notice_check_allowed", "Lucy Ellen Guernsey died in 1899; the applicable authorial term expired long before 2018.", "No separate visual contributor is listed in the frozen catalog row."]
+  ],
+  "summary": {
+    "screened": 20,
+    "notice_check_allowed": 13,
+    "hold_term_likely_active": 5,
+    "hold_identity_or_death_unverified": 2,
+    "allowed_by_stratum": {
+      "adult_or_unspecified": 5,
+      "juvenile": 8
+    },
+    "allowed_via_anonymous_or_pseudonymous_publication_term": 2,
+    "prior_mechanical_passes_by_stratum": {
+      "adult_or_unspecified": 3,
+      "juvenile": 7
+    },
+    "maximum_possible_passes_if_every_allowed_file_passes": {
+      "adult_or_unspecified": 8,
+      "juvenile": 15
+    },
+    "frame_success_still_possible": false,
+    "futility_strata": ["adult_or_unspecified"],
+    "batch4_ebook_files_acquired": 0,
+    "admitted_units": 0
+  },
+  "claim_limits": [
+    "No row is declared public domain worldwide or admitted to the study.",
+    "United States and Japanese metadata triage does not authorize global Web serving; source prose remains local and unbundled.",
+    "The final rights screen proves only that the frozen two-stratum stop cannot be reached; it does not estimate MWE prevalence, coverage, audience suitability, or representativeness.",
+    "The adult stratum's maximum of eight assumes every remaining rights-eligible file would pass the mechanical unit gate and is therefore an intentionally generous upper bound.",
+    "Rights-search exposure means the named rows are not fully unseen for later lexical review, although fixed order and the futility proof remain outcome-blind.",
+    "Illustrator exclusion cannot erase contributor-authored prose, notes, captions, or edition-specific material discovered in a future redesigned frame."
+  ],
+  "next_action": "Stop the frozen Gutenberg frame before acquiring batch-4 ebooks: the adult stratum can reach at most eight mechanical passes. Preserve the failed frame unchanged and freeze a redesigned open-material sampling rule before any new acquisition or MWE inspection."
+}
