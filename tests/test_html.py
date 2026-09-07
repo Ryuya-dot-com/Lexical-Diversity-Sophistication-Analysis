@@ -21,12 +21,20 @@ class StructureParser(HTMLParser):
         self.main_count = 0
         self.h1_count = 0
         self.status_regions = 0
+        self.details_stack = []
+        self.details_for = {}
+        self.required_controls = []
 
     def handle_starttag(self, tag, attrs):
         values = dict(attrs)
         element_id = values.get("id")
         if element_id:
             self.ids.append(element_id)
+            self.details_for[element_id] = tuple(self.details_stack)
+        if tag == "details":
+            self.details_stack.append(element_id)
+        if "required" in values:
+            self.required_controls.append(element_id)
         if tag == "html":
             self.html_lang = values.get("lang")
         elif tag == "main":
@@ -53,6 +61,8 @@ class StructureParser(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "label":
             self.label_depth -= 1
+        elif tag == "details":
+            self.details_stack.pop()
 
 
 class HtmlContractTests(unittest.TestCase):
@@ -102,6 +112,20 @@ class HtmlContractTests(unittest.TestCase):
                 control in parser.label_for or control in parser.nested_labels,
                 f"Unlabelled control: {control}",
             )
+        # Keep mandatory inputs and candidate decisions outside collapsed detail panels.
+        for control in parser.required_controls:
+            self.assertEqual(parser.details_for[control], ())
+        self.assertEqual(parser.details_for["mwe-occurrences"], ())
+        self.assertEqual(parser.details_for["bnc-coca-profile"], ("mwe-local-reference",))
+        self.assertEqual(parser.details_for["mwe-workspace-file"], ("mwe-resume-options",))
+        self.assertEqual(parser.details_for["word-coverage-items"], ("mwe-coverage-details",))
+        for earlier, later in (
+            ("word-reference", "bnc-coca-profile"),
+            ("mwe-analyze-button", "mwe-workspace-file"),
+            ("mwe-occurrences", "mwe-manual-candidate"),
+            ("mwe-occurrences", "mwe-summary"),
+        ):
+            self.assertLess(parser.ids.index(earlier), parser.ids.index(later))
 
     def test_static_boundary(self):
         source = INDEX.read_text(encoding="utf-8")
@@ -164,7 +188,7 @@ class HtmlContractTests(unittest.TestCase):
         self.assertIn("runtimeProfileSha256", app_source)
         self.assertIn("lockMweSourceInputs(true)", app_source)
         self.assertIn("prepareMweSenseReferenceProfile", app_source)
-        self.assertIn("Contextual senseを保存", app_source)
+        self.assertIn("Save contextual sense", app_source)
         self.assertIn("Idiomaticityを保存", app_source)
         self.assertIn('id="method-references"', source)
         self.assertIn('id="rights-attestation"', source)

@@ -37,6 +37,7 @@ const mweDocumentSetForm = document.getElementById('mwe-document-set-form');
 const mweStatus = document.getElementById('mwe-status');
 const mweResults = document.getElementById('mwe-results');
 let comparisonSets;
+let mweExamples = [];
 let contract;
 let mweContract;
 let wordProfiles;
@@ -90,9 +91,11 @@ function pendingMweEdits() {
   if (!mweDocument) return [];
   const edits = [];
   const input = id => document.getElementById(id);
+  // Textareas display LF; compare without rewriting an imported record's line endings.
+  const comparable = value => value?.replace(/\r\n?/g, '\n').trim();
   const add = (label, fields) => {
     const changed = fields.find(([control, saved]) => control &&
-      (control.type === 'checkbox' ? control.checked !== saved : control.value.trim() !== saved?.trim()));
+      (control.type === 'checkbox' ? control.checked !== saved : comparable(control.value) !== comparable(saved)));
     if (changed) edits.push({label, control: changed[0]});
   };
   mweDocument.occurrences.forEach((occurrence, index) => {
@@ -167,7 +170,8 @@ function ensureMweEditsRecorded() {
 function lockMweSourceInputs(locked) {
   for (const id of [
     'mwe-text', 'mwe-patterns', 'word-reference', 'mwe-authorization',
-    'bnc-coca-profile', 'mwe-workspace-file', 'mwe-analyze-button'
+    'bnc-coca-profile', 'mwe-workspace-file', 'mwe-analyze-button',
+    'mwe-example', 'load-mwe-example'
   ]) document.getElementById(id).disabled = locked;
 }
 
@@ -225,7 +229,28 @@ function renderOccurrenceContext(occurrence) {
     span.textContent = `${token.position}:${token.surface}`;
     return span;
   }));
-  return context;
+  if (start > 0) context.prepend('…');
+  if (end < mweDocument.tokens.length) context.append('…');
+  const view = document.createElement('div');
+  const help = document.createElement('p');
+  help.className = 'meta';
+  help.lang = 'en';
+  help.textContent = 'Token window: punctuation is omitted; … marks omitted tokens. Read the full text when the surrounding context matters.';
+  const reader = document.createElement('details');
+  const summary = document.createElement('summary');
+  summary.lang = 'en';
+  summary.textContent = 'Read the full input text';
+  const fullText = document.createElement('pre');
+  fullText.className = 'mwe-full-text';
+  fullText.tabIndex = 0;
+  fullText.setAttribute('role', 'region');
+  fullText.setAttribute('aria-label', 'Full input text');
+  const sourceText = mweDocument.text;
+  // ponytail: materialize only open readers; use a shared reader if many expanded long-text views become costly.
+  reader.addEventListener('toggle', () => { fullText.textContent = reader.open ? sourceText : ''; });
+  reader.append(summary, fullText);
+  view.append(context, help, reader);
+  return view;
 }
 
 function setMweDecision(occurrenceId, status, noteInput) {
@@ -295,6 +320,8 @@ function setSenseDecision(occurrenceId, statusSelect, choices, noteInput) {
   const occurrence = mweDocument.occurrences.find(item => item.id === occurrenceId);
   if (!occurrence || occurrence.status !== 'confirmed' ||
       occurrence.sense.lookup_status !== 'matched') return;
+  statusSelect.setCustomValidity('');
+  noteInput.setCustomValidity('');
   const status = statusSelect.value;
   const selected = [...choices.querySelectorAll('input:checked')].map(input => input.value);
   const multiple = ['multiple_assigned', 'ambiguous'].includes(status);
@@ -303,23 +330,21 @@ function setSenseDecision(occurrenceId, statusSelect, choices, noteInput) {
     ? selected.length < requiredCount : selected.length !== requiredCount;
   if (wrongCount) {
     statusSelect.setCustomValidity(
-      status === 'assigned' ? 'Assignedは語義を1件選択します。'
-        : multiple ? '複数語義の判定では語義を2件以上選択します。'
-          : '未判定／棄権／該当語義なしでは語義を選択しません。'
+      status === 'assigned' ? 'Select exactly one sense for this state.'
+        : multiple ? 'Select at least two senses for this state.'
+          : 'Select no senses for this state. Clear the checked boxes before saving.'
     );
     statusSelect.reportValidity();
     return;
   }
   const decided = status !== 'unassigned';
   if (decided && !noteInput.value.trim()) {
-    noteInput.setCustomValidity('語義判断または棄権の根拠が必要です。');
+    noteInput.setCustomValidity('Explain your sense decision or why you cannot decide.');
     noteInput.reportValidity();
     return;
   }
-  statusSelect.setCustomValidity('');
-  noteInput.setCustomValidity('');
   if (!decided && (occurrence.sense.assignment_status !== 'unassigned' || noteInput.value.trim()) &&
-      !window.confirm(`「${occurrence.canonical_form}」の語義を未判定に戻し、その判断・棄権の根拠を消去しますか？成立判断と慣用性は保持します。`)) return;
+      !window.confirm(`Clear the sense decision and its reason for “${occurrence.canonical_form}” and return to not reviewed yet? The occurrence and idiomaticity decisions will be kept.`)) return;
   mweRevision += 1;
   occurrence.sense.assignment_status = status;
   occurrence.sense.selected_sense_ids = selected;
@@ -336,7 +361,7 @@ function idiomaticityReview(occurrence) {
   const statusLabel = document.createElement('label');
   const status = document.createElement('select');
   const noteLabel = document.createElement('label');
-  const note = document.createElement('input');
+  const note = document.createElement('textarea');
   const apply = document.createElement('button');
   legend.textContent = '文脈内のidiomaticity（構造category・語義とは別）';
   status.id = `idiomaticity-${occurrence.id}`;
@@ -352,7 +377,8 @@ function idiomaticityReview(occurrence) {
     status.append(option);
   }
   note.id = `idiomaticity-note-${occurrence.id}`;
-  note.type = 'text';
+  note.className = 'review-note';
+  note.rows = 2;
   note.maxLength = 500;
   note.autocomplete = 'off';
   note.value = occurrence.idiomaticity.decision?.note || '';
@@ -371,47 +397,48 @@ function senseReview(occurrence) {
   const summary = document.createElement('summary');
   const lookup = lookupMweSenses(occurrence.canonical_form, mweSenseProfile);
   details.className = 'sense-review';
+  details.lang = 'en';
   if (occurrence.sense.lookup_status !== 'matched') {
     summary.textContent = occurrence.sense.lookup_status === 'inventory_ineligible'
-      ? 'Contextual sense：現行参照範囲の対象外'
+      ? 'Contextual sense: outside the available reference scope'
       : occurrence.sense.lookup_status === 'out_of_inventory'
-        ? 'Contextual sense：候補なし'
-        : 'Contextual sense：未検索';
+        ? 'Contextual sense: no reference candidates'
+        : 'Contextual sense: not looked up';
     const note = document.createElement('p');
     note.className = 'meta';
     note.textContent = occurrence.sense.lookup_status === 'inventory_ineligible'
-      ? '現在読み込まれている参照語義の適用範囲外です。語義が存在しないという判定ではありません。'
-      : '完全な参照範囲を検索した結果です。';
+      ? 'The loaded sense reference does not cover this expression. This does not mean that the expression has no meaning.'
+      : 'No sense choice is available here. This lookup result is not a contextual sense judgment.';
     details.append(summary, note);
     return details;
   }
-  summary.textContent = `OEWN contextual sense review（${lookup.senses.length}候補）`;
+  summary.textContent = `Review contextual senses (${lookup.senses.length} OEWN candidates)`;
   const warning = document.createElement('p');
   warning.className = 'meta';
-  warning.textContent = '辞書候補は文脈上の正解、頻度、学習者知識を決めません。';
+  warning.textContent = 'Read the full input context before deciding. Dictionary definitions and examples are reference material, not answers for this text or a frequency ranking. Your choices are recorded only when you save.';
   const statusLabel = document.createElement('label');
   const status = document.createElement('select');
   status.id = `sense-status-${occurrence.id}`;
   statusLabel.htmlFor = status.id;
-  statusLabel.textContent = '語義判定';
-  const senseLabels = {
-    unassigned: '未判定',
-    assigned: '1語義',
-    multiple_assigned: '複数語義が同時成立',
-    ambiguous: '複数候補間で曖昧',
-    abstained: '判断を棄権',
-    out_of_inventory: '該当語義なし'
+  statusLabel.textContent = 'What can you conclude about this occurrence?';
+  const senseOptions = {
+    unassigned: ['Not reviewed yet', 'Select no senses to leave the review unfinished. Saving this state clears any previous sense decision.'],
+    assigned: ['One sense applies', 'Select exactly one sense supported by the full context and explain why it fits.'],
+    multiple_assigned: ['Several senses apply together', 'Select at least two meanings that apply at the same time and explain their joint use. This is not uncertainty between alternatives.'],
+    ambiguous: ['Uncertain between specific senses', 'Select at least two plausible alternatives that the context cannot distinguish, and explain the uncertainty. This does not assert that both meanings apply.'],
+    abstained: ['Cannot make a sense decision', 'Select no senses and explain why you cannot decide. This records an abstention, rather than leaving the review unfinished.'],
+    out_of_inventory: ['None of the listed senses fits', 'After reviewing the complete list, select no senses and explain why none fits this occurrence. This does not mean that the expression has no meaning.']
   };
-  for (const value of Object.keys(senseLabels)) {
+  for (const [value, [label]] of Object.entries(senseOptions)) {
     const option = document.createElement('option');
     option.value = value;
-    option.textContent = senseLabels[value];
+    option.textContent = label;
     option.selected = occurrence.sense.assignment_status === value;
     status.append(option);
   }
   const choices = document.createElement('fieldset');
   const choicesLegend = document.createElement('legend');
-  choicesLegend.textContent = '候補語義';
+  choicesLegend.textContent = 'Reference senses';
   choices.className = 'sense-choices';
   choices.append(choicesLegend);
   lookup.senses.forEach((sense, index) => {
@@ -422,29 +449,47 @@ function senseReview(occurrence) {
     input.type = 'checkbox';
     input.value = sense.sense_id;
     input.checked = occurrence.sense.selected_sense_ids.includes(sense.sense_id);
-    description.textContent = `${sense.sense_id} — ${sense.definitions.join('; ')}`;
+    description.textContent = sense.definitions.join('; ');
     const example = [...sense.entry_examples, ...sense.synset_examples][0];
-    if (example) description.append(document.createElement('br'), `例: ${example}`);
+    if (example) description.append(document.createElement('br'), `Dictionary example: ${example}`);
+    const identifier = document.createElement('small');
+    identifier.className = 'meta';
+    identifier.textContent = `Sense ID: ${sense.sense_id}`;
+    description.append(document.createElement('br'), identifier);
     label.className = 'sense-choice';
     label.append(input, description);
     choices.append(label);
   });
+  const help = document.createElement('p');
+  help.id = `sense-help-${occurrence.id}`;
+  help.className = 'meta';
+  help.setAttribute('role', 'status');
+  help.setAttribute('aria-live', 'polite');
+  status.setAttribute('aria-describedby', help.id);
+  choices.setAttribute('aria-describedby', help.id);
+  const updateHelp = () => {
+    help.textContent = `${senseOptions[status.value][1]} Selected: ${choices.querySelectorAll('input:checked').length}. Changing this state does not select or clear any boxes.`;
+  };
+  status.addEventListener('change', updateHelp);
+  choices.addEventListener('change', updateHelp);
+  updateHelp();
   const noteLabel = document.createElement('label');
-  const note = document.createElement('input');
+  const note = document.createElement('textarea');
   note.id = `sense-note-${occurrence.id}`;
-  note.type = 'text';
+  note.className = 'review-note';
+  note.rows = 2;
   note.maxLength = 500;
   note.autocomplete = 'off';
   note.value = occurrence.sense.decision?.note || '';
   noteLabel.htmlFor = note.id;
-  noteLabel.textContent = '判断／棄権の根拠';
+  noteLabel.textContent = 'Reason for your decision or abstention';
   const apply = document.createElement('button');
   apply.type = 'button';
-  apply.textContent = 'Contextual senseを保存';
+  apply.textContent = 'Save contextual sense';
   apply.addEventListener('click', () => {
     setSenseDecision(occurrence.id, status, choices, note);
   });
-  details.append(summary, warning, statusLabel, status, choices, noteLabel, note, apply);
+  details.append(summary, warning, statusLabel, status, help, choices, noteLabel, note, apply);
   return details;
 }
 
@@ -456,7 +501,7 @@ function occurrenceCard(occurrence) {
   const controls = document.createElement('div');
   const noteField = document.createElement('div');
   const noteLabel = document.createElement('label');
-  const note = document.createElement('input');
+  const note = document.createElement('textarea');
   const actions = document.createElement('div');
   article.className = 'occurrence-card';
   heading.textContent = `${occurrence.canonical_form} · ${occurrence.category} · ${occurrenceStatusLabels[occurrence.status]}`;
@@ -474,7 +519,8 @@ function occurrenceCard(occurrence) {
   noteLabel.htmlFor = `decision-${occurrence.id}`;
   noteLabel.textContent = '判断根拠';
   note.id = `decision-${occurrence.id}`;
-  note.type = 'text';
+  note.className = 'review-note';
+  note.rows = 2;
   note.maxLength = 500;
   note.value = occurrence.decision?.note || '';
   note.autocomplete = 'off';
@@ -562,6 +608,11 @@ function renderMweReviewSummary() {
 
 function invalidateMweReview() {
   if (!mweDocument) return;
+  clearMweReview();
+  mweStatus.textContent = '入力を変更しました。候補を再抽出してください。';
+}
+
+function clearMweReview() {
   mweDocument = null;
   currentSetDocumentId = null;
   mweDocumentDirty = false;
@@ -570,8 +621,56 @@ function invalidateMweReview() {
   currentWordRankCutoff = null;
   mwePatternSource = null;
   mweResults.hidden = true;
-  mweStatus.textContent = '入力を変更しました。候補を再抽出してください。';
+  for (const id of ['mwe-occurrences', 'mwe-token-picker', 'mwe-summary']) {
+    document.getElementById(id).replaceChildren();
+  }
+  document.getElementById('word-coverage-items').value = '';
 }
+
+function describeMweExample() {
+  const example = mweExamples.find(item => item.id === document.getElementById('mwe-example').value);
+  document.getElementById('mwe-example-description').textContent = example?.prompt_en ||
+    'Select a text to see its purpose and source.';
+  const source = document.getElementById('mwe-example-source');
+  source.replaceChildren();
+  document.getElementById('load-mwe-example').disabled = Boolean(mweDocument) || !example;
+  if (!example) return;
+  const origin = document.createElement('a');
+  origin.href = example.provenance.source_url;
+  origin.textContent = example.provenance.kind === 'tatoeba_cc0' ? 'Tatoeba sentence' : 'Project-authored example';
+  const license = document.createElement('a');
+  license.href = example.provenance.license_url;
+  license.textContent = example.provenance.license;
+  source.append('Selected example: ', origin, ' · ', license,
+    '. Source information describes the original example, not subsequent edits.');
+}
+
+function loadMweExample() {
+  const example = mweExamples.find(item => item.id === document.getElementById('mwe-example').value);
+  if (!example) return;
+  if (mweDocument) {
+    mweStatus.textContent = 'Save and clear the current review before loading another example.';
+    return;
+  }
+  const text = document.getElementById('mwe-text');
+  const patterns = document.getElementById('mwe-patterns');
+  if ((text.value || patterns.value !== patterns.defaultValue) && !window.confirm(
+    'Replace the current text and candidate patterns with this example? Cancel keeps your input.'
+  )) return;
+  mweRevision += 1; // Cancel any pending file restore before replacing its inputs.
+  text.value = example.text;
+  patterns.value = patterns.defaultValue;
+  document.getElementById('mwe-authorization').checked = false;
+  mweStatus.textContent = 'Example loaded. Check the text, choose a reference list, confirm your permission to process it, then extract candidates. No judgments have been recorded.';
+  updateMwePendingEdits();
+  text.focus();
+}
+
+document.getElementById('mwe-example').addEventListener('change', describeMweExample);
+document.getElementById('load-mwe-example').addEventListener('click', loadMweExample);
+document.getElementById('mwe-form').addEventListener('reset', event => {
+  setTimeout(() => { if (!event.defaultPrevented) describeMweExample(); });
+});
 
 async function readMweResumeFile(file, specification) {
   if (!file || file.size > specification.maximum_json_file_bytes) {
@@ -659,8 +758,15 @@ async function restoreWorkspaceToPage(record, revision) {
     mweFormProfile, mweSenseProfile
   }).catch(() => { throw mweResumeValidationError(); });
   if (revision !== mweRevision) return;
-  document.getElementById('mwe-text').value = restored.document.text;
-  document.getElementById('mwe-patterns').value = restored.patternSource;
+  const text = document.getElementById('mwe-text');
+  const patterns = document.getElementById('mwe-patterns');
+  if ((text.value || patterns.value !== patterns.defaultValue) &&
+      (text.value !== restored.document.text || patterns.value !== restored.patternSource) &&
+      !window.confirm('Opening this review will replace your current text and candidate patterns. Continue? Cancel keeps your input.')) {
+    throw new Error('Opening cancelled. Your current input is unchanged.');
+  }
+  text.value = restored.document.text;
+  patterns.value = restored.patternSource;
   document.getElementById('word-reference').value = wordProfileKey;
   mweDocument = restored.document;
   mwePatternSource = restored.patternSource;
@@ -725,11 +831,7 @@ mweForm.addEventListener('submit', event => {
     nextMweId = mweDocument.occurrences.length + 1;
     renderMweReview();
   } catch (error) {
-    mweDocument = null;
-    currentWordCoverage = null;
-    currentWordProfile = null;
-    currentWordRankCutoff = null;
-    mweResults.hidden = true;
+    clearMweReview();
     mweStatus.textContent = error.message;
   }
 });
@@ -745,14 +847,7 @@ mweForm.addEventListener('reset', event => {
   }
   mweRevision += 1;
   lockMweSourceInputs(false);
-  mweDocument = null;
-  currentSetDocumentId = null;
-  mweDocumentDirty = false;
-  currentWordCoverage = null;
-  currentWordProfile = null;
-  currentWordRankCutoff = null;
-  mwePatternSource = null;
-  mweResults.hidden = true;
+  clearMweReview();
   mweStatus.textContent = 'MWE入力と結果を消去しました。';
   document.getElementById('bnc-coca-profile-status').textContent =
     wordProfiles?.has('bnc-coca-1000')
@@ -797,6 +892,11 @@ document.getElementById('add-manual-mwe').addEventListener('click', () => {
   );
   if (duplicate) {
     mweStatus.textContent = '同じcategory、canonical form、member tokenの候補が既にあります。';
+    return;
+  }
+  const limit = mweContract.candidate_generation.limits.candidates_per_text;
+  if (mweDocument.occurrences.length >= limit) {
+    mweStatus.textContent = `This text has reached the limit of ${limit} candidates. Nothing was added, and your draft is unchanged. Remove an unneeded candidate before retrying.`;
     return;
   }
   mweRevision += 1;
@@ -1422,6 +1522,15 @@ async function initialize() {
     mweFormProfile = prepareMweFormReferenceProfile(await mweFormProfileResponse.json());
     mweSenseProfile = prepareMweSenseReferenceProfile(await mweSenseProfileResponse.json());
     comparisonSets = sampleDocument.comparison_sets;
+    mweExamples = sampleDocument.mwe_examples;
+    for (const example of mweExamples) {
+      const option = document.createElement('option');
+      option.value = example.id;
+      option.textContent = example.label_en;
+      document.getElementById('mwe-example').append(option);
+    }
+    document.getElementById('mwe-example').disabled = false;
+    describeMweExample();
     scenario.replaceChildren(...comparisonSets.map((set, index) => {
       const option = document.createElement('option');
       option.value = String(index);

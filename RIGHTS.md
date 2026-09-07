@@ -9,10 +9,37 @@ record. The decisions below are conservative project gates, not legal advice.
 
 ## Active release tree
 
+### Public MWE examples added locally — 2026-09-07
+
+`samples.json` 0.4.0 adds three existing project-authored M3–M5 texts and two
+verbatim Tatoeba English sentences, IDs **11202318** and **9004040**, from the
+[official CC0-only export](https://downloads.tatoeba.org/exports/per_language/eng/eng_sentences_CC0.tsv.bz2).
+The [download documentation](https://tatoeba.org/en/downloads) distinguishes
+CC0 sentences from the default CC BY corpus and specifies the four exported
+fields. Only the selected sentence texts use
+[CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/); this does not
+relicense other Tatoeba text, translations, audio, or project-authored material.
+The archive retrieved on 2026-09-07 is 1,288,331 bytes with SHA-256
+`489556f5ed662d97f1350ef81aa4b0fc430ea32c0c98853020666b055ee4b40c`.
+Each selected row retains its original sentence URL, source modification time,
+license and exact UTF-8 text hash. The full archive is not bundled or fetched
+by the browser. CC0 does not warrant authorship or remove third-party rights.
+
+These are deliberately chosen, exposed development examples, not a random
+corpus, natural discourse collection, independent labels or a sealed test.
+The project-authored prompts describe review exercises, not upstream judgments.
+Loading an example copies text only with the starter patterns; no occurrence,
+idiomaticity or contextual-sense answer is supplied. Existing M3–M5 fixture
+decisions are not loaded. Selection does not attest processing permission or
+choose a word profile. Public text availability does not validate linguistic
+decisions. Attribution-required external paragraphs are not added in this
+iteration; preserving their attribution through every export remains needed
+before such integration.
+
 | Item | Origin | Runtime use | Current decision |
 |---|---|---|---|
 | `index.html`, contracts, annotation/training/platform guides, `annotations/training_cases.json`, `annotations/hard_case_bank.json`, `scripts/convert_annotation_export.py`, and tests | Original project code, documentation, and synthetic training/format records | Static browser app, browser-local MWE review, independent guide/training reading, external-platform export conversion, and verification | Code, annotation guide, cases, converter, and tests are dual-licensed MIT or CC BY 4.0 at the recipient's choice; protocol documents are CC BY 4.0. The starter patterns, M1–M5 contexts, practice/hard cases, and embedded CAS fixture are project-authored functional examples, not copied lexical-resource entries. No human response, qualification form, natural benchmark item, third-party runtime code, or copied guideline example is included. |
-| Scenarios in `samples.json` and MWE cases in `tests/fixtures/mwe_cases.json` | Project-authored synthetic transformations and reviewed `take in`/`spill the beans` contract cases | Browser comparisons and dependency-free contract verification | Dual-licensed MIT or CC BY 4.0. M3 refers to OEWN sense IDs, but its contextual assignments are project decisions rather than OEWN gold labels; no person or learner corpus is included. |
+| Scenarios and examples in `samples.json`, and MWE cases in `tests/fixtures/mwe_cases.json` | Project-authored synthetic transformations and `take in`/`spill the beans` contract cases; two separately identified Tatoeba CC0 sentence texts | Browser comparisons, editable MWE examples, and contract verification | Project-authored material remains MIT or CC BY 4.0; the two Tatoeba texts are CC0 as documented above. M3's fixture assignments are project decisions, not OEWN gold, and are not loaded into the review UI. No participant response or learner corpus is included. |
 | The benchmark section of `metric_contract.json`, evaluation/bootstrap/precision scripts and tests, `resources/precision_plan.json`, and the surface-list prediction fixture | Original project contract/code, synthetic metric contributions and precision resamples, and synthetic negative-control predictions | Offline supplied-candidate compatibility; open-text task point estimates; fixed-seed document-cluster intervals, canonical-type sensitivity, paired system differences, and fail-closed pre-data allocation simulation | Dual-licensed MIT or CC BY 4.0 for code/tests and CC BY 4.0 for the precision plan; no source row, natural test item, observed pilot value, final sample size, model, weights, training corpus, third-party code, or third-party Python package is included. Synthetic checks establish software behavior only. |
 | `benchmarks/streusle_v5_vpc_vid.json`, `resources/streusle_gap_dependency_baseline.json`, `scripts/check_streusle_v5.py`, and `resources/STREUSLE_NOTICE.md` | Project-authored external benchmark profile, frozen aggregate baseline record, checker, and attribution/rights notice based on pinned STREUSLE 5.0 metadata and annotations | Offline artifact verification and transparent VPC/VID baselines only; no corpus or upstream code is bundled or loaded by the Web app | Original checker and notice are dual-licensed MIT or CC BY 4.0. The profile and aggregate result record preserve STREUSLE CC BY-SA 4.0 and source-text permission boundaries; researchers obtain the exact release separately. |
 | `mwe_contract.json`, matchers, and coverage summarizers | Original project schema and deterministic validation/review/coverage logic | Exposed through the public UI for explicit TUBELEX/NGSL/bounded local BNC/COCA word-profile selection and separate OEWN MWE-form review; not a validated automatic MWE analyzer or combined lexical score | Dual-licensed MIT or CC BY 4.0; the schema declares the separately licensed profiles below. |

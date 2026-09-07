@@ -654,10 +654,77 @@ assert.deepEqual(
   {numerator: 1, denominator: 2, value: 0.5}
 );
 
-assert.equal(sampleDocument.samples_version, '0.3.0-probe');
+assert.equal(sampleDocument.samples_version, '0.4.0-probe');
 assert.equal(sampleDocument.comparison_sets.length, 3);
 const sets = Object.fromEntries(sampleDocument.comparison_sets.map(set => [set.id, set]));
 const samples = sampleDocument.comparison_sets.flatMap(set => set.samples);
+// The public examples enter the real candidate/save/restore flow without gold labels.
+assert.equal(sampleDocument.mwe_examples.length, 5);
+const examplePatterns = 'VPC.full\ttake in\ttake/takes/took/taken/taking in\t4\nVID\tspill the beans\tspill/spills/spilled/spilling bean/beans\t2';
+for (const example of sampleDocument.mwe_examples) {
+  assert.equal(await sha256(example.text), example.provenance.text_sha256);
+  assert.ok(!('occurrences' in example) && !('senses' in example));
+  assert.ok(example.label_en && example.prompt_en);
+  if (example.provenance.kind === 'project_authored') {
+    assert.equal(example.text, mweFixture.cases.find(item => item.id === example.id).text);
+    assert.equal(example.provenance.license, 'MIT OR CC-BY-4.0');
+  } else {
+    assert.equal(example.provenance.kind, 'tatoeba_cc0');
+    assert.equal(example.provenance.license, 'CC0-1.0');
+    assert.equal(example.provenance.source_url, `https://tatoeba.org/en/sentences/show/${example.id.slice(8)}`);
+    assert.match(example.provenance.source_artifact_sha256, /^[a-f0-9]{64}$/);
+  }
+  const document = {text: example.text, ...findMweCandidates(example.text,
+    parseMwePatternTsv(examplePatterns, mweContract.occurrence_record.categories))};
+  assert.ok(document.occurrences.length);
+  assert.ok(document.occurrences.every(item => item.status === 'candidate' && item.decision === null));
+  const saved = await makeMweWorkspaceRecord({document, contract: mweContract,
+    patternSource: examplePatterns, authorizationAttested: true, savedAt: '2026-09-07T00:00:00.000Z',
+    wordProfileKey: 'tubelex', wordProfile, wordRankCutoff: null, mweFormProfile, mweSenseProfile});
+  const restored = await restoreMweWorkspaceRecord({record: saved, contract: mweContract,
+    authorizationAttested: true, wordProfileKey: 'tubelex', wordProfile, wordRankCutoff: null,
+    mweFormProfile, mweSenseProfile});
+  assert.deepEqual(restored.document, document);
+}
+
+{
+  const source = readFileSync(new URL('../app.mjs', import.meta.url), 'utf8');
+  const fields = new Map();
+  const control = id => {
+    if (!fields.has(id)) fields.set(id, {value: '', defaultValue: '', checked: false, focus() {}});
+    return fields.get(id);
+  };
+  let accept = false, prompts = 0, refreshed = 0;
+  const context = {document: {getElementById: control}, mweExamples: sampleDocument.mwe_examples,
+    mweDocument: null, mweRevision: 0, mweStatus: {textContent: ''},
+    window: {confirm() { prompts++; return accept; }},
+    updateMwePendingEdits() { refreshed++; }};
+  runInNewContext(source.slice(source.indexOf('function loadMweExample()'),
+    source.indexOf("document.getElementById('mwe-example').addEventListener")), context);
+  control('mwe-example').value = sampleDocument.mwe_examples[0].id;
+  control('mwe-patterns').defaultValue = examplePatterns;
+  control('mwe-patterns').value = 'Unfinished pattern draft';
+  control('mwe-text').value = 'Unfinished text';
+  control('mwe-authorization').checked = true;
+  control('word-reference').value = 'ngsl-1000';
+  context.loadMweExample();
+  assert.equal(control('mwe-text').value, 'Unfinished text');
+  assert.equal(control('mwe-patterns').value, 'Unfinished pattern draft');
+  assert.equal(context.mweRevision, 0);
+  accept = true;
+  context.loadMweExample();
+  assert.equal(control('mwe-text').value, sampleDocument.mwe_examples[0].text);
+  assert.equal(control('mwe-patterns').value, examplePatterns);
+  assert.equal(control('mwe-authorization').checked, false);
+  assert.equal(control('word-reference').value, 'ngsl-1000');
+  assert.equal(context.mweRevision, 1);
+  assert.equal(refreshed, 1);
+  context.mweDocument = {text: 'A review to preserve'};
+  context.loadMweExample();
+  assert.equal(prompts, 2, 'An active review cannot be replaced even after a confirmed draft replacement');
+  assert.equal(context.mweDocument.text, 'A review to preserve');
+  assert.equal(context.mweRevision, 1);
+}
 for (const sample of samples) {
   assert.deepEqual(analyze(sample.text), sample.result, sample.id);
 }
@@ -1033,7 +1100,8 @@ await assert.rejects(
   const appSource = readFileSync(new URL('../app.mjs', import.meta.url), 'utf8');
   const controls = new Map();
   const control = id => {
-    if (!controls.has(id)) controls.set(id, {value: '', disabled: false});
+    if (!controls.has(id)) controls.set(id, {value: '', disabled: false, children: [],
+      replaceChildren(...children) { this.children = children; }});
     return controls.get(id);
   };
   const handlers = new Map();
@@ -1056,6 +1124,8 @@ await assert.rejects(
   runInNewContext(
     appSource.slice(appSource.indexOf('function lockMweSourceInputs('),
       appSource.indexOf('function reviewedOccurrence(')) +
+    appSource.slice(appSource.indexOf('function invalidateMweReview('),
+      appSource.indexOf('function describeMweExample(')) +
     appSource.slice(appSource.indexOf("mweForm.addEventListener('submit'"),
       appSource.indexOf("for (const id of ['mwe-text', 'mwe-patterns', 'mwe-authorization']")),
     context
@@ -1082,6 +1152,10 @@ await assert.rejects(
   }
   assert.equal(renderCount, 1);
   assert.equal(prevented, 3);
+  const reviewOutputs = ['mwe-occurrences', 'mwe-token-picker', 'mwe-summary'];
+  const discardedControl = {validationMessage: 'Synthetic invalid review field'};
+  for (const id of reviewOutputs) control(id).replaceChildren(discardedControl);
+  control('word-coverage-items').value = 'Synthetic previous coverage';
   const beforeCancelledReset = JSON.stringify(context.mweDocument);
   const revisionBeforeReset = context.mweRevision;
   let resetCancelled = false;
@@ -1090,12 +1164,32 @@ await assert.rejects(
   assert.equal(context.mweRevision, revisionBeforeReset, 'Cancelled reset must not cancel pending work');
   assert.equal(JSON.stringify(context.mweDocument), beforeCancelledReset);
   assert.equal(control('mwe-analyze-button').disabled, true);
+  for (const id of reviewOutputs) assert.equal(control(id).children[0], discardedControl);
+  assert.equal(control('word-coverage-items').value, 'Synthetic previous coverage');
   allowReset = true;
   handlers.get('reset')();
   assert.equal(context.mweDocument, null);
   assert.ok(context.mweRevision > revisionBeforeReset);
   assert.equal(context.mweResults.hidden, true);
   assert.equal(control('mwe-analyze-button').disabled, false);
+  for (const id of reviewOutputs) assert.equal(control(id).children.length, 0,
+    'Confirmed reset must detach the previous review, including invalid controls');
+  assert.equal(control('word-coverage-items').value, '');
+  // Source invalidation and extraction failure must use the same cleanup path.
+  for (const reason of ['source-change', 'extraction-error']) {
+    for (const id of reviewOutputs) control(id).replaceChildren(discardedControl);
+    control('word-coverage-items').value = 'Stale coverage';
+    if (reason === 'source-change') {
+      context.mweDocument = {};
+      context.invalidateMweReview();
+    } else {
+      control('word-reference').value = 'unavailable';
+      submit();
+    }
+    assert.equal(context.mweDocument, null);
+    for (const id of reviewOutputs) assert.equal(control(id).children.length, 0, reason);
+    assert.equal(control('word-coverage-items').value, '');
+  }
   control('word-reference').value = 'tubelex';
   submit();
   assert.equal(renderCount, 2);
@@ -1143,6 +1237,42 @@ await assert.rejects(
     {querySelectorAll: () => []}, note
   );
   assert.equal(context.mweDocument.occurrences[0].sense.assignment_status, 'abstained');
+
+  // A corrected field must not keep an old error when another field now fails.
+  const validationControl = value => ({
+    value, validationMessage: '',
+    setCustomValidity(message) { this.validationMessage = message; },
+    reportValidity() { return !this.validationMessage; }
+  });
+  const senseBeforeValidation = structuredClone(context.mweDocument.occurrences[0].sense);
+  const senseIds = senseBeforeValidation.candidate_sense_ids;
+  for (const [value, count] of [['assigned', 1], ['multiple_assigned', 2],
+    ['ambiguous', 2], ['abstained', 0], ['out_of_inventory', 0]]) {
+    const state = validationControl(value);
+    const reason = validationControl('');
+    const selected = {querySelectorAll: () => senseIds.slice(0, count === 0 ? 1 : count - 1)
+      .map(value => ({value}))};
+    const before = JSON.stringify({document: context.mweDocument, revision: context.mweRevision});
+    context.setSenseDecision(occurrenceId, state, selected, reason);
+    assert.notEqual(state.validationMessage, '');
+    selected.querySelectorAll = () => senseIds.slice(0, count).map(value => ({value}));
+    context.setSenseDecision(occurrenceId, state, selected, reason);
+    assert.equal(state.validationMessage, '', 'The corrected sense count must not retain its old error');
+    assert.notEqual(reason.validationMessage, '');
+    reason.value = 'Synthetic validation recovery.';
+    selected.querySelectorAll = () => senseIds.slice(0, count === 0 ? 1 : count - 1).map(value => ({value}));
+    context.setSenseDecision(occurrenceId, state, selected, reason);
+    assert.notEqual(state.validationMessage, '');
+    assert.equal(reason.validationMessage, '', 'A corrected reason must not retain its old error');
+    assert.equal(JSON.stringify({document: context.mweDocument, revision: context.mweRevision}), before,
+      'Invalid attempts must not change any recorded decision or revision');
+    selected.querySelectorAll = () => senseIds.slice(0, count).map(value => ({value}));
+    context.setSenseDecision(occurrenceId, state, selected, reason);
+    assert.equal(state.validationMessage, '');
+    assert.equal(reason.validationMessage, '');
+    assert.equal(context.mweDocument.occurrences[0].sense.assignment_status, value);
+  }
+  context.mweDocument.occurrences[0].sense = senseBeforeValidation;
   const beforeClearingIdiomaticity = JSON.stringify(context.mweDocument);
   allowReset = false;
   context.setIdiomaticity(occurrenceId, {value: 'not_assessed'}, note);
@@ -1345,6 +1475,22 @@ await assert.rejects(
   const senseStatus = field('sense-status-mwe-1', 'assigned');
   const senseNote = field('sense-note-mwe-1', 'Sense note.');
   assert.equal(context.pendingMweEdits().length, 0);
+  // Native textareas use LF; that display normalization is not an edit to an imported record.
+  const notePairs = [[note, occurrence.decision], [fields.get('idiomaticity-note-mwe-1'), occurrence.idiomaticity.decision],
+    [senseNote, occurrence.sense.decision]];
+  const originalNotes = notePairs.map(([, decision]) => decision.note);
+  for (const ending of ['\n', '\r\n', '\r']) {
+    for (const [input, decision] of notePairs) {
+      decision.note = `First line.${ending}Second line.`;
+      input.value = 'First line.\nSecond line.';
+    }
+    const before = JSON.stringify(occurrence);
+    assert.equal(context.pendingMweEdits().length, 0, 'Line-ending normalization must not block untouched exports');
+    assert.equal(JSON.stringify(occurrence), before, 'Comparing notes must preserve the original bytes');
+    senseNote.value = 'First line.Second line.';
+    assert.equal(context.pendingMweEdits().length, 1, 'Removing a line break is a real edit');
+  }
+  notePairs.forEach(([input, decision], index) => { input.value = decision.note = originalNotes[index]; });
   idiom.value = 'literal';
   senses[1].checked = true;
   senseNote.value = 'Changed note.';
@@ -1383,6 +1529,50 @@ await assert.rejects(
   for (const id of ['export-mwe-csv', 'export-mwe-json', 'export-mwe-workspace',
     'save-mwe-document', 'export-mwe-document-set']) await handlers.get(id)();
   assert.equal(downloads, 0, 'Every judgment-bearing save path must stop on a pending edit');
+}
+
+// Manual additions must respect the same candidate limit as extraction and exports.
+{
+  const source = readFileSync(new URL('../app.mjs', import.meta.url), 'utf8');
+  const limit = mweContract.candidate_generation.limits.candidates_per_text;
+  const text = 'She took it in. '.repeat(limit);
+  const document = {text, ...findMweCandidates(text,
+    parseMwePatternTsv(examplePatterns, mweContract.occurrence_record.categories))};
+  document.occurrences[0].status = 'rejected';
+  document.occurrences[0].decision = {source: 'synthetic-review', note: 'Keep this existing decision.'};
+  const first = structuredClone(document.occurrences[0]);
+  const selected = [{value: 't1', checked: true}, {value: 't2', checked: true}];
+  const canonical = {value: 'synthetic manual expression'};
+  let add, renders = 0;
+  const appended = [];
+  const controls = {'manual-canonical-form': canonical, 'manual-mwe-category': {value: 'VID'},
+    'add-manual-mwe': {addEventListener(_, handler) { add = handler; }},
+    'mwe-occurrences': {append(item) { appended.push(item); }}};
+  const context = {mweDocument: document, mweContract, mweRevision: 0, nextMweId: limit + 1,
+    mweStatus: {}, document: {getElementById: id => controls[id], querySelectorAll: () => selected},
+    occurrenceCard: item => item,
+    renderMweReviewSummary() { summarizeMweDocument(document, mweContract); renders++; }};
+  runInNewContext(source.slice(source.indexOf("document.getElementById('add-manual-mwe').addEventListener"),
+    source.indexOf("document.getElementById('export-mwe-csv').addEventListener")), context);
+  const before = JSON.stringify({document, selected, canonical});
+  assert.doesNotThrow(() => add(), 'Reject an over-limit addition before creating an invalid document');
+  assert.equal(JSON.stringify({document, selected, canonical}), before, 'Keep records and the manual draft intact');
+  assert.equal(context.mweRevision, 0);
+  assert.equal(context.nextMweId, limit + 1);
+  assert.equal(appended.length, 0);
+  assert.equal(renders, 0);
+  assert.match(context.mweStatus.textContent, new RegExp(String(limit)));
+  document.occurrences.pop(); // A reviewer frees a slot; retry the preserved draft.
+  add();
+  assert.equal(document.occurrences.length, limit);
+  assert.deepEqual(document.occurrences[0], first);
+  assert.equal(document.occurrences.at(-1).id, `mwe-${limit + 1}`);
+  assert.equal(document.occurrences.at(-1).status, 'candidate');
+  assert.equal(document.occurrences.at(-1).decision, null);
+  assert.equal(canonical.value, '');
+  assert.ok(selected.every(input => !input.checked));
+  assert.equal(renders, 1);
+  assert.equal(appended.length, 1);
 }
 
 // Delay real event-handler dependencies deterministically; no timing sleeps or DOM library.
@@ -1634,6 +1824,7 @@ await assert.rejects(
       .map(id => control(id).value)
   });
   const preserved = beforeImport();
+  context.window.confirm = () => assert.fail('Invalid files must not ask to replace a draft');
   for (const [id, record, otherKind, statusId] of [
     ['mwe-workspace-file', mweWorkspaceRecord, documentSetRecord, 'mwe-workspace-status'],
     ['mwe-document-set-file', documentSetRecord, mweWorkspaceRecord, 'mwe-document-set-status']
@@ -1670,9 +1861,187 @@ await assert.rejects(
     {size: 1, text: async () => '{"too":"long"}'},
     {...mweContract.workspace_file, maximum_json_utf16_code_units: 5}
   ), /読込上限/);
+  context.window.confirm = () => true;
   control('mwe-workspace-file').files = [{size: 1, text: async () => JSON.stringify(mweWorkspaceRecord)}];
   await fire('mwe-workspace-file', 'change');
   assert.equal(context.mweDocument.text, reviewedDocument.text, 'A valid retry must still restore normally');
+
+  // Both restore entry points must preserve an unextracted draft when replacement is cancelled.
+  context.mweDocumentSet.set('reopen', {id: 'reopen', label: 'Reopen', workspace: mweWorkspaceRecord});
+  control('mwe-document-set-documents').value = 'reopen';
+  control('mwe-patterns').defaultValue = patternTsv;
+  for (const [id, type, statusId] of [
+    ['mwe-workspace-file', 'change', 'mwe-workspace-status'],
+    ['load-mwe-document', 'click', 'mwe-document-set-status']
+  ]) {
+    for (const draft of ['text', 'patterns']) {
+      context.mweDocument = null;
+      context.currentSetDocumentId = null;
+      control('mwe-text').value = draft === 'text' ? 'Keep this unfinished draft.' : '';
+      control('mwe-patterns').value = draft === 'patterns' ? 'Unfinished pattern draft' : patternTsv;
+      const previous = beforeImport();
+      let prompts = 0;
+      context.window.confirm = () => { prompts++; return false; };
+      await fire(id, type);
+      assert.equal(prompts, 1, `${id} must ask before replacing ${draft}`);
+      assert.equal(beforeImport(), previous, `${id} cancellation must preserve inputs, review and set`);
+      assert.equal(context.currentSetDocumentId, null);
+      assert.match(control(statusId).textContent, /cancelled.*unchanged/i);
+      context.window.confirm = () => { prompts++; return true; };
+      await fire(id, type);
+      assert.equal(prompts, 2, 'The same file or set document can be retried after cancellation');
+      assert.equal(context.mweDocument.text, reviewedDocument.text);
+      assert.equal(control('mwe-patterns').value, patternTsv);
+      assert.equal(context.currentSetDocumentId, id === 'load-mwe-document' ? 'reopen' : null);
+    }
+    for (const text of ['', reviewedDocument.text]) {
+      context.mweDocument = null;
+      control('mwe-text').value = text;
+      control('mwe-patterns').value = patternTsv;
+      context.window.confirm = () => assert.fail('Empty or identical inputs need no replacement prompt');
+      await fire(id, type);
+      assert.equal(context.mweDocument.text, reviewedDocument.text);
+    }
+  }
+}
+
+// Context expansion is a literal, read-only view, never a new annotation or HTML input.
+{
+  const source = readFileSync(new URL('../app.mjs', import.meta.url), 'utf8');
+  const element = tag => ({
+    tag, children: [], attributes: {}, handlers: {}, textContent: '', open: false,
+    append(...items) {
+      this.children.push(...items);
+      if (tag === 'select') for (const option of items) if (option.selected) this.value = option.value;
+    },
+    prepend(...items) { this.children.unshift(...items); },
+    replaceChildren(...items) { this.children = items; },
+    setAttribute(name, value) { this.attributes[name] = value; },
+    addEventListener(name, handler) { this.handlers[name] = handler; },
+    querySelectorAll(selector) {
+      const descendants = this.children.filter(child => typeof child === 'object')
+        .flatMap(child => [child, ...child.querySelectorAll('*')]);
+      return selector === '*' ? descendants : descendants.filter(child =>
+        child.tag === 'input' && (selector !== 'input:checked' || child.checked));
+    }
+  });
+  const texts = [...sampleDocument.mwe_examples.map(item => item.text),
+    '“No,” she said.\n\nShe took it in. <img src=x onerror=alert(1)>',
+    'Before this rather long introduction Mira took it in after a very long pause.'];
+  const context = {document: {createElement: element}};
+  runInNewContext(source.slice(source.indexOf('function renderOccurrenceContext('),
+    source.indexOf('function setMweDecision(')), context);
+  for (const text of texts) {
+    context.mweDocument = {text, ...findMweCandidates(text,
+      parseMwePatternTsv(examplePatterns, mweContract.occurrence_record.categories))};
+    const before = JSON.stringify(context.mweDocument);
+    const view = context.renderOccurrenceContext(context.mweDocument.occurrences[0]);
+    const window = view.children.find(child => child.className === 'token-context');
+    const members = context.mweDocument.occurrences[0].member_token_ids;
+    assert.equal(window.children[0] === '…', Number(members[0].slice(1)) > 4);
+    assert.equal(window.children.at(-1) === '…',
+      Number(members.at(-1).slice(1)) + 3 < context.mweDocument.tokens.length);
+    assert.equal(window.children.filter(child => child.className === 'token-member').length, members.length);
+    const reader = view.children.find(child => child.tag === 'details');
+    assert.ok(reader, 'Every candidate must offer the complete source text');
+    const fullText = reader.children.find(child => child.tag === 'pre');
+    assert.equal(fullText.textContent, '', 'Do not copy the full document into every collapsed card');
+    assert.equal(fullText.tabIndex, 0, 'The scrollable text is keyboard reachable');
+    reader.open = true;
+    reader.handlers.toggle();
+    assert.equal(fullText.textContent, text, 'Preserve punctuation, line breaks and literal markup exactly');
+    assert.equal(fullText.children.length, 0, 'Original text must not create DOM elements');
+    assert.equal(JSON.stringify(context.mweDocument), before, 'Reading must not change tokens or judgments');
+    context.mweDocument = {text: 'A later document'};
+    reader.handlers.toggle();
+    assert.equal(fullText.textContent, text, 'An old card remains bound to its own source');
+    reader.open = false;
+    reader.handlers.toggle();
+    assert.equal(fullText.textContent, '');
+  }
+
+  // Explain all six existing sense states without choosing, clearing or saving on the user's behalf.
+  let saves = 0;
+  Object.assign(context, {lookupMweSenses, mweSenseProfile, setSenseDecision() { saves++; }});
+  runInNewContext(source.slice(source.indexOf('function senseReview('),
+    source.indexOf('function occurrenceCard(')), context);
+  const occurrence = structuredClone(reviewedDocument.occurrences[0]);
+  occurrence.sense.assignment_status = 'unassigned';
+  occurrence.sense.selected_sense_ids = [];
+  occurrence.sense.decision = null;
+  const original = JSON.stringify(occurrence);
+  const panel = context.senseReview(occurrence);
+  assert.equal(panel.lang, 'en');
+  const state = panel.children.find(child => child.tag === 'select');
+  const choices = panel.children.find(child => child.tag === 'fieldset');
+  const boxes = choices.querySelectorAll('input');
+  const help = panel.children.find(child => child.id === `sense-help-${occurrence.id}`);
+  assert.equal(state.attributes['aria-describedby'], help.id);
+  assert.equal(choices.attributes['aria-describedby'], help.id);
+  assert.equal(help.attributes['aria-live'], 'polite');
+  assert.deepEqual(Array.from(boxes, box => box.value), occurrence.sense.candidate_sense_ids);
+  assert.match(help.textContent, /unfinished.*Selected: 0/);
+  const definitions = lookupMweSenses(occurrence.canonical_form, mweSenseProfile).senses;
+  choices.children.slice(1).forEach((label, index) => {
+    const description = label.children[1];
+    assert.equal(description.textContent, definitions[index].definitions.join('; '));
+    assert.equal(description.children.at(-1).textContent, `Sense ID: ${boxes[index].value}`);
+  });
+  boxes[0].checked = boxes[1].checked = true;
+  for (const [value, wording] of [
+    ['unassigned', /Select no senses.*clears any previous/],
+    ['assigned', /Select exactly one/],
+    ['multiple_assigned', /at least two.*same time.*not uncertainty/],
+    ['ambiguous', /at least two.*cannot distinguish.*does not assert/],
+    ['abstained', /Select no senses.*cannot decide.*unfinished/],
+    ['out_of_inventory', /complete list.*select no senses.*none fits/]
+  ]) {
+    state.value = value;
+    state.handlers.change();
+    assert.match(help.textContent, wording);
+    assert.match(help.textContent, /Selected: 2/);
+    assert.equal(boxes.filter(box => box.checked).length, 2, 'State changes must not silently clear selections');
+    assert.equal(JSON.stringify(occurrence), original);
+  }
+  boxes[1].checked = false;
+  choices.handlers.change();
+  assert.match(help.textContent, /Selected: 1/);
+  assert.equal(saves, 0);
+  panel.children.at(-1).handlers.click();
+  assert.equal(saves, 1, 'Only the explicit save control records a decision');
+  const outside = context.senseReview({canonical_form: 'spill the beans',
+    sense: lookupMweSenses('spill the beans', mweSenseProfile).state});
+  assert.equal(outside.querySelectorAll('input').length, 0);
+  assert.match(outside.children[1].textContent, /does not cover.*does not mean/);
+
+  // All three reason fields must accept paragraphs without a rich-text editor.
+  Object.assign(context, {occurrenceStatusLabels: {confirmed: 'Confirmed'},
+    renderOccurrenceContext: () => element('div')});
+  runInNewContext(source.slice(source.indexOf('function idiomaticityReview('),
+    source.indexOf('function renderMweReview(')), context);
+  const withNotes = structuredClone(reviewedDocument.occurrences[0]);
+  const paragraph = 'First observation.\nA contrasting interpretation.\n日本語 🙂 <em>literal markup</em>';
+  for (const record of [withNotes, withNotes.idiomaticity, withNotes.sense]) {
+    record.decision = {source: 'synthetic-review', note: paragraph};
+  }
+  const card = context.occurrenceCard(withNotes);
+  for (const prefix of ['decision-', 'idiomaticity-note-', 'sense-note-']) {
+    const input = card.querySelectorAll('*').find(item => item.id === prefix + withNotes.id);
+    assert.equal(input.tag, 'textarea');
+    assert.equal(input.value, paragraph);
+    assert.equal(input.rows, 2);
+    assert.equal(input.maxLength, 500, 'Retain the existing input limit');
+    assert.equal(input.className, 'review-note');
+  }
+}
+
+// HTML pattern uses Unicode-sets mode, unlike the unflagged internal ID regex.
+const htmlPatterns = [...readFileSync(new URL('../index.html', import.meta.url), 'utf8')
+  .matchAll(/\bpattern="([^"]+)"/g)].map(match => new RegExp(`^(?:${match[1]})$`, 'v'));
+assert.equal(htmlPatterns.length, 2);
+for (const pattern of htmlPatterns) {
+  for (const id of ['a', 'passage-01', 'Set_2.0']) assert.ok(pattern.test(id));
+  for (const id of ['-a', 'two words', 'a/b', '文書', 'a|b']) assert.ok(!pattern.test(id));
 }
 
 console.log(
