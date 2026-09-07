@@ -23,6 +23,7 @@
     .token-choice { padding: .25rem .4rem; border-radius: .3rem; background: #edf3f1; font-weight: 400; }
     .token-member { padding: .15rem .25rem; border-radius: .25rem; background: #bfe5dc; font-weight: 800; }
     .token-gap { padding: .15rem .25rem; border-radius: .25rem; background: #f7e6ad; }
+    .mwe-full-text { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 18rem; overflow: auto; font: inherit; line-height: 1.5; }
     .occurrence-card { margin-top: .8rem; padding: .8rem; border: 1px solid #d7d3c8; border-radius: .4rem; background: white; }
     .occurrence-card h4 { margin: 0 0 .6rem; }
     .occurrence-controls { display: grid; grid-template-columns: minmax(12rem, 1fr) auto; gap: .6rem; margin-top: .7rem; align-items: end; }
@@ -44,6 +45,7 @@
     .field { display: grid; gap: .35rem; margin-top: .8rem; }
     input[type="text"], textarea, form select { box-sizing: border-box; width: 100%; padding: .65rem; border: 1px solid #61736d; border-radius: .35rem; background: white; color: inherit; font: inherit; }
     textarea { min-height: 10rem; resize: vertical; line-height: 1.5; }
+    textarea.review-note { min-height: 4.5rem; }
     textarea.design-note { min-height: 6rem; }
     textarea[readonly] { min-height: 14rem; background: #f7f8f5; font-family: ui-monospace, monospace; font-size: .8rem; }
     .attestation { display: flex; gap: .55rem; align-items: flex-start; font-weight: 400; }
@@ -101,20 +103,25 @@
         <p>英文と利用者指定パターンから、連続・非連続のVPC/VID候補を端末内で抽出します。構成語をmember、間に挟まる語をgapとして記録します。選択した通常語profileのtoken/type coverageと、成立確認済みMWEのOEWN form membershipは別々の分母で示します。<code>take in</code>では17件のOEWN候補語義から、単一語義、複数語義の同時成立、曖昧、棄権、該当語義なし、未判定を人が記録できます。参照lookupは文脈上の正解や学習者知識を決めません。</p>
       </details>
       <form id="mwe-form" autocomplete="off">
+        <fieldset lang="en" aria-describedby="mwe-example-help">
+          <legend>Try an example</legend>
+          <p id="mwe-example-help" class="meta">Explore the controls with reusable texts, not a scored test. Loading an example replaces the text and starter patterns, but does not choose a reference list or record judgments. You can edit the loaded text.</p>
+          <div class="field">
+            <label for="mwe-example">Choose an example</label>
+            <select id="mwe-example" disabled aria-describedby="mwe-example-description"><option value="">Choose an example…</option></select>
+          </div>
+          <p id="mwe-example-description" class="meta" aria-live="polite">Select a text to see its purpose and source.</p>
+          <p id="mwe-example-source" class="meta"></p>
+          <button id="load-mwe-example" type="button" disabled>Load example</button>
+        </fieldset>
         <div class="field">
           <label for="mwe-text">分析する英文</label>
           <textarea id="mwe-text" maxlength="100000" required spellcheck="false" autocomplete="off" placeholder="The explanation was dense, but Mira eventually took it in."></textarea>
         </div>
         <div class="field">
-          <label for="bnc-coca-profile">Nation BNC/COCAローカルprofile（任意）</label>
-          <input id="bnc-coca-profile" type="file" accept="application/json,.json" disabled aria-describedby="bnc-coca-profile-help">
-          <span id="bnc-coca-profile-help" class="meta"><code>python3 scripts/build_bnc_coca_profile.py BNC_COCA_25000.zip OUTPUT.json</code> で、研究者が適法に保有する公式v1.0.0 packageから生成します。ファイルは送信・保存されず、既知のsizeとSHA-256が一致する場合だけ、このsessionでfirst 1K／2Kを選択できます。proper nouns、marginal words、transparent compounds、acronymsは含めません。</span>
-          <span id="bnc-coca-profile-status" class="meta" role="status" aria-live="polite">BNC/COCAローカルprofileは未読込です。</span>
-        </div>
-        <div class="field">
-          <label for="word-reference">通常語の参照profile（選択必須）</label>
-          <select id="word-reference" required aria-describedby="word-reference-help">
-            <option value="">選択してください</option>
+          <label for="word-reference" lang="en">Word reference list (required)</label>
+          <select id="word-reference" required aria-describedby="word-reference-purpose">
+            <option value="">Choose a reference list…</option>
             <option value="ngsl-1000">NGSL 1.2 first 1,000 head ranks</option>
             <option value="ngsl-2000">NGSL 1.2 first 2,000 head ranks</option>
             <option value="ngsl-full">NGSL 1.2 full 2,809 head ranks</option>
@@ -122,48 +129,50 @@
             <option value="bnc-coca-2000" data-local-profile disabled>Nation BNC/COCA Level 6 first 2,000 families（local）</option>
             <option value="tubelex">TUBELEX English regex surface frequency</option>
           </select>
-          <span id="word-reference-help" class="meta">BNC/COCA条件はLevel 6 word-family membership、NGSL条件は公式research formの表層文字列をhead lemma順位へ対応させるlist-conditioned hypothetical coverage、TUBELEX条件は字幕頻度profile membershipです。意味・単語知識・MWE knowledgeへ読み替えません。</span>
+          <span id="word-reference-purpose" class="meta" lang="en">This list supplies a separate word-coverage summary; it does not choose MWE matches or senses. NGSL and TUBELEX are included. BNC/COCA needs a local file loaded below.</span>
+          <details>
+            <summary lang="en">How the reference lists differ</summary>
+            <span id="word-reference-help" class="meta">BNC/COCA条件はLevel 6 word-family membership、NGSL条件は公式research formの表層文字列をhead lemma順位へ対応させるlist-conditioned hypothetical coverage、TUBELEX条件は字幕頻度profile membershipです。意味・単語知識・MWE knowledgeへ読み替えません。</span>
+          </details>
         </div>
+        <details id="mwe-local-reference">
+          <summary lang="en">Optional: use a local BNC/COCA reference</summary>
+          <div class="field">
+            <label for="bnc-coca-profile">Nation BNC/COCAローカルprofile（任意）</label>
+            <input id="bnc-coca-profile" type="file" accept="application/json,.json" disabled aria-describedby="bnc-coca-profile-help">
+            <span id="bnc-coca-profile-help" class="meta"><code>python3 scripts/build_bnc_coca_profile.py BNC_COCA_25000.zip OUTPUT.json</code> で、研究者が適法に保有する公式v1.0.0 packageから生成します。ファイルは送信・保存されず、既知のsizeとSHA-256が一致する場合だけ、このsessionでfirst 1K／2Kを選択できます。proper nouns、marginal words、transparent compounds、acronymsは含めません。</span>
+            <span id="bnc-coca-profile-status" class="meta" role="status" aria-live="polite">BNC/COCAローカルprofileは未読込です。</span>
+          </div>
+        </details>
         <div class="field">
-          <label for="mwe-patterns">候補パターンTSV</label>
+          <label for="mwe-patterns" lang="en">Candidate patterns (starter rows supplied)</label>
           <textarea id="mwe-patterns" class="design-note" required spellcheck="false" autocomplete="off" aria-describedby="mwe-pattern-help">VPC.full&#9;take in&#9;take/takes/took/taken/taking in&#9;4
 VID&#9;spill the beans&#9;spill/spills/spilled/spilling bean/beans&#9;2</textarea>
-          <span id="mwe-pattern-help" class="meta">1行＝category、canonical form、member表層形、member間の最大gap数の4列TSV。member候補は <code>/</code> で列挙します。例の2行は機能確認用で、網羅的・頻度順・教育的重要度順のリストではありません。</span>
+          <span id="mwe-pattern-help" class="meta" lang="en">Keep these two starter rows to try the examples. They target <code>take in</code> and <code>spill the beans</code>, not every MWE. To customize: each row has four tab-separated fields—category, canonical form, member forms (alternatives separated by <code>/</code>), and maximum gap between members.</span>
         </div>
         <label class="attestation" for="mwe-authorization"><input id="mwe-authorization" type="checkbox" required><span>私は、適用される同意、研究倫理、プライバシー、所属機関の要件に従って、このテキストを端末内で処理する権限を確認しました。アプリはこの権限や匿名化を独立確認しません。</span></label>
-        <div class="field">
-          <label for="mwe-workspace-file">保存した再開用JSONを開く（任意）</label>
-          <input id="mwe-workspace-file" type="file" accept="application/json,.json" disabled aria-describedby="mwe-workspace-help">
-          <span id="mwe-workspace-help" class="meta">現在の処理権限を確認してから選択します。原文・候補パターン・記録済みの判断と根拠を復元します。「方法JSON」やCSVからは再開できません。ファイルは端末外へ送信されません。ローカルBNC/COCA条件の作業は、先に同じBNC/COCA profileを読み込んでください。</span>
-          <span id="mwe-workspace-status" class="meta" role="status" aria-live="polite">作業JSONはまだ読み込まれていません。</span>
-        </div>
         <div class="actions">
           <button id="mwe-analyze-button" type="submit" disabled>候補を抽出</button>
           <button type="reset">MWE入力と結果を消去</button>
         </div>
         <p class="meta">保存・読込の準備中に編集、消去、別の読込を行うと、途中の処理は反映しません。必要な保存・読込は、操作を終えてから再度実行してください。開始済みのダウンロードは取り消せません。</p>
+        <details id="mwe-resume-options">
+          <summary lang="en">Open a saved review instead</summary>
+          <div class="field">
+            <label for="mwe-workspace-file">保存した再開用JSONを開く（任意）</label>
+            <input id="mwe-workspace-file" type="file" accept="application/json,.json" disabled aria-describedby="mwe-workspace-help">
+            <span id="mwe-workspace-help" class="meta">現在の処理権限を確認してから選択します。原文・候補パターン・記録済みの判断と根拠を復元します。「方法JSON」やCSVからは再開できません。ファイルは端末外へ送信されません。ローカルBNC/COCA条件の作業は、先に同じBNC/COCA profileを読み込んでください。</span>
+            <span id="mwe-workspace-status" class="meta" role="status" aria-live="polite">作業JSONはまだ読み込まれていません。</span>
+          </div>
+        </details>
         <p id="mwe-status" role="status" aria-live="polite">MWE候補はまだ抽出されていません。</p>
         <div id="mwe-results" hidden>
-          <section class="panel" aria-labelledby="mwe-summary-title">
-            <h3 id="mwe-summary-title">レビューと参照別カバー率</h3>
-            <dl id="mwe-summary"></dl>
-            <p class="meta">通常語profileはNFKC正規化後のASCII文字列を単位とし、アポストロフィとhyphenを境界にします。MWEレビューtokenizerとは分母が異なります。NGSLのhomographは候補headをすべて表示し、最低rankによる文字列coverageが過大評価しうることを残します。word componentのmembershipや頻度をMWE frequencyとして扱いません。</p>
-          </section>
-          <div class="field">
-            <label for="word-coverage-items">選択したword profileのitem rows</label>
-            <textarea id="word-coverage-items" readonly aria-describedby="word-coverage-help"></textarea>
-            <span id="word-coverage-help" class="meta">全typeを未カバー優先、本文内頻度順で表示します。TUBELEXではsource count／frequency／competition rank、NGSLでは候補headとhead rankを示します。NGSLのbeyond_cutoffと完全なunmatchedを区別します。</span>
-          </div>
-          <fieldset>
-            <legend>候補を手動追加</legend>
-            <p class="meta">memberにするtokenを2個以上選択してください。間の未選択tokenはgapとして記録されます。</p>
-            <div id="mwe-token-picker" class="token-picker"></div>
-            <div class="field"><label for="manual-canonical-form">Canonical form</label><input id="manual-canonical-form" type="text" maxlength="100" autocomplete="off"></div>
-            <div class="field"><label for="manual-mwe-category">Category</label><select id="manual-mwe-category"><option value="VPC.full">VPC.full</option><option value="VPC.semi">VPC.semi</option><option value="VID">VID</option></select></div>
-            <p><button id="add-manual-mwe" type="button">選択tokenを候補に追加</button></p>
-          </fieldset>
-          <h3>候補ごとの判定</h3>
-          <p class="meta">成立／不成立には判断根拠を入力します。その後、慣用性と、対応する参照語義がある場合は文脈語義を別々に記録します。成立確認後の慣用性と語義は独立した判断であり、一方を未判定に戻しても他方は保持します。「未確定に戻す」と慣用性・語義の判断は削除されます。候補削除や判断のリセット、状態変更で編集が消える場合は、実行前に消える内容を確認します。取り消すと記録と入力途中の内容を保持します。根拠や語義を編集した後は、各欄の記録・保存ボタンを押して反映してください。入力途中の内容は、ほかの候補を操作しても画面に残りますが、記録するまでは書き出し・再開用ファイルに反映されません。</p>
+          <h3 lang="en">Review the candidates</h3>
+          <p lang="en">Check the highlighted words and their context. Record a decision and reason, or leave it unresolved. A pattern match is only a candidate. <a href="#mwe-manual-candidate">Add a missed expression</a>.</p>
+          <details>
+            <summary lang="en">How decisions and unsaved edits work</summary>
+            <p class="meta">成立／不成立には判断根拠を入力します。その後、慣用性と、対応する参照語義がある場合は文脈語義を別々に記録します。成立確認後の慣用性と語義は独立した判断であり、一方を未判定に戻しても他方は保持します。「未確定に戻す」と慣用性・語義の判断は削除されます。候補削除や判断のリセット、状態変更で編集が消える場合は、実行前に消える内容を確認します。取り消すと記録と入力途中の内容を保持します。根拠や語義を編集した後は、各欄の記録・保存ボタンを押して反映してください。入力途中の内容は、ほかの候補を操作しても画面に残りますが、記録するまでは書き出し・再開用ファイルに反映されません。</p>
+          </details>
           <div id="mwe-occurrences"></div>
           <section id="mwe-pending-edits" class="notice" aria-labelledby="mwe-pending-title" hidden>
             <h3 id="mwe-pending-title">まだ記録されていない編集</h3>
@@ -171,6 +180,27 @@ VID&#9;spill the beans&#9;spill/spills/spilled/spilling bean/beans&#9;2</textare
             <p>判断を含む書き出しと作業保存は、未記録の編集がある間は実行しません。下の項目へ戻り、各欄の記録・保存ボタンで反映するか、編集前の値に戻してください。手動候補は追加するか、入力と選択を取り消してください。未確定の候補が残っているだけでは保存を止めません。判断を自動確定することもありません。語のカバー率CSVは判断を含まないため保存できます。</p>
             <ul id="mwe-pending-list"></ul>
           </section>
+          <fieldset id="mwe-manual-candidate" tabindex="-1">
+            <legend>候補を手動追加</legend>
+            <p class="meta">memberにするtokenを2個以上選択してください。間の未選択tokenはgapとして記録されます。</p>
+            <div id="mwe-token-picker" class="token-picker"></div>
+            <div class="field"><label for="manual-canonical-form">Canonical form</label><input id="manual-canonical-form" type="text" maxlength="100" autocomplete="off"></div>
+            <div class="field"><label for="manual-mwe-category">Category</label><select id="manual-mwe-category"><option value="VPC.full">VPC.full</option><option value="VPC.semi">VPC.semi</option><option value="VID">VID</option></select></div>
+            <p><button id="add-manual-mwe" type="button">選択tokenを候補に追加</button></p>
+          </fieldset>
+          <details id="mwe-coverage-details">
+            <summary lang="en">Word coverage and review statistics</summary>
+            <section class="panel" aria-labelledby="mwe-summary-title">
+              <h3 id="mwe-summary-title">レビューと参照別カバー率</h3>
+              <dl id="mwe-summary"></dl>
+              <p class="meta">通常語profileはNFKC正規化後のASCII文字列を単位とし、アポストロフィとhyphenを境界にします。MWEレビューtokenizerとは分母が異なります。NGSLのhomographは候補headをすべて表示し、最低rankによる文字列coverageが過大評価しうることを残します。word componentのmembershipや頻度をMWE frequencyとして扱いません。</p>
+            </section>
+            <div class="field">
+              <label for="word-coverage-items">選択したword profileのitem rows</label>
+              <textarea id="word-coverage-items" readonly aria-describedby="word-coverage-help"></textarea>
+              <span id="word-coverage-help" class="meta">全typeを未カバー優先、本文内頻度順で表示します。TUBELEXではsource count／frequency／competition rank、NGSLでは候補headとhead rankを示します。NGSLのbeyond_cutoffと完全なunmatchedを区別します。</span>
+            </div>
+          </details>
           <fieldset>
             <legend>結果を書き出す（作業の再開には使えません）</legend>
             <p id="mwe-result-export-help" class="meta">方法JSONには原文欄・語の一覧はありません。ただし、CSVや方法JSONには表現・判断根拠などが残り、根拠に引用した文章も含まれます。語のカバー率CSVには語の一覧が含まれます。いずれも匿名化を保証しません。公開・共有前に内容と利用条件を確認してください。</p>
@@ -194,9 +224,9 @@ VID&#9;spill the beans&#9;spill/spills/spilled/spilling bean/beans&#9;2</textare
           <p id="mwe-document-set-export-help" class="meta">1–20件の作業を、文書を結合せずにまとめます。セットへの追加はページのメモリ内だけで、ファイル保存ではありません。「文書セットをファイルに保存」で、各文書の原文・パターン・記録済みの判断と根拠を含むJSONをダウンロードします。共有用の匿名化ファイルではありません。自動保存・共同編集・サーバー保存は行いません。</p>
           <p id="mwe-current-document-status" role="status" aria-live="polite">現在開いているレビューはありません。</p>
           <div class="design-grid">
-            <div class="field"><label for="mwe-document-set-id">文書セットID</label><input id="mwe-document-set-id" type="text" maxlength="100" pattern="[A-Za-z0-9][A-Za-z0-9._-]*" disabled autocomplete="off" placeholder="pilot-set"></div>
+            <div class="field"><label for="mwe-document-set-id">文書セットID</label><input id="mwe-document-set-id" type="text" maxlength="100" pattern="[A-Za-z0-9][A-Za-z0-9._\-]*" disabled autocomplete="off" placeholder="pilot-set"></div>
             <div class="field"><label for="mwe-document-set-label">文書セット名</label><input id="mwe-document-set-label" type="text" maxlength="200" disabled autocomplete="off" placeholder="Pilot passages"></div>
-            <div class="field"><label for="mwe-document-id">現在の文書ID</label><input id="mwe-document-id" type="text" maxlength="100" pattern="[A-Za-z0-9][A-Za-z0-9._-]*" disabled autocomplete="off" placeholder="passage-01"></div>
+            <div class="field"><label for="mwe-document-id">現在の文書ID</label><input id="mwe-document-id" type="text" maxlength="100" pattern="[A-Za-z0-9][A-Za-z0-9._\-]*" disabled autocomplete="off" placeholder="passage-01"></div>
             <div class="field"><label for="mwe-document-label">現在の文書名</label><input id="mwe-document-label" type="text" maxlength="200" disabled autocomplete="off" placeholder="Passage 1"></div>
           </div>
           <div class="field">

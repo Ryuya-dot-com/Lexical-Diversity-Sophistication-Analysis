@@ -19,6 +19,30 @@ reading comprehension, and eye-movement analysis are possible downstream uses
 of the exported occurrence/sense records. They are not the core technology and
 cannot validate its linguistic decisions.
 
+The MWE input now offers five editable examples: three existing authored
+context contrasts and two published Tatoeba CC0 sentences. Choose an example,
+load it, select a word profile and confirm processing permission before
+extracting candidates. Replacing a draft requires confirmation; an active
+review must be saved/cleared first. Examples supply no judgments or answer key.
+Opening a saved workspace or a document from a set also asks before replacing
+an unextracted text or pattern draft. Cancel keeps the draft; the same saved
+document can be selected again. Invalid files never replace the input.
+The required reference choice and starter patterns remain visible. Local
+BNC/COCA setup and saved-file opening are optional disclosures. After extraction,
+candidate decisions come first; word coverage and detailed statistics can be
+expanded separately. Missing expressions can still be added manually.
+Each candidate also offers the full original input in a read-only disclosure,
+preserving punctuation and line breaks. The short token window marks omitted
+tokens with ellipses; opening the full text does not change any judgments.
+The sense panel explains each decision state in English and reports the number
+of selected senses before saving. Joint meanings, unresolved alternatives,
+abstention and an unfinished review remain distinct. Changing the state does
+not automatically select or clear senses; definitions, examples and stable
+sense IDs remain available without reordering the reference inventory.
+Sources, licenses and text hashes are in `samples.json` and `RIGHTS.md`.
+This is local development functionality; a Wikipedia sample is not required
+to try it, and the examples do not establish automatic detection or sense accuracy.
+
 The executable `mwe_contract.json` remains unchanged in this priority-only
 revision because frozen audit artifacts pin its exact hash. Its next version
 will be cut only with a benchmark-driven behavioral or schema change, not to

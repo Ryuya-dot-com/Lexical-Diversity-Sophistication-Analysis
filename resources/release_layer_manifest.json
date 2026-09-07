@@ -23,6 +23,14 @@
   },
   "path_rules": [
     {
+      "id": "mixed_example_manifest",
+      "patterns": ["samples.json"],
+      "source": "Original project comparison/context examples and two verbatim sentences from the Tatoeba English CC0-only export retrieved 2026-09-07",
+      "license": "MIT OR CC-BY-4.0 for project-authored fields and texts; CC0-1.0 for the two explicitly identified Tatoeba sentence texts",
+      "notice": ["samples.json per-example provenance", "RIGHTS.md", "LICENSE.md"],
+      "redistribution_state": "public_with_per_example_source_license_and_hash; development_examples_not_linguistic_gold"
+    },
+    {
       "id": "tubelex_projection",
       "patterns": [
         "resources/tubelex_en_regex_ascii_2025.json",

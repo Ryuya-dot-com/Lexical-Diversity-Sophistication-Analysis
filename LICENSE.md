@@ -17,6 +17,11 @@ web app contributors, 2026” with a link to the release used.
 Third-party material is not covered by this grant. It must carry its own notice
 and license before being added to the release.
 
+The two Tatoeba sentence texts explicitly identified in `samples.json` are
+available under CC0 1.0, not the project's MIT/CC BY grant. Their original
+sentence URLs, source-export identity and text hashes are recorded per example;
+see `RIGHTS.md` and <https://creativecommons.org/publicdomain/zero/1.0/>.
+
 `resources/oewn_take_in_2025.json` is such third-party-derived material. It is
 licensed under Open English WordNet's CC BY 4.0 terms and the underlying WordNet
 License, with attribution and source links embedded in that file and recorded

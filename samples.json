@@ -1,5 +1,5 @@
 {
-  "samples_version": "0.3.0-probe",
+  "samples_version": "0.4.0-probe",
   "comparison_sets": [
     {
       "id": "matched-repetition",
@@ -178,6 +178,83 @@
           }
         }
       ]
+    }
+  ],
+  "mwe_examples": [
+    {
+      "id": "M3-one-form-two-contextual-senses",
+      "label_en": "One form in two contexts",
+      "prompt_en": "Compare the two uses. Record occurrence and sense decisions separately; the example does not fill in answers.",
+      "text": "Mira took in the explanation, but the con artist took in the visitor with a convincing lie.",
+      "provenance": {
+        "kind": "project_authored",
+        "source_url": "tests/fixtures/mwe_cases.json",
+        "license": "MIT OR CC-BY-4.0",
+        "license_url": "LICENSE.md",
+        "text_sha256": "ab8a0d5923aa4abd74fe4566d5d9d028db8c922b86d23cb9805e1a984ef3db3a"
+      }
+    },
+    {
+      "id": "M4-confirm-versus-reject-context",
+      "label_en": "Members, gaps and context",
+      "prompt_en": "Inspect which words belong together. A matching pattern need not be a phrasal verb in its context.",
+      "text": "The explanation was dense, but Mira eventually took it in. Mira took it in the car rather than on the bus.",
+      "provenance": {
+        "kind": "project_authored",
+        "source_url": "tests/fixtures/mwe_cases.json",
+        "license": "MIT OR CC-BY-4.0",
+        "license_url": "LICENSE.md",
+        "text_sha256": "454891526a5998899bccb65b48d39e00e13004c31d5337cbdef742e20ca9d27f"
+      }
+    },
+    {
+      "id": "M5-idiomatic-versus-literal-vid",
+      "label_en": "An idiom and a literal use",
+      "prompt_en": "Compare the contexts before deciding whether each match is an idiom. You can leave a decision unresolved.",
+      "text": "Nora finally spilled the beans about the surprise, but Leo accidentally spilled the beans across the floor.",
+      "provenance": {
+        "kind": "project_authored",
+        "source_url": "tests/fixtures/mwe_cases.json",
+        "license": "MIT OR CC-BY-4.0",
+        "license_url": "LICENSE.md",
+        "text_sha256": "9b9b4358a3c19c1b89e2c5bfaee853e5ee212e391062e6cd5f9770850978a997"
+      }
+    },
+    {
+      "id": "tatoeba-11202318",
+      "label_en": "Published sentence: exercise",
+      "prompt_en": "Explore the available senses. If the sentence is insufficient, keep the decision unresolved or explain your uncertainty.",
+      "text": "I don't exercise enough to counterbalance the amount of calories I take in.",
+      "provenance": {
+        "kind": "tatoeba_cc0",
+        "source_url": "https://tatoeba.org/en/sentences/show/11202318",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "text_sha256": "a4187afe91c8f74bed077a6149b5f08d209fc5b5efc0e70294d23296c9bed437",
+        "source_modified_at": "2022-10-23 19:42:00",
+        "retrieved_on": "2026-09-07",
+        "source_artifact_url": "https://downloads.tatoeba.org/exports/per_language/eng/eng_sentences_CC0.tsv.bz2",
+        "source_artifact_bytes": 1288331,
+        "source_artifact_sha256": "489556f5ed662d97f1350ef81aa4b0fc430ea32c0c98853020666b055ee4b40c"
+      }
+    },
+    {
+      "id": "tatoeba-9004040",
+      "label_en": "Published sentence: an advertisement",
+      "prompt_en": "Check the proposed members and gaps against the whole sentence. You may reject an accidental match or add a missed expression manually.",
+      "text": "We're going to take a small ad out in the paper.",
+      "provenance": {
+        "kind": "tatoeba_cc0",
+        "source_url": "https://tatoeba.org/en/sentences/show/9004040",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "text_sha256": "450bc3256bc6c88542647e5b7246edfccae3c36cc00c92bf8c5db59542d9abef",
+        "source_modified_at": "2020-08-30 15:26:54",
+        "retrieved_on": "2026-09-07",
+        "source_artifact_url": "https://downloads.tatoeba.org/exports/per_language/eng/eng_sentences_CC0.tsv.bz2",
+        "source_artifact_bytes": 1288331,
+        "source_artifact_sha256": "489556f5ed662d97f1350ef81aa4b0fc430ea32c0c98853020666b055ee4b40c"
+      }
     }
   ]
 }

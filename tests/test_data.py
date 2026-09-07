@@ -253,7 +253,7 @@ class SampleManifestTests(unittest.TestCase):
         self.assertNotRegex(index, r"\bIR-\d{3}\b")
         self.assertNotIn("現prototype", index)
         self.assertNotRegex(app, r"\bIR-\d{3}\b")
-        self.assertIn("out_of_inventory: '該当語義なし'", app)
+        self.assertIn("out_of_inventory: ['None of the listed senses fits'", app)
 
     def test_release_manifest_covers_every_public_file_without_unknown_rights(self):
         manifest = RELEASE_LAYER_MANIFEST
@@ -2503,8 +2503,8 @@ class SampleManifestTests(unittest.TestCase):
         )
 
     def test_manifest_describes_three_reviewed_scenarios(self):
-        self.assertEqual(set(SAMPLES), {"samples_version", "comparison_sets"})
-        self.assertEqual(SAMPLES["samples_version"], "0.3.0-probe")
+        self.assertEqual(set(SAMPLES), {"samples_version", "comparison_sets", "mwe_examples"})
+        self.assertEqual(SAMPLES["samples_version"], "0.4.0-probe")
         self.assertEqual(len(SAMPLES["comparison_sets"]), 3)
 
         ids = set()
